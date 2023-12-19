@@ -4,41 +4,42 @@ import * as gameService from '../../services/gameServices'
 import * as playerService from '../../services/playerService'
 const BracketLayout = ({gameObj, user}) => { 
   const [matches, setMatches] = useState(gameService.SplitIntoTuples(gameObj.matchPlayers));
-  const [round1, setRound1] = useState([])
-  let playerObj
+
+  
 
   useEffect(() => {
-    const getTuples = async () => {
-      playerObj = await Promise.all(gameObj.matchPlayers.map(player =>
+    const getTuples =() => {
+       setMatches(gameObj.matchPlayers.map(player =>
       playerService.findOne(player)
-      ));
-
-      console.log(playerObj);  
+      ))
     }
+    
     getTuples()
   }, []);
-
+  
+   
   console.log(matches);
+  
   return ( 
     <div className="auto-width">
       <div className="bracket-layout__main green-felt2 extend">
         <div className="flex">
           <div className="flex-column"id='match-1'>
             <Bracket 
-              playerObj={playerObj}
+              playerObj={gameObj.matchPlayers}
               user={user}
               matches={matches}
-              round={playerObj}
-              setRound={setRound1}
+              round={gameObj.matchPlayers}
+              setRound={gameObj.rounds[0]}
             />
           </div>
           <div className="flex flex-column">
             <Bracket 
-              playerObj={round1.flat()}
-              user={user}
-              matches={round1}
-              // round={round2}
-              // setRound={setRound2}
+              // playerObj={gameObj.rounds[0].flat()}
+              // user={user}
+              // matches={gameObj.rounds[0]}
+              // round={gameObj.rounds[1]}
+              // setRound={gameObj.rounds[1].flat()}
             />
           </div>
           <div className="flex flex-column">
