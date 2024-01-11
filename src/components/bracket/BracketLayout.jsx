@@ -1,36 +1,41 @@
 import { useState, useEffect } from "react";
 import Bracket from "./Bracket"
-import * as gameService from '../../services/gameServices'
+// import * as gameService from '../../services/gameServices'
 import * as playerService from '../../services/playerService'
 const BracketLayout = ({gameObj, user}) => { 
-  const [matches, setMatches] = useState(gameService.SplitIntoTuples(gameObj.matchPlayers));
-
+  const [playerStats, setPlayerStats] = useState()
   
-
   useEffect(() => {
-    const getTuples =() => {
-       setMatches(gameObj.matchPlayers.map(player =>
-      playerService.findOne(player)
-      ))
-    }
-    
-    getTuples()
+    const getStats = async () => {
+      try {
+        const stats = await Promise.all(
+          gameObj.matchPlayers.map((player) =>
+            playerService.findOne(player)
+          )
+        );
+
+        setPlayerStats(stats);
+      } catch (error) {
+       
+        console.error("Error fetching player stats:", error);
+      }
+    };
+
+    getStats();
   }, []);
   
-   
-  console.log(matches);
-  
+
   return ( 
     <div className="auto-width">
       <div className="bracket-layout__main green-felt2 extend">
         <div className="flex">
           <div className="flex-column"id='match-1'>
             <Bracket 
-              playerObj={gameObj.matchPlayers}
-              user={user}
-              matches={matches}
-              round={gameObj.matchPlayers}
-              setRound={gameObj.rounds[0]}
+              // playerObj={gameObj.matchPlayers}
+              // user={user}
+              // matches={matches}
+              // round={gameObj.matchPlayers}
+              // setRound={gameObj.rounds[0]}
             />
           </div>
           <div className="flex flex-column">
