@@ -75,7 +75,7 @@ export function shufflePlayers (players){
   return players
 }
 
-export function SplitIntoTuples (players) {
+export function SplitIntoMatches (players) {
   
  
   let playerTuples = []

@@ -4,7 +4,8 @@ import Bracket from "./Bracket"
 import * as playerService from '../../services/playerService'
 const BracketLayout = ({gameObj, user}) => { 
   const [playerStats, setPlayerStats] = useState()
-  
+  const [matches, setMatches] = useState()
+
   useEffect(() => {
     const getStats = async () => {
       try {
@@ -13,17 +14,29 @@ const BracketLayout = ({gameObj, user}) => {
             playerService.findOne(player)
           )
         );
-
+        
         setPlayerStats(stats);
       } catch (error) {
-       
+        
         console.error("Error fetching player stats:", error);
       }
     };
-
+    
     getStats();
   }, []);
   
+  // useEffect(() => {
+  //   const getMatches = async () => {
+  //     try {
+  //       const matchData = await gameService.SplitIntoTuples(playerStats)
+  //       setMatches(matchData)
+  //     } catch (error) {
+  //       console.error("Error fetching match data: ", error)
+  //     }
+  //   }
+  //   getMatches()
+    
+  // }, [playerStats]);
 
   return ( 
     <div className="auto-width">
@@ -31,11 +44,12 @@ const BracketLayout = ({gameObj, user}) => {
         <div className="flex">
           <div className="flex-column"id='match-1'>
             <Bracket 
-              // playerObj={gameObj.matchPlayers}
-              // user={user}
-              // matches={matches}
-              // round={gameObj.matchPlayers}
-              // setRound={gameObj.rounds[0]}
+              setMatches={setMatches}
+              playerObj={playerStats}
+              user={user}
+              matches={matches}
+              round={playerStats}
+              setRound={gameObj.rounds[0]}
             />
           </div>
           <div className="flex flex-column">
