@@ -14,29 +14,15 @@ const BracketLayout = ({gameObj, user}) => {
             playerService.findOne(player)
           )
         );
-        
         setPlayerStats(stats);
       } catch (error) {
         
         console.error("Error fetching player stats:", error);
       }
     };
-    
     getStats();
   }, []);
   
-  // useEffect(() => {
-  //   const getMatches = async () => {
-  //     try {
-  //       const matchData = await gameService.SplitIntoTuples(playerStats)
-  //       setMatches(matchData)
-  //     } catch (error) {
-  //       console.error("Error fetching match data: ", error)
-  //     }
-  //   }
-  //   getMatches()
-    
-  // }, [playerStats]);
 
   return ( 
     <div className="auto-width">

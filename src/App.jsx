@@ -11,7 +11,7 @@ import ChangePassword from './pages/ChangePassword/ChangePassword'
 import AddPlayer from './pages/AddPlayers/AddPlayer'
 import ViewTournaments from './pages/ViewTournaments/ViewTournaments'
 import CreateMatch from './pages/AddPlayerToMatch/CreateMatch'
-import BracketLayout from './components/bracket/BracketLayout'
+import Brackets from './pages/Brackets/Brackets'
 
 // components
 import NavBar from './components/NavBar/NavBar'
@@ -159,25 +159,25 @@ function App() {
           }
         />
         <Route
-          path="/bracket-layout"
+          path="/brackets"
           element={
-            
-              <BracketLayout 
+              <Brackets 
                 gameObj={singleMatch} 
                 user={user}
               />
-           
           }
         />
          <Route 
           path="/view-tournaments"
-          element={<ViewTournaments
-            tourneyMatch={tourneyMatch}
-            setTourneyMatch={setTourneyMatch}
-            user={user}
-            handleDeleteMatch={handleDeleteMatch}
-            setSingleMatch={setSingleMatch}
-          />}
+          element={
+            <ViewTournaments
+              tourneyMatch={tourneyMatch}
+              setTourneyMatch={setTourneyMatch}
+              user={user}
+              handleDeleteMatch={handleDeleteMatch}
+              setSingleMatch={setSingleMatch}
+            />
+          }
         />
   
       </Routes>

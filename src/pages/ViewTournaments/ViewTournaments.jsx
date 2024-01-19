@@ -10,13 +10,7 @@ const ViewTournaments = ({user, setTourneyMatch, tourneyMatch, setSingleMatch}) 
   
   const handleGetMatch = async (game) => {
     await setSingleMatch(game)
-    // let playerObj = await Promise.all(game.matchPlayers.map(player =>
-    //   playerService.findOne(player)
-    //   ));
-    //   await setSingleMatch(gameService.addByePlayers(playerObj))
-    //   console.log(game, playerObj);
-
-      navigate('/bracket-layout')
+    navigate('/brackets')
   }
  
   useEffect(() => {
