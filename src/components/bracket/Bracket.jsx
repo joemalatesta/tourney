@@ -1,11 +1,11 @@
 import SingleMatch from './SingleMatch';
 
-const Bracket = ({matches}) => {
+const Bracket = ({round}) => {
 
-
+ console.log(round)
   return (
     <>
-      {matches?.map((match, idx) => (
+      {round?.map((match, idx) => (
         <SingleMatch
           match={match}
           key={idx}

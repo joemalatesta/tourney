@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import AllPlayers from "../../components/players/AllPlayers";
 
-const AddPlayer = (props) => {
+const EditPlayer = (props) => {
   const formElement = useRef()
   const [validForm, setValidForm] = useState(false)
   const [formData, setFormData] = useState({
@@ -66,4 +66,4 @@ const AddPlayer = (props) => {
 	)
 }
 
-export default AddPlayer;
+export default EditPlayer;

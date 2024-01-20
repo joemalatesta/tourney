@@ -1,7 +1,27 @@
 import { useEffect, useState } from "react"
+import * as playerService from '../../services/playerService'
 
 const SingleMatchPlayerLine = ({ player, user, isHidden, handleHideWinnerCheckbox, handleAddWinnerToNextRound }) => {
   const [checkboxes, setCheckboxes] = useState([])
+  const [playerStats, setPlayerStats] = useState()
+
+  
+
+    useEffect(() => {
+  const getStats = async () => {
+    try {
+      const stats = playerService.findOne(player.id)
+       
+      setPlayerStats(stats);
+    } catch (error) {
+      
+      console.error("Error fetching player stats:", error);
+    }
+  };
+  getStats();
+}, []);
+
+  console.log(playerStats);
 
   useEffect(() => {
     const getCheckboxes = () => {

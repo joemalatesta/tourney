@@ -8,7 +8,7 @@ import Login from './pages/Login/Login'
 import Landing from './pages/Landing/Landing'
 import Profiles from './pages/Profiles/Profiles'
 import ChangePassword from './pages/ChangePassword/ChangePassword'
-import AddPlayer from './pages/AddPlayers/AddPlayer'
+import EditPlayer from './pages/EditPlayers/EditPlayer'
 import ViewTournaments from './pages/ViewTournaments/ViewTournaments'
 import CreateMatch from './pages/AddPlayerToMatch/CreateMatch'
 import Brackets from './pages/Brackets/Brackets'
@@ -92,11 +92,11 @@ function App() {
     setPlayMatch(!playMatch)
   }
 
-  // const handleUpdateMatch = async (matchData) => {
-  //   console.log();
-  //   const updatedMatch = await playerService.update(matchData)
-  //   setTourneyMatch([...tourneyMatch, updatedMatch])
-  // }
+  const handleUpdateMatch = async (matchData) => {
+    console.log();
+    const updatedMatch = await matchService.update(matchData)
+    setTourneyMatch([...tourneyMatch, updatedMatch])
+  }
   
 
   return (
@@ -125,7 +125,7 @@ function App() {
           path="/add-player"
           element={    
           <ProtectedRoute user={user}>
-              <AddPlayer 
+              <EditPlayer 
                 players={players}
                 playMatch={playMatch} 
                 isDisabled={isDisabled} 
@@ -164,6 +164,7 @@ function App() {
               <Brackets 
                 gameObj={singleMatch} 
                 user={user}
+                handleUpdateMatch={handleUpdateMatch}
               />
           }
         />

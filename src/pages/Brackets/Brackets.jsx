@@ -1,10 +1,12 @@
 import BracketLayout from "../../components/bracket/BracketLayout"
-const Brackets = () => {
+const Brackets = ({gameObj, user}) => {
   
   return (  
     <>
-      this is the bracket
-      <BracketLayout />
+      <BracketLayout 
+        user={user}
+        gameObj={gameObj}
+      />
     </>
   )
 }
