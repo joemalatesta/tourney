@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import * as gameService from '../../services/gameServices'
 import SingleMatchPlayerLine from './SingleMatchPlayerLine'
-
 const SingleMatch = (props) => {
   
   return (
@@ -10,10 +9,9 @@ const SingleMatch = (props) => {
         {props.match?.map((player)=>
           (player !== null &&
             <SingleMatchPlayerLine
-            // isHidden={isHidden}
             user={props.user}
             player={player}
-            key={player._id}
+            key={player}
             />
             )
             )}
