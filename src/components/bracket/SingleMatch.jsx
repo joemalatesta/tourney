@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import * as gameService from '../../services/gameServices'
+import { useState } from 'react';
 import SingleMatchPlayerLine from './SingleMatchPlayerLine'
+
 const SingleMatch = (props) => {
-  
+  const [gamesNeeded, setGamesNeeded]= useState()
+
   return (
     <>
       <div className="bracket">
@@ -12,6 +13,8 @@ const SingleMatch = (props) => {
             user={props.user}
             player={player}
             key={player}
+            gamesNeeded={gamesNeeded}
+            setGamesNeeded={setGamesNeeded}
             />
             )
             )}

@@ -11,13 +11,10 @@ const BracketLayout = ({gameObj, user}) => {
       <div className="bracket-layout__main green-felt2 extend">
         <div className="flex">
           <div className="flex-column"id='match-1'>
-            {gameObj.rounds.map((round, idx) =>(
               <Bracket 
-                key={idx}
                 user={user}
                 gameObj={gameObj}
               />
-            ))}
           </div>
         </div>
       </div>
