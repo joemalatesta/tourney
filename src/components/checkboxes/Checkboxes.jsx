@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 
-const Checkboxes = ({player}) => {
+const Checkboxes = ({player, isHidden, setIsHidden}) => {
   const [checkboxes, setCheckboxes] = useState([])
-  const [isHidden, setIsHidden] = useState(false)
+ 
   useEffect(() => {
     const getCheckboxes = () => {
       const checkboxesArray = []

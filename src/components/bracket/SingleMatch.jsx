@@ -3,6 +3,11 @@ import SingleMatchPlayerLine from './SingleMatchPlayerLine'
 
 const SingleMatch = (props) => {
   const [gamesNeeded, setGamesNeeded]= useState()
+  const [isHidden, setIsHidden] = useState(false)
+
+  const handleHideWinnerCheckbox = () => {
+    setIsHidden(true)
+  }
 
   return (
     <>
@@ -10,11 +15,14 @@ const SingleMatch = (props) => {
         {props.match?.map((player)=>
           (player !== null &&
             <SingleMatchPlayerLine
-            user={props.user}
-            player={player}
-            key={player}
-            gamesNeeded={gamesNeeded}
-            setGamesNeeded={setGamesNeeded}
+              user={props.user}
+              player={player}
+              key={player}
+              gamesNeeded={gamesNeeded}
+              setGamesNeeded={setGamesNeeded}
+              isHidden={isHidden}
+              handleHideWinnerCheckbox={handleHideWinnerCheckbox}
+              setIsHidden={setIsHidden}
             />
             )
             )}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import * as playerService from '../../services/playerService'
 import Checkboxes from "../checkboxes/Checkboxes"
-const SingleMatchPlayerLine = ({player}) => {
+const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox }) => {
   const [playerInfo, setPlayerInfo]= useState()
   
   useEffect(() => {
@@ -34,7 +34,11 @@ const SingleMatchPlayerLine = ({player}) => {
       </div>
           <div className="end center">
             <Checkboxes
+              setIsHidden={setIsHidden}
               player={playerInfo}
+              user={user}
+              isHidden={isHidden}
+              handleHideWinnerCheckbox={handleHideWinnerCheckbox}
             />
           </div>
     </div>
