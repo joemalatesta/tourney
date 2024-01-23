@@ -97,41 +97,10 @@ export function getFirstPlayer  (game) {
 }
 
 export function addByePlayers (players) {
-  let num
-  const calcByesNeeded = (num) => {
-    for(let i = 0; i < num ; i++){
-      players.push({
-        _id: Math.random(),
-        name: 'Bye',
-        rank: 0
-      })
-    }
-  }
-  
-  if(players.length > 2 && players.length <= 4 ){
-
-    num = 4 - players.length
-    calcByesNeeded(num)
-  }
-  if(players.length > 4 && players.length < 8 ){
-   
-    num = (8 - players.length)
-    calcByesNeeded(num)
-  }
-  if(players.length > 8 && players.length <= 16 ){
-    
-    num = 16 - players.length
-    calcByesNeeded(num)
-  }
-  if(players.length > 16 && players.length < 32 ){
-   
-    num = 32 - players.length
-    calcByesNeeded(num)
-  }
-  if(players.length > 32 && players.length < 64 ){
-    
-    num = 64 - players.length
-    calcByesNeeded(num)
-  }
+  players.push({
+    _id: Math.random(),
+    name: 'Bye',
+    rank: 0
+  })
 }
 

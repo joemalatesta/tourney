@@ -4,7 +4,7 @@ import Bracket from "./Bracket"
 
 const BracketLayout = ({gameObj, user}) => { 
 
-  console.log(gameObj)
+
   
   return ( 
     <div className="auto-width">

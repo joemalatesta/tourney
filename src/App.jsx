@@ -45,7 +45,7 @@ function App() {
 
   useEffect(() => {
     const getMatch = async () => {
-      console.log(singleMatch);
+      // console.log(singleMatch);
     }
     getMatch()
   }, [singleMatch]);

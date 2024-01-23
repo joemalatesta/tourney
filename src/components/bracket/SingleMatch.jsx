@@ -1,30 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SingleMatchPlayerLine from './SingleMatchPlayerLine'
+import * as playerService from '../../services/playerService'
+import * as gameService from '../../services/gameServices'
 
 const SingleMatch = (props) => {
   const [gamesNeeded, setGamesNeeded]= useState()
   const [isHidden, setIsHidden] = useState(false)
+  const [playerInfo, setPlayerInfo]= useState()
+  useEffect(() => {
 
+    const getPlayerStats=async()=>{
+      let data = await Promise.all(props.match.map(player=>
+        playerService.findOne(player)))
+      data = gameService.getFirstPlayer(data)
+      setPlayerInfo(data)
+    }
+    getPlayerStats()
+  }, [props.match]);
   const handleHideWinnerCheckbox = () => {
     setIsHidden(true)
   }
+ 
+
 
   return (
     <>
       <div className="bracket">
-        {props.match?.map((player)=>
-          (player !== null &&
+        {playerInfo?.map((player)=>
+        
             <SingleMatchPlayerLine
               user={props.user}
               player={player}
-              key={player}
+              key={player._id}
               gamesNeeded={gamesNeeded}
               setGamesNeeded={setGamesNeeded}
               isHidden={isHidden}
               handleHideWinnerCheckbox={handleHideWinnerCheckbox}
               setIsHidden={setIsHidden}
             />
-            )
+            
             )}
       </div>
     </>

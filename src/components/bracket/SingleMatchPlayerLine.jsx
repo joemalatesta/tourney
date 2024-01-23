@@ -1,24 +1,16 @@
-import { useEffect, useState } from "react"
-import * as playerService from '../../services/playerService'
+// import { useEffect, useState } from "react"
+// import * as playerService from '../../services/playerService'
 import Checkboxes from "../checkboxes/Checkboxes"
 const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox }) => {
-  const [playerInfo, setPlayerInfo]= useState()
   
-  useEffect(() => {
-    const getPlayerStats=async()=>{
-      let data = await playerService.findOne(player)
-      setPlayerInfo(data)
+  console.log(player);
+  if(player.value == 'undefined'){
+    player = {
+      _id: Math.random(),
+      name: 'Bye',
+      rank: 0
     }
-    getPlayerStats()
-  }, [player]);
-
-  console.log(playerInfo);
-
-
-
-
-
-
+  } 
 
   return (
     <div className="flex">
@@ -26,8 +18,8 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
         {player !== null &&
         <>
           <div>
-            {playerInfo?.name}
-            ({playerInfo?.rank}) 
+            {player?.name}
+            ({player?.rank}) 
           </div>
         </>
         }
@@ -35,7 +27,7 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
           <div className="end center">
             <Checkboxes
               setIsHidden={setIsHidden}
-              player={playerInfo}
+              player={player}
               user={user}
               isHidden={isHidden}
               handleHideWinnerCheckbox={handleHideWinnerCheckbox}
