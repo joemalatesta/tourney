@@ -2,7 +2,6 @@
 // import * as playerService from '../../services/playerService'
 import Checkboxes from "../checkboxes/Checkboxes"
 const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox }) => {
-  
   if(player.value == 'undefined'){
     player = {
       _id: Math.random(),
@@ -13,20 +12,20 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
 
   return (
     <div className="flex">
-      <div className="flex start bracket match-width2 match-height2 red-felt">
+      <div className="flex start bracket match-width2 match-height2 red-felt" >
         {player !== null &&
           <div>
-            {player?.name}
-            ({player?.rank}) 
-              <div className="end center">
-                <Checkboxes
-                  setIsHidden={setIsHidden}
-                  player={player}
-                  user={user}
-                  isHidden={isHidden}
-                  handleHideWinnerCheckbox={handleHideWinnerCheckbox}
-                />
-              </div>
+            <div className="start flex">
+              {player?.name}
+              ({player?.rank}) 
+              <Checkboxes
+                setIsHidden={setIsHidden}
+                player={player}
+                user={user}
+                isHidden={isHidden}
+                handleHideWinnerCheckbox={handleHideWinnerCheckbox}
+              />
+            </div>
           </div>
         }
       </div>

@@ -7,6 +7,7 @@ const Bracket = (props) => {
     <>
       {round?.map((match, idx) => (
         <SingleMatch
+          user={props.user}
           match={match}
           key={idx}
         />

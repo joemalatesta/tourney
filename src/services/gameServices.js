@@ -100,7 +100,7 @@ export function addByePlayers (players) {
   players.push({
     _id: Math.random(),
     name: 'Bye',
-    rank: 0
+    rank: 1
   })
 }
 
