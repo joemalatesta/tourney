@@ -1,11 +1,7 @@
-
 import Bracket from "./Bracket"
-
 
 const BracketLayout = ({gameObj, user}) => { 
 
-
-  
   return ( 
     <div className="auto-width">
       <div className="bracket-layout__main green-felt2 extend">

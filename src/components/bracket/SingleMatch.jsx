@@ -1,75 +1,84 @@
 import { useState, useEffect } from 'react';
-import SingleMatchPlayerLine from './SingleMatchPlayerLine'
-import * as playerService from '../../services/playerService'
-import * as gameService from '../../services/gameServices'
+import SingleMatchPlayerLine from './SingleMatchPlayerLine';
+import * as playerService from '../../services/playerService';
+import * as gameService from '../../services/gameServices';
 
 const SingleMatch = (props) => {
-  const [gamesNeeded, setGamesNeeded]= useState()
-  const [isHidden, setIsHidden] = useState(false)
-  const [playerInfo, setPlayerInfo]= useState()
- 
-  
-  console.log(gamesNeeded);
+  const [gamesNeeded, setGamesNeeded] = useState();
+  const [isHidden, setIsHidden] = useState(false);
+  const [playerInfo, setPlayerInfo] = useState();
+
   useEffect(() => {
-    const getPlayerStats=async()=>{
-      let data = await Promise.all(props.match.map(player=>
-        playerService.findOne(player)))
-        data = gameService.getFirstPlayer(data)
-        setPlayerInfo(data)
+    const getPlayerStats = async () => {
+      try {
+        const data = await Promise.all(props.match.map(player => playerService.findOne(player)));
+        const updatedPlayerInfo = gameService.getFirstPlayer(data);
+        setPlayerInfo(updatedPlayerInfo);
+      } catch (error) {
+        console.error("Error fetching player stats:", error);
       }
-      getPlayerStats()
-    }, [props.match])
-    
-    useEffect(() => {
-      const getGameRace = async () =>{
-        let data = await gameService.getGameRace(playerInfo[0],playerInfo[1])
-        setGamesNeeded(data)
-      }
-      getGameRace()
-    }, [playerInfo])
+    };
+    getPlayerStats();
+  }, [props.match]);
 
   const handleHideWinnerCheckbox = () => {
     setIsHidden(true)
   }
 
+  useEffect(() => {
+    const getGameRace = async () => {
+      if (playerInfo && playerInfo.length === 2) {
+        try {
+          const data = await gameService.getGameRace(playerInfo[0], playerInfo[1]);
+          setGamesNeeded(data);
+        } catch (error) {
+          console.error("Error fetching game race:", error);
+        }
+      }
+    };
+    getGameRace();
+  }, [playerInfo]);
 
+  useEffect(() => {
+    const addGamesNeeded = () => {
+      if (playerInfo && gamesNeeded) {
+        setPlayerInfo((prevPlayerInfo) => {
+          if (
+            prevPlayerInfo &&
+            prevPlayerInfo.length === 2 &&
+            prevPlayerInfo[0].games !== gamesNeeded[0] &&
+            prevPlayerInfo[1].games !== gamesNeeded[1]
+          ) {
+            return [
+              { ...prevPlayerInfo[0], games: gamesNeeded[0] },
+              { ...prevPlayerInfo[1], games: gamesNeeded[1] },
+            ];
+          }
+          return prevPlayerInfo;
+        });
+      }
+    };
+    addGamesNeeded();
+  }, [gamesNeeded, playerInfo]);
 
   return (
     <>
       <div className="bracket">
-        {playerInfo?.map((player,idx)=>
-        
-            <SingleMatchPlayerLine
-              user={props.user}
-              player={player}
-              key={idx}
-              gamesNeeded={gamesNeeded}
-              setGamesNeeded={setGamesNeeded}
-              isHidden={isHidden}
-              handleHideWinnerCheckbox={handleHideWinnerCheckbox}
-              setIsHidden={setIsHidden}
-            />
-            
-            )}
+        {playerInfo?.map((player, idx) => (
+          <SingleMatchPlayerLine
+            user={props.user}
+            player={player}
+            key={idx}
+            gamesNeeded={gamesNeeded}
+            setGamesNeeded={setGamesNeeded}
+            isHidden={isHidden}
+            handleHideWinnerCheckbox={handleHideWinnerCheckbox}
+            setIsHidden={setIsHidden}
+          />
+        ))}
       </div>
     </>
-  )
-  
-}
+  );
+};
 
 export default SingleMatch;
-
-// const [isHidden, setIsHidden] = useState(false)
-// let match
-// gameService.getFirstPlayer(props.match)
-// let gamesNeededToWin = gameService.getGameRace(props?.match[0], props?.match[1])
-// if(props.match[0] !== null && props.match[1] !== null ) {
-//   match = [{...props?.match[0], gamesNeeded: gamesNeededToWin[0]}, {...props?.match[1], gamesNeeded: gamesNeededToWin[1]}]
-// }
-// const handleHideWinnerCheckbox = () => {
-//   setIsHidden(true)
-// }
-// if(props.match[0] === null && props.match[1] === null ) return ''
-// const handleAddWinnerToNextRound = (player) => {
-//   props.handleRoundPlayers(player)
-// }

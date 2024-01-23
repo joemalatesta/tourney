@@ -6,7 +6,7 @@ const Checkboxes = ({player, isHidden, setIsHidden}) => {
   useEffect(() => {
     const getCheckboxes = () => {
       const checkboxesArray = []
-      for (let i = 0; i < player?.gamesNeeded; i++) {
+      for (let i = 0; i < player?.games; i++) {
         checkboxesArray.push(
           <div key={i}>
             <input type="checkbox" />
@@ -25,6 +25,7 @@ const Checkboxes = ({player, isHidden, setIsHidden}) => {
 
   return (  
     <>
+      {checkboxes}
       Winner <input 
         hidden={isHidden} 
         onChange={()=>{handleHideWinnerCheckbox()}} 
