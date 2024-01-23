@@ -7,31 +7,42 @@ const SingleMatch = (props) => {
   const [gamesNeeded, setGamesNeeded]= useState()
   const [isHidden, setIsHidden] = useState(false)
   const [playerInfo, setPlayerInfo]= useState()
+ 
+  
+  console.log(gamesNeeded);
   useEffect(() => {
-
     const getPlayerStats=async()=>{
       let data = await Promise.all(props.match.map(player=>
         playerService.findOne(player)))
-      data = gameService.getFirstPlayer(data)
-      setPlayerInfo(data)
-    }
-    getPlayerStats()
-  }, [props.match]);
+        data = gameService.getFirstPlayer(data)
+        setPlayerInfo(data)
+      }
+      getPlayerStats()
+    }, [props.match])
+    
+    useEffect(() => {
+      const getGameRace = async () =>{
+        let data = await gameService.getGameRace(playerInfo[0],playerInfo[1])
+        setGamesNeeded(data)
+      }
+      getGameRace()
+    }, [playerInfo])
+
   const handleHideWinnerCheckbox = () => {
     setIsHidden(true)
   }
- 
+
 
 
   return (
     <>
       <div className="bracket">
-        {playerInfo?.map((player)=>
+        {playerInfo?.map((player,idx)=>
         
             <SingleMatchPlayerLine
               user={props.user}
               player={player}
-              key={player._id}
+              key={idx}
               gamesNeeded={gamesNeeded}
               setGamesNeeded={setGamesNeeded}
               isHidden={isHidden}
