@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const Checkboxes = ({player, isHidden, setIsHidden, user}) => {
+const Checkboxes = ({player}) => {
   const [checkboxes, setCheckboxes] = useState([])
  
   useEffect(() => {
@@ -18,21 +18,11 @@ const Checkboxes = ({player, isHidden, setIsHidden, user}) => {
     getCheckboxes()
   }, [player])
 
-  const handleHideWinnerCheckbox = () => {
-    setIsHidden(true)
-  }
+
 
   return (  
     <>
       {checkboxes}
-      {user?.name === 'Admin' && 
-        <div className="end flex center ">
-          Winner <input 
-            hidden={isHidden} 
-            onChange={()=>{handleHideWinnerCheckbox()}} 
-            type="checkbox" />
-        </div>
-      }
     </>
   )
 }

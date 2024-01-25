@@ -9,7 +9,6 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
       rank: 0
     }
   } 
-
   return (
     <div className="flex">
       <div className="flex start bracket match-width2 match-height2 red-felt" >
@@ -27,8 +26,17 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
               />
             </div>
           </div>
+          
         }
       </div>
+      {user?.name === 'Admin' && 
+          <div className="end flex center ">
+            Winner <input 
+              hidden={isHidden} 
+              onChange={()=>{handleHideWinnerCheckbox()}} 
+              type="checkbox" />
+          </div>
+        }
     </div>
   )
 }
