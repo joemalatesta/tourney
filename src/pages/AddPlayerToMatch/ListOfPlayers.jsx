@@ -1,5 +1,4 @@
 
-
 const ListOfPlayers = (props) => {
   return (
     <div className="green-felt bracket ">

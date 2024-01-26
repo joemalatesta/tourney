@@ -1,6 +1,5 @@
-// import { useEffect, useState } from "react"
-// import * as playerService from '../../services/playerService'
 import Checkboxes from "../checkboxes/Checkboxes"
+
 const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox }) => {
   if(player.value == 'undefined'){
     player = {
@@ -26,7 +25,6 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
               />
             </div>
           </div>
-          
         }
       </div>
       {user?.name === 'Admin' && 
@@ -34,7 +32,8 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
             Winner <input 
               hidden={isHidden} 
               onChange={()=>{handleHideWinnerCheckbox()}} 
-              type="checkbox" />
+              type="checkbox" 
+            />
           </div>
         }
     </div>

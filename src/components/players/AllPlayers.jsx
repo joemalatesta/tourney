@@ -1,7 +1,5 @@
 
-
 const AllPlayers = (props) => {
-
 
   return ( 
     <div className="bracket ">

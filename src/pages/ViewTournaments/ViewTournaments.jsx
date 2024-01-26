@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom"
-// import * as playerService from '../../services/playerService'
 import * as matchService from '../../services/matchService'
-// import * as gameService from '../../services/gameServices'
 import { useEffect, useState } from "react";
 
 const ViewTournaments = ({user, setTourneyMatch, tourneyMatch, setSingleMatch}) => {
@@ -26,7 +24,6 @@ const ViewTournaments = ({user, setTourneyMatch, tourneyMatch, setSingleMatch}) 
     setTourneyMatch(tourneyMatch.filter(match=> match._id !== deletedMatch._id))
   }
 
-  
   return (
     <div className="bracket width  center">
       <div className="match-bracket width green-felt">

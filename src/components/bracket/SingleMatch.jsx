@@ -1,25 +1,27 @@
-import { useState, useEffect } from 'react';
-import SingleMatchPlayerLine from './SingleMatchPlayerLine';
-import * as playerService from '../../services/playerService';
-import * as gameService from '../../services/gameServices';
+import { useState, useEffect } from 'react'
+import SingleMatchPlayerLine from './SingleMatchPlayerLine'
+import * as playerService from '../../services/playerService'
+import * as gameService from '../../services/gameServices'
 
 const SingleMatch = (props) => {
-  const [gamesNeeded, setGamesNeeded] = useState();
-  const [isHidden, setIsHidden] = useState(false);
-  const [playerInfo, setPlayerInfo] = useState();
+  const [gamesNeeded, setGamesNeeded] = useState()
+  const [isHidden, setIsHidden] = useState(false)
+  const [playerInfo, setPlayerInfo] = useState()
 
   useEffect(() => {
     const getPlayerStats = async () => {
       try {
-        const data = await Promise.all(props.match.map(player => playerService.findOne(player)));
-        const updatedPlayerInfo = gameService.getFirstPlayer(data);
-        setPlayerInfo(updatedPlayerInfo);
+        const data = await Promise.all(props.match.map(player => playerService.findOne(player)))
+        const updatedPlayerInfo = gameService.getFirstPlayer(data)
+        
+        setPlayerInfo(updatedPlayerInfo)
+   
       } catch (error) {
-        console.error("Error fetching player stats:", error);
+        console.error("Error fetching player stats:", error)
       }
-    };
-    getPlayerStats();
-  }, [props.match]);
+    }
+    getPlayerStats()
+  }, [props.match])
 
   const handleHideWinnerCheckbox = () => {
     setIsHidden(true)
@@ -30,14 +32,14 @@ const SingleMatch = (props) => {
       if (playerInfo && playerInfo.length === 2) {
         try {
           const data = await gameService.getGameRace(playerInfo[0], playerInfo[1]);
-          setGamesNeeded(data);
+          setGamesNeeded(data)
         } catch (error) {
-          console.error("Error fetching game race:", error);
+          console.error("Error fetching game race:", error)
         }
       }
-    };
-    getGameRace();
-  }, [playerInfo]);
+    }
+    getGameRace()
+  }, [playerInfo])
 
   useEffect(() => {
     const addGamesNeeded = () => {

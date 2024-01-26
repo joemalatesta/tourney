@@ -41,14 +41,14 @@ function App() {
       setPlayers(data)
     }
     fetchPlayers()
-  }, []);
+  }, [])
 
   useEffect(() => {
     const getMatch = async () => {
       // console.log(singleMatch);
     }
     getMatch()
-  }, [singleMatch]);
+  }, [singleMatch])
 
   useEffect(() => {
     const fetchMatch = async () => {
@@ -56,7 +56,7 @@ function App() {
       setTourneyMatch(data)
     }
     fetchMatch()
-  }, []);
+  }, [])
 
   const handleLogout = () => {
     authService.logout()
@@ -124,7 +124,7 @@ function App() {
           disable={isDisabled}
           path="/add-player"
           element={    
-          <ProtectedRoute user={user}>
+            <ProtectedRoute user={user}>
               <EditPlayer 
                 players={players}
                 playMatch={playMatch} 
@@ -132,7 +132,7 @@ function App() {
                 handleAddPlayer={handleAddPlayer} 
                 handleDeletePlayer={handleDeletePlayer}
               />
-          </ProtectedRoute>
+            </ProtectedRoute>
           }
         />
         <Route
@@ -149,7 +149,6 @@ function App() {
             </ProtectedRoute>
           }
         />    
-          
         <Route
           path="/auth/change-password"
           element={
@@ -161,11 +160,11 @@ function App() {
         <Route
           path="/brackets"
           element={
-              <Brackets 
-                gameObj={singleMatch} 
-                user={user}
-                handleUpdateMatch={handleUpdateMatch}
-              />
+            <Brackets 
+              gameObj={singleMatch} 
+              user={user}
+              handleUpdateMatch={handleUpdateMatch}
+            />
           }
         />
          <Route 
@@ -180,7 +179,6 @@ function App() {
             />
           }
         />
-  
       </Routes>
     </>
   )

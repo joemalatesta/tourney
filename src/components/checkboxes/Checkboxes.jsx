@@ -18,8 +18,6 @@ const Checkboxes = ({player}) => {
     getCheckboxes()
   }, [player])
 
-
-
   return (  
     <>
       {checkboxes}

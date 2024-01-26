@@ -24,7 +24,6 @@ const CreateMatch = (props) => {
     fetchPlayers()
   }, []);
 
-  
   const handleAddItem = (item) => {
     setMatch([item, ...match])
     setPlayers(players.filter(el => el._id !== item._id))
@@ -47,16 +46,6 @@ const CreateMatch = (props) => {
     console.log('this is the formdata at submit', updatedFormData);
     navigate('/view-tournaments')
   }
-
-  // const handleGetMatch = async (game) => {
-
-  //   let playerObj = await Promise.all(game.matchPlayers.map(player =>
-  //     playerService.findOne(player)
-  //     ));
-  //     await setSingleMatch(gameService.addByePlayers(playerObj))
-  //     console.log(game);
-  //     navigate('/bracket-layout')
-  // }
 
   return (
     <main className="center bracket">

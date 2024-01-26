@@ -18,7 +18,7 @@ async function index() {
     const res = await fetch(BASE_URL)
     return res.json()
   }catch (err) {
-    console.log(err);
+    console.log(err)
   }
 }
 
@@ -27,7 +27,7 @@ async function findOne(id) {
     const res = await fetch(BASE_URL + `/${id}`)
     return res.json()
   }catch (err) {
-    console.log(err);
+    console.log(err)
   }
 }
 

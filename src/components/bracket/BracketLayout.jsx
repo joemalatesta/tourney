@@ -6,11 +6,47 @@ const BracketLayout = ({gameObj, user}) => {
     <div className="auto-width">
       <div className="bracket-layout__main green-felt2 extend">
         <div className="flex">
-          <div className="flex-column"id='match-1'>
-              <Bracket 
-                user={user}
-                gameObj={gameObj}
-              />
+          <div className="flex-column">
+            <Bracket
+              user={user}
+              gameObj={gameObj}
+              rounds={gameObj.matchPlayers}
+            />
+            </div>
+            <div>
+            <Bracket
+              rounds={gameObj?.rounds[1]} 
+              user={user}
+              gameObj={gameObj}
+            />
+             </div>
+            <div>
+            <Bracket
+              rounds={gameObj?.rounds[2]} 
+              user={user}
+              gameObj={gameObj}
+            />
+             </div>
+            <div>
+            <Bracket
+              rounds={gameObj?.rounds[3]} 
+              user={user}
+              gameObj={gameObj}
+            />
+             </div>
+            <div>
+            <Bracket
+              rounds={gameObj?.rounds[4]} 
+              user={user}
+              gameObj={gameObj}
+            />
+             </div>
+            <div>
+            <Bracket
+              rounds={gameObj?.rounds[5]} 
+              user={user}
+              gameObj={gameObj}
+            />
           </div>
         </div>
       </div>
@@ -19,9 +55,6 @@ const BracketLayout = ({gameObj, user}) => {
 }
 
 export default BracketLayout;
-
-
-
 
 /*
 need to have array's of player IDs

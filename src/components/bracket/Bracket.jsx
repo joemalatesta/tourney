@@ -1,11 +1,20 @@
-import SingleMatch from './SingleMatch';
+import SingleMatch from './SingleMatch'
 import * as gameServices from '../../services/gameServices'
+import { useState, useEffect } from 'react'
 const Bracket = (props) => {
-  let round = gameServices.SplitIntoMatches(props.gameObj.matchPlayers)
+  const [matches, setMatches] = useState()
+
+  useEffect(() => {
+    const getRounds = async()=>{
+      let data = await gameServices.SplitIntoMatches(props.rounds)
+      setMatches(data)
+    }
+    getRounds()
+  }, [])
 
   return (
     <>
-      {round?.map((match, idx) => (
+      {matches?.map((match, idx) => (
         <SingleMatch
           user={props.user}
           match={match}

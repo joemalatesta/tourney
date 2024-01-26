@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom'
 // services
 import * as authService from '../../services/authService'
 
-
 const ChangePassword = ({ handleAuthEvt }) => {
   const navigate = useNavigate()
   const [message, setMessage] = useState('')
