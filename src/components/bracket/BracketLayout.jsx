@@ -1,64 +1,82 @@
+import { useState, useEffect } from "react"
+
 import Bracket from "./Bracket"
 
 const BracketLayout = ({gameObj, user, handleUpdateMatch}) => { 
+  const [matchDetails, setMatchDetails] = useState()
 
-  console.log(gameObj)
+  useEffect(() => {
+    const getCurrentMatchDetails = async () => {
+      let data = gameObj
+      setMatchDetails(data)
+    }
+    getCurrentMatchDetails()
+  }, [gameObj, matchDetails])
 
+
+  console.log(matchDetails);
   return ( 
     <div className="auto-width">
       <div className="bracket-layout__main green-felt2 extend">
         <div className="flex">
           <div className="flex-column">
             <Bracket
+              setMatchDetails={setMatchDetails}
               user={user}
               gameObj={gameObj}
               rounds={gameObj.matchPlayers}
               handleUpdateMatch={handleUpdateMatch}
-              roundID={1}
+              roundId={0}
             />
             </div>
             <div>
             <Bracket
-              rounds={gameObj?.rounds[1]} 
+            setMatchDetails={setMatchDetails}
+              rounds={gameObj?.rounds[0]} 
               user={user}
-              gameObj={gameObj}
+              gameObj={matchDetails}
               handleUpdateMatch={handleUpdateMatch}
-              roundID={2}
+              roundId={1}
             />
              </div>
             <div>
             <Bracket
+            setMatchDetails={setMatchDetails}
+              rounds={gameObj?.rounds[1]} 
+              user={user}
+              gameObj={matchDetails}
+              handleUpdateMatch={handleUpdateMatch}
+              roundId={2}
+            />
+             </div>
+            <div>
+            <Bracket
+            setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[2]} 
               user={user}
               gameObj={gameObj}
               handleUpdateMatch={handleUpdateMatch}
-              roundID={3}
+              roundId={3}
             />
              </div>
             <div>
             <Bracket
+            setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[3]} 
               user={user}
               gameObj={gameObj}
               handleUpdateMatch={handleUpdateMatch}
-              roundID={4}
+              roundId={4}
             />
              </div>
             <div>
             <Bracket
+            setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[4]} 
               user={user}
               gameObj={gameObj}
               handleUpdateMatch={handleUpdateMatch}
-              roundID={5}
-            />
-             </div>
-            <div>
-            <Bracket
-              rounds={gameObj?.rounds[5]} 
-              user={user}
-              gameObj={gameObj}
-              handleUpdateMatch={handleUpdateMatch}
+              roundId={5}
             />
           </div>
         </div>

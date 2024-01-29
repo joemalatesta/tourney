@@ -24,8 +24,6 @@ import * as matchService from './services/matchService'
 // styles
 import './App.css'
 
-
-
 function App() {
   const navigate = useNavigate()
   const [playMatch, setPlayMatch] = useState(false)
@@ -33,9 +31,6 @@ function App() {
   const [user, setUser] = useState(authService.getUser())
   const [tourneyMatch, setTourneyMatch] = useState()
   const [singleMatch, setSingleMatch] = useState()
-
-
-  console.log(tourneyMatch)
 
   useEffect(() => {
     const fetchPlayers = async () => {

@@ -1,6 +1,6 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
-const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox, handleUpdateMatch, gameObj, roundId }) => {
+const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox, handleUpdateMatch, gameObj, roundId, setMatchDetails }) => {
   if(player.value == 'undefined'){
     player = {
       _id: Math.random(),
@@ -10,10 +10,9 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
   } 
 
   const handleAddWinnerToNextRound = () => {
-    console.log(player._id)
-    
-
-    // handleUpdateMatch(gameObj._id)
+    gameObj.rounds[roundId].push(player._id)
+    setMatchDetails(gameObj)
+    handleUpdateMatch(gameObj)
   }
 
   return (
