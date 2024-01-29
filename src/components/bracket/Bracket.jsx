@@ -16,9 +16,12 @@ const Bracket = (props) => {
     <>
       {matches?.map((match, idx) => (
         <SingleMatch
+          gameObj={props.gameObj}
+          handleUpdateMatch={props.handleUpdateMatch}
           user={props.user}
           match={match}
           key={idx}
+          roundId={props.roundId}
         />
       ))}
     </>

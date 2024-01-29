@@ -68,6 +68,8 @@ const SingleMatch = (props) => {
       <div className="bracket">
         {playerInfo?.map((player, idx) => (
           <SingleMatchPlayerLine
+            roundId={props.roundId}
+            gameObj={props.gameObj}
             user={props.user}
             player={player}
             key={idx}
@@ -76,6 +78,7 @@ const SingleMatch = (props) => {
             isHidden={isHidden}
             handleHideWinnerCheckbox={handleHideWinnerCheckbox}
             setIsHidden={setIsHidden}
+            handleUpdateMatch={props.handleUpdateMatch}
           />
         ))}
       </div>

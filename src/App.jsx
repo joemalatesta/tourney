@@ -35,6 +35,8 @@ function App() {
   const [singleMatch, setSingleMatch] = useState()
 
 
+  console.log(tourneyMatch)
+
   useEffect(() => {
     const fetchPlayers = async () => {
       const data = await playerService.index()

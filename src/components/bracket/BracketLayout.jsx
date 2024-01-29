@@ -1,6 +1,8 @@
 import Bracket from "./Bracket"
 
-const BracketLayout = ({gameObj, user}) => { 
+const BracketLayout = ({gameObj, user, handleUpdateMatch}) => { 
+
+  console.log(gameObj)
 
   return ( 
     <div className="auto-width">
@@ -11,6 +13,8 @@ const BracketLayout = ({gameObj, user}) => {
               user={user}
               gameObj={gameObj}
               rounds={gameObj.matchPlayers}
+              handleUpdateMatch={handleUpdateMatch}
+              roundID={1}
             />
             </div>
             <div>
@@ -18,6 +22,8 @@ const BracketLayout = ({gameObj, user}) => {
               rounds={gameObj?.rounds[1]} 
               user={user}
               gameObj={gameObj}
+              handleUpdateMatch={handleUpdateMatch}
+              roundID={2}
             />
              </div>
             <div>
@@ -25,6 +31,8 @@ const BracketLayout = ({gameObj, user}) => {
               rounds={gameObj?.rounds[2]} 
               user={user}
               gameObj={gameObj}
+              handleUpdateMatch={handleUpdateMatch}
+              roundID={3}
             />
              </div>
             <div>
@@ -32,6 +40,8 @@ const BracketLayout = ({gameObj, user}) => {
               rounds={gameObj?.rounds[3]} 
               user={user}
               gameObj={gameObj}
+              handleUpdateMatch={handleUpdateMatch}
+              roundID={4}
             />
              </div>
             <div>
@@ -39,6 +49,8 @@ const BracketLayout = ({gameObj, user}) => {
               rounds={gameObj?.rounds[4]} 
               user={user}
               gameObj={gameObj}
+              handleUpdateMatch={handleUpdateMatch}
+              roundID={5}
             />
              </div>
             <div>
@@ -46,6 +58,7 @@ const BracketLayout = ({gameObj, user}) => {
               rounds={gameObj?.rounds[5]} 
               user={user}
               gameObj={gameObj}
+              handleUpdateMatch={handleUpdateMatch}
             />
           </div>
         </div>
