@@ -38,10 +38,20 @@ const CreateMatch = (props) => {
 		setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
 
+  const addNullToRoundArray = (num) => {
+    const roundsArray = [];
+    while (num > 0) {
+      const nullsInSubarray = Math.min(num, Math.ceil(num / 2));
+      roundsArray.push(Array(nullsInSubarray).fill(null));
+      num -= nullsInSubarray;
+    }
+    return roundsArray;
+  }
+
   const handleSubmit = async evt => {
     evt.preventDefault()
     setMatch(gameService.shufflePlayers(match))
-    const updatedFormData = { ...formData, matchPlayers: match };
+    const updatedFormData = { ...formData, matchPlayers: match, rounds: addNullToRoundArray(match.length) };
     await props.handleAddMatch(updatedFormData)
     console.log('this is the formdata at submit', updatedFormData);
     navigate('/view-tournaments')

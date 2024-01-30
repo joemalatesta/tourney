@@ -23,6 +23,7 @@ async function index() {
 }
 
 async function findOne(id) {
+  if(id===null) return
   try{
     const res = await fetch(BASE_URL + `/${id}`)
     return res.json()

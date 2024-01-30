@@ -1,19 +1,29 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
 const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox, handleUpdateMatch, gameObj, roundId, setMatchDetails }) => {
-  if(player.value == 'undefined'){
+  if(player?.value == 'undefined'){
     player = {
       _id: Math.random(),
       name: 'Bye',
       rank: 0
     }
   } 
-
+  
+  if(player?.value === 'null'){
+    player = {
+      _id: Math.random(),
+      name: 'Awaiting Player',
+      rank: null
+    }
+  } 
   const handleAddWinnerToNextRound = () => {
+    
     gameObj.rounds[roundId].push(player._id)
     setMatchDetails(gameObj)
     handleUpdateMatch(gameObj)
   }
+
+  
 
   return (
     <div className="flex">
@@ -22,7 +32,9 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
           <div>
             <div className="start flex">
               {player?.name}
-              ({player?.rank}) 
+               {player?.rank &&
+                ((player?.rank))
+              }
               <Checkboxes
                 setIsHidden={setIsHidden}
                 player={player}
