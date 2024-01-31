@@ -29,7 +29,7 @@ const SingleMatch = (props) => {
 
   useEffect(() => {
     const getGameRace = async () => {
-      if (playerInfo && playerInfo.length === 2) {
+      if (playerInfo && playerInfo.length === 2 && playerInfo.includes(!null)) {
         try {
           const data = await gameService.getGameRace(playerInfo[0], playerInfo[1]);
           setGamesNeeded(data)

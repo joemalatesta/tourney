@@ -13,11 +13,14 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
     player = {
       _id: Math.random(),
       name: 'Awaiting Player',
-      rank: null
+      rank: 0
     }
   } 
   const handleAddWinnerToNextRound = () => {
-    
+    console.log(gameObj.rounds[roundId-1])
+    // need to find the index of the player
+    // then figure out where in the array they would be placed in the new array swapping out the null value in that position.
+
     gameObj.rounds[roundId].push(player._id)
     setMatchDetails(gameObj)
     handleUpdateMatch(gameObj)

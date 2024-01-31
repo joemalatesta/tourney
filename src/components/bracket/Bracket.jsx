@@ -3,7 +3,7 @@ import * as gameServices from '../../services/gameServices'
 import { useState, useEffect } from 'react'
 const Bracket = (props) => {
   const [matches, setMatches] = useState()
-  console.log(matches);
+  
   useEffect(() => {
     const getRounds = async()=>{
       let data = await gameServices.SplitIntoMatches(props.rounds)

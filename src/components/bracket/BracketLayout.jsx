@@ -13,6 +13,7 @@ const BracketLayout = ({gameObj, user, handleUpdateMatch}) => {
     getCurrentMatchDetails()
   }, [gameObj, matchDetails])
 
+  gameObj.rounds[0] = gameObj.matchPlayers
 
   console.log(matchDetails);
   return ( 
@@ -24,60 +25,68 @@ const BracketLayout = ({gameObj, user, handleUpdateMatch}) => {
               setMatchDetails={setMatchDetails}
               user={user}
               gameObj={gameObj}
-              rounds={gameObj.matchPlayers}
+              rounds={gameObj.rounds[0]}
               handleUpdateMatch={handleUpdateMatch}
               roundId={0}
             />
-            </div>
-            <div>
+          </div>
+          <div>
             <Bracket
-            setMatchDetails={setMatchDetails}
-              rounds={gameObj?.rounds[0]} 
+              setMatchDetails={setMatchDetails}
+              rounds={gameObj?.rounds[1]} 
               user={user}
               gameObj={matchDetails}
               handleUpdateMatch={handleUpdateMatch}
               roundId={1}
             />
-             </div>
-            <div>
-            <Bracket
-            setMatchDetails={setMatchDetails}
-              rounds={gameObj?.rounds[1]} 
-              user={user}
-              gameObj={matchDetails}
-              handleUpdateMatch={handleUpdateMatch}
-              roundId={2}
-            />
-             </div>
-            <div>
-            <Bracket
-            setMatchDetails={setMatchDetails}
-              rounds={gameObj?.rounds[2]} 
-              user={user}
-              gameObj={gameObj}
-              handleUpdateMatch={handleUpdateMatch}
-              roundId={3}
-            />
-             </div>
-            <div>
-            <Bracket
-            setMatchDetails={setMatchDetails}
-              rounds={gameObj?.rounds[3]} 
-              user={user}
-              gameObj={gameObj}
-              handleUpdateMatch={handleUpdateMatch}
-              roundId={4}
-            />
-             </div>
-            <div>
-            <Bracket
-            setMatchDetails={setMatchDetails}
-              rounds={gameObj?.rounds[4]} 
-              user={user}
-              gameObj={gameObj}
-              handleUpdateMatch={handleUpdateMatch}
-              roundId={5}
-            />
+          </div>
+          <div>
+            
+              <Bracket
+                setMatchDetails={setMatchDetails}
+                rounds={gameObj?.rounds[2]} 
+                user={user}
+                gameObj={matchDetails}
+                handleUpdateMatch={handleUpdateMatch}
+                roundId={2}
+              />
+           
+          </div>
+          <div>
+            
+              <Bracket
+                setMatchDetails={setMatchDetails}
+                rounds={gameObj?.rounds[3]} 
+                user={user}
+                gameObj={gameObj}
+                handleUpdateMatch={handleUpdateMatch}
+                roundId={3}
+              />
+            
+          </div>
+          <div>
+           
+              <Bracket
+                setMatchDetails={setMatchDetails}
+                rounds={gameObj?.rounds[4]} 
+                user={user}
+                gameObj={gameObj}
+                handleUpdateMatch={handleUpdateMatch}
+                roundId={4}
+              />
+            
+          </div>
+          <div>
+            
+              <Bracket
+                setMatchDetails={setMatchDetails}
+                rounds={gameObj?.rounds[5]} 
+                user={user}
+                gameObj={gameObj}
+                handleUpdateMatch={handleUpdateMatch}
+                roundId={5}
+              />
+            
           </div>
         </div>
       </div>

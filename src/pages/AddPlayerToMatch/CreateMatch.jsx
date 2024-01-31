@@ -12,7 +12,7 @@ const CreateMatch = (props) => {
     name: '',
     gameType: '',
     matchPlayers: [],
-    rounds:[[],[],[],[],[],[]],
+    rounds:[],
   })
   const [players, setPlayers] = useState(props.players)
   
@@ -39,10 +39,14 @@ const CreateMatch = (props) => {
   }
 
   const addNullToRoundArray = (num) => {
-    const roundsArray = [];
-    while (num > 0) {
-      const nullsInSubarray = Math.min(num, Math.ceil(num / 2));
+    const roundsArray = [null]
+    let nullsInSubarray = num
+
+    while (num > 2) {
+      nullsInSubarray = Math.min(num, Math.ceil(num / 2))
+     
       roundsArray.push(Array(nullsInSubarray).fill(null));
+      console.log(num);
       num -= nullsInSubarray;
     }
     return roundsArray;
