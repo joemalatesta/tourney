@@ -16,7 +16,6 @@ async function signup(signupFormData) {
 
     if (json.token) {
       tokenService.setToken(json.token)
-
     }
   } catch (err) {
     throw new Error(err)

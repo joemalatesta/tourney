@@ -13,9 +13,7 @@ const SingleMatch = (props) => {
       try {
         const data = await Promise.all(props.match.map(player => playerService.findOne(player)))
         const updatedPlayerInfo = gameService.getFirstPlayer(data)
-        
         setPlayerInfo(updatedPlayerInfo)
-   
       } catch (error) {
         console.error("Error fetching player stats:", error)
       }
@@ -30,8 +28,10 @@ const SingleMatch = (props) => {
   useEffect(() => {
     const getGameRace = async () => {
       try {
-        const data = await gameService.getGameRace(playerInfo[0], playerInfo[1]);
-        setGamesNeeded(data)
+        if(playerInfo[0] !== undefined || playerInfo[1] !== undefined) {
+          const data = await gameService.getGameRace(playerInfo[0], playerInfo[1]);
+          setGamesNeeded(data)
+        }
       } catch (error) {
         console.error("Error fetching game race:", error)
       }
@@ -60,8 +60,6 @@ const SingleMatch = (props) => {
     };
     addGamesNeeded();
   }, [gamesNeeded, playerInfo]);
-
-  // console.log(playerInfo);
 
   return (
     <>

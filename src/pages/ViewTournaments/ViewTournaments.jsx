@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as matchService from '../../services/matchService'
-import { useEffect, useState } from "react";
 
 const ViewTournaments = ({user, setTourneyMatch, tourneyMatch, setSingleMatch}) => {
   const navigate = useNavigate()
@@ -17,7 +17,7 @@ const ViewTournaments = ({user, setTourneyMatch, tourneyMatch, setSingleMatch}) 
       setTourney(data)
     }
     fetchMatches()
-  }, [tourneyMatch]);
+  }, [tourneyMatch])
 
   const handleDeleteMatch = async id => {
     const deletedMatch = await matchService.deleteOne(id)

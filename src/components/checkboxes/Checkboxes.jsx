@@ -9,11 +9,16 @@ const Checkboxes = ({player}) => {
       const checkboxesArray = []
       for (let i = 0; i < player?.games; i++) {
         checkboxesArray.push(
-          <div key={i}>
+          <div key={`${player._id}-checkbox-${i}`}>
             <input type="checkbox" />
           </div>
-        )
-      }
+        )}
+      //   checkboxesArray.push(
+      //     <div key={i}>
+      //       <input type="checkbox" />
+      //     </div>
+      //   )
+      // }
       // console.log(checkboxesArray);
       setCheckboxes(checkboxesArray)
     }
