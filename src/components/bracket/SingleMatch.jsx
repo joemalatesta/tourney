@@ -29,13 +29,11 @@ const SingleMatch = (props) => {
 
   useEffect(() => {
     const getGameRace = async () => {
-      if (playerInfo && playerInfo.length === 2 && playerInfo.includes(!null)) {
-        try {
-          const data = await gameService.getGameRace(playerInfo[0], playerInfo[1]);
-          setGamesNeeded(data)
-        } catch (error) {
-          console.error("Error fetching game race:", error)
-        }
+      try {
+        const data = await gameService.getGameRace(playerInfo[0], playerInfo[1]);
+        setGamesNeeded(data)
+      } catch (error) {
+        console.error("Error fetching game race:", error)
       }
     }
     getGameRace()
@@ -47,7 +45,7 @@ const SingleMatch = (props) => {
         setPlayerInfo((prevPlayerInfo) => {
           if (
             prevPlayerInfo &&
-            prevPlayerInfo.length === 2 &&
+            prevPlayerInfo.length &&
             prevPlayerInfo[0].games !== gamesNeeded[0] &&
             prevPlayerInfo[1].games !== gamesNeeded[1]
           ) {
@@ -63,18 +61,20 @@ const SingleMatch = (props) => {
     addGamesNeeded();
   }, [gamesNeeded, playerInfo]);
 
+  // console.log(playerInfo);
+
   return (
     <>
       <div className="bracket">
         {playerInfo?.map((player, idx) => (
           <SingleMatchPlayerLine
+            roundIndex={props.roundIndex}
             setMatchDetails={props.setMatchDetails}
             roundId={props.roundId}
             gameObj={props.gameObj}
             user={props.user}
             player={player}
             key={idx}
-            gamesNeeded={gamesNeeded}
             setGamesNeeded={setGamesNeeded}
             isHidden={isHidden}
             handleHideWinnerCheckbox={handleHideWinnerCheckbox}

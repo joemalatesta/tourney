@@ -12,10 +12,12 @@ const Bracket = (props) => {
     getRounds()
   }, [])
 
+
   return (
     <>
       {matches?.map((match, idx) => (
         <SingleMatch
+          roundIndex={props.rounds}
           setMatchDetails={props.setMatchDetails}
           gameObj={props.gameObj}
           handleUpdateMatch={props.handleUpdateMatch}

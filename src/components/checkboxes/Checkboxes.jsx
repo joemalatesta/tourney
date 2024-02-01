@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 const Checkboxes = ({player}) => {
   const [checkboxes, setCheckboxes] = useState([])
  
+  // console.log(player);
   useEffect(() => {
     const getCheckboxes = () => {
       const checkboxesArray = []
@@ -13,6 +14,7 @@ const Checkboxes = ({player}) => {
           </div>
         )
       }
+      // console.log(checkboxesArray);
       setCheckboxes(checkboxesArray)
     }
     getCheckboxes()

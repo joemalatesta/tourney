@@ -1,15 +1,8 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
-const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox, handleUpdateMatch, gameObj, roundId, setMatchDetails }) => {
-  if(player?.value == 'undefined'){
-    player = {
-      _id: Math.random(),
-      name: 'Bye',
-      rank: 0
-    }
-  } 
-  
-  if(player?.value === 'null'){
+const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHideWinnerCheckbox, handleUpdateMatch, gameObj, roundId, setMatchDetails, roundIndex}) => {
+  console.log(player);
+  if(player?.value === 'undefined'){
     player = {
       _id: Math.random(),
       name: 'Awaiting Player',
@@ -17,16 +10,12 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
     }
   } 
   const handleAddWinnerToNextRound = () => {
-    console.log(gameObj.rounds[roundId-1])
-    // need to find the index of the player
-    // then figure out where in the array they would be placed in the new array swapping out the null value in that position.
-
-    gameObj.rounds[roundId].push(player._id)
+    let idxNum = roundIndex.indexOf(player._id)
+    let idx = Math.floor(idxNum/2)
+    gameObj.rounds[roundId+1].splice(idx, 1, player._id)
     setMatchDetails(gameObj)
     handleUpdateMatch(gameObj)
   }
-
-  
 
   return (
     <div className="flex">
@@ -34,17 +23,31 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
         {player !== null &&
           <div>
             <div className="start flex">
-              {player?.name}
-               {player?.rank &&
-                ((player?.rank))
+              <div>
+                {player !== undefined ?
+                <>
+                  <div>
+                    {player?.name}
+                  </div>
+                  <div>
+                    ({player?.rank})
+                  </div>
+                </>
+                :
+                <>
+                  Awaiting Player
+                </>
               }
-              <Checkboxes
-                setIsHidden={setIsHidden}
-                player={player}
-                user={user}
-                isHidden={isHidden}
-                handleHideWinnerCheckbox={handleHideWinnerCheckbox}
-              />
+              </div>
+              <div className="flex">
+                <Checkboxes
+                  setIsHidden={setIsHidden}
+                  player={player}
+                  user={user}
+                  isHidden={isHidden}
+                  handleHideWinnerCheckbox={handleHideWinnerCheckbox}
+                />
+              </div>
             </div>
           </div>
         }

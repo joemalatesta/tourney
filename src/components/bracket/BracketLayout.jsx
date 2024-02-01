@@ -15,7 +15,7 @@ const BracketLayout = ({gameObj, user, handleUpdateMatch}) => {
 
   gameObj.rounds[0] = gameObj.matchPlayers
 
-  console.log(matchDetails);
+  // console.log(matchDetails);
   return ( 
     <div className="auto-width">
       <div className="bracket-layout__main green-felt2 extend">
