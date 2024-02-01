@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 const Checkboxes = ({player}) => {
   const [checkboxes, setCheckboxes] = useState([])
  
-  // console.log(player);
+
   useEffect(() => {
     const getCheckboxes = () => {
       const checkboxesArray = []
@@ -13,13 +13,6 @@ const Checkboxes = ({player}) => {
             <input type="checkbox" />
           </div>
         )}
-      //   checkboxesArray.push(
-      //     <div key={i}>
-      //       <input type="checkbox" />
-      //     </div>
-      //   )
-      // }
-      // console.log(checkboxesArray);
       setCheckboxes(checkboxesArray)
     }
     getCheckboxes()
@@ -32,4 +25,4 @@ const Checkboxes = ({player}) => {
   )
 }
  
-export default Checkboxes;
+export default Checkboxes

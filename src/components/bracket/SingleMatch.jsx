@@ -52,14 +52,14 @@ const SingleMatch = (props) => {
             return [
               { ...prevPlayerInfo[0], games: gamesNeeded[0] },
               { ...prevPlayerInfo[1], games: gamesNeeded[1] },
-            ];
+            ]
           }
           return prevPlayerInfo;
-        });
+        })
       }
     };
     addGamesNeeded();
-  }, [gamesNeeded, playerInfo]);
+  }, [gamesNeeded, playerInfo])
 
   return (
     <>
@@ -85,4 +85,4 @@ const SingleMatch = (props) => {
   );
 };
 
-export default SingleMatch;
+export default SingleMatch

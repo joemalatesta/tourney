@@ -1,5 +1,5 @@
 const PlayerName = (props) => {
-  console.log(props.player);
+
   return ( 
     <>
       <div>{props.player.name} : {props.player.rank}</div>
@@ -7,4 +7,4 @@ const PlayerName = (props) => {
    );
 }
  
-export default PlayerName;
+export default PlayerName

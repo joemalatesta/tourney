@@ -13,5 +13,5 @@ const AllPlayers = (props) => {
     );
   }
   
-  export default AllPlayers;
+  export default AllPlayers
   

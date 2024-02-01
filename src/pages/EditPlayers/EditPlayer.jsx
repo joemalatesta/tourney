@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import AllPlayers from "../../components/players/AllPlayers";
+import { useState, useRef, useEffect } from "react"
+import AllPlayers from "../../components/players/AllPlayers"
 
 const EditPlayer = (props) => {
   const formElement = useRef()
@@ -66,4 +66,4 @@ const EditPlayer = (props) => {
 	)
 }
 
-export default EditPlayer;
+export default EditPlayer

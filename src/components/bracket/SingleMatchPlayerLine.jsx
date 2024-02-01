@@ -16,9 +16,9 @@ const SingleMatchPlayerLine = ({ player, user, isHidden, setIsHidden, handleHide
       const updatedGameObj = { ...prevGameObj }
       updatedGameObj.rounds[roundId + 1].splice(idx, 1, player._id)
       return updatedGameObj
-    });
+    })
     handleUpdateMatch(gameObj)
-  };
+  }
 
   return (
     <div className="flex">

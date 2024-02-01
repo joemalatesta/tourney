@@ -22,7 +22,7 @@ const CreateMatch = (props) => {
       setPlayers(data)
     }
     fetchPlayers()
-  }, []);
+  }, [])
 
   const handleAddItem = (item) => {
     setMatch([item, ...match])
@@ -105,24 +105,3 @@ const CreateMatch = (props) => {
 }
 
 export default CreateMatch
-
-/*
-
-"653fe7a67eb72ee7ebd9e193"
-
-"653fe7817eb72ee7ebd9e187"
-
-"653fe7cd7eb72ee7ebd9e19f"
-
-"653fe78c7eb72ee7ebd9e18b"
-
-"653fe79b7eb72ee7ebd9e18f"
-
-"653fe7b67eb72ee7ebd9e197"
-
-"653fe7c07eb72ee7ebd9e19b"
-
-"65563388f6cd06958ad9dfc2"
-
-
-*/
