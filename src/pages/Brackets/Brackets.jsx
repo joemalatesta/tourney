@@ -1,19 +1,16 @@
+import BracketLayout from "../../components/bracket/BracketLayout";
 
-import BracketLayout from "../../components/bracket/BracketLayout"
-
-const Brackets = ({gameObj, user, handleUpdateMatch, forceUpdate}) => {
-  
-
-  return (  
+const Brackets = ({ gameObj, user, handleUpdateMatch, forceUpdate }) => {
+  return (
     <>
-      <BracketLayout 
+      <BracketLayout
         key={forceUpdate}
         user={user}
         gameObj={gameObj}
         handleUpdateMatch={handleUpdateMatch}
       />
     </>
-  )
-}
- 
-export default Brackets
+  );
+};
+
+export default Brackets;

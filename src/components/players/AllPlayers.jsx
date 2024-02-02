@@ -1,17 +1,17 @@
-
 const AllPlayers = (props) => {
-
-  return ( 
+  return (
     <div className="bracket ">
-      {props?.players?.map(player => (
+      {props?.players?.map((player) => (
         <div key={player._id}>
           {player.name} : {player.rank}
-          <button onClick={()=> props.handleDeletePlayer(player._id)}> Delete</button>
+          <button onClick={() => props.handleDeletePlayer(player._id)}>
+            {" "}
+            Delete
+          </button>
         </div>
       ))}
     </div>
-    );
-  }
-  
-  export default AllPlayers
-  
+  );
+};
+
+export default AllPlayers;

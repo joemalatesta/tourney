@@ -1,28 +1,24 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 
-const Checkboxes = ({player}) => {
-  const [checkboxes, setCheckboxes] = useState([])
- 
+const Checkboxes = ({ player }) => {
+  const [checkboxes, setCheckboxes] = useState([]);
 
   useEffect(() => {
     const getCheckboxes = () => {
-      const checkboxesArray = []
+      const checkboxesArray = [];
       for (let i = 0; i < player?.games; i++) {
         checkboxesArray.push(
           <div key={`${player._id}-checkbox-${i}`}>
             <input type="checkbox" />
           </div>
-        )}
-      setCheckboxes(checkboxesArray)
-    }
-    getCheckboxes()
-  }, [player])
+        );
+      }
+      setCheckboxes(checkboxesArray);
+    };
+    getCheckboxes();
+  }, [player]);
 
-  return (  
-    <>
-      {checkboxes}
-    </>
-  )
-}
- 
-export default Checkboxes
+  return <>{checkboxes}</>;
+};
+
+export default Checkboxes;
