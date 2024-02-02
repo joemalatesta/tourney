@@ -1,4 +1,5 @@
 import SingleMatch from './SingleMatch'
+import WinnerCheckbox from '../WinnerCheckbox/WinnerCheckbox'
 import * as gameServices from '../../services/gameServices'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
@@ -17,23 +18,26 @@ const Bracket = (props) => {
   return (
     <>
       {matches?.map((matchInfo, idx) => (
-        <Link 
-          to='/view-match'
-          state={{ matchInfo }}
-          key={idx}
-        >
-          <SingleMatch
-            roundIndex={props.rounds}
-            setMatchDetails={props.setMatchDetails}
-            gameObj={props.gameObj}
-            handleUpdateMatch={props.handleUpdateMatch}
-            user={props.user}
-            match={matchInfo}
+        <>
+          <Link 
+            to='/view-match'
+            state={{ matchInfo }}
             key={idx}
-            id={idx}
-            roundId={props.roundId}
-          />
-        </Link>
+          >
+            <SingleMatch
+              roundIndex={props.rounds}
+              setMatchDetails={props.setMatchDetails}
+              gameObj={props.gameObj}
+              handleUpdateMatch={props.handleUpdateMatch}
+              user={props.user}
+              match={matchInfo}
+              key={idx}
+              id={idx}
+              roundId={props.roundId}
+            />
+          </Link>
+          <WinnerCheckbox/>
+        </>
       ))}
     </>
   )
