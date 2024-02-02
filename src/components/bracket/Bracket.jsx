@@ -1,31 +1,39 @@
 import SingleMatch from './SingleMatch'
 import * as gameServices from '../../services/gameServices'
+import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 const Bracket = (props) => {
   const [matches, setMatches] = useState()
-  
+ 
   useEffect(() => {
     const getRounds = async()=>{
       let data = await gameServices.SplitIntoMatches(props.rounds)
       setMatches(data)
     }
     getRounds()
-  }, [])
-
+  }, []) 
+  
 
   return (
     <>
-      {matches?.map((match, idx) => (
-        <SingleMatch
-          roundIndex={props.rounds}
-          setMatchDetails={props.setMatchDetails}
-          gameObj={props.gameObj}
-          handleUpdateMatch={props.handleUpdateMatch}
-          user={props.user}
-          match={match}
+      {matches?.map((matchInfo, idx) => (
+        <Link 
+          to='/view-match'
+          state={{ matchInfo }}
           key={idx}
-          roundId={props.roundId}
-        />
+        >
+          <SingleMatch
+            roundIndex={props.rounds}
+            setMatchDetails={props.setMatchDetails}
+            gameObj={props.gameObj}
+            handleUpdateMatch={props.handleUpdateMatch}
+            user={props.user}
+            match={matchInfo}
+            key={idx}
+            id={idx}
+            roundId={props.roundId}
+          />
+        </Link>
       ))}
     </>
   )

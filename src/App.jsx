@@ -12,6 +12,7 @@ import EditPlayer from './pages/EditPlayers/EditPlayer'
 import ViewTournaments from './pages/ViewTournaments/ViewTournaments'
 import CreateMatch from './pages/AddPlayerToMatch/CreateMatch'
 import Brackets from './pages/Brackets/Brackets'
+import MatchView from './pages/MatchView/MatchView'
 
 // components
 import NavBar from './components/NavBar/NavBar'
@@ -158,6 +159,16 @@ function App() {
           path="/brackets"
           element={
             <Brackets 
+              gameObj={singleMatch} 
+              user={user}
+              handleUpdateMatch={handleUpdateMatch}
+            />
+          }
+        />
+        <Route
+          path="/view-match"
+          element={
+            <MatchView 
               gameObj={singleMatch} 
               user={user}
               handleUpdateMatch={handleUpdateMatch}

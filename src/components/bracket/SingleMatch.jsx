@@ -11,7 +11,7 @@ const SingleMatch = (props) => {
   useEffect(() => {
     const getPlayerStats = async () => {
       try {
-        const data = await Promise.all(props.match.map(player => playerService.findOne(player)))
+        const data = await Promise.all(props?.match?.map(player => playerService.findOne(player)))
         const updatedPlayerInfo = gameService.getFirstPlayer(data)
         setPlayerInfo(updatedPlayerInfo)
       } catch (error) {
@@ -28,7 +28,6 @@ const SingleMatch = (props) => {
   useEffect(() => {
     const getGameRace = async () => {
       try {
-        console.log(playerInfo);
         if(playerInfo !== undefined  ) {
           const data = await gameService.getGameRace(playerInfo[0], playerInfo[1]);
           setGamesNeeded(data)

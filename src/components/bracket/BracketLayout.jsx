@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 
 import Bracket from "./Bracket"
-
 const BracketLayout = ({gameObj, user, handleUpdateMatch}) => { 
   const [matchDetails, setMatchDetails] = useState()
 
