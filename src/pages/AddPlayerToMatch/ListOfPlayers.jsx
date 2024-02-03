@@ -18,7 +18,7 @@ const ListOfPlayers = (props) => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default ListOfPlayers;
+export default ListOfPlayers

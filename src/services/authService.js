@@ -1,7 +1,7 @@
 // services
-import * as tokenService from "./tokenService";
+import * as tokenService from "./tokenService"
 
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/auth`;
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/auth`
 
 async function signup(signupFormData) {
   try {
@@ -9,25 +9,25 @@ async function signup(signupFormData) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(signupFormData),
-    });
-    const json = await res.json();
+    })
+    const json = await res.json()
 
-    if (json.err) throw new Error(json.err);
+    if (json.err) throw new Error(json.err)
 
     if (json.token) {
-      tokenService.setToken(json.token);
+      tokenService.setToken(json.token)
     }
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err)
   }
 }
 
 function getUser() {
-  return tokenService.getUserFromToken();
+  return tokenService.getUserFromToken()
 }
 
 function logout() {
-  tokenService.removeToken();
+  tokenService.removeToken()
 }
 
 async function login(loginFormData) {
@@ -36,14 +36,14 @@ async function login(loginFormData) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(loginFormData),
-    });
-    const json = await res.json();
+    })
+    const json = await res.json()
 
-    if (json.err) throw new Error(json.err);
+    if (json.err) throw new Error(json.err)
 
-    if (json.token) tokenService.setToken(json.token);
+    if (json.token) tokenService.setToken(json.token)
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err)
   }
 }
 
@@ -56,18 +56,18 @@ async function changePassword(changePasswordFormData) {
         Authorization: `Bearer ${tokenService.getToken()}`,
       },
       body: JSON.stringify(changePasswordFormData),
-    });
-    const json = await res.json();
+    })
+    const json = await res.json()
 
-    if (json.err) throw new Error(json.err);
+    if (json.err) throw new Error(json.err)
 
     if (json.token) {
-      tokenService.removeToken();
-      tokenService.setToken(json.token);
+      tokenService.removeToken()
+      tokenService.setToken(json.token)
     }
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err)
   }
 }
 
-export { signup, getUser, logout, login, changePassword };
+export { signup, getUser, logout, login, changePassword }

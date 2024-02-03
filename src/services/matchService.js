@@ -1,5 +1,5 @@
-import * as tokenService from "./tokenService";
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/match`;
+import * as tokenService from "./tokenService"
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/match`
 
 async function create(match) {
   const res = await fetch(BASE_URL, {
@@ -9,16 +9,16 @@ async function create(match) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(match),
-  });
-  return res.json();
+  })
+  return res.json()
 }
 
 async function index() {
   try {
-    const res = await fetch(BASE_URL);
-    return res.json();
+    const res = await fetch(BASE_URL)
+    return res.json()
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
 }
 
@@ -30,8 +30,8 @@ async function update(match) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(match),
-  });
-  return res.json();
+  })
+  return res.json()
 }
 
 async function deleteOne(id) {
@@ -40,18 +40,18 @@ async function deleteOne(id) {
     headers: {
       Authorization: `Bearer ${tokenService.getToken()}`,
     },
-  });
-  return res.json();
+  })
+  return res.json()
 }
 
 async function findOne(id) {
-  if (id === null) return;
+  if (id === null) return
   try {
-    const res = await fetch(BASE_URL + `/${id}`);
-    return res.json();
+    const res = await fetch(BASE_URL + `/${id}`)
+    return res.json()
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
 }
 
-export { index, create, update, deleteOne, findOne };
+export { index, create, update, deleteOne, findOne }

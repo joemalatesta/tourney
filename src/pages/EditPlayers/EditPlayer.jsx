@@ -1,33 +1,33 @@
-import { useState, useRef, useEffect } from "react";
-import AllPlayers from "../../components/players/AllPlayers";
+import { useState, useRef, useEffect } from "react"
+import AllPlayers from "../../components/players/AllPlayers"
 
 const EditPlayer = (props) => {
-  const formElement = useRef();
-  const [validForm, setValidForm] = useState(false);
+  const formElement = useRef()
+  const [validForm, setValidForm] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     rank: 0,
-  });
+  })
 
   const handleChange = (evt) => {
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-  };
+    setFormData({ ...formData, [evt.target.name]: evt.target.value })
+  }
 
   useEffect(() => {
     formElement.current.checkValidity()
       ? setValidForm(true)
-      : setValidForm(false);
-  }, [formData]);
+      : setValidForm(false)
+  }, [formData])
 
   const handleSubmit = (evt) => {
-    evt.preventDefault();
-    props.handleAddPlayer(formData);
-    setFormData({ name: "", rank: 0 });
-  };
+    evt.preventDefault()
+    props.handleAddPlayer(formData)
+    setFormData({ name: "", rank: 0 })
+  }
 
   return (
     <div className="match-bracket green-felt">
-      <h1 className="center">Add/Remove Players</h1>
+      <h1 className="center">Edit Players</h1>
       <form
         className="center"
         autoComplete="off"
@@ -66,7 +66,7 @@ const EditPlayer = (props) => {
         players={props.players}
       />
     </div>
-  );
-};
+  )
+}
 
-export default EditPlayer;
+export default EditPlayer

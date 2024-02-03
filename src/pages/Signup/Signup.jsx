@@ -1,50 +1,50 @@
 // npm modules
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 
 // services
-import * as authService from "../../services/authService";
+import * as authService from "../../services/authService"
 
 const Signup = ({ handleAuthEvt }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     passwordConf: "",
-  });
+  })
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const handleChange = (evt) => {
-    setMessage("");
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-  };
+    setMessage("")
+    setFormData({ ...formData, [evt.target.name]: evt.target.value })
+  }
 
   const handleSubmit = async (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
     try {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
-        throw new Error("No VITE_BACK_END_SERVER_URL in front-end .env");
+        throw new Error("No VITE_BACK_END_SERVER_URL in front-end .env")
       }
-      setIsSubmitted(true);
-      await authService.signup(formData);
-      handleAuthEvt();
-      navigate("/");
+      setIsSubmitted(true)
+      await authService.signup(formData)
+      handleAuthEvt()
+      navigate("/")
     } catch (err) {
-      console.log(err);
-      setMessage(err.message);
-      setIsSubmitted(false);
+      console.log(err)
+      setMessage(err.message)
+      setIsSubmitted(false)
     }
-  };
+  }
 
-  const { name, email, password, passwordConf } = formData;
+  const { name, email, password, passwordConf } = formData
 
   const isFormInvalid = () => {
-    return !(name && email && password && password === passwordConf);
-  };
+    return !(name && email && password && password === passwordConf)
+  }
 
   return (
     <main>
@@ -90,7 +90,7 @@ const Signup = ({ handleAuthEvt }) => {
         </div>
       </form>
     </main>
-  );
-};
+  )
+}
 
-export default Signup;
+export default Signup

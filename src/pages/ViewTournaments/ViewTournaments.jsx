@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import * as matchService from "../../services/matchService";
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import * as matchService from "../../services/matchService"
 
 const ViewTournaments = ({
   user,
@@ -8,28 +8,28 @@ const ViewTournaments = ({
   tourneyMatch,
   setSingleMatch,
 }) => {
-  const navigate = useNavigate();
-  const [tourney, setTourney] = useState();
+  const navigate = useNavigate()
+  const [tourney, setTourney] = useState()
 
   const handleGetMatch = async (game) => {
-    await setSingleMatch(game);
-    navigate("/brackets");
-  };
+    await setSingleMatch(game)
+    navigate("/brackets")
+  }
 
   useEffect(() => {
     const fetchMatches = async () => {
-      const data = await matchService.index();
-      setTourney(data);
-    };
-    fetchMatches();
-  }, [tourneyMatch]);
+      const data = await matchService.index()
+      setTourney(data)
+    }
+    fetchMatches()
+  }, [tourneyMatch])
 
   const handleDeleteMatch = async (id) => {
-    const deletedMatch = await matchService.deleteOne(id);
+    const deletedMatch = await matchService.deleteOne(id)
     setTourneyMatch(
       tourneyMatch.filter((match) => match._id !== deletedMatch._id)
-    );
-  };
+    )
+  }
 
   return (
     <div className="bracket width  center">
@@ -48,7 +48,7 @@ const ViewTournaments = ({
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ViewTournaments;
+export default ViewTournaments

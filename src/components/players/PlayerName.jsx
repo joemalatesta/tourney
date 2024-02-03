@@ -5,7 +5,7 @@ const PlayerName = (props) => {
         {props.player.name} : {props.player.rank}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PlayerName;
+export default PlayerName

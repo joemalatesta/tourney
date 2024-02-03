@@ -1,5 +1,5 @@
 // npm modules
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom"
 
 const NavBar = ({ user, handleLogout }) => {
   return (
@@ -31,7 +31,7 @@ const NavBar = ({ user, handleLogout }) => {
         </div>
       )}
     </nav>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar

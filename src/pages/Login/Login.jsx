@@ -1,44 +1,44 @@
 // npm modules
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 
 // services
-import * as authService from "../../services/authService";
+import * as authService from "../../services/authService"
 
 const LoginPage = ({ handleAuthEvt }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("")
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  });
+  })
 
   const handleChange = (evt) => {
-    setMessage("");
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-  };
+    setMessage("")
+    setFormData({ ...formData, [evt.target.name]: evt.target.value })
+  }
 
   const handleSubmit = async (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
     try {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
-        throw new Error("No VITE_BACK_END_SERVER_URL in front-end .env");
+        throw new Error("No VITE_BACK_END_SERVER_URL in front-end .env")
       }
-      await authService.login(formData);
-      handleAuthEvt();
-      navigate("/");
+      await authService.login(formData)
+      handleAuthEvt()
+      navigate("/")
     } catch (err) {
-      console.log(err);
-      setMessage(err.message);
+      console.log(err)
+      setMessage(err.message)
     }
-  };
+  }
 
-  const { email, password } = formData;
+  const { email, password } = formData
 
   const isFormInvalid = () => {
-    return !(email && password);
-  };
+    return !(email && password)
+  }
 
   return (
     <main className="green-felt width">
@@ -70,7 +70,7 @@ const LoginPage = ({ handleAuthEvt }) => {
         </div>
       </form>
     </main>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

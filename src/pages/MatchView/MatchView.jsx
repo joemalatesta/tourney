@@ -1,11 +1,11 @@
 // import { useState, useEffect } from "react"
-import { useLocation, useNavigate } from "react-router-dom";
-import SingleMatch from "../../components/bracket/SingleMatch";
+import { useLocation, useNavigate } from "react-router-dom"
+import SingleMatch from "../../components/bracket/SingleMatch"
 const MatchView = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location = useLocation()
+  const navigate = useNavigate()
 
-  const matchInfo = location.state;
+  const matchInfo = location.state
 
   return (
     <>
@@ -19,7 +19,7 @@ const MatchView = () => {
         Back to tournaments
       </button>
     </>
-  );
-};
+  )
+}
 
-export default MatchView;
+export default MatchView

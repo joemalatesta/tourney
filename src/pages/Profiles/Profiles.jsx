@@ -1,26 +1,26 @@
 // npm modules
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 
 // services
-import * as profileService from "../../services/profileService";
+import * as profileService from "../../services/profileService"
 
 const Profiles = () => {
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState([])
 
   useEffect(() => {
     const fetchProfiles = async () => {
-      const profileData = await profileService.getAllProfiles();
-      setProfiles(profileData);
-    };
-    fetchProfiles();
-  }, []);
+      const profileData = await profileService.getAllProfiles()
+      setProfiles(profileData)
+    }
+    fetchProfiles()
+  }, [])
 
   if (!profiles.length) {
     return (
       <main>
         <h1>Loading...</h1>
       </main>
-    );
+    )
   }
 
   return (
@@ -30,7 +30,7 @@ const Profiles = () => {
         <p key={profile._id}>{profile.name}</p>
       ))}
     </main>
-  );
-};
+  )
+}
 
-export default Profiles;
+export default Profiles
