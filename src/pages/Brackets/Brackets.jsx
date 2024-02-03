@@ -1,17 +1,20 @@
+import { useState } from "react"
 import BracketLayout from "../../components/bracket/BracketLayout"
 
 const Brackets = ({
   gameObj,
   user,
-  handleUpdateMatch,
-  singleMatchPlayerWithInfo,
+  handleUpdateMatch
 }) => {
+  const [newGameObj, setNewGameObj]= useState(gameObj)
+
+  console.log('This is the new game object on the main bracket page',newGameObj)
   return (
     <>
       <BracketLayout
-        MSPWI={singleMatchPlayerWithInfo}
+        setNewGameObj={setNewGameObj}
         user={user}
-        gameObj={gameObj}
+        gameObj={newGameObj}
         handleUpdateMatch={handleUpdateMatch}
       />
     </>

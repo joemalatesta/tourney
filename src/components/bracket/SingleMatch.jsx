@@ -71,6 +71,7 @@ const SingleMatch = (props) => {
       <div className="bracket">
         {playerInfo?.map((player, idx) => (
           <SingleMatchPlayerLine
+            setNewGameObj={props.setNewGameObj}
             match={props.match}
             roundIndex={props.roundIndex}
             setMatchDetails={props.setMatchDetails}

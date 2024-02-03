@@ -22,7 +22,6 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
 import * as authService from "./services/authService"
 import * as playerService from "./services/playerService"
 import * as matchService from "./services/matchService"
-import * as gameService from "./services/gameServices"
 
 // styles
 import "./App.css"
@@ -34,7 +33,7 @@ function App() {
   const [user, setUser] = useState(authService.getUser())
   const [tourneyMatch, setTourneyMatch] = useState()
   const [singleMatch, setSingleMatch] = useState()
-  const [singleMatchPlayerWithInfo, setSingleMatchPlayerWithInfo] = useState()
+  
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -42,21 +41,6 @@ function App() {
       setPlayers(data)
     }
     fetchPlayers()
-  }, [])
-
-  useEffect(() => {
-    const getPlayerStats = async () => {
-      try {
-        const data = await Promise.all(
-          singleMatch?.map((player) => playerService.findOne(player))
-        )
-        const updatedPlayerInfo = gameService.getFirstPlayer(data)
-        setSingleMatchPlayerWithInfo(updatedPlayerInfo)
-      } catch (error) {
-        console.error("Error fetching player stats:", error)
-      }
-    }
-    getPlayerStats()
   }, [])
 
   useEffect(() => {
@@ -179,7 +163,6 @@ function App() {
           element={
             <Brackets
               gameObj={singleMatch}
-              MSPWI={singleMatchPlayerWithInfo}
               user={user}
               handleUpdateMatch={handleUpdateMatch}
             />

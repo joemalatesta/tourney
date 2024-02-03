@@ -19,6 +19,7 @@ const Bracket = (props) => {
       {matches?.map((matchInfo, idx) => (
         <div key={idx}>
           <SingleMatch
+            setNewGameObj={props.setNewGameObj}
             roundIndex={props.rounds}
             setMatchDetails={props.setMatchDetails}
             gameObj={props.gameObj}

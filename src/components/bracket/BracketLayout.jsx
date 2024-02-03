@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 import Bracket from "./Bracket"
-const BracketLayout = ({ gameObj, user, handleUpdateMatch }) => {
+const BracketLayout = ({ gameObj, user, handleUpdateMatch, setNewGameObj }) => {
   const [matchDetails, setMatchDetails] = useState()
 
   useEffect(() => {
@@ -20,6 +20,7 @@ const BracketLayout = ({ gameObj, user, handleUpdateMatch }) => {
         <div className="flex">
           <div className="flex-column">
             <Bracket
+              setNewGameObj={setNewGameObj}
               setMatchDetails={setMatchDetails}
               user={user}
               gameObj={gameObj}

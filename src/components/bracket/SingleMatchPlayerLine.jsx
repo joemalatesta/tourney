@@ -14,6 +14,7 @@ const SingleMatchPlayerLine = ({
   roundIndex,
   match,
   idx,
+  setNewGameObj
 }) => {
   if (player?.value === "undefined") {
     player = {
@@ -29,6 +30,10 @@ const SingleMatchPlayerLine = ({
     setMatchDetails((prevGameObj) => {
       const updatedGameObj = { ...prevGameObj }
       updatedGameObj.rounds[roundId + 1].splice(idx, 1, player._id)
+      return updatedGameObj
+    })
+    setNewGameObj((prevGameObj) => {
+      const updatedGameObj = { ...prevGameObj }
       return updatedGameObj
     })
     handleUpdateMatch(gameObj)
