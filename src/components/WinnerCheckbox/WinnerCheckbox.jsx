@@ -9,22 +9,22 @@ const WinnerCheckbox = (props) => {
     })
     props.handleUpdateMatch(props.gameObj)
   }
-
+  console.log(props);
   return (
     <>
-      {props.user?.name === "Admin" && (
+
         <div className="end flex center ">
           Winner{" "}
           <input
             hidden={props.isHidden}
             onChange={() => {
-              props.handleHideWinnerCheckbox()
+              
               handleAddWinnerToNextRound(props.player._id)
             }}
             type="checkbox"
           />
         </div>
-      )}
+
     </>
   )
 }

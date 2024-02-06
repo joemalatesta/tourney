@@ -12,7 +12,7 @@ import EditPlayer from "./pages/EditPlayers/EditPlayer"
 import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
 import CreateMatch from "./pages/AddPlayerToMatch/CreateMatch"
 import Brackets from "./pages/Brackets/Brackets"
-import MatchView from "./pages/MatchView/MatchView"
+// import MatchView from "./pages/MatchView/MatchView"
 
 // components
 import NavBar from "./components/NavBar/NavBar"
@@ -168,7 +168,7 @@ function App() {
             />
           }
         />
-        <Route
+        {/* <Route
           path="/view-match"
           element={
             <MatchView
@@ -177,7 +177,7 @@ function App() {
               handleUpdateMatch={handleUpdateMatch}
             />
           }
-        />
+        /> */}
         <Route
           path="/view-tournaments"
           element={

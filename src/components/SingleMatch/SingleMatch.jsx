@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 import * as playerService from "../../services/playerService"
-import * as gameService from "../../services/gameServices"
+import * as gameService from "../../services/gameService"
 
 const SingleMatch = (props) => {
   const [gamesNeeded, setGamesNeeded] = useState()
@@ -12,7 +12,15 @@ const SingleMatch = (props) => {
     const getPlayerStats = async () => {
       try {
         const data = await Promise.all(
-          props?.match?.map((player) => playerService.findOne(player))
+          props?.match?.map((player) => (
+            player === undefined ?
+            player 
+            :
+            playerService.findOne(player)
+          )
+            
+          
+          )
         )
         const updatedPlayerInfo = gameService.getFirstPlayer(data)
         setPlayerInfo(updatedPlayerInfo)
@@ -71,7 +79,6 @@ const SingleMatch = (props) => {
       <div className="bracket">
         {playerInfo?.map((player, idx) => (
           <SingleMatchPlayerLine
-            setNewGameObj={props.setNewGameObj}
             match={props.match}
             roundIndex={props.roundIndex}
             setMatchDetails={props.setMatchDetails}

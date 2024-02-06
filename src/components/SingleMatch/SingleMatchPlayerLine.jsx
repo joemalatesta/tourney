@@ -1,5 +1,5 @@
 import Checkboxes from "../checkboxes/Checkboxes"
-import { Link } from "react-router-dom"
+
 
 const SingleMatchPlayerLine = ({
   player,
@@ -12,9 +12,7 @@ const SingleMatchPlayerLine = ({
   roundId,
   setMatchDetails,
   roundIndex,
-  match,
-  idx,
-  setNewGameObj
+
 }) => {
   if (player?.value === "undefined") {
     player = {
@@ -32,16 +30,12 @@ const SingleMatchPlayerLine = ({
       updatedGameObj.rounds[roundId + 1].splice(idx, 1, player._id)
       return updatedGameObj
     })
-    setNewGameObj((prevGameObj) => {
-      const updatedGameObj = { ...prevGameObj }
-      return updatedGameObj
-    })
     handleUpdateMatch(gameObj)
   }
 
   return (
     <div className="flex">
-      <Link to="/view-match" state={{ match }} key={idx}>
+     
         <div className="flex start bracket match-width2 match-height2 red-felt">
           {player !== null && (
             <div>
@@ -70,7 +64,7 @@ const SingleMatchPlayerLine = ({
             </div>
           )}
         </div>
-      </Link>
+   
       {user?.name === "Admin" && (
         <div className="end flex center ">
           Winner{" "}

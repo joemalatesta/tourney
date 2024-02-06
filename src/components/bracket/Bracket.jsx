@@ -1,7 +1,7 @@
-import SingleMatch from "./SingleMatch"
-import WinnerCheckbox from "../WinnerCheckbox/WinnerCheckbox"
-import * as gameServices from "../../services/gameServices"
 
+import WinnerCheckbox from "../WinnerCheckbox/WinnerCheckbox"
+import * as gameServices from "../../services/gameService"
+import BracketView from "./BracketView"
 import { useState, useEffect } from "react"
 const Bracket = (props) => {
   const [matches, setMatches] = useState()
@@ -17,9 +17,8 @@ const Bracket = (props) => {
   return (
     <>
       {matches?.map((matchInfo, idx) => (
-        <div key={idx}>
-          <SingleMatch
-            setNewGameObj={props.setNewGameObj}
+        <div className="bracket green-felt" style={{width:'250px'}} key={idx}>
+          <BracketView 
             roundIndex={props.rounds}
             setMatchDetails={props.setMatchDetails}
             gameObj={props.gameObj}
@@ -30,7 +29,18 @@ const Bracket = (props) => {
             id={idx}
             roundId={props.roundId}
           />
-          <WinnerCheckbox />
+          {/* <SingleMatch
+            roundIndex={props.rounds}
+            setMatchDetails={props.setMatchDetails}
+            gameObj={props.gameObj}
+            handleUpdateMatch={props.handleUpdateMatch}
+            user={props.user}
+            match={matchInfo}
+            key={idx}
+            id={idx}
+            roundId={props.roundId}
+          /> */}
+        
         </div>
       ))}
     </>

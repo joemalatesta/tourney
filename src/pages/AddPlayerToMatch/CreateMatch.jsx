@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import ListOfPlayers from "./ListOfPlayers"
 import * as playerService from "../../services/playerService"
-import * as gameService from "../../services/gameServices"
+import * as gameService from "../../services/gameService"
 import { useNavigate } from "react-router-dom"
 
 const CreateMatch = (props) => {
