@@ -5,7 +5,6 @@
 // import * as gameService from '../../services/gameService'
 // import * as playerService from '../../services/playerService'
 
-
 // const MatchView = (props) => {
 //   const location = useLocation()
 //   const navigate = useNavigate()
@@ -22,12 +21,11 @@
 //         const data = await Promise.all(
 //           props?.match?.map((player) => (
 //             player === undefined ?
-//             player 
+//             player
 //             :
 //             playerService.findOne(player)
 //           )
-            
-          
+
 //           )
 //         )
 //         const updatedPlayerInfo = gameService.getFirstPlayer(data)

@@ -33,7 +33,6 @@ function App() {
   const [user, setUser] = useState(authService.getUser())
   const [tourneyMatch, setTourneyMatch] = useState()
   const [singleMatch, setSingleMatch] = useState()
-  
 
   useEffect(() => {
     const fetchPlayers = async () => {

@@ -23,24 +23,19 @@ const BracketView = (props) => {
     getPlayerStats()
   }, [props.match])
 
-
   return (
     <>
       {playerInfo?.map((player, idx) =>
         player?.name === undefined ? (
           <div key={idx}>
-            <div className="bracket">
-              Awaiting Player
-            </div>
+            <div className="bracket">Awaiting Player</div>
           </div>
         ) : (
           <div key={idx}>
             <div className="bracket">
               {player.name} : {player.rank}
             </div>
-            <WinnerCheckbox
-              player={player}
-            />
+            <WinnerCheckbox player={player} />
           </div>
         )
       )}

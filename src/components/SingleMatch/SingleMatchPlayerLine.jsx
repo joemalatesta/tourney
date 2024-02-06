@@ -1,6 +1,5 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
-
 const SingleMatchPlayerLine = ({
   player,
   user,
@@ -12,7 +11,6 @@ const SingleMatchPlayerLine = ({
   roundId,
   setMatchDetails,
   roundIndex,
-
 }) => {
   if (player?.value === "undefined") {
     player = {
@@ -35,36 +33,35 @@ const SingleMatchPlayerLine = ({
 
   return (
     <div className="flex">
-     
-        <div className="flex start bracket match-width2 match-height2 red-felt">
-          {player !== null && (
-            <div>
-              <div className="start flex">
-                <div>
-                  {player !== undefined ? (
-                    <>
-                      <div>{player?.name}</div>
-                      <div>({player?.rank})</div>
-                    </>
-                  ) : (
-                    <>Awaiting Player</>
-                  )}
-                </div>
-                <div className="flex">
-                  <Checkboxes
-                    setIsHidden={setIsHidden}
-                    player={player}
-                    user={user}
-                    isHidden={isHidden}
-                    handleHideWinnerCheckbox={handleHideWinnerCheckbox}
-                    id={player?._id}
-                  />
-                </div>
+      <div className="flex start bracket match-width2 match-height2 red-felt">
+        {player !== null && (
+          <div>
+            <div className="start flex">
+              <div>
+                {player !== undefined ? (
+                  <>
+                    <div>{player?.name}</div>
+                    <div>({player?.rank})</div>
+                  </>
+                ) : (
+                  <>Awaiting Player</>
+                )}
+              </div>
+              <div className="flex">
+                <Checkboxes
+                  setIsHidden={setIsHidden}
+                  player={player}
+                  user={user}
+                  isHidden={isHidden}
+                  handleHideWinnerCheckbox={handleHideWinnerCheckbox}
+                  id={player?._id}
+                />
               </div>
             </div>
-          )}
-        </div>
-   
+          </div>
+        )}
+      </div>
+
       {user?.name === "Admin" && (
         <div className="end flex center ">
           Winner{" "}

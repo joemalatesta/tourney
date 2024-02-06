@@ -12,14 +12,8 @@ const SingleMatch = (props) => {
     const getPlayerStats = async () => {
       try {
         const data = await Promise.all(
-          props?.match?.map((player) => (
-            player === undefined ?
-            player 
-            :
-            playerService.findOne(player)
-          )
-            
-          
+          props?.match?.map((player) =>
+            player === undefined ? player : playerService.findOne(player)
           )
         )
         const updatedPlayerInfo = gameService.getFirstPlayer(data)
