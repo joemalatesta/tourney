@@ -8,8 +8,6 @@ const SingleMatch = (props) => {
   const [isHidden, setIsHidden] = useState(false)
   const [playerInfo, setPlayerInfo] = useState()
 
-  console.log(props?.match);
-
   useEffect(() => {
     const getPlayerStats = async () => {
       try {

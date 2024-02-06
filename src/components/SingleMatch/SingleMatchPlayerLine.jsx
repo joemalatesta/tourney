@@ -32,22 +32,20 @@ const SingleMatchPlayerLine = ({
   }
 
   return (
-    <div className="flex">
-      <div className="flex start bracket match-width2 match-height2 red-felt">
+    <div className="flex" style={{alignItems:'center'}}>
+      <div className="flex start bracket match-width2 match-height2 red-felt" style={{width:'100%'}}>
         {player !== null && (
-          <div>
-            <div className="start flex">
-              <div>
+          <div className="flex" style={{width:'95%'}}>
+            <div className="start flex 1" style={{width:'95%'}}>
+              <div className="flex 1" style={{width:'95%'}}>
                 {player !== undefined ? (
-                  <>
-                    <div>{player?.name}</div>
-                    <div>({player?.rank})</div>
-                  </>
+                  <div className="flex" style={{width:'95%'}}>
+                    <h1>{player?.name}({player?.rank})</h1>
+                  </div>
                 ) : (
                   <>Awaiting Player</>
                 )}
-              </div>
-              <div className="flex">
+             
                 <Checkboxes
                   setIsHidden={setIsHidden}
                   player={player}
@@ -55,26 +53,14 @@ const SingleMatchPlayerLine = ({
                   isHidden={isHidden}
                   handleHideWinnerCheckbox={handleHideWinnerCheckbox}
                   id={player?._id}
-                />
-              </div>
+                  />
+              
+                  </div>
             </div>
           </div>
         )}
       </div>
 
-      {user?.name === "Admin" && (
-        <div className="end flex center ">
-          Winner{" "}
-          <input
-            hidden={isHidden}
-            onChange={() => {
-              handleHideWinnerCheckbox()
-              handleAddWinnerToNextRound(player._id)
-            }}
-            type="checkbox"
-          />
-        </div>
-      )}
     </div>
   )
 }

@@ -6,7 +6,6 @@ import WinnerCheckbox from "../WinnerCheckbox/WinnerCheckbox"
 
 const BracketView = (props) => {
   const [playerInfo, setPlayerInfo] = useState()
-  console.log(playerInfo);
   useEffect(() => {
     const getPlayerStats = async () => {
       try {
@@ -43,8 +42,6 @@ const BracketView = (props) => {
     props.handleUpdateMatch(props.gameObj)
   }
 
-
-    console.log(props.match);
   return (
     <>
       {playerInfo?.map((player, idx) =>
@@ -59,14 +56,17 @@ const BracketView = (props) => {
                 {player.name} : {player.rank}
               </Link>
               <div className="flex end" >
+              {props?.user?.name==='Admin' &&
                 <WinnerCheckbox 
-                  roundId={props.roundId}
-                  handleUpdateMatch={props.handleUpdateMatch}
-                  setMatchDetails={props.setMatchDetails}
-                  roundIndex={props.roundIndex}
-                  player={player} 
-                  handleAddWinnerToNextRound={handleAddWinnerToNextRound}
+                roundId={props.roundId}
+                handleUpdateMatch={props.handleUpdateMatch}
+                setMatchDetails={props.setMatchDetails}
+                roundIndex={props.roundIndex}
+                player={player} 
+                handleAddWinnerToNextRound={handleAddWinnerToNextRound}
                 />
+              }
+              
               </div>
             </div>
           </div>

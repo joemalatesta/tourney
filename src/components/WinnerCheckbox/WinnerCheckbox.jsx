@@ -2,7 +2,6 @@ import { useState } from "react"
 
 const WinnerCheckbox = (props) => {
   const [isHidden, setIsHidden] = useState(false)
-  console.log(props)
 
   const handleHideWinnerCheckbox = () => {
     setIsHidden(true)

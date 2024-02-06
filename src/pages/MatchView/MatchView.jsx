@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom"
 import SingleMatch from "../../components/SingleMatch/SingleMatch"
 const MatchView = (props) => {
   const nav = useNavigate()
-  console.log(props)
 
   return (
     <>

@@ -43,7 +43,6 @@ function App() {
     fetchPlayers()
   }, [])
 
-  console.log(currentMatch);
 
   useEffect(() => {
     const getMatch = async () => {
