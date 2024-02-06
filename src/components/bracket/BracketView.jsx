@@ -23,6 +23,17 @@ const BracketView = (props) => {
     getPlayerStats()
   }, [props.match])
 
+  const handleAddWinnerToNextRound = (id) => {
+    let idxNum = props.roundIndex.indexOf(id)
+    let idx = Math.floor(idxNum / 2)
+    props.setMatchDetails((prevGameObj) => {
+      const updatedGameObj = { ...prevGameObj }
+      updatedGameObj.rounds[props.roundId + 1].splice(idx, 1, id)
+      return updatedGameObj
+    })
+    props.handleUpdateMatch(props.gameObj)
+  }
+
   return (
     <>
       {playerInfo?.map((player, idx) =>
@@ -32,10 +43,19 @@ const BracketView = (props) => {
           </div>
         ) : (
           <div key={idx}>
-            <div className="bracket">
+            <div className="bracket flex" style={{justifyContent:'space-between'}}>
               {player.name} : {player.rank}
+              <div className="flex end" >
+                <WinnerCheckbox 
+                  roundId={props.roundId}
+                  handleUpdateMatch={props.handleUpdateMatch}
+                  setMatchDetails={props.setMatchDetails}
+                  roundIndex={props.roundIndex}
+                  player={player} 
+                  handleAddWinnerToNextRound={handleAddWinnerToNextRound}
+                />
+              </div>
             </div>
-            <WinnerCheckbox player={player} />
           </div>
         )
       )}
