@@ -20,16 +20,19 @@ const BracketView = (props) => {
         console.error("Error fetching player stats:", error)
       }
     }
-    
+
     getPlayerStats()
   }, [props.match])
 
-  useEffect(() => {
-    const updateCurrentMatch = () => {
-      props.setCurrentMatch(playerInfo)
-    }
-    updateCurrentMatch()
-  }, [playerInfo]);
+  // useEffect(() => {
+  //   const updateCurrentMatch = () => {
+  //     props.setCurrentMatch(playerInfo)
+  //   }
+  //   updateCurrentMatch()
+  // }, []);
+  const handleUpdateCurrentMatch = async (match) => {
+    await props.setCurrentMatch(match)
+  }
 
   const handleAddWinnerToNextRound = (id) => {
     let idxNum = props.roundIndex.indexOf(id)
@@ -51,22 +54,28 @@ const BracketView = (props) => {
           </div>
         ) : (
           <div key={idx}>
-            <div className="bracket flex" style={{justifyContent:'space-between'}}>
-              <Link to={'/match-view'} match={props.match} >
+            <div
+              className="bracket flex"
+              style={{ justifyContent: "space-between" }}
+            >
+              <Link
+                to={"/match-view"}
+                match={props.match}
+                onClick={(match) => handleUpdateCurrentMatch(match)}
+              >
                 {player.name} : {player.rank}
               </Link>
-              <div className="flex end" >
-              {props?.user?.name==='Admin' &&
-                <WinnerCheckbox 
-                roundId={props.roundId}
-                handleUpdateMatch={props.handleUpdateMatch}
-                setMatchDetails={props.setMatchDetails}
-                roundIndex={props.roundIndex}
-                player={player} 
-                handleAddWinnerToNextRound={handleAddWinnerToNextRound}
-                />
-              }
-              
+              <div className="flex end">
+                {props?.user?.name === "Admin" && (
+                  <WinnerCheckbox
+                    roundId={props.roundId}
+                    handleUpdateMatch={props.handleUpdateMatch}
+                    setMatchDetails={props.setMatchDetails}
+                    roundIndex={props.roundIndex}
+                    player={player}
+                    handleAddWinnerToNextRound={handleAddWinnerToNextRound}
+                  />
+                )}
               </div>
             </div>
           </div>
