@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import * as playerService from "../../services/playerService"
 import * as gameService from "../../services/gameService"
 import WinnerCheckbox from "../WinnerCheckbox/WinnerCheckbox"
 
 const BracketView = (props) => {
   const [playerInfo, setPlayerInfo] = useState()
-
+  console.log(playerInfo);
   useEffect(() => {
     const getPlayerStats = async () => {
       try {
@@ -20,8 +21,16 @@ const BracketView = (props) => {
         console.error("Error fetching player stats:", error)
       }
     }
+    
     getPlayerStats()
   }, [props.match])
+
+  useEffect(() => {
+    const updateCurrentMatch = () => {
+      props.setCurrentMatch(playerInfo)
+    }
+    updateCurrentMatch()
+  }, [playerInfo]);
 
   const handleAddWinnerToNextRound = (id) => {
     let idxNum = props.roundIndex.indexOf(id)
@@ -34,6 +43,8 @@ const BracketView = (props) => {
     props.handleUpdateMatch(props.gameObj)
   }
 
+
+    console.log(props.match);
   return (
     <>
       {playerInfo?.map((player, idx) =>
@@ -44,7 +55,9 @@ const BracketView = (props) => {
         ) : (
           <div key={idx}>
             <div className="bracket flex" style={{justifyContent:'space-between'}}>
-              {player.name} : {player.rank}
+              <Link to={'/match-view'} match={props.match} >
+                {player.name} : {player.rank}
+              </Link>
               <div className="flex end" >
                 <WinnerCheckbox 
                   roundId={props.roundId}

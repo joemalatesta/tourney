@@ -8,12 +8,14 @@ const SingleMatch = (props) => {
   const [isHidden, setIsHidden] = useState(false)
   const [playerInfo, setPlayerInfo] = useState()
 
+  console.log(props?.match);
+
   useEffect(() => {
     const getPlayerStats = async () => {
       try {
         const data = await Promise.all(
-          props?.match?.map((player) =>
-            player === undefined ? player : playerService.findOne(player)
+          props.match?.map((player) =>
+            player === undefined ? player : playerService.findOne(player._id)
           )
         )
         const updatedPlayerInfo = gameService.getFirstPlayer(data)

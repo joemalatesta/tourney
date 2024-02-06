@@ -1,6 +1,7 @@
 import * as gameServices from "../../services/gameService"
 import BracketView from "./BracketView"
 import { useState, useEffect } from "react"
+
 const Bracket = (props) => {
   const [matches, setMatches] = useState()
 
@@ -21,6 +22,7 @@ const Bracket = (props) => {
           key={idx}
         >
           <BracketView
+            setCurrentMatch={props.setCurrentMatch}
             roundIndex={props.rounds}
             setMatchDetails={props.setMatchDetails}
             gameObj={props.gameObj}

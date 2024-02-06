@@ -12,7 +12,7 @@ import EditPlayer from "./pages/EditPlayers/EditPlayer"
 import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
 import CreateMatch from "./pages/AddPlayerToMatch/CreateMatch"
 import Brackets from "./pages/Brackets/Brackets"
-// import MatchView from "./pages/MatchView/MatchView"
+import MatchView from "./pages/MatchView/MatchView"
 
 // components
 import NavBar from "./components/NavBar/NavBar"
@@ -33,6 +33,7 @@ function App() {
   const [user, setUser] = useState(authService.getUser())
   const [tourneyMatch, setTourneyMatch] = useState()
   const [singleMatch, setSingleMatch] = useState()
+  const [currentMatch, setCurrentMatch]=useState()
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -41,6 +42,8 @@ function App() {
     }
     fetchPlayers()
   }, [])
+
+  console.log(currentMatch);
 
   useEffect(() => {
     const getMatch = async () => {
@@ -164,19 +167,21 @@ function App() {
               gameObj={singleMatch}
               user={user}
               handleUpdateMatch={handleUpdateMatch}
+              setCurrentMatch={setCurrentMatch}
             />
           }
         />
-        {/* <Route
-          path="/view-match"
+        <Route
+          path="/match-view"
           element={
             <MatchView
               gameObj={singleMatch}
               user={user}
               handleUpdateMatch={handleUpdateMatch}
+              currentMatch={currentMatch}
             />
           }
-        /> */}
+        />
         <Route
           path="/view-tournaments"
           element={
