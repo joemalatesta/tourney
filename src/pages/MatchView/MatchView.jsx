@@ -1,18 +1,12 @@
 import { useNavigate } from "react-router-dom"
 import SingleMatch from "../../components/SingleMatch/SingleMatch"
+
 const MatchView = (props) => {
   const nav = useNavigate()
-
   return (
     <>
-      <SingleMatch
-        gameObj={props.gameObj}
-        handleMatchUpdate={props.handleMatchUpdate}
-        user={props.user} 
-        match={props.currentMatch}
-      />
+      <SingleMatch match={props.match} />
 
-      
       <button onClick={() => nav("/view-tournaments")}>
         return to tourney
       </button>

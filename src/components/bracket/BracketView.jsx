@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import * as playerService from "../../services/playerService"
 import * as gameService from "../../services/gameService"
 import WinnerCheckbox from "../WinnerCheckbox/WinnerCheckbox"
 
 const BracketView = (props) => {
+  const navigate = useNavigate()
   const [playerInfo, setPlayerInfo] = useState()
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -20,19 +21,8 @@ const BracketView = (props) => {
         console.error("Error fetching player stats:", error)
       }
     }
-
     getPlayerStats()
   }, [props.match])
-
-  // useEffect(() => {
-  //   const updateCurrentMatch = () => {
-  //     props.setCurrentMatch(playerInfo)
-  //   }
-  //   updateCurrentMatch()
-  // }, []);
-  const handleUpdateCurrentMatch = async (match) => {
-    await props.setCurrentMatch(match)
-  }
 
   const handleAddWinnerToNextRound = (id) => {
     let idxNum = props.roundIndex.indexOf(id)
@@ -45,43 +35,53 @@ const BracketView = (props) => {
     props.handleUpdateMatch(props.gameObj)
   }
 
+  const handleViewSingleMatch = () => {
+    props.setTwoPlayerMatch(playerInfo)
+    navigate("/match-view")
+  }
+
   return (
-    <>
+    <div>
       {playerInfo?.map((player, idx) =>
         player?.name === undefined ? (
           <div key={idx}>
             <div className="bracket">Awaiting Player</div>
           </div>
         ) : (
-          <div key={idx}>
+          <div
+            className="flex"
+            style={{ justifyContent: "space-between" }}
+            key={idx}
+          >
             <div
-              className="bracket flex"
+              id={player.id}
+              className="flex"
               style={{ justifyContent: "space-between" }}
+              key={idx}
+              onClick={() => handleViewSingleMatch()}
             >
-              <Link
-                to={"/match-view"}
-                match={props.match}
-                onClick={(match) => handleUpdateCurrentMatch(match)}
+              <div
+                className="bracket flex"
+                style={{ justifyContent: "space-between", width: "150px" }}
               >
                 {player.name} : {player.rank}
-              </Link>
-              <div className="flex end">
-                {props?.user?.name === "Admin" && (
-                  <WinnerCheckbox
-                    roundId={props.roundId}
-                    handleUpdateMatch={props.handleUpdateMatch}
-                    setMatchDetails={props.setMatchDetails}
-                    roundIndex={props.roundIndex}
-                    player={player}
-                    handleAddWinnerToNextRound={handleAddWinnerToNextRound}
-                  />
-                )}
+                <div className="flex end"></div>
               </div>
             </div>
+            {props?.user?.name === "Admin" && (
+              <WinnerCheckbox
+                roundId={props.roundId}
+                handleUpdateMatch={props.handleUpdateMatch}
+                setMatchDetails={props.setMatchDetails}
+                roundIndex={props.roundIndex}
+                player={player}
+                handleAddWinnerToNextRound={handleAddWinnerToNextRound}
+              />
+            )}
           </div>
         )
       )}
-    </>
+    </div>
   )
 }
 

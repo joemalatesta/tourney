@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react"
 
 import Bracket from "./Bracket"
-const BracketLayout = ({ gameObj, user, handleUpdateMatch, setCurrentMatch }) => {
+const BracketLayout = ({
+  gameObj,
+  user,
+  handleUpdateMatch,
+  setTwoPlayerMatch,
+}) => {
   const [matchDetails, setMatchDetails] = useState()
 
   useEffect(() => {
@@ -20,7 +25,7 @@ const BracketLayout = ({ gameObj, user, handleUpdateMatch, setCurrentMatch }) =>
         <div className="flex">
           <div className="flex-column">
             <Bracket
-              setCurrentMatch={setCurrentMatch}
+              setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               user={user}
               gameObj={gameObj}
@@ -31,7 +36,7 @@ const BracketLayout = ({ gameObj, user, handleUpdateMatch, setCurrentMatch }) =>
           </div>
           <div>
             <Bracket
-            setCurrentMatch={setCurrentMatch}
+              setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[1]}
               user={user}
@@ -42,7 +47,7 @@ const BracketLayout = ({ gameObj, user, handleUpdateMatch, setCurrentMatch }) =>
           </div>
           <div>
             <Bracket
-            setCurrentMatch={setCurrentMatch}
+              setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[2]}
               user={user}
@@ -53,7 +58,7 @@ const BracketLayout = ({ gameObj, user, handleUpdateMatch, setCurrentMatch }) =>
           </div>
           <div>
             <Bracket
-            setCurrentMatch={setCurrentMatch}
+              setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[3]}
               user={user}
@@ -64,7 +69,7 @@ const BracketLayout = ({ gameObj, user, handleUpdateMatch, setCurrentMatch }) =>
           </div>
           <div>
             <Bracket
-            setCurrentMatch={setCurrentMatch}
+              setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[4]}
               user={user}
@@ -75,7 +80,7 @@ const BracketLayout = ({ gameObj, user, handleUpdateMatch, setCurrentMatch }) =>
           </div>
           <div>
             <Bracket
-            setCurrentMatch={setCurrentMatch}
+              setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[5]}
               user={user}

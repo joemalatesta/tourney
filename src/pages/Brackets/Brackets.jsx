@@ -1,10 +1,10 @@
 import BracketLayout from "../../components/bracket/BracketLayout"
 
-const Brackets = ({ gameObj, user, handleUpdateMatch, setCurrentMatch }) => {
+const Brackets = ({ gameObj, user, handleUpdateMatch, setTwoPlayerMatch }) => {
   return (
     <>
       <BracketLayout
-        setCurrentMatch={setCurrentMatch}
+        setTwoPlayerMatch={setTwoPlayerMatch}
         user={user}
         gameObj={gameObj}
         handleUpdateMatch={handleUpdateMatch}

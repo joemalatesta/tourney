@@ -33,7 +33,7 @@ function App() {
   const [user, setUser] = useState(authService.getUser())
   const [tourneyMatch, setTourneyMatch] = useState()
   const [singleMatch, setSingleMatch] = useState()
-  const [currentMatch, setCurrentMatch]=useState()
+  const [twoPlayerMatch, setTwoPlayerMatch] = useState()
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -43,6 +43,13 @@ function App() {
     fetchPlayers()
   }, [])
 
+  useEffect(() => {
+    const getTwoPlayerMatchData = async () => {
+      const data = await twoPlayerMatch
+      setTwoPlayerMatch(data)
+    }
+    getTwoPlayerMatchData()
+  }, [twoPlayerMatch])
 
   useEffect(() => {
     const getMatch = async () => {
@@ -166,7 +173,7 @@ function App() {
               gameObj={singleMatch}
               user={user}
               handleUpdateMatch={handleUpdateMatch}
-              setCurrentMatch={setCurrentMatch}
+              setTwoPlayerMatch={setTwoPlayerMatch}
             />
           }
         />
@@ -174,10 +181,9 @@ function App() {
           path="/match-view"
           element={
             <MatchView
-              gameObj={singleMatch}
+              match={twoPlayerMatch}
               user={user}
               handleUpdateMatch={handleUpdateMatch}
-              currentMatch={currentMatch}
             />
           }
         />

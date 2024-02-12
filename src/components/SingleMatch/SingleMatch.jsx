@@ -1,41 +1,26 @@
 import { useState, useEffect } from "react"
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
-import * as playerService from "../../services/playerService"
 import * as gameService from "../../services/gameService"
 
 const SingleMatch = (props) => {
   const [gamesNeeded, setGamesNeeded] = useState()
-  const [isHidden, setIsHidden] = useState(false)
-  const [playerInfo, setPlayerInfo] = useState()
+  const [
+    updatedPlayerStateWithMatchCount,
+    setUpdatedPlayerStateWithMatchCount,
+  ] = useState(props.match)
 
   useEffect(() => {
-    const getPlayerStats = async () => {
-      try {
-        const data = await Promise.all(
-          props.match?.map((player) =>
-            player === undefined ? player : playerService.findOne(player._id)
-          )
-        )
-        const updatedPlayerInfo = gameService.getFirstPlayer(data)
-        setPlayerInfo(updatedPlayerInfo)
-      } catch (error) {
-        console.error("Error fetching player stats:", error)
-      }
-    }
-    getPlayerStats()
-  }, [props.match])
-
-  const handleHideWinnerCheckbox = () => {
-    setIsHidden(true)
-  }
+    console.log(updatedPlayerStateWithMatchCount)
+    console.log(props.match)
+  }, [updatedPlayerStateWithMatchCount])
 
   useEffect(() => {
     const getGameRace = async () => {
       try {
-        if (playerInfo !== undefined) {
+        if (props.match !== undefined) {
           const data = await gameService.getGameRace(
-            playerInfo[0],
-            playerInfo[1]
+            props.match[0],
+            props.match[1]
           )
           setGamesNeeded(data)
         }
@@ -44,50 +29,41 @@ const SingleMatch = (props) => {
       }
     }
     getGameRace()
-  }, [playerInfo])
+  }, [props.match])
 
   useEffect(() => {
-    const addGamesNeeded = () => {
-      if (playerInfo && gamesNeeded) {
-        setPlayerInfo((prevPlayerInfo) => {
-          if (
-            prevPlayerInfo &&
-            prevPlayerInfo.length &&
-            prevPlayerInfo[0].games !== gamesNeeded[0] &&
-            prevPlayerInfo[1].games !== gamesNeeded[1]
-          ) {
-            return [
-              { ...prevPlayerInfo[0], games: gamesNeeded[0] },
-              { ...prevPlayerInfo[1], games: gamesNeeded[1] },
-            ]
-          }
-          return prevPlayerInfo
-        })
+    const addGamesNeeded = async () => {
+      try {
+        if (props.match && gamesNeeded && gamesNeeded.length >= 2) {
+          setUpdatedPlayerStateWithMatchCount((prevPlayerInfo) => {
+            console.log("prevPlayerInfo:", prevPlayerInfo)
+            console.log("gamesNeeded[0]:", gamesNeeded[0])
+            console.log("gamesNeeded[1]:", gamesNeeded[1])
+            if (
+              prevPlayerInfo &&
+              prevPlayerInfo.length &&
+              prevPlayerInfo[0].games !== gamesNeeded[0] &&
+              prevPlayerInfo[1].games !== gamesNeeded[1]
+            ) {
+              return [
+                { ...prevPlayerInfo[0], games: gamesNeeded[0] },
+                { ...prevPlayerInfo[1], games: gamesNeeded[1] },
+              ]
+            }
+          })
+        }
+      } catch (error) {
+        console.error("Error updating player state:", error)
       }
     }
     addGamesNeeded()
-  }, [gamesNeeded, playerInfo])
+  }, [props.match, gamesNeeded])
 
   return (
     <>
       <div className="bracket">
-        {playerInfo?.map((player, idx) => (
-          <SingleMatchPlayerLine
-            match={props.match}
-            roundIndex={props.roundIndex}
-            setMatchDetails={props.setMatchDetails}
-            roundId={props.roundId}
-            gameObj={props.gameObj}
-            user={props.user}
-            player={player}
-            key={idx}
-            idx={idx}
-            setGamesNeeded={setGamesNeeded}
-            isHidden={isHidden}
-            handleHideWinnerCheckbox={handleHideWinnerCheckbox}
-            setIsHidden={setIsHidden}
-            handleUpdateMatch={props.handleUpdateMatch}
-          />
+        {updatedPlayerStateWithMatchCount?.map((player, idx) => (
+          <SingleMatchPlayerLine player={player} key={idx} />
         ))}
       </div>
     </>

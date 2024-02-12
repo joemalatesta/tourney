@@ -18,11 +18,11 @@ const Bracket = (props) => {
       {matches?.map((matchInfo, idx) => (
         <div
           className="bracket green-felt"
-          style={{ width: "250px" }}
+          style={{ width: "350px" }}
           key={idx}
         >
           <BracketView
-            setCurrentMatch={props.setCurrentMatch}
+            setTwoPlayerMatch={props.setTwoPlayerMatch}
             roundIndex={props.rounds}
             setMatchDetails={props.setMatchDetails}
             gameObj={props.gameObj}
