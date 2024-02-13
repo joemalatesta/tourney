@@ -14,8 +14,8 @@ const SingleMatchPlayerLine = ({ player }) => {
   return (
     <div className="flex" style={{ alignItems: "center" }}>
       <div
-        className="flex start bracket match-width2 match-height2 red-felt"
-        style={{ width: "100%" }}
+        className="flex start bracket match-width2 match-height2 green-felt"
+        style={{ width: "100%" }}//, WebkitTextStroke: '1px white', color:'black'
       >
         {player !== null && (
           <div className="flex" style={{ width: "95%" }}>

@@ -33,17 +33,6 @@ const Bracket = (props) => {
             id={idx}
             roundId={props.roundId}
           />
-          {/* <SingleMatch
-            roundIndex={props.rounds}
-            setMatchDetails={props.setMatchDetails}
-            gameObj={props.gameObj}
-            handleUpdateMatch={props.handleUpdateMatch}
-            user={props.user}
-            match={matchInfo}
-            key={idx}
-            id={idx}
-            roundId={props.roundId}
-          /> */}
         </div>
       ))}
     </>

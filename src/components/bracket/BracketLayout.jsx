@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react"
-
+import { useEffect } from "react"
 import Bracket from "./Bracket"
 const BracketLayout = ({
   gameObj,
   user,
   handleUpdateMatch,
   setTwoPlayerMatch,
+  setMatchDetails,
+  matchDetails
 }) => {
-  const [matchDetails, setMatchDetails] = useState()
 
   useEffect(() => {
     const getCurrentMatchDetails = () => {
@@ -16,8 +16,6 @@ const BracketLayout = ({
     }
     getCurrentMatchDetails()
   }, [gameObj, matchDetails])
-
-  gameObj.rounds[0] = gameObj.matchPlayers
 
   return (
     <div className="auto-width">
@@ -29,7 +27,7 @@ const BracketLayout = ({
               setMatchDetails={setMatchDetails}
               user={user}
               gameObj={gameObj}
-              rounds={gameObj.rounds[0]}
+              rounds={gameObj.matchPlayers}
               handleUpdateMatch={handleUpdateMatch}
               roundId={0}
             />

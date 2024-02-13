@@ -6,7 +6,6 @@ const MatchView = (props) => {
   return (
     <>
       <SingleMatch match={props.match} />
-
       <button onClick={() => nav("/view-tournaments")}>
         return to tourney
       </button>
