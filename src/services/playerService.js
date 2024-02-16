@@ -13,6 +13,18 @@ async function create(player) {
   return res.json()
 }
 
+async function update(player) {
+  const res = await fetch(`${BASE_URL}/${player._id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${tokenService.getToken()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(player),
+  })
+  return res.json()
+}
+
 async function index() {
   try {
     const res = await fetch(BASE_URL)
@@ -42,4 +54,4 @@ async function deleteOne(id) {
   return res.json()
 }
 
-export { index, create, findOne, deleteOne }
+export { index, create, findOne, deleteOne, update }

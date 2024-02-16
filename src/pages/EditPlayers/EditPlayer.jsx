@@ -4,6 +4,7 @@ import AllPlayers from "../../components/players/AllPlayers"
 const EditPlayer = (props) => {
   const formElement = useRef()
   const [validForm, setValidForm] = useState(false)
+  const [title, setTitle] = useState("Add Players")
   const [formData, setFormData] = useState({
     name: "",
     rank: 0,
@@ -21,13 +22,25 @@ const EditPlayer = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-    props.handleAddPlayer(formData)
-    setFormData({ name: "", rank: 0 })
+    if (title === "Add Players") {
+      props.handleAddPlayer(formData)
+      setFormData({ name: "", rank: 0 })
+    }
+    if (title === "Edit Player") {
+      console.log(evt.target)
+      props.handleEditPlayer(formData)
+      setFormData({ name: "", rank: 0 })
+      setTitle("Add Players")
+    }
+  }
+
+  const changeTitle = () => {
+    setTitle("Edit Player")
   }
 
   return (
     <div className="match-bracket green-felt">
-      <h1 className="center">Edit Players</h1>
+      <h1 className="center">{title}</h1>
       <form
         className="center"
         autoComplete="off"
@@ -57,12 +70,13 @@ const EditPlayer = (props) => {
         </div>
         <div className="center">
           <button type="submit" disabled={!validForm}>
-            Add Player
+            {title}
           </button>
         </div>
       </form>
       <AllPlayers
-        handleDeletePlayer={props.handleDeletePlayer}
+        setFormData={setFormData}
+        changeTitle={changeTitle}
         players={props.players}
       />
     </div>

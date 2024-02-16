@@ -9,7 +9,7 @@ const NavBar = ({ user, handleLogout }) => {
           <NavLink to="/">Welcome {user.name}</NavLink>
           {user.name === "Admin" && (
             <>
-              <NavLink to="/add-player">Add Player</NavLink>
+              <NavLink to="/player-management">Player Management</NavLink>
               <NavLink to="/add-players-to-match">Add players to match</NavLink>
             </>
           )}

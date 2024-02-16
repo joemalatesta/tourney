@@ -81,6 +81,15 @@ function App() {
     setPlayers([...players, newPlayer])
   }
 
+  const handleEditPlayer = async (editedPlayerData) => {
+    const editedPlayer = await playerService.update(editedPlayerData)
+    setPlayers((prevPlayers) => {
+      return prevPlayers.map((player) =>
+        player._id === editedPlayer._id ? editedPlayer : player
+      )
+    })
+  }
+
   const handleDeletePlayer = async (id) => {
     const deletedPlayer = await playerService.deleteOne(id)
     setPlayers(players.filter((player) => player._id !== deletedPlayer._id))
@@ -131,7 +140,7 @@ function App() {
         />
         <Route
           disable={isDisabled}
-          path="/add-player"
+          path="/player-management"
           element={
             <ProtectedRoute user={user}>
               <EditPlayer
@@ -139,6 +148,7 @@ function App() {
                 playMatch={playMatch}
                 isDisabled={isDisabled}
                 handleAddPlayer={handleAddPlayer}
+                handleEditPlayer={handleEditPlayer}
                 handleDeletePlayer={handleDeletePlayer}
               />
             </ProtectedRoute>

@@ -1,20 +1,21 @@
 const AllPlayers = (props) => {
-  const handleEditPlayer = (id) => {
-    console.log(id)
-  }
 
+  const handleChange = (player) => {
+    console.log(player)
+    props.changeTitle()
+    const updatedPlayer = {
+      ...player,
+      name: player.name, 
+      rank: player.rank, 
+    }
+    props.setFormData(updatedPlayer)
+  }
   return (
     <div className="bracket ">
       {props?.players?.map((player) => (
         <div key={player._id}>
           {player.name} : {player.rank}
-          <button onClick={() => handleEditPlayer(player._id)}>
-            Edit Player
-          </button>
-          <button onClick={() => props.handleDeletePlayer(player._id)}>
-            {" "}
-            Delete
-          </button>
+          <button onClick={() => handleChange(player)}>Edit</button>
         </div>
       ))}
     </div>
