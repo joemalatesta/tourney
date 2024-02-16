@@ -2,7 +2,6 @@ import BracketLayout from "../../components/bracket/BracketLayout"
 import { useState, useEffect } from "react"
 
 const Brackets = ({ gameObj, user, handleUpdateMatch, setTwoPlayerMatch }) => {
-  
   const [matchDetails, setMatchDetails] = useState(gameObj)
 
   useEffect(() => {
@@ -12,7 +11,6 @@ const Brackets = ({ gameObj, user, handleUpdateMatch, setTwoPlayerMatch }) => {
     }
     getCurrentMatchDetails()
   }, [gameObj, matchDetails])
-
 
   return (
     <>

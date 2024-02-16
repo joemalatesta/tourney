@@ -10,11 +10,6 @@ const SingleMatch = (props) => {
   ] = useState(props.match)
 
   useEffect(() => {
-    console.log(updatedPlayerStateWithMatchCount)
-    console.log(props.match)
-  }, [updatedPlayerStateWithMatchCount])
-
-  useEffect(() => {
     const getGameRace = async () => {
       try {
         if (props.match !== undefined) {
@@ -36,9 +31,6 @@ const SingleMatch = (props) => {
       try {
         if (props.match && gamesNeeded && gamesNeeded.length >= 2) {
           setUpdatedPlayerStateWithMatchCount((prevPlayerInfo) => {
-            console.log("prevPlayerInfo:", prevPlayerInfo)
-            console.log("gamesNeeded[0]:", gamesNeeded[0])
-            console.log("gamesNeeded[1]:", gamesNeeded[1])
             if (
               prevPlayerInfo &&
               prevPlayerInfo.length &&

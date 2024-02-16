@@ -6,9 +6,8 @@ const BracketLayout = ({
   handleUpdateMatch,
   setTwoPlayerMatch,
   setMatchDetails,
-  matchDetails
+  matchDetails,
 }) => {
-
   useEffect(() => {
     const getCurrentMatchDetails = () => {
       let data = gameObj

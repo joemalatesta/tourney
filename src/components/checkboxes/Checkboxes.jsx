@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 
 const Checkboxes = ({ player }) => {
-  console.log(player)
   const [checkboxes, setCheckboxes] = useState([])
 
   useEffect(() => {

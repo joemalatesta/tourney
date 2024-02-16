@@ -60,7 +60,6 @@ const CreateMatch = (props) => {
       rounds: addNullToRoundArray(match.length),
     }
     await props.handleAddMatch(updatedFormData)
-    console.log("this is the formdata at submit", updatedFormData)
     navigate("/view-tournaments")
   }
 

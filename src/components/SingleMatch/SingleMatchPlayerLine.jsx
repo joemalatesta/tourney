@@ -1,8 +1,6 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
 const SingleMatchPlayerLine = ({ player }) => {
-  console.log(player)
-
   if (player?.value === "undefined") {
     player = {
       _id: Math.random(),
@@ -15,7 +13,7 @@ const SingleMatchPlayerLine = ({ player }) => {
     <div className="flex" style={{ alignItems: "center" }}>
       <div
         className="flex start bracket match-width2 match-height2 green-felt"
-        style={{ width: "100%" }}//, WebkitTextStroke: '1px white', color:'black'
+        style={{ width: "100%" }} //, WebkitTextStroke: '1px white', color:'black'
       >
         {player !== null && (
           <div className="flex" style={{ width: "95%" }}>
