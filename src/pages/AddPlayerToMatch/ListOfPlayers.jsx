@@ -1,6 +1,6 @@
 const ListOfPlayers = (props) => {
   return (
-    <div className="green-felt bracket" style={{width:'275px'}}>
+    <div className="green-felt bracket" style={{ width: "275px" }}>
       <h2>{props.title}</h2>
       <ul>
         {props.players?.map((player) => (
