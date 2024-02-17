@@ -112,7 +112,7 @@ function App() {
   }
 
   const handleUpdateMatch = async (matchData) => {
-    console.log()
+
     const updatedMatch = await matchService.update(matchData)
     setTourneyMatch([...tourneyMatch, updatedMatch])
   }

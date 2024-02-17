@@ -27,7 +27,6 @@ const EditPlayer = (props) => {
       setFormData({ name: "", rank: 0 })
     }
     if (title === "Edit Player") {
-      console.log(evt.target)
       props.handleEditPlayer(formData)
       setFormData({ name: "", rank: 0 })
       setTitle("Add Players")
