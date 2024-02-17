@@ -39,7 +39,8 @@ const EditPlayer = (props) => {
 
   return (
     <div className="match-bracket green-felt">
-      <h1 className="center">{title}</h1>
+      <h1 className="center">Player Management</h1>
+      <h2 className="center">{title}</h2>
       <form
         className="center"
         autoComplete="off"

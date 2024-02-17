@@ -35,7 +35,7 @@ const AllPlayers = (props) => {
   };
   
   return (
-    <div className="bracket flex" style={{ flexDirection: "column", width: '100%',justifyContent:'center', alignItems:'center' }}>
+    <div className="bracket flex" style={{ flexDirection: "column", width: '90%',justifyContent:'center', alignItems:'center' }}>
       {confirmDelete && (
         <div className='red-felt' >
           <p>Are you sure you want to delete {playerToDelete?.name}?</p>
