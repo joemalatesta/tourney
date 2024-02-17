@@ -10,7 +10,7 @@ const NavBar = ({ user, handleLogout }) => {
           {user.name === "Admin" && (
             <>
               <NavLink to="/player-management">Player Management</NavLink>
-              <NavLink to="/add-players-to-match">Add players to match</NavLink>
+              <NavLink to="/add-players-to-match">Create Match</NavLink>
             </>
           )}
           <NavLink to="/view-tournaments">View Tournaments</NavLink>
