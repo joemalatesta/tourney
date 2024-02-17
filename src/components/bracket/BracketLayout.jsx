@@ -14,7 +14,9 @@ const BracketLayout = ({
       setMatchDetails(data)
     }
     getCurrentMatchDetails()
-  }, [gameObj, matchDetails])
+  }, [matchDetails, gameObj])
+
+  console.log(matchDetails);
 
   return (
     <div className="auto-width">

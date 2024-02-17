@@ -10,7 +10,7 @@ import Profiles from "./pages/Profiles/Profiles"
 import ChangePassword from "./pages/ChangePassword/ChangePassword"
 import EditPlayer from "./pages/EditPlayers/EditPlayer"
 import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
-import CreateMatch from "./pages/AddPlayerToMatch/CreateMatch"
+import CreateMatch from "./pages/CreateMatch/CreateMatch"
 import Brackets from "./pages/Brackets/Brackets"
 import MatchView from "./pages/MatchView/MatchView"
 

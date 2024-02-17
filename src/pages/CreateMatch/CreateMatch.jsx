@@ -75,15 +75,23 @@ const CreateMatch = (props) => {
           onChange={handleChange}
           required
         />
-        <label className="center">Game Type (8-ball or 9-ball)</label>
-        <input
+
+        <div
           className="center"
           type="text"
+          id="gameType"
           name="gameType"
           value={formData.gameType}
           onChange={handleChange}
           required
-        />
+        >
+          <select name="gameType" id="gameType">
+            <option>Game (8-ball or 9-ball)</option>
+            <option value="8-ball">8-ball</option>
+            <option value="9-ball">9-ball</option>
+          </select>
+        </div>
+
         <button type="submit">Create Match</button>
       </form>
 
