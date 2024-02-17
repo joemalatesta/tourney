@@ -94,7 +94,7 @@ const CreateMatch = (props) => {
           handleAddItem={handleAddItem}
         />
         <ListOfPlayers
-          title="Players assigned to Match"
+          title="Assigned to Match"
           players={match}
           handleRemoveItem={handleRemoveItem}
         />
