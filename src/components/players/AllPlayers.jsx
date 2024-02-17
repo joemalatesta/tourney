@@ -35,7 +35,7 @@ const AllPlayers = (props) => {
   };
   
   return (
-    <div className="bracket flex" style={{ flexDirection: "column", width: '400px' }}>
+    <div className="bracket flex" style={{ flexDirection: "column", width: '100%',justifyContent:'center', alignItems:'center' }}>
       {confirmDelete && (
         <div className='red-felt' >
           <p>Are you sure you want to delete {playerToDelete?.name}?</p>
@@ -44,7 +44,7 @@ const AllPlayers = (props) => {
         </div>
       )}
       {props?.players?.map((player) => (
-        <div className="flex bracket" style={{ flexDirection: 'column' }} key={player._id}>
+        <div className="flex bracket 33" style={{ flexDirection: 'column', alignItems:'baseline', width:'300px'}} key={player._id}>
           <div className="flex">
             <div className="flex">
               <button onClick={() => areYouSure(player)}>Delete</button>
@@ -53,7 +53,7 @@ const AllPlayers = (props) => {
               <button onClick={() => handleChange(player)}>Edit</button>
             </div>
             <div className="flex">
-              {player.name} : {player.rank}
+              ----------{player.name} : {player.rank}
             </div>
           </div>
           <div className="flex end"></div>
