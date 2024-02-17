@@ -66,7 +66,7 @@ const CreateMatch = (props) => {
   return (
     <main className="center bracket">
       <form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
-        <label className="center">Match Name (unique required)</label>
+        <label className="center">Match Name</label>
         <input
           className="center"
           type="text"
