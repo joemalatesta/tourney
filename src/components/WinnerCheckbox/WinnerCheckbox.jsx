@@ -10,7 +10,7 @@ const WinnerCheckbox = (props) => {
         prevInfo === props.count
       ) {
         return [
-          props.count + 1
+          parseInt(props.count) + 1
         ]
       }
     })
