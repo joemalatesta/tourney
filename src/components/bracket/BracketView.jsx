@@ -7,6 +7,11 @@ import WinnerCheckbox from "../WinnerCheckbox/WinnerCheckbox"
 const BracketView = (props) => {
   const navigate = useNavigate()
   const [playerInfo, setPlayerInfo] = useState()
+ 
+  useEffect(() => {
+    props.setRerender(!props.render)
+  }, [playerInfo]);
+
   useEffect(() => {
     const getPlayerStats = async () => {
       try {
@@ -23,7 +28,7 @@ const BracketView = (props) => {
     }
     getPlayerStats()
   }, [props.match])
-
+  
   const handleAddWinnerToNextRound = (id) => {
     let idxNum = props.roundIndex.indexOf(id)
     let idx = Math.floor(idxNum / 2)
@@ -70,6 +75,8 @@ const BracketView = (props) => {
             </div>
             {props?.user?.name === "Admin" && (
               <WinnerCheckbox
+              count={props.count}
+              setCount={props.setCount}
                 roundId={props.roundId}
                 handleUpdateMatch={props.handleUpdateMatch}
                 setMatchDetails={props.setMatchDetails}

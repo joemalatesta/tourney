@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import Bracket from "./Bracket"
 const BracketLayout = ({
   gameObj,
@@ -8,15 +8,14 @@ const BracketLayout = ({
   setMatchDetails,
   matchDetails,
 }) => {
+  const [count, setCount] = useState(0)
   useEffect(() => {
     const getCurrentMatchDetails = () => {
       let data = gameObj
       setMatchDetails(data)
     }
     getCurrentMatchDetails()
-  }, [matchDetails, gameObj])
-
-  console.log(matchDetails);
+  }, [matchDetails.rounds])
 
   return (
     <div className="auto-width">
@@ -24,6 +23,8 @@ const BracketLayout = ({
         <div className="flex">
           <div className="flex-column">
             <Bracket
+              count={count}
+              setCount={setCount}
               setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               user={user}
@@ -35,6 +36,8 @@ const BracketLayout = ({
           </div>
           <div>
             <Bracket
+              count={count}
+              setCount={setCount}
               setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[1]}
@@ -46,6 +49,8 @@ const BracketLayout = ({
           </div>
           <div>
             <Bracket
+              count={count}
+              setCount={setCount}
               setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[2]}
@@ -57,6 +62,8 @@ const BracketLayout = ({
           </div>
           <div>
             <Bracket
+              count={count}
+              setCount={setCount}
               setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[3]}
@@ -68,6 +75,8 @@ const BracketLayout = ({
           </div>
           <div>
             <Bracket
+              count={count}
+              setCount={setCount}
               setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[4]}
@@ -79,6 +88,8 @@ const BracketLayout = ({
           </div>
           <div>
             <Bracket
+              count={count}
+              setCount={setCount}
               setTwoPlayerMatch={setTwoPlayerMatch}
               setMatchDetails={setMatchDetails}
               rounds={gameObj?.rounds[5]}
