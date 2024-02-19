@@ -5,7 +5,7 @@ const WinnerCheckbox = (props) => {
 
   const handleHideWinnerCheckbox = () => {
     props.setCount((prevInfo) => {
-      console.log(prevInfo);
+      // console.log(prevInfo);
       if (
         prevInfo === props.count
       ) {

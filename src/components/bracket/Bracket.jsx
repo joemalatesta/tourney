@@ -15,7 +15,7 @@ const Bracket = (props) => {
   }, [props.gameObj.rounds, props.count])
 
   useEffect(() => {
-    console.log('*',props.count)
+    // console.log('*',props.count)
   }, [props.count]);
 
   return (
