@@ -1,9 +1,13 @@
 const ListOfPlayers = (props) => {
+
+  const sortedPlayers = props?.players?.slice().sort((a, b) => a.name.localeCompare(b.name));
+
+
   return (
     <div className="green-felt bracket" style={{ width: "275px" }}>
       <h2>{props.title}</h2>
       <ul>
-        {props.players?.map((player) => (
+        {sortedPlayers?.map((player) => (
           <div key={player._id}>
             {props.handleAddItem ? (
               <button onClick={() => props.handleAddItem(player)}> ADD </button>

@@ -34,9 +34,11 @@ const AllPlayers = (props) => {
     setPlayerToDelete(null)
   }
 
+  const sortedPlayers = props?.players?.slice().sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <div
-      className="bracket flex"
+    className="bracket"
       style={{
         flexDirection: "column",
         width: "90%",
@@ -45,15 +47,15 @@ const AllPlayers = (props) => {
       }}
     >
       {confirmDelete && (
-        <div className="red-felt">
+        <div className="blue-felt">
           <p>Are you sure you want to delete {playerToDelete?.name}?</p>
           <button onClick={confirmDeleteAction}>Yes</button>
           <button onClick={cancelDeleteAction}>No</button>
         </div>
       )}
-      {props?.players?.map((player) => (
+      {sortedPlayers?.map((player) => (
         <div
-          className="flex bracket 33"
+          
           style={{
             flexDirection: "column",
             alignItems: "baseline",

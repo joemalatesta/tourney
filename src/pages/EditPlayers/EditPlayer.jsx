@@ -75,6 +75,7 @@ const EditPlayer = (props) => {
         </div>
       </form>
       <AllPlayers
+        title={title}
         handleDeletePlayer={props.handleDeletePlayer}
         setFormData={setFormData}
         changeTitle={changeTitle}
