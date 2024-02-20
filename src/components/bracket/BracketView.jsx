@@ -7,10 +7,9 @@ import WinnerCheckbox from "../WinnerCheckbox/WinnerCheckbox"
 const BracketView = (props) => {
   const navigate = useNavigate()
   const [playerInfo, setPlayerInfo] = useState()
- 
   useEffect(() => {
     props.setRerender(!props.render)
-  }, [playerInfo]);
+  }, [playerInfo])
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -28,18 +27,40 @@ const BracketView = (props) => {
     }
     getPlayerStats()
   }, [props.match])
-  
-  const handleAddWinnerToNextRound = (id) => {
-    let idxNum = props.roundIndex.indexOf(id)
+
+  const handleAddWinnerToNextRound = (playerId) => {
+    let idxNum = props.roundIndex.indexOf(playerId)
     let idx = Math.floor(idxNum / 2)
-    props.setMatchDetails((prevGameObj) => {
-      const updatedGameObj = { ...prevGameObj }
-      updatedGameObj.rounds[props.roundId + 1].splice(idx, 1, id)
-      return updatedGameObj
-    })
+
+    
+    if (props.isWinnerBracket === true) {
+      if(props.roundIndex.length <= 2) return <h1>{playerId} is the Winner</h1>
+      props.setMatchDetails((prevGameObj) => {
+        const updatedGameObj = { ...prevGameObj }
+        updatedGameObj.rounds[props.roundId + 1].splice(idx, 1, playerId)
+        return updatedGameObj
+      })
+      props.setMatchDetails((prevGameObj) => {
+        console.log(props.match)
+        const loser = props.match.filter((loserId) => loserId !== playerId)
+        console.log(loser)
+        const updatedGameObj = { ...prevGameObj }
+        updatedGameObj.loserRounds[props.roundId + 1].splice(idx, 1, loser)
+        return updatedGameObj
+      })
+    }
+    // if (props.isWinnerBracket === false) {
+    //   console.log(props.match)
+
+    //   console.log(playerId);
+    //   props.setMatchDetails((prevGameObj) => {
+    //     const updatedGameObj = { ...prevGameObj }
+    //     updatedGameObj.loserRounds[props.roundId +1].splice(idx, 1, playerId)
+    //     return updatedGameObj
+    //   })
+    // }
     props.handleUpdateMatch(props.gameObj)
   }
-
   const handleViewSingleMatch = () => {
     props.setTwoPlayerMatch(playerInfo)
     navigate("/match-view")
@@ -75,8 +96,8 @@ const BracketView = (props) => {
             </div>
             {props?.user?.name === "Admin" && (
               <WinnerCheckbox
-              count={props.count}
-              setCount={props.setCount}
+                count={props.count}
+                setCount={props.setCount}
                 roundId={props.roundId}
                 handleUpdateMatch={props.handleUpdateMatch}
                 setMatchDetails={props.setMatchDetails}

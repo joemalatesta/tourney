@@ -96,7 +96,7 @@ const CreateMatch = (props) => {
             <option value="9-ball">9-ball</option>
           </select>
         </div>
-        <div
+        {/* <div
             className="center"
             type=""
             id="doubleElim"
@@ -110,7 +110,7 @@ const CreateMatch = (props) => {
             <option value='true'>Yes</option>
             <option value="false">No</option>
           </select>
-        </div>
+        </div> */}
 
         <button type="submit">Create Match</button>
       </form>

@@ -4,9 +4,7 @@ import { useState, useEffect } from "react"
 
 const Bracket = (props) => {
   const [matches, setMatches] = useState()
-  const [rerender, setRerender] = useState(false);
-
-  console.log(props);
+  const [rerender, setRerender] = useState(false)
 
   useEffect(() => {
     const getRounds = async () => {
@@ -14,11 +12,11 @@ const Bracket = (props) => {
       setMatches(data)
     }
     getRounds()
-  }, [props.gameObj.rounds, props.count])
+  }, [props.gameObj.rounds, props.gameObj.loserRounds, props.count])
 
   useEffect(() => {
     // console.log('*',props.count)
-  }, [props.count]);
+  }, [props.count])
 
   return (
     <>
@@ -29,6 +27,7 @@ const Bracket = (props) => {
           key={idx}
         >
           <BracketView
+            isWinnerBracket={props.isWinnerBracket}
             count={props.count}
             setCount={props.setCount}
             setTwoPlayerMatch={props.setTwoPlayerMatch}
