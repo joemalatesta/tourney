@@ -32,14 +32,13 @@ const BracketView = (props) => {
     let idxNum = props.roundIndex.indexOf(playerId)
     let idx = Math.floor(idxNum / 2)
 
-    
     // if (props.isWinnerBracket === true) {
-      if(props.roundIndex.length <= 2) return <h1>{playerId} is the Winner</h1>
-      props.setMatchDetails((prevGameObj) => {
-        const updatedGameObj = { ...prevGameObj }
-        updatedGameObj.rounds[props.roundId + 1].splice(idx, 1, playerId)
-        return updatedGameObj
-      })
+    if (props.roundIndex.length <= 2) return <h1>{playerId} is the Winner</h1>
+    props.setMatchDetails((prevGameObj) => {
+      const updatedGameObj = { ...prevGameObj }
+      updatedGameObj.rounds[props.roundId + 1].splice(idx, 1, playerId)
+      return updatedGameObj
+    })
     //   props.setMatchDetails((prevGameObj) => {
     //     console.log(props.match)
     //     const loser = props.match.filter((loserId) => loserId !== playerId)

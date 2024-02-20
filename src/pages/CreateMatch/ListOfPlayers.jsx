@@ -1,6 +1,7 @@
 const ListOfPlayers = (props) => {
-
-  const sortedPlayers = props?.players?.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const sortedPlayers = props?.players
+    ?.slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <div className="green-felt bracket">

@@ -34,11 +34,13 @@ const AllPlayers = (props) => {
     setPlayerToDelete(null)
   }
 
-  const sortedPlayers = props?.players?.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const sortedPlayers = props?.players
+    ?.slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <div
-    className="bracket"
+      className="bracket"
       style={{
         flexDirection: "column",
         width: "100%",
@@ -62,14 +64,14 @@ const AllPlayers = (props) => {
           }}
           key={player._id}
         >
-          <div className="flex"  style={{width:'300px', }}>
+          <div className="flex" style={{ width: "300px" }}>
             <div className="flex">
               <button onClick={() => areYouSure(player)}>Delete</button>
             </div>
             <div className="flex">
               <button onClick={() => handleChange(player)}>Edit</button>
             </div>
-            <div className="flex" style={{width:'300px'}}>
+            <div className="flex" style={{ width: "300px" }}>
               --{player.name} : {player.rank}
             </div>
           </div>

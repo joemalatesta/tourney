@@ -22,8 +22,6 @@ const BracketLayout = ({
     setIsWinnerBracket(!isWinnerBracket)
   }
 
-  console.log(matchDetails);
-
   return (
     <div className="auto-width">
       {gameObj.doubleElim === true && (

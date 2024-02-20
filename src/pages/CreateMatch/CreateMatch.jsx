@@ -37,10 +37,10 @@ const CreateMatch = (props) => {
 
   const handleChange = (evt) => {
     if (evt.target.name === "doubleElim") {
-      const isDoubleElim = evt.target.value === 'true';
-      setFormData({ ...formData, doubleElim: isDoubleElim });
+      const isDoubleElim = evt.target.value === "true"
+      setFormData({ ...formData, doubleElim: isDoubleElim })
     } else {
-      setFormData({ ...formData, [evt.target.name]: evt.target.value });
+      setFormData({ ...formData, [evt.target.name]: evt.target.value })
     }
   }
 
@@ -62,7 +62,7 @@ const CreateMatch = (props) => {
       ...formData,
       matchPlayers: match,
       rounds: addNullToRoundArray(match.length),
-      loserRounds: addNullToRoundArray(match.length)
+      loserRounds: addNullToRoundArray(match.length),
     }
     await props.handleAddMatch(updatedFormData)
     navigate("/view-tournaments")
@@ -115,7 +115,7 @@ const CreateMatch = (props) => {
         <button type="submit">Create Match</button>
       </form>
 
-      <section className="bracket flex" style={{width:'600px'}}>
+      <section className="bracket flex" style={{ width: "600px" }}>
         <ListOfPlayers
           title="Available Players"
           players={players}
