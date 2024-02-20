@@ -81,6 +81,7 @@ const EditPlayer = (props) => {
         changeTitle={changeTitle}
         players={props.players}
       />
+      <p>{props.players.length} players</p>
     </div>
   )
 }

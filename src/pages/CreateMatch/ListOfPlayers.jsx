@@ -2,10 +2,10 @@ const ListOfPlayers = (props) => {
 
   const sortedPlayers = props?.players?.slice().sort((a, b) => a.name.localeCompare(b.name));
 
-
   return (
-    <div className="green-felt bracket" style={{ width: "275px" }}>
+    <div className="green-felt bracket">
       <h2>{props.title}</h2>
+      <p>{sortedPlayers.length} Number of available players</p>
       <ul>
         {sortedPlayers?.map((player) => (
           <div key={player._id}>

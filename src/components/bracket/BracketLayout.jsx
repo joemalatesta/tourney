@@ -22,6 +22,8 @@ const BracketLayout = ({
     setIsWinnerBracket(!isWinnerBracket)
   }
 
+  console.log(matchDetails);
+
   return (
     <div className="auto-width">
       {gameObj.doubleElim === true && (
@@ -122,6 +124,20 @@ const BracketLayout = ({
                   roundId={5}
                 />
               </div>
+              <div>
+                <Bracket
+                  isWinnerBracket={isWinnerBracket}
+                  count={count}
+                  setCount={setCount}
+                  setTwoPlayerMatch={setTwoPlayerMatch}
+                  setMatchDetails={setMatchDetails}
+                  rounds={gameObj?.rounds[6]}
+                  user={user}
+                  gameObj={gameObj}
+                  handleUpdateMatch={handleUpdateMatch}
+                  roundId={6}
+                />
+              </div>
             </>
           )}
           {isWinnerBracket === false && gameObj.doubleElim === true && (
@@ -137,7 +153,7 @@ const BracketLayout = ({
                   gameObj={gameObj}
                   rounds={gameObj?.loserRounds[0]}
                   handleUpdateMatch={handleUpdateMatch}
-                  roundId={6}
+                  roundId={7}
                 />
               </div>
               <div>
@@ -151,7 +167,7 @@ const BracketLayout = ({
                   user={user}
                   gameObj={matchDetails}
                   handleUpdateMatch={handleUpdateMatch}
-                  roundId={7}
+                  roundId={8}
                 />
               </div>
               <div>
@@ -179,7 +195,7 @@ const BracketLayout = ({
                   user={user}
                   gameObj={gameObj}
                   handleUpdateMatch={handleUpdateMatch}
-                  roundId={9}
+                  roundId={10}
                 />
               </div>
               <div>
@@ -193,7 +209,7 @@ const BracketLayout = ({
                   user={user}
                   gameObj={gameObj}
                   handleUpdateMatch={handleUpdateMatch}
-                  roundId={10}
+                  roundId={11}
                 />
               </div>
               <div>
@@ -207,7 +223,7 @@ const BracketLayout = ({
                   user={user}
                   gameObj={gameObj}
                   handleUpdateMatch={handleUpdateMatch}
-                  roundId={11}
+                  roundId={12}
                 />
               </div>
             </>

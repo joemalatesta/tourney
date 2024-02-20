@@ -41,7 +41,7 @@ const AllPlayers = (props) => {
     className="bracket"
       style={{
         flexDirection: "column",
-        width: "90%",
+        width: "100%",
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -55,23 +55,22 @@ const AllPlayers = (props) => {
       )}
       {sortedPlayers?.map((player) => (
         <div
-          
+          className="flex"
           style={{
             flexDirection: "column",
             alignItems: "baseline",
-            width: "300px",
           }}
           key={player._id}
         >
-          <div className="flex">
+          <div className="flex"  style={{width:'300px', }}>
             <div className="flex">
               <button onClick={() => areYouSure(player)}>Delete</button>
             </div>
             <div className="flex">
               <button onClick={() => handleChange(player)}>Edit</button>
             </div>
-            <div className="flex">
-              ----------{player.name} : {player.rank}
+            <div className="flex" style={{width:'300px'}}>
+              --{player.name} : {player.rank}
             </div>
           </div>
           <div className="flex end"></div>
