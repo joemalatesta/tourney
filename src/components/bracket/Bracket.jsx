@@ -6,6 +6,8 @@ const Bracket = (props) => {
   const [matches, setMatches] = useState()
   const [rerender, setRerender] = useState(false);
 
+  console.log(props);
+
   useEffect(() => {
     const getRounds = async () => {
       let data = await gameServices.SplitIntoMatches(props.rounds)

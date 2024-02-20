@@ -13,6 +13,7 @@ const CreateMatch = (props) => {
     gameType: "",
     matchPlayers: [],
     rounds: [],
+    loserRounds: [],
   })
   const [players, setPlayers] = useState(props.players)
 
@@ -35,16 +36,19 @@ const CreateMatch = (props) => {
   }
 
   const handleChange = (evt) => {
-    setFormData({ ...formData, [evt.target.name]: evt.target.value })
+    if (evt.target.name === "doubleElim") {
+      const isDoubleElim = evt.target.value === 'true';
+      setFormData({ ...formData, doubleElim: isDoubleElim });
+    } else {
+      setFormData({ ...formData, [evt.target.name]: evt.target.value });
+    }
   }
 
   const addNullToRoundArray = (num) => {
     const roundsArray = [null]
     let nullsInSubarray = num
-
     while (num > 2) {
       nullsInSubarray = Math.min(num, Math.ceil(num / 2))
-
       roundsArray.push(Array(nullsInSubarray).fill(null))
       num -= nullsInSubarray
     }
@@ -58,6 +62,7 @@ const CreateMatch = (props) => {
       ...formData,
       matchPlayers: match,
       rounds: addNullToRoundArray(match.length),
+      loserRounds: addNullToRoundArray(match.length)
     }
     await props.handleAddMatch(updatedFormData)
     navigate("/view-tournaments")
@@ -89,6 +94,21 @@ const CreateMatch = (props) => {
             <option>Game (8-ball or 9-ball)</option>
             <option value="8-ball">8-ball</option>
             <option value="9-ball">9-ball</option>
+          </select>
+        </div>
+        <div
+            className="center"
+            type=""
+            id="doubleElim"
+            name="doubleElim"
+            value={formData.doubleElim}
+            onChange={handleChange}
+            required
+        >
+          <select name="doubleElim" onChange={handleChange} id="doubleElim" required>
+            <option>Double Elimination</option>
+            <option value='true'>Yes</option>
+            <option value="false">No</option>
           </select>
         </div>
 
