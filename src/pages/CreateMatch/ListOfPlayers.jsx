@@ -10,10 +10,10 @@ const ListOfPlayers = (props) => {
       <ul>
         {sortedPlayers?.map((player) => (
           <div key={player._id}>
-            {props.handleAddItem ? (
-              <button onClick={() => props.handleAddItem(player)}> ADD </button>
+            {props.handleAdd ? (
+              <button onClick={() => props.handleAdd(player)}> ADD </button>
             ) : (
-              <button onClick={() => props.handleRemoveItem(player)}>
+              <button onClick={() => props.handleRemove(player)}>
                 {" "}
                 REMOVE{" "}
               </button>

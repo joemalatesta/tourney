@@ -14,6 +14,7 @@ const CreateMatch = (props) => {
     matchPlayers: [],
     rounds: [],
     loserRounds: [],
+    handicap:""
   })
   const [players, setPlayers] = useState(props.players)
 
@@ -25,21 +26,24 @@ const CreateMatch = (props) => {
     fetchPlayers()
   }, [])
 
-  const handleAddItem = (item) => {
-    setMatch([item, ...match])
-    setPlayers(players.filter((el) => el._id !== item._id))
+  const handleAdd = (player) => {
+    setMatch([player, ...match])
+    setPlayers(players.filter((el) => el._id !== player._id))
   }
 
-  const handleRemoveItem = (item) => {
-    setMatch(match.filter((el) => el._id !== item._id))
-    setPlayers([...players, item])
+  const handleRemove = (player) => {
+    setMatch(match.filter((el) => el._id !== player._id))
+    setPlayers([...players, player])
   }
 
   const handleChange = (evt) => {
     if (evt.target.name === "doubleElim") {
       const isDoubleElim = evt.target.value === "true"
       setFormData({ ...formData, doubleElim: isDoubleElim })
-    } else {
+    }else if (evt.target.name === "handicap") {
+      const isHandicap = evt.target.value === "true"
+      setFormData({...formData, handicap: isHandicap})
+    }else{
       setFormData({ ...formData, [evt.target.name]: evt.target.value })
     }
   }
@@ -57,15 +61,17 @@ const CreateMatch = (props) => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault()
-    setMatch(gameService.shufflePlayers(match))
-    const updatedFormData = {
-      ...formData,
-      matchPlayers: match,
-      rounds: addNullToRoundArray(match.length),
-      loserRounds: addNullToRoundArray(match.length),
+    if(match.length >0){
+      setMatch(gameService.shufflePlayers(match))
+      const updatedFormData = {
+        ...formData,
+        matchPlayers: match,
+        rounds: addNullToRoundArray(match.length),
+        loserRounds: addNullToRoundArray(match.length),
+      }
+      await props.handleAddMatch(updatedFormData)
+      navigate("/view-tournaments")
     }
-    await props.handleAddMatch(updatedFormData)
-    navigate("/view-tournaments")
   }
 
   return (
@@ -96,7 +102,7 @@ const CreateMatch = (props) => {
             <option value="9-ball">9-ball</option>
           </select>
         </div>
-        {/* <div
+        <div
             className="center"
             type=""
             id="doubleElim"
@@ -110,7 +116,22 @@ const CreateMatch = (props) => {
             <option value='true'>Yes</option>
             <option value="false">No</option>
           </select>
-        </div> */}
+        </div>
+        <div
+            className="center"
+            type=""
+            id="handicap"
+            name="handicap"
+            value={formData.handicap}
+            onChange={handleChange}
+            required
+        >
+          <select name="handicap" onChange={handleChange} id="handicap" required>
+            <option>Use Player Handicap?</option>
+            <option value='true'>Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
 
         <button type="submit">Create Match</button>
       </form>
@@ -119,12 +140,12 @@ const CreateMatch = (props) => {
         <ListOfPlayers
           title="Available Players"
           players={players}
-          handleAddItem={handleAddItem}
+          handleAdd={handleAdd}
         />
         <ListOfPlayers
           title="Assigned to Match"
           players={match}
-          handleRemoveItem={handleRemoveItem}
+          handleRemove={handleRemove}
         />
       </section>
     </main>

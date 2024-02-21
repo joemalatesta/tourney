@@ -83,13 +83,13 @@ const BracketView = (props) => {
               className="flex"
               style={{ justifyContent: "space-between" }}
               key={idx}
-              onClick={() => handleViewSingleMatch()}
+              onClick={props.gameObj.handicap  ? () => handleViewSingleMatch() : ""}
             >
               <div
                 className="bracket flex"
                 style={{ justifyContent: "space-between", width: "150px" }}
               >
-                {player.name} : {player.rank}
+                {player.name}  {props.gameObj.handicap === true ? `: ${player.rank}` : ""}
                 <div className="flex end"></div>
               </div>
             </div>

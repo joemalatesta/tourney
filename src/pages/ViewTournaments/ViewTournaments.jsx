@@ -34,7 +34,8 @@ const ViewTournaments = ({
   return (
     <div className="bracket center">
       <div className="bracket green-felt" style={{ width: "300px" }}>
-        {tourney?.map((game) => (
+        {tourney?.length > 0 ?
+        tourney?.map((game) => (
           <div key={game._id}>
             <button onClick={() => handleGetMatch(game)}>
               {game.name} : {game.gameType}
@@ -45,7 +46,11 @@ const ViewTournaments = ({
               </button>
             )}
           </div>
-        ))}
+        ))
+        :
+        <h1>No Tournaments Available</h1>
+      }
+        
       </div>
     </div>
   )
