@@ -47,15 +47,18 @@ const Signup = ({ handleAuthEvt }) => {
   }
 
   return (
-    <main>
-      <h1>Sign Up</h1>
+    <main className="green-felt" style={{ width: "100%" }}>
+      <p className="center">{message}</p>
+      <h1 className="center">Sign Up</h1>
       <p>{message}</p>
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <label>
+        <label className="center">
           Name
           <input type="text" value={name} name="name" onChange={handleChange} />
         </label>
-        <label>
+        <br/>
+        <label className="center">
+
           Email
           <input
             type="text"
@@ -64,7 +67,8 @@ const Signup = ({ handleAuthEvt }) => {
             onChange={handleChange}
           />
         </label>
-        <label>
+        <br/>
+        <label className="center">
           Password
           <input
             type="password"
@@ -73,7 +77,8 @@ const Signup = ({ handleAuthEvt }) => {
             onChange={handleChange}
           />
         </label>
-        <label>
+        <br/>
+        <label className="center">
           Confirm Password
           <input
             type="password"
@@ -82,7 +87,7 @@ const Signup = ({ handleAuthEvt }) => {
             onChange={handleChange}
           />
         </label>
-        <div>
+        <div className="center">
           <Link to="/">Cancel</Link>
           <button disabled={isFormInvalid() || isSubmitted}>
             {!isSubmitted ? "Sign Up" : "🚀 Sending..."}
