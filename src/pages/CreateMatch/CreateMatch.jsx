@@ -47,7 +47,7 @@ const CreateMatch = (props) => {
   const addNullToRoundArray = (num) => {
     const roundsArray = [null]
     let nullsInSubarray = num
-    while (num >= 2) {
+    while (num > 2) {
       nullsInSubarray = Math.min(num, Math.ceil(num / 2))
       roundsArray.push(Array(nullsInSubarray).fill(null))
       num -= nullsInSubarray
