@@ -35,7 +35,7 @@ const BracketLayout = ({
         </>
       )}
       <div className="bracket-layout__main extend">
-        <div className="flex">
+        <div className="flex" style={{alignItems: 'center'}}>
           {isWinnerBracket === true && (
             <>
               <div className="flex-column">
