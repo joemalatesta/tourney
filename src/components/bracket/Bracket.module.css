@@ -1,0 +1,21 @@
+.bracket {
+  border-radius: 8px;
+  border: 1px solid white;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  margin: 10px;
+  width: 350px;
+}
+
+.greenFelt {
+  background-image: url('../../../public/felt.jpg');
+  background-size: contain;
+  border-radius: 8px;
+  border: 1px solid white;
+  font-size: 1em;
+}

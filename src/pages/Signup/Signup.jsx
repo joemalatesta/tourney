@@ -1,9 +1,7 @@
-// npm modules
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-
-// services
 import * as authService from "../../services/authService"
+import * as styles from "./Signup.module.css"
 
 const Signup = ({ handleAuthEvt }) => {
   const navigate = useNavigate()
@@ -47,52 +45,70 @@ const Signup = ({ handleAuthEvt }) => {
   }
 
   return (
-    <main className="green-felt" style={{ width: "100%" }}>
-      <p className="center">{message}</p>
-      <h1 className="center">Sign Up</h1>
-      <p>{message}</p>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <label className="center">
-          Name
-          <input type="text" value={name} name="name" onChange={handleChange} />
-        </label>
-        <br/>
-        <label className="center">
+    <main className={styles.greenFelt}>
+      <h1 className={styles.center}>Sign Up</h1>
+      <p className={styles.center}>{message}</p>
+      <form autoComplete="off" className={styles.center} onSubmit={handleSubmit}>
+        <div className="flex 456">
 
-          Email
-          <input
-            type="text"
-            value={email}
-            name="email"
-            onChange={handleChange}
-          />
+        <label>
+          Name
+          <div>
+            <input
+              type="text"
+              value={name}
+              name="name"
+              onChange={handleChange}
+              />
+          </div>
         </label>
-        <br/>
-        <label className="center">
+        <br />
+        <label>
+          Email
+          <div>
+            <input
+              type="text"
+              value={email}
+              name="email"
+              onChange={handleChange}
+              />
+          </div>
+        </label>
+        <br />
+        <label>
           Password
+          <div>
           <input
             type="password"
             value={password}
             name="password"
             onChange={handleChange}
-          />
+            />
+          </div>
         </label>
-        <br/>
-        <label className="center">
+        <br />
+        <label>
           Confirm Password
+          <div>
           <input
             type="password"
             value={passwordConf}
             name="passwordConf"
             onChange={handleChange}
-          />
+            />
+            </div>
         </label>
-        <div className="center">
-          <Link to="/">Cancel</Link>
+        <br/>
+        <div className={styles.center}>
           <button disabled={isFormInvalid() || isSubmitted}>
             {!isSubmitted ? "Sign Up" : "🚀 Sending..."}
           </button>
+          <br/>
         </div>
+        <br/>
+          <Link to="/">Cancel</Link>
+          <br/>
+            </div>
       </form>
     </main>
   )

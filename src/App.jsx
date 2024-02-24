@@ -13,6 +13,9 @@ import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
 import CreateMatch from "./pages/CreateMatch/CreateMatch"
 import Brackets from "./pages/Brackets/Brackets"
 import MatchView from "./pages/MatchView/MatchView"
+import CreateTeam from "./pages/CreateTeam/CreateTeam"
+import ViewTeams from "./pages/ViewTeams/ViewTeams" 
+import ViewTeam from "./pages/ViewTeam/ViewTeam"
 
 // components
 import NavBar from "./components/NavBar/NavBar"
@@ -22,9 +25,11 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
 import * as authService from "./services/authService"
 import * as playerService from "./services/playerService"
 import * as matchService from "./services/matchService"
+import * as teamService from "./services/teamService"
 
 // styles
 import "./App.css"
+import AdminNavBar from "./components/NavBar/AdminNavBar"
 
 function App() {
   const navigate = useNavigate()
@@ -34,6 +39,7 @@ function App() {
   const [tourneyMatch, setTourneyMatch] = useState()
   const [singleMatch, setSingleMatch] = useState()
   const [twoPlayerMatch, setTwoPlayerMatch] = useState()
+  const [team, setTeam] = useState({})
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -99,6 +105,10 @@ function App() {
     const newMatch = await matchService.create(newMatchData)
     setTourneyMatch([...tourneyMatch, newMatch])
   }
+  const handleAddTeam = async (newTeamData) => {
+    const newTeam = await teamService.create(newTeamData)
+    console.log(newTeam);
+  }
 
   const handleDeleteMatch = async (id) => {
     const deletedMatch = await matchService.deleteOne(id)
@@ -118,7 +128,11 @@ function App() {
 
   return (
     <>
-      <NavBar playMatch={playMatch} user={user} handleLogout={handleLogout} />
+    {user?.name === "Admin" ?
+      <AdminNavBar user={user} handleLogout={handleLogout}/>
+      :
+      <NavBar user={user} handleLogout={handleLogout}/>
+    }
       <Routes>
         <Route path="/" element={<Landing user={user} players={players} />} />
         <Route
@@ -206,6 +220,41 @@ function App() {
               handleDeleteMatch={handleDeleteMatch}
               setSingleMatch={setSingleMatch}
             />
+          }
+        />
+                <Route
+          disable={isDisabled}
+          path="/create-team"
+          element={
+            <ProtectedRoute user={user}>
+              <CreateTeam
+                players={players}
+                handleAddTeam={handleAddTeam}
+              />
+            </ProtectedRoute>
+          }
+        />
+                <Route
+          disable={isDisabled}
+          path="/view-teams"
+          element={
+            <ProtectedRoute user={user}>
+              <ViewTeams
+                setTeam={setTeam}
+         
+              />
+            </ProtectedRoute>
+          }
+        />
+                <Route
+          disable={isDisabled}
+          path="/view-team"
+          element={
+            <ProtectedRoute user={user}>
+              <ViewTeam
+                team={team}
+              />
+            </ProtectedRoute>
           }
         />
       </Routes>

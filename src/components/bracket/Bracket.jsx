@@ -1,6 +1,7 @@
 import * as gameServices from "../../services/gameService"
 import BracketView from "./BracketView"
 import { useState, useEffect } from "react"
+import styles from './Bracket.module.css'
 
 const Bracket = (props) => {
   const [matches, setMatches] = useState()
@@ -22,8 +23,7 @@ const Bracket = (props) => {
     <>
       {matches?.map((matchInfo, idx) => (
         <div
-          className="bracket green-felt"
-          style={{ width: "350px" }}
+          className={`${styles.bracket} ${styles.greenFelt}` }
           key={idx}
         >
           <BracketView

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as matchService from "../../services/matchService"
+import * as styles from "./ViewTournaments.module.css"
 
 const ViewTournaments = ({
   user,
@@ -32,25 +33,24 @@ const ViewTournaments = ({
   }
 
   return (
-    <div className="bracket center">
-      <div className="bracket green-felt" style={{ width: "300px" }}>
-        {tourney?.length > 0 ?
-        tourney?.map((game) => (
-          <div key={game._id}>
-            <button onClick={() => handleGetMatch(game)}>
-              {game.name} : {game.gameType}
-            </button>
-            {user?.name === "Admin" && (
-              <button onClick={() => handleDeleteMatch(game._id)}>
-                delete match
+    <div className={`${styles.bracket}`}>
+      <div className={`${styles.greenFelt}`}>
+        {tourney?.length > 0 ? (
+          tourney?.map((game) => (
+            <div key={game._id}>
+              <button onClick={() => handleGetMatch(game)}>
+                {game.name} : {game.gameType}
               </button>
-            )}
-          </div>
-        ))
-        :
-        <h1>No Tournaments Available</h1>
-      }
-        
+              {user?.name === "Admin" && (
+                <button onClick={() => handleDeleteMatch(game._id)}>
+                  delete match
+                </button>
+              )}
+            </div>
+          ))
+        ) : (
+          <h1>No Tournaments Available</h1>
+        )}
       </div>
     </div>
   )
