@@ -5,9 +5,7 @@ const ListOfPlayers = (props) => {
   if(props.players.length > 0){
     sortedPlayers = props?.players?.slice().sort((a, b) => a?.name.localeCompare(b?.name))
   }
-
-
-
+  
   return (
     <div className="green-felt bracket">
       <h2>{props.title}</h2>
