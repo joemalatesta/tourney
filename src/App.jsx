@@ -16,6 +16,7 @@ import MatchView from "./pages/MatchView/MatchView"
 import CreateTeam from "./pages/CreateTeam/CreateTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams" 
 import ViewTeam from "./pages/ViewTeam/ViewTeam"
+import SeasonMatch from "./pages/SeasonMatch/SeasonMatch"
 
 // components
 import NavBar from "./components/NavBar/NavBar"
@@ -255,6 +256,14 @@ function App() {
                 team={team}
               />
             </ProtectedRoute>
+          }
+        />
+                <Route
+          disable={isDisabled}
+          path="/season-match"
+          element={
+              <SeasonMatch
+              />
           }
         />
       </Routes>
