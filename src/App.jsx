@@ -238,12 +238,12 @@ function App() {
           disable={isDisabled}
           path="/view-teams"
           element={
-            <ProtectedRoute user={user}>
+           
               <ViewTeams
                 setTeam={setTeam}
          
               />
-            </ProtectedRoute>
+   
           }
         />
                 <Route

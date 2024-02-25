@@ -51,6 +51,8 @@ const AllPlayers = (props) => {
       {confirmDelete && (
         <div className="blue-felt">
           <p>Are you sure you want to delete {playerToDelete?.name}?</p>
+          <br/>
+          <p>(This action cannot be undone!)</p>
           <button onClick={confirmDeleteAction}>Yes</button>
           <button onClick={cancelDeleteAction}>No</button>
         </div>
