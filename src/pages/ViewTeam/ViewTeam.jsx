@@ -27,7 +27,7 @@ const ViewTeam = (props) => {
       <h1>{props.team.teamName}</h1>
       <h3>{playerInfo?.map(player=>
         <p key={player._id}>
-          {player.name} {player._id === props.team.teamCaptain && '(Captain)'}
+          {player.name} ({player.rank}) {player._id === props.team.teamCaptain && '** Captain **'}
         </p>
 
       )}</h3>
