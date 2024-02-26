@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import * as playerService from '../../services/playerService'
 
-const TeamPlayers = ({team, handleChoosePlayer, title}) => {
+const TeamPlayers = ({team, handleChoosePlayer, title, matchPlayer}) => {
   const [playerInfo, setPlayerInfo] = useState()
 
   useEffect(() => {
@@ -20,12 +20,15 @@ const TeamPlayers = ({team, handleChoosePlayer, title}) => {
     getPlayerStats();
   }, [team]);
 
+  console.log(matchPlayer);
   return (
     <>
     <h3>Players</h3>
       {playerInfo?.map(player =>
       <div onClick={()=>handleChoosePlayer(player,title)} key={player._id}>
-        {player.name} ({player.rank}) {player._id == team.teamCaptain ? '** Captain **' : ''}
+        <div>
+          <span style={matchPlayer?._id === player._id?{color:'red'}:{}}>{player.name}</span> ({player.rank}) {player._id == team.teamCaptain ? '** Captain **' : ''}
+        </div>
       </div>  
       )}
     </>

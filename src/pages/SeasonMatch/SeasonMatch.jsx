@@ -14,7 +14,6 @@ const SeasonMatch = (props) => {
   const [match, setMatch] = useState([])
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [message, setMessage] = useState("")
-  const [isHighlighted, setIsHighlighted] = useState(false)
 
   useEffect(() => {
     const getTeamData = async () => {
@@ -77,7 +76,7 @@ const SeasonMatch = (props) => {
           />
           <div className="bracket">
             <TeamPlayers
-              isHighlighted={isHighlighted}
+              matchPlayer={player1}
               title="Team 1"
               team={team1}
               handleChoosePlayer={handleChoosePlayer}
@@ -123,6 +122,7 @@ const SeasonMatch = (props) => {
           />
           <div className="bracket">
             <TeamPlayers
+              matchPlayer={player2}
               title="Team 2"
               team={team2}
               handleChoosePlayer={handleChoosePlayer}
