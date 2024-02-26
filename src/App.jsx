@@ -14,7 +14,7 @@ import CreateMatch from "./pages/CreateMatch/CreateMatch"
 import Brackets from "./pages/Brackets/Brackets"
 import MatchView from "./pages/MatchView/MatchView"
 import CreateTeam from "./pages/CreateTeam/CreateTeam"
-import ViewTeams from "./pages/ViewTeams/ViewTeams" 
+import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import SeasonMatch from "./pages/SeasonMatch/SeasonMatch"
 
@@ -108,7 +108,7 @@ function App() {
   }
   const handleAddTeam = async (newTeamData) => {
     const newTeam = await teamService.create(newTeamData)
-    console.log(newTeam);
+    newTeam
   }
 
   const handleDeleteMatch = async (id) => {
@@ -129,11 +129,11 @@ function App() {
 
   return (
     <>
-    {user?.name === "Admin" ?
-      <AdminNavBar user={user} handleLogout={handleLogout}/>
-      :
-      <NavBar user={user} handleLogout={handleLogout}/>
-    }
+      {user?.name === "Admin" ? (
+        <AdminNavBar user={user} handleLogout={handleLogout} />
+      ) : (
+        <NavBar user={user} handleLogout={handleLogout} />
+      )}
       <Routes>
         <Route path="/" element={<Landing user={user} players={players} />} />
         <Route
@@ -223,49 +223,33 @@ function App() {
             />
           }
         />
-                <Route
+        <Route
           disable={isDisabled}
           path="/create-team"
           element={
             <ProtectedRoute user={user}>
-              <CreateTeam
-                players={players}
-                handleAddTeam={handleAddTeam}
-              />
+              <CreateTeam players={players} handleAddTeam={handleAddTeam} />
             </ProtectedRoute>
           }
         />
-                <Route
+        <Route
           disable={isDisabled}
           path="/view-teams"
-          element={
-           
-              <ViewTeams
-                setTeam={setTeam}
-         
-              />
-   
-          }
+          element={<ViewTeams setTeam={setTeam} />}
         />
-                <Route
+        <Route
           disable={isDisabled}
           path="/view-team"
           element={
             <ProtectedRoute user={user}>
-              <ViewTeam
-                team={team}
-              />
+              <ViewTeam team={team} />
             </ProtectedRoute>
           }
         />
-                <Route
+        <Route
           disable={isDisabled}
           path="/season-match"
-          element={
-              <SeasonMatch
-                setTwoPlayerMatch={setTwoPlayerMatch}
-              />
-          }
+          element={<SeasonMatch setTwoPlayerMatch={setTwoPlayerMatch} />}
         />
       </Routes>
     </>

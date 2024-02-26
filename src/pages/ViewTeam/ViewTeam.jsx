@@ -21,7 +21,6 @@ const ViewTeam = (props) => {
     getPlayerStats()
   }, [])
 
-  console.log(props.team);
   return (
     <>
       <h1>{props.team.teamName}</h1>

@@ -13,7 +13,7 @@ const SeasonMatch = (props) => {
   const [player2, setPlayer2] = useState(null)
   const [match, setMatch] = useState([])
   const [isSubmitted, setIsSubmitted] = useState(false)
-
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     const getTeamData = async () => {
@@ -24,12 +24,8 @@ const SeasonMatch = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log('refreshed');
+    
   },[match])
-
-  useEffect(() => {
-    console.log('refreshed', match);
-  }, [match]);
 
   const handleChooseTeam = (team, title) => {
     if (title === 'Team 1') {
@@ -41,18 +37,17 @@ const SeasonMatch = (props) => {
       setTeam2(team);
       setPlayer2(null);
       setTeams(teams.filter((el) => el._id !== team._id));
-      console.log(team);
     }
   };
 
   const handleChoosePlayer = (player, title) => {
     if(title === 'Team 1'){
       setPlayer1(player)
-      console.log(player);
+      setMessage('')
     }
     if(title === 'Team 2'){
       setPlayer2(player)
-      console.log(player);
+      setMessage('')
     }
   }
   
@@ -60,14 +55,13 @@ const SeasonMatch = (props) => {
     props.setTwoPlayerMatch(match)
     navigate("/match-view")
   }
-  
-  console.log(player1, player2);
-  console.log(match);
 
   const handleSetPlayers = () => {
     if (player1 !== null && player2 !== null) {
       setMatch([player1, player2]);
       setIsSubmitted(true)
+    }else{
+      setMessage("Please Choose Both Players")
     }
   };
 
@@ -91,11 +85,12 @@ const SeasonMatch = (props) => {
       </div>
 
       <div>
-    <h1 style={{color:'red'}}>{team1==null ? "Add a Team" : team1.teamName} vs. {team2==null ? "Add a Team" : team2.teamName}</h1>
+    <h1 style={{color:'red'}}>{team1==null ? <div style={{color:'yellow'}}>Add a Team</div>: <div style={{color:'yellow'}}>{team1.teamName}</div>} vs. {team2==null ? <div style={{color:'yellow'}}>Add a Team</div> : <div style={{color:'yellow'}}>{team2.teamName}</div>}</h1>
          {player1 !== null ? player1.name : 'Awaiting Player'} vs: {player2 !== null ? player2.name : 'Awaiting Player'}
          <br/>
-         <button onClick={()=>handleSetPlayers()}>Set Players</button>
-         <button disabled={!isSubmitted} onClick={()=>handleViewSingleMatch()}>View Match</button>
+         <h2>{message}</h2>
+         <button hidden={isSubmitted} onClick={()=>handleSetPlayers()}>Set Players</button>
+         <button hidden={!isSubmitted} style={{backgroundColor:'green'}} onClick={()=>handleViewSingleMatch()}>View Match</button>
       </div>
       <div className='flex-direction'>
         <Team

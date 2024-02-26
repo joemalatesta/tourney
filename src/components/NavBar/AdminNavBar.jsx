@@ -7,6 +7,7 @@ const AdminNavBar = ({user, handleLogout}) => {
        <div className="nav-bar">
           <NavLink to="/">Welcome {user.name}</NavLink>
           <NavLink to="/player-management">Player Management</NavLink>
+          <NavLink to='/season-match'>Season Match</NavLink>
           <NavLink to="/create-team">Create Team</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/add-players-to-match">Create Match</NavLink>

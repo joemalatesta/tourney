@@ -8,17 +8,17 @@ const TeamPlayers = ({team, handleChoosePlayer, title}) => {
     const getPlayerStats = async () => {
       try {
         const data = await Promise.all(
-          team?.teamPlayers?.map((player) =>
-            player === undefined ? player : playerService.findOne(player)
+          (team?.teamPlayers || []).filter(Boolean).map((player) =>
+            playerService.findOne(player)
           )
-        )
-        setPlayerInfo(data)
+        );
+        setPlayerInfo(data);
       } catch (error) {
-        console.error("Error fetching player stats:", error)
+        console.error("Error fetching player stats:", error);
       }
-    }
-    getPlayerStats()
-  }, [team])
+    };
+    getPlayerStats();
+  }, [team]);
 
   return (
     <>

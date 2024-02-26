@@ -111,11 +111,11 @@ const CreateMatch = (props) => {
             onChange={handleChange}
             required
         >
-          <select name="doubleElim" onChange={handleChange} id="doubleElim" required>
+          {/* <select name="doubleElim" onChange={handleChange} id="doubleElim" required>
             <option>Double Elimination</option>
             <option value='true'>Yes</option>
             <option value="false">No</option>
-          </select>
+          </select> */}
         </div>
         <div
             className="center"

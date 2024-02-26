@@ -1,5 +1,4 @@
 const ListOfPlayers = (props) => {
-  console.log(props);
   let sortedPlayers
 
   if(props.players.length > 0){

@@ -7,8 +7,6 @@ const ViewTeams = ({setTeam}) => {
   const navigate = useNavigate()
   const [teams, setTeams] = useState()
   
-
-  console.log(teams);
   useEffect(() => {
     const fetchTeams = async () => {
       const data = await teamService.index()
@@ -16,13 +14,6 @@ const ViewTeams = ({setTeam}) => {
     }
     fetchTeams()
   }, [])
-
-  // const handleDeleteMatch = async (id) => {
-  //   const deletedMatch = await matchService.deleteOne(id)
-  //   setTourneyMatch(
-  //     tourneyMatch.filter((match) => match._id !== deletedMatch._id)
-  //   )
-  // }
 
     const handleGetTeam = async (team) => {
       await setTeam(team)
