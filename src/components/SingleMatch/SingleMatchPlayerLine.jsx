@@ -1,6 +1,9 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
 const SingleMatchPlayerLine = ({ player }) => {
+
+  console.log(player);
+
   if (player?.value === "undefined") {
     player = {
       _id: Math.random(),

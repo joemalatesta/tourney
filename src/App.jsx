@@ -263,6 +263,7 @@ function App() {
           path="/season-match"
           element={
               <SeasonMatch
+                setTwoPlayerMatch={setTwoPlayerMatch}
               />
           }
         />

@@ -4,12 +4,11 @@ import * as playerService from '../../services/playerService'
 const TeamPlayers = ({team, handleChoosePlayer, title}) => {
   const [playerInfo, setPlayerInfo] = useState()
 
-
   useEffect(() => {
     const getPlayerStats = async () => {
       try {
         const data = await Promise.all(
-          team.teamPlayers?.map((player) =>
+          team?.teamPlayers?.map((player) =>
             player === undefined ? player : playerService.findOne(player)
           )
         )
@@ -26,7 +25,7 @@ const TeamPlayers = ({team, handleChoosePlayer, title}) => {
     <h3>Players</h3>
       {playerInfo?.map(player =>
       <div onClick={()=>handleChoosePlayer(player,title)} key={player._id}>
-        {player.name} ({player.rank})
+        {player.name} ({player.rank}) {player._id == team.teamCaptain ? '** Captain **' : ''}
       </div>  
       )}
     </>
@@ -34,4 +33,3 @@ const TeamPlayers = ({team, handleChoosePlayer, title}) => {
 }
  
 export default TeamPlayers
-

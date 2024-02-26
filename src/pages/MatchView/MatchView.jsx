@@ -3,6 +3,7 @@ import SingleMatch from "../../components/SingleMatch/SingleMatch"
 
 const MatchView = (props) => {
   const nav = useNavigate()
+  console.log(props);
   return (
     <>
       <SingleMatch match={props.match} />

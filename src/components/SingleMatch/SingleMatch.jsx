@@ -3,19 +3,25 @@ import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 import * as gameService from "../../services/gameService"
 
 const SingleMatch = (props) => {
+  const [match,  ] = useState(props.match)
   const [gamesNeeded, setGamesNeeded] = useState()
   const [
     updatedPlayerStateWithMatchCount,
     setUpdatedPlayerStateWithMatchCount,
-  ] = useState(props.match)
+  ] = useState(match)
 
+  useEffect(() => {
+    
+  }, [match]);
+
+  let order = gameService.getFirstPlayer(match)
   useEffect(() => {
     const getGameRace = async () => {
       try {
-        if (props.match !== undefined) {
+        if (order !== undefined) {
           const data = await gameService.getGameRace(
-            props.match[0],
-            props.match[1]
+            match[0],
+            match[1]
           )
           setGamesNeeded(data)
         }
@@ -24,12 +30,12 @@ const SingleMatch = (props) => {
       }
     }
     getGameRace()
-  }, [props.match])
+  }, [match])
 
   useEffect(() => {
     const addGamesNeeded = async () => {
       try {
-        if (props.match && gamesNeeded && gamesNeeded.length >= 2) {
+        if (match && gamesNeeded && gamesNeeded.length >= 2) {
           setUpdatedPlayerStateWithMatchCount((prevPlayerInfo) => {
             if (
               prevPlayerInfo &&
@@ -49,7 +55,7 @@ const SingleMatch = (props) => {
       }
     }
     addGamesNeeded()
-  }, [props.match, gamesNeeded])
+  }, [match, gamesNeeded])
 
   return (
     <>
