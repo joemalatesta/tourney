@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import ListOfPlayers from "../CreateMatch/ListOfPlayers"
+import ListOfPlayers from "../../components/players/ListOfPlayers"
 import * as playerService from "../../services/playerService"
 import * as styles from "./CreateTeam.module.css"
 
@@ -47,7 +47,7 @@ const CreateTeam = (props) => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault()
-    if (team.length > 0) {
+    if (team.length > 0 && team.teamCaptain !== null) {
       setTeam(team)
       const updatedFormData = {
         ...formData,
@@ -56,12 +56,13 @@ const CreateTeam = (props) => {
       await props.handleAddTeam(updatedFormData)
       navigate("/view-teams")
     }
+    else return <h1>select all players and captain</h1>
   }
 
   return (
     <main className={`${styles.bracket}`}>
       <form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
-        <label>Team Name</label>
+       <h2>Team Name</h2>
         <p>(must be unique)</p>
         <input
           className={styles.center}
@@ -75,14 +76,14 @@ const CreateTeam = (props) => {
       </form>
 
       <section className={`${styles.flex}`}>
-        <div className={`${styles.bracket} ${styles.w300}`}>
+        <div className={`${styles.bracket} ${styles.greenFelt} ${styles.w300}`}>
           <ListOfPlayers
             title="Available Players"
             players={players}
             handleAdd={handleAddPlayer}
           />
         </div>
-        <div className={`${styles.bracket} ${styles.w300}`}>
+        <div className={`${styles.bracket} ${styles.greenFelt} ${styles.w300}`}>
           <ListOfPlayers
             addCaptain={addCaptain}
             captain={captain}

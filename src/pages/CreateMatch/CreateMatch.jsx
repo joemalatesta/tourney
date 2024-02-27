@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import ListOfPlayers from "./ListOfPlayers"
+import ListOfPlayers from "../../components/players/ListOfPlayers"
 import * as playerService from "../../services/playerService"
 import * as gameService from "../../services/gameService"
 import { useNavigate } from "react-router-dom"

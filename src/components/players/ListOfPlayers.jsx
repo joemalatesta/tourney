@@ -1,3 +1,5 @@
+import * as styles from './Player.module.css'
+
 const ListOfPlayers = (props) => {
   let sortedPlayers
 
@@ -6,13 +8,10 @@ const ListOfPlayers = (props) => {
   }
   
   return (
-    <div className="green-felt bracket">
-      <h2>{props.title}</h2>
+    <div>
+      <h2 className="">{props.title}</h2>
       {props.title === 'Assigned to Team' && 
-        <>
-          <p>Team Captain : {props.captain === null ? 'Add Captain' : props.captain.name}
-          </p>
-        </>
+        <p>Team Captain : {props.captain === null ? 'Add Captain' : props.captain.name}</p>
       }
       <ul>
         {sortedPlayers?.map((player) => (

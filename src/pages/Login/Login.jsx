@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import * as styles from './Login.module.css'
+import * as styles from "./Login.module.css"
 
 // services
 import * as authService from "../../services/authService"
@@ -41,36 +41,38 @@ const LoginPage = ({ handleAuthEvt }) => {
   }
 
   return (
-    <main className={styles.greenFelt} style={{width:'100%'}}>
-      <h1 className={styles.center} >Log In</h1>
-      <p className={styles.center} >{message}</p>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <label className={styles.center}>
-          Email
-          <input
-            type="text"
-            value={email}
-            name="email"
-            onChange={handleChange}
-          />
-        </label >
-        <br />
-        <label className={styles.center}>
-          Password:
-          <input
-            type="password"
-            value={password}
-            name="password"
-            onChange={handleChange}
-          />
-        </label>
-        <br/>
-        <div className={styles.center}>
-          <Link to="/">Cancel</Link>
-          <button disabled={isFormInvalid()}>Log In</button>
-        </div>
-      </form>
-    </main>
+    <div className={styles.center}> 
+      <main className={`${styles.w500} ${styles.greenFelt}`}>
+        <h1 className={styles.center}>Log In</h1>
+        <p className={styles.center}>{message}</p>
+        <form autoComplete="off" onSubmit={handleSubmit}>
+          <label className={styles.center}>
+            Email
+            <input
+              type="text"
+              value={email}
+              name="email"
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label className={styles.center}>
+            Password:
+            <input
+              type="password"
+              value={password}
+              name="password"
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <div className={styles.center}>
+            <Link to="/">Cancel</Link>
+            <button disabled={isFormInvalid()}>Log In</button>
+          </div>
+        </form>
+      </main>
+    </div>
   )
 }
 

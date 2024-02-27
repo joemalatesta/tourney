@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import * as teamService from "../../services/teamService"
 import * as styles from './ViewTeams.module.css'
 
-const ViewTeams = ({setTeam}) => {
+const ViewTeams = ({setTeam, handleDeleteTeam, teams, setTeams}) => {
   const navigate = useNavigate()
-  const [teams, setTeams] = useState()
+  
   
   useEffect(() => {
     const fetchTeams = async () => {
@@ -14,6 +14,8 @@ const ViewTeams = ({setTeam}) => {
     }
     fetchTeams()
   }, [])
+
+
 
   const handleGetTeam = async (team) => {
     await setTeam(team)
@@ -26,7 +28,9 @@ const ViewTeams = ({setTeam}) => {
       <div className={`${styles.greenFelt}  ${styles.bracket}`}>
       {teams?.map((team) => (
         <div key={team._id}>
-            <h3 onClick={() => handleGetTeam(team)}>{team.teamName}</h3>
+            <h3 onClick={() => handleGetTeam(team)}>{team.teamName}
+            </h3>
+            <button onClick={()=>handleDeleteTeam(team._id)}>Delete</button>
           </div>
         )
       )}

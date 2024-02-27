@@ -31,6 +31,7 @@ function App() {
   const [tourneyMatch, setTourneyMatch] = useState()
   const [singleMatch, setSingleMatch] = useState()
   const [twoPlayerMatch, setTwoPlayerMatch] = useState()
+  const [teams, setTeams] = useState()
   const [team, setTeam] = useState({})
 
   useEffect(() => {
@@ -49,9 +50,7 @@ function App() {
     getTwoPlayerMatchData()
   }, [twoPlayerMatch])
 
-  useEffect(() => {
-
-  }, [singleMatch])
+  useEffect(() => {}, [singleMatch])
 
   useEffect(() => {
     const fetchMatch = async () => {
@@ -100,6 +99,12 @@ function App() {
     newTeam
   }
 
+  const handleDeleteTeam = async (id) => {
+    const deletedTeam = await teamService.deleteOne(id)
+    setTeams(teams.filter((team) => team._id !== deletedTeam._id))
+    console.log(deletedTeam);
+  }
+
   const handleDeleteMatch = async (id) => {
     const deletedMatch = await matchService.deleteOne(id)
     setTourneyMatch(
@@ -123,6 +128,7 @@ function App() {
       ) : (
         <NavBar user={user} handleLogout={handleLogout} />
       )}
+      <br />
       <Routes>
         <Route path="/" element={<Landing user={user} players={players} />} />
         <Route
@@ -224,7 +230,7 @@ function App() {
         <Route
           disable={isDisabled}
           path="/view-teams"
-          element={<ViewTeams setTeam={setTeam} />}
+          element={<ViewTeams teams={teams} setTeams={setTeams} setTeam={setTeam} handleDeleteTeam={handleDeleteTeam}/>}
         />
         <Route
           disable={isDisabled}
