@@ -1,0 +1,33 @@
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bracket {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid white;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  margin: 10px;
+}
+
+.w300 {
+  width: 300px;
+}
+
+.w800 {
+  width: 800px;
+}
+.flex {
+  display: flex;
+}

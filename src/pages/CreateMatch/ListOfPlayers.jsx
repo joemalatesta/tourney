@@ -10,22 +10,19 @@ const ListOfPlayers = (props) => {
       <h2>{props.title}</h2>
       {props.title === 'Assigned to Team' && 
         <>
-          <h3>Team Captain</h3>
-          {props.captain === null ? 'Add Captain' : props.captain.name}
+          <p>Team Captain : {props.captain === null ? 'Add Captain' : props.captain.name}
+          </p>
         </>
       }
       <ul>
         {sortedPlayers?.map((player) => (
           <div key={player._id}>
             {props.handleAdd ? (
-              <button onClick={() => props.handleAdd(player)}> ADD </button>
+              <button onClick={() => props.handleAdd(player)}> + </button>
             ) : (
-              <button onClick={() => props.handleRemove(player)}>
-                {" "}
-                REMOVE{" "}
-              </button>
+              <button onClick={() => props.handleRemove(player)}> X </button>
             )}
-            {player.name} - {player.rank}  {props.title === 'Assigned to Team' && <button onClick={()=>props.addCaptain(player)}>Add as Captain</button>}
+            {player.name} - {player.rank}  {props.title === 'Assigned to Team' && <button onClick={()=>props.addCaptain(player)}>Captain</button>}
           </div>
         ))}
       </ul>

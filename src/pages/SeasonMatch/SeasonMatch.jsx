@@ -66,7 +66,7 @@ const SeasonMatch = (props) => {
 
   return (
     <>
-      <h1>Match </h1>
+      <h1 className={styles.center}>Match </h1>
       <div className={`${styles.spaceAround}`}>
         <div className={styles.bracket}>
           <Team
