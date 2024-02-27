@@ -20,9 +20,8 @@ const TeamPlayers = ({team, handleChoosePlayer, title, matchPlayer}) => {
     getPlayerStats();
   }, [team]);
 
-  console.log(matchPlayer);
   return (
-    <>
+    <div className="green-felt">
     <h3>Players</h3>
       {playerInfo?.map(player =>
       <div onClick={()=>handleChoosePlayer(player,title)} key={player._id}>
@@ -31,7 +30,7 @@ const TeamPlayers = ({team, handleChoosePlayer, title, matchPlayer}) => {
         </div>
       </div>  
       )}
-    </>
+    </div>
   )
 }
  

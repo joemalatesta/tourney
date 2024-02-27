@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import * as teamService from "../../services/teamService"
 import Team from "../../components/Team/Team"
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
+import * as teamService from "../../services/teamService"
+import * as styles from './SeasonMatch.module.css'
 
 const SeasonMatch = (props) => {
   const navigate = useNavigate()
@@ -66,15 +67,15 @@ const SeasonMatch = (props) => {
   return (
     <>
       <h1>Match </h1>
-      <div className="flex space-between bracket">
-        <div className="flex-direction">
+      <div className={`${styles.spaceAround}`}>
+        <div className={styles.bracket}>
           <Team
             title="Team 1"
             team={team1}
             teams={teams}
             handleChooseTeam={handleChooseTeam}
           />
-          <div className="bracket">
+          <div className={`${styles.bracket} ${styles.greenFelt}`}>
             <TeamPlayers
               matchPlayer={player1}
               title="Team 1"
@@ -84,18 +85,18 @@ const SeasonMatch = (props) => {
           </div>
         </div>
 
-        <div className="bracket">
+        <div className={styles.bracket}>
           <h1 style={{ color: "red" }}>
             {team1 == null ? (
-              <div style={{ color: "yellow" }}>Add a Team</div>
+              <div className={styles.redText}>Add a Team</div>
             ) : (
-              <div style={{ color: "yellow" }}>{team1.teamName}</div>
+              <div className={styles.yellowText}>{team1.teamName}</div>
             )}{" "}
             vs.{" "}
             {team2 == null ? (
-              <div style={{ color: "yellow" }}>Add a Team</div>
+              <div className={styles.redText}>Add a Team</div>
             ) : (
-              <div style={{ color: "yellow" }}>{team2.teamName}</div>
+              <div className={styles.yellowText}>{team2.teamName}</div>
             )}
           </h1>
           {player1 !== null ? player1.name : "Awaiting Player"} vs:{" "}
@@ -107,20 +108,20 @@ const SeasonMatch = (props) => {
           </button>
           <button
             hidden={!isSubmitted}
-            style={{ backgroundColor: "green" }}
+            className={styles.greenButton}
             onClick={() => handleViewSingleMatch()}
           >
             View Match
           </button>
         </div>
-        <div className="flex-direction">
+        <div className={styles.bracket}>
           <Team
             title="Team 2"
             team={team2}
             teams={teams}
             handleChooseTeam={handleChooseTeam}
           />
-          <div className="bracket">
+          <div className={`${styles.bracket} ${styles.greenFelt}`}>
             <TeamPlayers
               matchPlayer={player2}
               title="Team 2"

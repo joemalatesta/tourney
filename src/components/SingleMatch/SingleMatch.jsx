@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 import * as gameService from "../../services/gameService"
+import * as styles from './SingleMatch.module.css'
 
 const SingleMatch = (props) => {
   const [match,  ] = useState(props.match)
@@ -59,7 +60,7 @@ const SingleMatch = (props) => {
 
   return (
     <>
-      <div className="bracket">
+      <div className={styles.bracket}>
         {updatedPlayerStateWithMatchCount?.map((player, idx) => (
           <SingleMatchPlayerLine player={player} key={idx} />
         ))}
