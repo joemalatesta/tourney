@@ -12,14 +12,11 @@
   transition: border-color 0.25s;
   margin: 10px;
 }
-
 .center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-
 .greenFelt {
   background-image: url('../public/felt.jpg');
   background-size: contain;
@@ -27,131 +24,3 @@
   border: 1px solid white;
   font-size: 1em;
 }
-/* .red-felt {
-  background-image: url('../public/red-felt.jpeg');
-  background-size: contain;
-  border-radius: 8px;
-  border: 1px solid white;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-} */
-
-/* .flex-column {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-} */
-
-/* .nav-bar {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-} */
-
-
-
-
-/* .width {
-  width: 150px;
-} */
-
-/* .bracket {
-  border-radius: 8px;
-  border: 1px solid white;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-  margin: 10px;
-} */
-
-/* .flex {
-  display: flex;
-} */
-/* .flex-justify {
-  display: flex;
-  align-items: center;
-} */
-
-/* .space-between {
-  display: flex;
-  justify-content: space-between;
-} */
-
-/* .column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-} */
-
-/* .match-width {
-  width: 480px;
-} */
-/* .match-width2 {
-  display: flex;
-  flex-direction: row;
-  width: 300px;
-  flex-wrap: wrap;
-} */
-/* .bold {
-  font-weight: 900;
-} */
-
-/* .match-height {
-  height: 200px;
-} */
-/* .match-height2 {
-  height: auto;
-} */
-
-/* .bracket-layout__main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-} */
-/* .bracket-layout__round {
-  display: flex;
-  flex-direction: column;
-} */
-/* .extend {
-  width: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-} */
-/* .auto-width {
-  width: auto;
-} */
-
-/* .screen-height {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-} */
-
-/* .green-felt {
-  background-image: url('../public/felt.jpg');
-  background-size: 200px;
-  background-position: center;
-  border-radius: 8px;
-  border: 1px solid white;
-  font-size: 1em;
-} */
-
-/* .blue-felt {
-  background-image: url('../public/blue-felt.jpeg');
-  background-size: 200px;
-  background-position: center;
-  border-radius: 8px;
-  border: 1px solid white;
-  font-size: 1em;
-} */
-

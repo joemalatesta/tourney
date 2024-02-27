@@ -15,10 +15,10 @@ const ViewTeams = ({setTeam}) => {
     fetchTeams()
   }, [])
 
-    const handleGetTeam = async (team) => {
-      await setTeam(team)
-      navigate('/view-team')
-    }
+  const handleGetTeam = async (team) => {
+    await setTeam(team)
+    navigate('/view-team')
+  }
     
   return (
     <div className={`${styles.center} ${styles.bracket}`}>

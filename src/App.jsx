@@ -1,8 +1,5 @@
-// npm modules
 import { useState, useEffect } from "react"
 import { Routes, Route, useNavigate } from "react-router-dom"
-
-// pages
 import Signup from "./pages/Signup/Signup"
 import Login from "./pages/Login/Login"
 import Landing from "./pages/Landing/Landing"
@@ -17,18 +14,12 @@ import CreateTeam from "./pages/CreateTeam/CreateTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import SeasonMatch from "./pages/SeasonMatch/SeasonMatch"
-
-// components
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
-
-// services
 import * as authService from "./services/authService"
 import * as playerService from "./services/playerService"
 import * as matchService from "./services/matchService"
 import * as teamService from "./services/teamService"
-
-// styles
 import "./App.css"
 import AdminNavBar from "./components/NavBar/AdminNavBar"
 
@@ -59,10 +50,7 @@ function App() {
   }, [twoPlayerMatch])
 
   useEffect(() => {
-    const getMatch = async () => {
-      // console.log(singleMatch);
-    }
-    getMatch()
+
   }, [singleMatch])
 
   useEffect(() => {
@@ -106,6 +94,7 @@ function App() {
     const newMatch = await matchService.create(newMatchData)
     setTourneyMatch([...tourneyMatch, newMatch])
   }
+
   const handleAddTeam = async (newTeamData) => {
     const newTeam = await teamService.create(newTeamData)
     newTeam

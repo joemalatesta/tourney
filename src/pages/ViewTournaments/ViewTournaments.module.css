@@ -15,7 +15,6 @@
   margin: 10px;
 }
 
-
 .greenFelt {
   background-image: url('../../../public/felt.jpg');
   background-size: contain;
@@ -24,6 +23,7 @@
   font-size: 1em;
   width:300px;
 }
+
 .ends {
   display: flex;
   justify-content: space-between;

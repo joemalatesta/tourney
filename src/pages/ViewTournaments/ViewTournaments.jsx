@@ -9,6 +9,7 @@ const ViewTournaments = ({
   tourneyMatch,
   setSingleMatch,
 }) => {
+  
   const navigate = useNavigate()
   const [tourney, setTourney] = useState()
 
