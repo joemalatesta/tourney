@@ -83,7 +83,7 @@ const BracketView = (props) => {
               className="flex"
               style={{ justifyContent: "space-between" }}
               key={idx}
-              onClick={props.gameObj.handicap  ? () => handleViewSingleMatch() : ""}
+              onClick={props.gameObj.handicap  ? () => handleViewSingleMatch() : ()=> console.log('')}
             >
               <div
                 className="bracket flex"

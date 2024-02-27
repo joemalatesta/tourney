@@ -77,7 +77,7 @@ const CreateMatch = (props) => {
   return (
     <main className="center bracket">
       <form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
-        <label className="center">Match Name</label>
+        <label className="center">Tournament Name</label>
         <input
           className="center"
           type="text"
@@ -133,7 +133,7 @@ const CreateMatch = (props) => {
           </select>
         </div>
 
-        <button type="submit">Create Match</button>
+        <button type="submit">Create</button>
       </form>
 
       <section className="bracket flex" style={{ width: "600px" }}>

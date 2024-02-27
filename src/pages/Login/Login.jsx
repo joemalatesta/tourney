@@ -1,6 +1,6 @@
-// npm modules
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import * as styles from './Login.module.css'
 
 // services
 import * as authService from "../../services/authService"
@@ -41,11 +41,11 @@ const LoginPage = ({ handleAuthEvt }) => {
   }
 
   return (
-    <main className="green-felt" style={{width:'100%'}}>
-      <h1 className="center" >Log In</h1>
-      <p className="center" >{message}</p>
+    <main className={styles.greenFelt} style={{width:'100%'}}>
+      <h1 className={styles.center} >Log In</h1>
+      <p className={styles.center} >{message}</p>
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <label className="center">
+        <label className={styles.center}>
           Email
           <input
             type="text"
@@ -55,7 +55,7 @@ const LoginPage = ({ handleAuthEvt }) => {
           />
         </label >
         <br />
-        <label className="center">
+        <label className={styles.center}>
           Password:
           <input
             type="password"
@@ -65,7 +65,7 @@ const LoginPage = ({ handleAuthEvt }) => {
           />
         </label>
         <br/>
-        <div className="center">
+        <div className={styles.center}>
           <Link to="/">Cancel</Link>
           <button disabled={isFormInvalid()}>Log In</button>
         </div>

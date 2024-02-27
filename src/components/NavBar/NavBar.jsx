@@ -1,4 +1,3 @@
-// npm modules
 import { NavLink } from "react-router-dom"
 import * as styles from './NavBar.module.css'
 
@@ -11,9 +10,7 @@ const NavBar = ({ user, handleLogout }) => {
           <NavLink to="/view-tournaments">View Tournaments</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
-          <NavLink to="" onClick={handleLogout}>
-            LOG OUT
-          </NavLink>
+          <NavLink to="" onClick={handleLogout}>LOG OUT</NavLink>
         </div>
       ) : (
         <div className={styles.navBar}>

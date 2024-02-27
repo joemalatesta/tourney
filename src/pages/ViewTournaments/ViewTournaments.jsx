@@ -37,19 +37,23 @@ const ViewTournaments = ({
       <div className={`${styles.greenFelt}`}>
         {tourney?.length > 0 ? (
           tourney?.map((game) => (
-            <div key={game._id}>
+            <div className={styles.ends} key={game._id}>
               <button onClick={() => handleGetMatch(game)}>
-                {game.name} : {game.gameType}
+                {game.gameType} <span> : </span>
+                {game.name}
               </button>
+              <div className={styles.ends}></div>
               {user?.name === "Admin" && (
                 <button onClick={() => handleDeleteMatch(game._id)}>
-                  delete match
+                  DELETE
                 </button>
               )}
             </div>
           ))
         ) : (
-          <h1>No Tournaments Available</h1>
+          <div className={styles.center}>
+            <h2 className={styles.center}>No Tournaments Available</h2>
+          </div>
         )}
       </div>
     </div>

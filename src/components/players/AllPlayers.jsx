@@ -1,4 +1,5 @@
 import { useState } from "react"
+import * as styles from './AllPlayers.module.css'
 
 const AllPlayers = (props) => {
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -40,16 +41,10 @@ const AllPlayers = (props) => {
 
   return (
     <div
-      className="bracket"
-      style={{
-        flexDirection: "column",
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      className={styles.bracket}
     >
       {confirmDelete && (
-        <div className="blue-felt">
+        <div className={styles.blueFelt}>
           <p>Are you sure you want to delete {playerToDelete?.name}?</p>
           <br/>
           <p>(This action cannot be undone!)</p>
@@ -59,25 +54,19 @@ const AllPlayers = (props) => {
       )}
       {sortedPlayers?.map((player) => (
         <div
-          className="flex"
-          style={{
-            flexDirection: "column",
-            alignItems: "baseline",
-          }}
           key={player._id}
         >
-          <div className="flex" style={{ width: "300px" }}>
-            <div className="flex">
+          <div className={styles.w300}>
+            <div>
               <button onClick={() => areYouSure(player)}>Delete</button>
             </div>
-            <div className="flex">
+            <div>
               <button onClick={() => handleChange(player)}>Edit</button>
             </div>
-            <div className="flex" style={{ width: "300px" }}>
+            <div className={styles.w300}>
               --{player.name} : {player.rank}
             </div>
           </div>
-          <div className="flex end"></div>
         </div>
       ))}
     </div>

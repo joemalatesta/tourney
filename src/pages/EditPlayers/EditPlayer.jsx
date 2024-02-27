@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import AllPlayers from "../../components/players/AllPlayers"
+import * as styles from './EditPlayers.module.css'
 
 const EditPlayer = (props) => {
   const formElement = useRef()
@@ -38,19 +39,19 @@ const EditPlayer = (props) => {
   }
 
   return (
-    <div className="match-bracket green-felt">
-      <h1 className="center">Player Management</h1>
-      <h2 className="center">{title}</h2>
+    <div className={`${styles.bracket} ${styles.greenFelt}`}>
+      <h1 className={styles.center}>Player Management</h1>
+      <h2 className={styles.center}>{title}</h2>
       <form
-        className="center"
+        className={styles.center}
         autoComplete="off"
         ref={formElement}
         onSubmit={handleSubmit}
       >
-        <div className="center">
-          <label className="center">Players Name (unique required)</label>
+        <div className={styles.center}>
+          <label className={styles.center}>Players Name (unique required)</label>
           <input
-            className="center"
+            className={styles.center}
             type="text"
             name="name"
             value={formData.name}
@@ -58,17 +59,17 @@ const EditPlayer = (props) => {
             required
           />
         </div>
-        <div className="center">
-          <label className="center">Players Rank</label>
+        <div className={styles.center}>
+          <label className={styles.center}>Players Rank</label>
           <input
             type="number"
-            className="center"
+            className={styles.center}
             name="rank"
             value={formData.rank}
             onChange={handleChange}
           />
         </div>
-        <div className="center">
+        <div className={styles.center}>
           <button type="submit" disabled={!validForm}>
             {title}
           </button>
