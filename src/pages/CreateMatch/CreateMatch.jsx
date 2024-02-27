@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import ListOfPlayers from "../../components/players/ListOfPlayers"
 import * as playerService from "../../services/playerService"
 import * as gameService from "../../services/gameService"
-import { useNavigate } from "react-router-dom"
+import * as styles from './CreateMatch.module.css'
 
 const CreateMatch = (props) => {
   const navigate = useNavigate()
@@ -136,17 +137,21 @@ const CreateMatch = (props) => {
         <button type="submit">Create</button>
       </form>
 
-      <section className="bracket flex" style={{ width: "600px" }}>
-        <ListOfPlayers
-          title="Available Players"
-          players={players}
-          handleAdd={handleAdd}
-        />
+      <section className={styles.flex} >
+        <div className={`${styles.greenFelt}`} style={{ width: "350px" }}>
+          <ListOfPlayers
+            title="Available Players"
+            players={players}
+            handleAdd={handleAdd}
+          />
+        </div>
+        <div className={`${styles.greenFelt}`} style={{ width: "350px" }}>
         <ListOfPlayers
           title="Assigned to Match"
           players={match}
           handleRemove={handleRemove}
         />
+        </div>
       </section>
     </main>
   )

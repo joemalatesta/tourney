@@ -9,7 +9,7 @@ const ListOfPlayers = (props) => {
   
   return (
     <div>
-      <h2 className="">{props.title}</h2>
+      <h2 className={styles.bracket}>{props.title}</h2>
       {props.title === 'Assigned to Team' && 
         <p>Team Captain : {props.captain === null ? 'Add Captain' : props.captain.name}</p>
       }
