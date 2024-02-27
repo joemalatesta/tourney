@@ -1,7 +1,8 @@
+import * as styles from './Landing.module.css'
 const Landing = () => {
   return (
-    <main className="center">
-      <h1 style={{color:'yellow'}}>Tavern's Tourney's</h1>
+    <main className={styles.center}>
+      <h1 className={styles.textColorYellow}>Tavern's Tourney's</h1>
     </main>
   )
 }

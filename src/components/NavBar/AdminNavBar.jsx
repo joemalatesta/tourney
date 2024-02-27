@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom"
+import * as styles from './AdminNavBar.module.css'
+
 const AdminNavBar = ({user, handleLogout}) => {
   return (
     <>
-    <nav className="red-felt">
+    <nav className={styles.redFelt}>
 
-       <div className="nav-bar">
+       <div className={styles.navBar}>
           <NavLink to="/">Welcome {user.name}</NavLink>
           <NavLink to="/player-management">Player Management</NavLink>
           <NavLink to='/season-match'>Season Match</NavLink>
