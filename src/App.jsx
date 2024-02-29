@@ -230,7 +230,7 @@ function App() {
         <Route
           disable={isDisabled}
           path="/view-teams"
-          element={<ViewTeams teams={teams} setTeams={setTeams} setTeam={setTeam} handleDeleteTeam={handleDeleteTeam}/>}
+          element={<ViewTeams user={user} teams={teams} setTeams={setTeams} setTeam={setTeam} handleDeleteTeam={handleDeleteTeam}/>}
         />
         <Route
           disable={isDisabled}

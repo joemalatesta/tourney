@@ -7,9 +7,9 @@ const Team = ({ teams, handleChooseTeam, title, team }) => {
       {team === null ? (
         teams.map((team) => (
           <div key={team._id}>
-            <h2 onClick={() => handleChooseTeam(team, title)}>
+            <p onClick={() => handleChooseTeam(team, title)}>
               {team.teamName}
-            </h2>
+            </p>
           </div>
         ))
       ) : (

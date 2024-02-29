@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import PlayerName from '../../components/players/PlayerName'
 import * as teamService from "../../services/teamService"
 import * as styles from './ViewTeams.module.css'
 
-const ViewTeams = ({setTeam, handleDeleteTeam, teams, setTeams}) => {
+const ViewTeams = ({setTeam, handleDeleteTeam, teams, setTeams, user}) => {
   const navigate = useNavigate()
-  
   
   useEffect(() => {
     const fetchTeams = async () => {
@@ -15,8 +15,6 @@ const ViewTeams = ({setTeam, handleDeleteTeam, teams, setTeams}) => {
     fetchTeams()
   }, [])
 
-
-
   const handleGetTeam = async (team) => {
     await setTeam(team)
     navigate('/view-team')
@@ -25,12 +23,17 @@ const ViewTeams = ({setTeam, handleDeleteTeam, teams, setTeams}) => {
   return (
     <div className={`${styles.center} ${styles.bracket}`}>
       <h1>Teams</h1>
-      <div className={`${styles.greenFelt}  ${styles.bracket}`}>
+      <div className={`${styles.greenFelt} ${styles.flex}  ${styles.bracket}`}>
       {teams?.map((team) => (
-        <div key={team._id}>
-            <h3 onClick={() => handleGetTeam(team)}>{team.teamName}
-            </h3>
-            <button onClick={()=>handleDeleteTeam(team._id)}>Delete</button>
+        <div style={{width: '200px'}} className={styles.bracket} key={team._id}>
+            <h3 onClick={() => handleGetTeam(team)}>{team.teamName}</h3>
+            <PlayerName team={team}/>
+            {user?.name === 'Admin' &&
+            <>
+              <button style={{backgroundColor:'green'}} >Edit Team</button>
+              <button onClick={()=>handleDeleteTeam(team._id)}>Delete</button>
+            </>
+            }
           </div>
         )
       )}
