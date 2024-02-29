@@ -9,6 +9,7 @@ const EditPlayer = (props) => {
   const [formData, setFormData] = useState({
     name: "",
     rank: 0,
+    matchesPlayed: 0,
   })
 
   const handleChange = (evt) => {
@@ -25,7 +26,7 @@ const EditPlayer = (props) => {
     evt.preventDefault()
     if (title === "Add Players") {
       props.handleAddPlayer(formData)
-      setFormData({ name: "", rank: 0 })
+      setFormData({ name: "", rank: 0, matchesPlayed: 0 })
     }
     if (title === "Edit Player") {
       props.handleEditPlayer(formData)

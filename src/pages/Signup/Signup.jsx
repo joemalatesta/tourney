@@ -49,7 +49,7 @@ const Signup = ({ handleAuthEvt }) => {
       <h1 className={styles.center}>Sign Up</h1>
       <p className={styles.center}>{message}</p>
       <form autoComplete="off" className={styles.center} onSubmit={handleSubmit}>
-        <div className="flex 456">
+        <div className="flex">
 
         <label>
           Name

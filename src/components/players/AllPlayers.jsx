@@ -39,24 +39,21 @@ const AllPlayers = (props) => {
     ?.slice()
     .sort((a, b) => a.name.localeCompare(b.name))
 
+  const deleteDisplay =  ( <div className={styles.blueFelt} style={{width:'700px'}}>
+  <p>Are you sure you want to delete {playerToDelete?.name}?(This action cannot be undone!)</p>
+  <button onClick={confirmDeleteAction}>Yes</button>
+  <button onClick={cancelDeleteAction}>No</button>
+</div>)
+
   return (
     <div
       className={styles.bracket}
     >
-      {confirmDelete && (
-        <div className={styles.blueFelt}>
-          <p>Are you sure you want to delete {playerToDelete?.name}?</p>
-          <br/>
-          <p>(This action cannot be undone!)</p>
-          <button onClick={confirmDeleteAction}>Yes</button>
-          <button onClick={cancelDeleteAction}>No</button>
-        </div>
-      )}
       {sortedPlayers?.map((player) => (
         <div
           key={player._id}
         >
-          <div className={styles.w300}>
+          <div style={{width:'800px', display:'flex'}}>
             <div>
               <button onClick={() => areYouSure(player)}>Delete</button>
             </div>
@@ -66,6 +63,7 @@ const AllPlayers = (props) => {
             <div className={styles.w300}>
               --{player.name} : {player.rank}
             </div>
+            {confirmDelete && deleteDisplay}
           </div>
         </div>
       ))}

@@ -1,9 +1,7 @@
-// npm modules
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-
-// services
 import * as authService from "../../services/authService"
+import * as styles from "./ChangePassword.module.css"
 
 const ChangePassword = ({ handleAuthEvt }) => {
   const navigate = useNavigate()
@@ -37,40 +35,44 @@ const ChangePassword = ({ handleAuthEvt }) => {
   }
 
   return (
-    <main>
-      <h1>Change Password</h1>
-      <p>{message}</p>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <label>
-          Current Password
-          <input
-            type="password"
-            value={password}
-            name="password"
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          New Password
-          <input
-            type="password"
-            value={newPassword}
-            name="newPassword"
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Confirm New Password
-          <input
-            type="password"
-            value={newPasswordConf}
-            name="newPasswordConf"
-            onChange={handleChange}
-          />
-        </label>
-        <div>
-          <Link to="/">Cancel</Link>
+    <main className={styles.greenFelt}>
+      <h1 className={styles.center}>Change Password</h1>
+      <p className={styles.center}>{message}</p>
+      <form
+        className={styles.center}
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <div className={styles.flex}>
+          <label>
+            Current Password
+            <input
+              type="password"
+              value={password}
+              name="password"
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            New Password
+            <input
+              type="password"
+              value={newPassword}
+              name="newPassword"
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Confirm New Password
+            <input
+              type="password"
+              value={newPasswordConf}
+              name="newPasswordConf"
+              onChange={handleChange}
+            />
+          </label>
           <button disabled={isFormInvalid()}>Change Password</button>
+          <Link to="/">Cancel</Link>
         </div>
       </form>
     </main>

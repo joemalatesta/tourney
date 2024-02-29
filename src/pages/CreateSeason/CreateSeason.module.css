@@ -1,6 +1,13 @@
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .bracket {
   display: flex;
   flex-direction: column;
+  align-items: center;
   border-radius: 8px;
   border: 1px solid white;
   padding: 0.6em 1.2em;
@@ -12,25 +19,23 @@
   transition: border-color 0.25s;
   margin: 10px;
 }
-.center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+.w300 {
+  width: 300px;
 }
+
+.w800 {
+  width: 800px;
+}
+.flex {
+  display: flex;
+}
+
 .greenFelt {
   background-image: url('../../../public/felt.jpg');
-  background-size: contain;
+  background-size: 200px;
+  background-position: center;
   border-radius: 8px;
   border: 1px solid white;
   font-size: 1em;
-}
-
-.flex {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.w75percent {
-  width: 700px;
 }

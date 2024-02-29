@@ -1,5 +1,6 @@
-import * as playerService from '../../services/playerService'
 import { useEffect, useState } from 'react'
+import * as playerService from '../../services/playerService'
+import * as styles from './ViewTeam.module.css'
 
 const ViewTeam = (props) => {
   const [playerInfo, setPlayerInfo] = useState()
@@ -22,15 +23,17 @@ const ViewTeam = (props) => {
   }, [])
 
   return (
-    <>
-      <h1>{props.team.teamName}</h1>
-      <h3>{playerInfo?.map(player=>
+    <div className={`${styles.greenFelt} ${styles.bracket} ${styles.center}`}>
+      <h1 >{props.team.teamName}</h1>
+      <h3 className={`${styles.bracket} ${styles.w75percent}`}>{playerInfo?.map(player=>
         <p key={player._id}>
-          {player.name} ({player.rank}) {player._id === props.team.teamCaptain && '** Captain **'}
+          Name : {player.name} {player._id === props.team.teamCaptain && ' ** Captain **'}<br/> 
+          Rank : {player.rank} <br/>
+          Matches Played : {player.matchesPlayed}
         </p>
 
       )}</h3>
-    </>
+    </div>
   )
 }
  
