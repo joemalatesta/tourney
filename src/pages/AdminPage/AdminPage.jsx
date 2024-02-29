@@ -1,13 +1,11 @@
 import AdminNavBar from "../../components/NavBar/AdminNavBar"
 const AdminPage = () => {
-  return ( 
+  return (
     <>
-      <AdminNavBar
-      
-      />
+      <AdminNavBar />
       This is the admin page
     </>
-   )
+  )
 }
- 
+
 export default AdminPage

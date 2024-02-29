@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import * as playerService from "../../services/playerService"
-import * as gameService from "../../services/gameService"
+
 import WinnerCheckbox from "../WinnerCheckbox/WinnerCheckbox"
+
+import * as gameService from "../../services/gameService"
+import * as playerService from "../../services/playerService"
 
 const BracketView = (props) => {
   const navigate = useNavigate()
@@ -83,13 +85,18 @@ const BracketView = (props) => {
               className="flex"
               style={{ justifyContent: "space-between" }}
               key={idx}
-              onClick={props.gameObj.handicap  ? () => handleViewSingleMatch() : ()=> console.log('')}
+              onClick={
+                props.gameObj.handicap
+                  ? () => handleViewSingleMatch()
+                  : () => console.log("")
+              }
             >
               <div
                 className="bracket flex"
                 style={{ justifyContent: "space-between", width: "150px" }}
               >
-                {player.name}  {props.gameObj.handicap === true ? `: ${player.rank}` : ""}
+                {player.name}{" "}
+                {props.gameObj.handicap === true ? `: ${player.rank}` : ""}
                 <div className="flex end"></div>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Routes, Route, useNavigate } from "react-router-dom"
+
 import Signup from "./pages/Signup/Signup"
 import Login from "./pages/Login/Login"
 import Landing from "./pages/Landing/Landing"
@@ -14,14 +15,18 @@ import CreateTeam from "./pages/CreateTeam/CreateTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import SeasonMatch from "./pages/SeasonMatch/SeasonMatch"
+
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
+import AdminNavBar from "./components/NavBar/AdminNavBar"
+import ScorekeeperNavBar from "./components/NavBar/ScoreKeeperNavBar"
+
 import * as authService from "./services/authService"
 import * as playerService from "./services/playerService"
 import * as matchService from "./services/matchService"
 import * as teamService from "./services/teamService"
+
 import "./App.css"
-import AdminNavBar from "./components/NavBar/AdminNavBar"
 
 function App() {
   const navigate = useNavigate()
@@ -33,6 +38,7 @@ function App() {
   const [twoPlayerMatch, setTwoPlayerMatch] = useState()
   const [teams, setTeams] = useState()
   const [team, setTeam] = useState({})
+  const [currentNavBar, setCurrentNavBar] = useState()
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -59,6 +65,25 @@ function App() {
     }
     fetchMatch()
   }, [])
+
+  useEffect(() => {
+    const handleNavBar = () => {
+      if (user?.name === "Admin") {
+        setCurrentNavBar(
+          <AdminNavBar user={user} handleLogout={handleLogout} />
+        )
+      }
+      if (user?.name === "Scorekeeper") {
+        setCurrentNavBar(
+          <ScorekeeperNavBar user={user} handleLogout={handleLogout} />
+        )
+      }
+      if (!user) {
+        setCurrentNavBar(<NavBar user={user} handleLogout={handleLogout} />)
+      }
+    }
+    handleNavBar()
+  }, [user])
 
   const handleLogout = () => {
     authService.logout()
@@ -102,7 +127,7 @@ function App() {
   const handleDeleteTeam = async (id) => {
     const deletedTeam = await teamService.deleteOne(id)
     setTeams(teams.filter((team) => team._id !== deletedTeam._id))
-    console.log(deletedTeam);
+    console.log(deletedTeam)
   }
 
   const handleDeleteMatch = async (id) => {
@@ -123,11 +148,7 @@ function App() {
 
   return (
     <>
-      {user?.name === "Admin" ? (
-        <AdminNavBar user={user} handleLogout={handleLogout} />
-      ) : (
-        <NavBar user={user} handleLogout={handleLogout} />
-      )}
+      {currentNavBar}
       <br />
       <Routes>
         <Route path="/" element={<Landing user={user} players={players} />} />
@@ -230,7 +251,15 @@ function App() {
         <Route
           disable={isDisabled}
           path="/view-teams"
-          element={<ViewTeams user={user} teams={teams} setTeams={setTeams} setTeam={setTeam} handleDeleteTeam={handleDeleteTeam}/>}
+          element={
+            <ViewTeams
+              user={user}
+              teams={teams}
+              setTeams={setTeams}
+              setTeam={setTeam}
+              handleDeleteTeam={handleDeleteTeam}
+            />
+          }
         />
         <Route
           disable={isDisabled}

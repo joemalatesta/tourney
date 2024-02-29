@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
+
 import ListOfPlayers from "../../components/players/ListOfPlayers"
+
 import * as playerService from "../../services/playerService"
 import * as styles from "./CreateTeam.module.css"
 
@@ -55,14 +57,13 @@ const CreateTeam = (props) => {
       }
       await props.handleAddTeam(updatedFormData)
       navigate("/view-teams")
-    }
-    else return <h1>select all players and captain</h1>
+    } else return <h1>select all players and captain</h1>
   }
 
   return (
     <main className={`${styles.bracket}`}>
       <form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
-       <h2>Team Name</h2>
+        <h2>Team Name</h2>
         <p>(must be unique)</p>
         <input
           className={styles.center}

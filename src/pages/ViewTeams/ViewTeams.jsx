@@ -1,6 +1,8 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+
 import PlayerName from "../../components/players/PlayerName"
+
 import * as teamService from "../../services/teamService"
 import * as styles from "./ViewTeams.module.css"
 

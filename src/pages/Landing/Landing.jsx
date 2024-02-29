@@ -1,4 +1,4 @@
-import * as styles from './Landing.module.css'
+import * as styles from "./Landing.module.css"
 const Landing = () => {
   return (
     <main className={styles.center}>

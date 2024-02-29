@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
+
 import Bracket from "./Bracket"
+
 const BracketLayout = ({
   gameObj,
   user,
@@ -35,7 +37,7 @@ const BracketLayout = ({
         </>
       )}
       <div className="bracket-layout__main extend">
-        <div className="flex" style={{alignItems: 'center'}}>
+        <div className="flex" style={{ alignItems: "center" }}>
           {isWinnerBracket === true && (
             <>
               <div className="flex-column">
@@ -138,7 +140,6 @@ const BracketLayout = ({
               </div>
             </>
           )}
-         
         </div>
       </div>
     </div>

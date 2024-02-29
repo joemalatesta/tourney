@@ -1,4 +1,4 @@
-import * as styles from './Team.module.css'
+import * as styles from "./Team.module.css"
 
 const Team = ({ teams, handleChooseTeam, title, team }) => {
   return (
@@ -7,9 +7,7 @@ const Team = ({ teams, handleChooseTeam, title, team }) => {
       {team === null ? (
         teams.map((team) => (
           <div key={team._id}>
-            <p onClick={() => handleChooseTeam(team, title)}>
-              {team.teamName}
-            </p>
+            <p onClick={() => handleChooseTeam(team, title)}>{team.teamName}</p>
           </div>
         ))
       ) : (

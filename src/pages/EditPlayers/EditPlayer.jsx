@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import AllPlayers from "../../components/players/AllPlayers"
-import * as styles from './EditPlayers.module.css'
+import * as styles from "./EditPlayers.module.css"
 
 const EditPlayer = (props) => {
   const formElement = useRef()
@@ -50,7 +50,9 @@ const EditPlayer = (props) => {
         onSubmit={handleSubmit}
       >
         <div className={styles.center}>
-          <label className={styles.center}>Players Name (unique required)</label>
+          <label className={styles.center}>
+            Players Name (unique required)
+          </label>
           <input
             className={styles.center}
             type="text"

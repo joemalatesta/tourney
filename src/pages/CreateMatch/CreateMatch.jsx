@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
+
 import ListOfPlayers from "../../components/players/ListOfPlayers"
+
 import * as playerService from "../../services/playerService"
 import * as gameService from "../../services/gameService"
-import * as styles from './CreateMatch.module.css'
+import * as styles from "./CreateMatch.module.css"
 
 const CreateMatch = (props) => {
   const navigate = useNavigate()
@@ -15,7 +17,7 @@ const CreateMatch = (props) => {
     matchPlayers: [],
     rounds: [],
     loserRounds: [],
-    handicap:""
+    handicap: "",
   })
   const [players, setPlayers] = useState(props.players)
 
@@ -41,10 +43,10 @@ const CreateMatch = (props) => {
     if (evt.target.name === "doubleElim") {
       const isDoubleElim = evt.target.value === "true"
       setFormData({ ...formData, doubleElim: isDoubleElim })
-    }else if (evt.target.name === "handicap") {
+    } else if (evt.target.name === "handicap") {
       const isHandicap = evt.target.value === "true"
-      setFormData({...formData, handicap: isHandicap})
-    }else{
+      setFormData({ ...formData, handicap: isHandicap })
+    } else {
       setFormData({ ...formData, [evt.target.name]: evt.target.value })
     }
   }
@@ -62,7 +64,7 @@ const CreateMatch = (props) => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault()
-    if(match.length >0){
+    if (match.length > 0) {
       setMatch(gameService.shufflePlayers(match))
       const updatedFormData = {
         ...formData,
@@ -104,13 +106,13 @@ const CreateMatch = (props) => {
           </select>
         </div>
         <div
-            className="center"
-            type=""
-            id="doubleElim"
-            name="doubleElim"
-            value={formData.doubleElim}
-            onChange={handleChange}
-            required
+          className="center"
+          type=""
+          id="doubleElim"
+          name="doubleElim"
+          value={formData.doubleElim}
+          onChange={handleChange}
+          required
         >
           {/* <select name="doubleElim" onChange={handleChange} id="doubleElim" required>
             <option>Double Elimination</option>
@@ -119,17 +121,22 @@ const CreateMatch = (props) => {
           </select> */}
         </div>
         <div
-            className="center"
-            type=""
-            id="handicap"
-            name="handicap"
-            value={formData.handicap}
-            onChange={handleChange}
-            required
+          className="center"
+          type=""
+          id="handicap"
+          name="handicap"
+          value={formData.handicap}
+          onChange={handleChange}
+          required
         >
-          <select name="handicap" onChange={handleChange} id="handicap" required>
+          <select
+            name="handicap"
+            onChange={handleChange}
+            id="handicap"
+            required
+          >
             <option>Use Player Handicap?</option>
-            <option value='true'>Yes</option>
+            <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
         </div>
@@ -137,7 +144,7 @@ const CreateMatch = (props) => {
         <button type="submit">Create</button>
       </form>
 
-      <section className={styles.flex} >
+      <section className={styles.flex}>
         <div className={`${styles.greenFelt}`} style={{ width: "350px" }}>
           <ListOfPlayers
             title="Available Players"
@@ -146,11 +153,11 @@ const CreateMatch = (props) => {
           />
         </div>
         <div className={`${styles.greenFelt}`} style={{ width: "350px" }}>
-        <ListOfPlayers
-          title="Assigned to Match"
-          players={match}
-          handleRemove={handleRemove}
-        />
+          <ListOfPlayers
+            title="Assigned to Match"
+            players={match}
+            handleRemove={handleRemove}
+          />
         </div>
       </section>
     </main>

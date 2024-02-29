@@ -1,7 +1,5 @@
-// npm modules
 import { useState, useEffect } from "react"
 
-// services
 import * as profileService from "../../services/profileService"
 
 const Profiles = () => {
@@ -25,7 +23,7 @@ const Profiles = () => {
 
   return (
     <main>
-      <h1>Hello. This is a list of all the profiles.</h1>
+      <h1>List Of Users</h1>
       {profiles.map((profile) => (
         <p key={profile._id}>{profile.name}</p>
       ))}

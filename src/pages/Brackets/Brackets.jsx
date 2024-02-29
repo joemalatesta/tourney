@@ -1,5 +1,6 @@
-import BracketLayout from "../../components/bracket/BracketLayout"
 import { useState, useEffect } from "react"
+
+import BracketLayout from "../../components/bracket/BracketLayout"
 
 const Brackets = ({ gameObj, user, handleUpdateMatch, setTwoPlayerMatch }) => {
   const [matchDetails, setMatchDetails] = useState(gameObj)

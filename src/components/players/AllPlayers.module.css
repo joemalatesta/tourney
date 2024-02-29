@@ -23,7 +23,7 @@
 }
 
 .blueFelt {
-  background-image: url('../../../public/blue-felt.jpeg');
+  background-image: url("../../../public/blue-felt.jpeg");
   background-size: 200px;
   background-position: center;
   border-radius: 8px;
@@ -33,7 +33,7 @@
 
 .w300 {
   display: flex;
-  width:300px;
+  width: 300px;
 }
 
 .column {

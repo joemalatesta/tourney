@@ -1,8 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import * as styles from "./Login.module.css"
 
-// services
+import * as styles from "./Login.module.css"
 import * as authService from "../../services/authService"
 
 const LoginPage = ({ handleAuthEvt }) => {
@@ -41,7 +40,7 @@ const LoginPage = ({ handleAuthEvt }) => {
   }
 
   return (
-    <div className={styles.center}> 
+    <div className={styles.center}>
       <main className={`${styles.w500} ${styles.greenFelt}`}>
         <h1 className={styles.center}>Log In</h1>
         <p className={styles.center}>{message}</p>

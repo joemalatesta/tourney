@@ -1,29 +1,26 @@
 import { useState, useEffect } from "react"
+
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
+
 import * as gameService from "../../services/gameService"
-import * as styles from './SingleMatch.module.css'
+import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
-  const [match,  ] = useState(props.match)
+  const [match] = useState(props.match)
   const [gamesNeeded, setGamesNeeded] = useState()
   const [
     updatedPlayerStateWithMatchCount,
     setUpdatedPlayerStateWithMatchCount,
   ] = useState(match)
 
-  useEffect(() => {
-    
-  }, [match]);
+  useEffect(() => {}, [match])
 
   let order = gameService.getFirstPlayer(match)
   useEffect(() => {
     const getGameRace = async () => {
       try {
         if (order !== undefined) {
-          const data = await gameService.getGameRace(
-            match[0],
-            match[1]
-          )
+          const data = await gameService.getGameRace(match[0], match[1])
           setGamesNeeded(data)
         }
       } catch (error) {

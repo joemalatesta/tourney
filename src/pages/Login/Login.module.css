@@ -1,4 +1,3 @@
-
 .center {
   display: flex;
   align-items: center;
@@ -23,7 +22,7 @@
 }
 
 .greenFelt {
-  background-image: url('../../../public/felt.jpg');
+  background-image: url("../../../public/felt.jpg");
   background-size: 200px;
   background-position: center;
   border-radius: 8px;

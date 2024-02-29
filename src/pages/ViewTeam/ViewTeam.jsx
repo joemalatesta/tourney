@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import * as playerService from '../../services/playerService'
-import * as styles from './ViewTeam.module.css'
+import { useEffect, useState } from "react"
+
+import * as playerService from "../../services/playerService"
+import * as styles from "./ViewTeam.module.css"
 
 const ViewTeam = (props) => {
   const [playerInfo, setPlayerInfo] = useState()
-
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -24,17 +24,20 @@ const ViewTeam = (props) => {
 
   return (
     <div className={`${styles.greenFelt} ${styles.bracket} ${styles.center}`}>
-      <h1 >{props.team.teamName}</h1>
-      <h3 className={`${styles.bracket} ${styles.w75percent}`}>{playerInfo?.map(player=>
-        <p key={player._id}>
-          Name : {player.name} {player._id === props.team.teamCaptain && ' ** Captain **'}<br/> 
-          Rank : {player.rank} <br/>
-          Matches Played : {player.matchesPlayed}
-        </p>
-
-      )}</h3>
+      <h1>{props.team.teamName}</h1>
+      <h3 className={`${styles.bracket} ${styles.w75percent}`}>
+        {playerInfo?.map((player) => (
+          <p key={player._id}>
+            Name : {player.name}{" "}
+            {player._id === props.team.teamCaptain && " ** Captain **"}
+            <br />
+            Rank : {player.rank} <br />
+            Matches Played : {player.matchesPlayed}
+          </p>
+        ))}
+      </h3>
     </div>
   )
 }
- 
+
 export default ViewTeam

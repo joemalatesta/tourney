@@ -1,7 +1,10 @@
-import * as gameServices from "../../services/gameService"
-import BracketView from "./BracketView"
 import { useState, useEffect } from "react"
-import styles from './Bracket.module.css'
+
+import BracketView from "./BracketView"
+
+import * as gameServices from "../../services/gameService"
+
+import styles from "./Bracket.module.css"
 
 const Bracket = (props) => {
   const [matches, setMatches] = useState()
@@ -15,17 +18,12 @@ const Bracket = (props) => {
     getRounds()
   }, [props.gameObj.rounds, props.gameObj.loserRounds, props.count])
 
-  useEffect(() => {
-    // console.log('*',props.count)
-  }, [props.count])
+  useEffect(() => {}, [props.count])
 
   return (
     <>
       {matches?.map((matchInfo, idx) => (
-        <div
-          className={`${styles.bracket} ${styles.greenFelt}` }
-          key={idx}
-        >
+        <div className={`${styles.bracket} ${styles.greenFelt}`} key={idx}>
           <BracketView
             isWinnerBracket={props.isWinnerBracket}
             count={props.count}

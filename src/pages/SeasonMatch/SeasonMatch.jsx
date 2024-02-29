@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+
 import Team from "../../components/Team/Team"
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
+
 import * as teamService from "../../services/teamService"
-import * as styles from './SeasonMatch.module.css'
+import * as styles from "./SeasonMatch.module.css"
 
 const SeasonMatch = (props) => {
   const navigate = useNavigate()

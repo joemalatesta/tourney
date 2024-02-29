@@ -13,7 +13,7 @@
 }
 
 .greenFelt {
-  background-image: url('../../../public/felt.jpg');
+  background-image: url("../../../public/felt.jpg");
   background-size: contain;
   border-radius: 8px;
   border: 1px solid white;

@@ -1,7 +1,8 @@
-import * as playerService from '../../services/playerService'
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 
-const PlayerName = ({team}) => {
+import * as playerService from "../../services/playerService"
+
+const PlayerName = ({ team }) => {
   const [playerInfo, setPlayerInfo] = useState()
 
   useEffect(() => {
@@ -20,13 +21,12 @@ const PlayerName = ({team}) => {
     getPlayerStats()
   }, [])
 
-
   return (
     <>
       <div>
-        {playerInfo?.map(player =>
+        {playerInfo?.map((player) => (
           <li key={player._id}>{player.name}</li>
-        )}
+        ))}
       </div>
     </>
   )

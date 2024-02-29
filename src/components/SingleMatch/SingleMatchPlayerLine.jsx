@@ -1,7 +1,6 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
 const SingleMatchPlayerLine = ({ player }) => {
-
   if (player?.value === "undefined") {
     player = {
       _id: Math.random(),
@@ -30,11 +29,8 @@ const SingleMatchPlayerLine = ({ player }) => {
                   <>Awaiting Player</>
                 )}
 
-                <Checkboxes player={player} /> 
-            <h2>
-              ({player.games})
-              
-              </h2>
+                <Checkboxes player={player} />
+                <h2>({player.games})</h2>
               </div>
             </div>
           </div>
