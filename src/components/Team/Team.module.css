@@ -12,7 +12,7 @@
 }
 
 .blueFelt {
-  background-image: url('../public/blue-felt.jpeg');
+  background-image: url('../../../public/blue-felt.jpeg');
   background-size: 200px;
   background-position: center;
   border-radius: 8px;
