@@ -78,7 +78,7 @@ function App() {
           <ScorekeeperNavBar user={user} handleLogout={handleLogout} />
         )
       }
-      if (!user) {
+      if (!user || user && user.name !== 'Admin' && user.name !== 'Scorekeeper') {
         setCurrentNavBar(<NavBar user={user} handleLogout={handleLogout} />)
       }
     }

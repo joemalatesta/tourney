@@ -39,6 +39,10 @@
   background-color: green;
 }
 
+.offWhite {
+  color: antiquewhite;
+}
+
 .greenFelt {
   background-image: url("../../../public/felt.jpg");
   background-size: 200px;

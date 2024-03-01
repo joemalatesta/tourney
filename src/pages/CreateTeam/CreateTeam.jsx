@@ -38,13 +38,13 @@ const CreateTeam = (props) => {
 
   const handleChange = (evt) => {
     if (evt.target.name === "teamCaptain")
-      setFormData({ ...formData, teamCaptain: captain._id })
+      setFormData({ ...formData, teamCaptain: captain.name })
     else setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
 
   const addCaptain = (player) => {
     setCaptain(player)
-    setFormData({ ...formData, teamCaptain: player._id })
+    setFormData({ ...formData, teamCaptain: player.name })
   }
 
   const handleSubmit = async (evt) => {

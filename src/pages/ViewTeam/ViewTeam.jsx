@@ -22,15 +22,19 @@ const ViewTeam = (props) => {
     getPlayerStats()
   }, [])
 
+  const sortedPlayers = playerInfo
+  ?.slice()
+  .sort((a, b) => a.name.localeCompare(b.name))
+
+
   return (
     <div className={`${styles.greenFelt} ${styles.bracket} ${styles.center}`}>
       <h1>{props.team.teamName}</h1>
       <h3 className={`${styles.bracket} ${styles.w75percent}`}>
-        {playerInfo?.map((player) => (
+        {sortedPlayers?.map((player) => (
           <p key={player._id}>
-            Name : {player.name}{" "}
-            {player._id === props.team.teamCaptain && " ** Captain **"}
-            <br />
+            
+            {player.name === props.team.teamCaptain && <div style={{color:'antiquewhite'}}>** Captain **</div>}Name : {player.name}<br/>
             Rank : {player.rank} <br />
             Matches Played : {player.matchesPlayed}
           </p>
