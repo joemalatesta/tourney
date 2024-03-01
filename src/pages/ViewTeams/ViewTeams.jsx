@@ -25,6 +25,8 @@ const ViewTeams = ({ setTeam, teams, setTeams }) => {
   return (
     <div className={`${styles.center} ${styles.bracket}`}>
       <h1>Teams</h1>
+
+      {teams?.length ?
       <div className={`${styles.greenFelt} ${styles.flex}  ${styles.bracket}`}>
         {teams?.map((team) => (
           <div
@@ -37,6 +39,11 @@ const ViewTeams = ({ setTeam, teams, setTeams }) => {
           </div>
         ))}
       </div>
+      :
+      <div className={`${styles.greenFelt} ${styles.flex}  ${styles.bracket}`}>
+        <h1>No Teams Yet</h1>
+      </div>  
+      }
     </div>
   )
 }

@@ -137,6 +137,7 @@ function App() {
   const handleDeleteTeam = async (id) => {
     const deletedTeam = await teamService.deleteOne(id)
     setTeams(teams.filter((team) => team._id !== deletedTeam._id))
+    navigate('view-teams')
     console.log(deletedTeam)
   }
 
@@ -271,7 +272,7 @@ function App() {
               teams={teams}
               setTeams={setTeams}
               setTeam={setTeam}
-              handleDeleteTeam={handleDeleteTeam}
+              
             />
           }
         />
@@ -280,7 +281,14 @@ function App() {
           path="/view-team"
           element={
             <ProtectedRoute user={user}>
-              <ViewTeam team={team} user={user}/>
+              <ViewTeam 
+                team={team} 
+                user={user} 
+                handleDeleteTeam={handleDeleteTeam}
+                teams={teams}
+                setTeams={setTeams}
+                setTeam={setTeam}
+              />
             </ProtectedRoute>
           }
         />
