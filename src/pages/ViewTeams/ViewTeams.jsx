@@ -6,7 +6,7 @@ import PlayerName from "../../components/players/PlayerName"
 import * as teamService from "../../services/teamService"
 import * as styles from "./ViewTeams.module.css"
 
-const ViewTeams = ({ setTeam, handleDeleteTeam, teams, setTeams, user }) => {
+const ViewTeams = ({ setTeam, teams, setTeams }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -34,14 +34,6 @@ const ViewTeams = ({ setTeam, handleDeleteTeam, teams, setTeams, user }) => {
           >
             <h3 onClick={() => handleGetTeam(team)}>{team.teamName}</h3>
             <PlayerName team={team} />
-            {( user?.name === "Admin" || user?.name === team.teamCaptain ) && (
-                <button style={{ backgroundColor: "green" }}>Edit Team</button>
-                )}
-            {(user?.name === "Admin" &&
-                <button onClick={() => handleDeleteTeam(team._id)}>
-                  Delete
-                </button>
-            )}
           </div>
         ))}
       </div>

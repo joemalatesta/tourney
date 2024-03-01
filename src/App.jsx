@@ -109,6 +109,16 @@ function App() {
     })
   }
 
+  const handleEditTeam = async (editedTeamData) => {
+    const editedTeam = await teamService.update(editedTeamData)
+    setPlayers((prevPlayers) => {
+      return prevPlayers.map((player) =>
+        player._id === editedTeam._id ? editedTeam : player
+      )
+    })
+  }
+
+
   const handleDeletePlayer = async (id) => {
     const deletedPlayer = await playerService.deleteOne(id)
     setPlayers(players.filter((player) => player._id !== deletedPlayer._id))
@@ -244,7 +254,11 @@ function App() {
           path="/create-team"
           element={
             <ProtectedRoute user={user}>
-              <CreateTeam players={players} handleAddTeam={handleAddTeam} />
+              <CreateTeam 
+                players={players} 
+                handleEditTeam={handleEditTeam} 
+                handleAddTeam={handleAddTeam} 
+              />
             </ProtectedRoute>
           }
         />
@@ -266,7 +280,7 @@ function App() {
           path="/view-team"
           element={
             <ProtectedRoute user={user}>
-              <ViewTeam team={team} />
+              <ViewTeam team={team} user={user}/>
             </ProtectedRoute>
           }
         />

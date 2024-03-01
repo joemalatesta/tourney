@@ -30,7 +30,7 @@ const EditPlayer = (props) => {
     }
     if (title === "Edit Player") {
       props.handleEditPlayer(formData)
-      setFormData({ name: "", rank: 0 })
+      setFormData({ name: "", rank: 0, matchesPlayed: 0 })
       setTitle("Add Players")
     }
   }

@@ -5,6 +5,7 @@ import * as styles from "./ViewTeam.module.css"
 
 const ViewTeam = (props) => {
   const [playerInfo, setPlayerInfo] = useState()
+  const sortedPlayers = playerInfo?.slice().sort((a, b) => a.name.localeCompare(b.name))
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -22,10 +23,9 @@ const ViewTeam = (props) => {
     getPlayerStats()
   }, [])
 
-  const sortedPlayers = playerInfo
-  ?.slice()
-  .sort((a, b) => a.name.localeCompare(b.name))
-
+  const handleEdit = () => {
+    
+  }
 
   return (
     <div className={`${styles.greenFelt} ${styles.bracket} ${styles.center}`}>
@@ -34,12 +34,20 @@ const ViewTeam = (props) => {
         {sortedPlayers?.map((player) => (
           <p key={player._id}>
             
-            {player.name === props.team.teamCaptain && <div style={{color:'antiquewhite'}}>** Captain **</div>}Name : {player.name}<br/>
+            {player.name === props.team.teamCaptain && <span style={{color:'antiquewhite'}}>** Captain **</span>} <br/>Name : {player.name}<br/>
             Rank : {player.rank} <br />
             Matches Played : {player.matchesPlayed}
           </p>
         ))}
+        {( props.user?.name === "Admin" || props.user?.name === props.team.teamCaptain ) && (
+                  <button onClick={handleEdit} style={{ backgroundColor: "green" }}>Edit Team</button>
+                  )}
       </h3>
+                     {(props.user?.name === "Admin" &&
+                <button onClick={() => props.handleDeleteTeam(props.team._id)}>
+                  Delete
+                </button>
+            )}
     </div>
   )
 }
