@@ -7,7 +7,7 @@ const ScorekeeperNavBar = ({ user, handleLogout }) => {
       <nav className={styles.redFelt}>
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {user.name}</NavLink>
-          <NavLink to="/view-tournaments">View Tournaments</NavLink>
+          <NavLink to="/view-schedule">Schedule</NavLink>
           <NavLink to="/season-match">Season Match</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>

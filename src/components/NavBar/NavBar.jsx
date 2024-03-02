@@ -7,8 +7,8 @@ const NavBar = ({ user, handleLogout }) => {
       {user ? (
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {user.name}</NavLink>
-          <NavLink to="/view-tournaments">View Tournaments</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
+          <NavLink to="/view-schedule">Schedule</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
           <NavLink to="" onClick={handleLogout}>
             LOG OUT
@@ -17,8 +17,6 @@ const NavBar = ({ user, handleLogout }) => {
       ) : (
         <div className={styles.navBar}>
           <NavLink to="/">Home</NavLink>
-          <NavLink to="/view-tournaments">View Tournaments</NavLink>
-          <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/auth/login">Log In</NavLink>
           <NavLink to="/auth/signup">Sign Up</NavLink>
         </div>

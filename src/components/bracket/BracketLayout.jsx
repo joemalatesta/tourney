@@ -138,6 +138,34 @@ const BracketLayout = ({
                   roundId={6}
                 />
               </div>
+              <div>
+                <Bracket
+                  isWinnerBracket={isWinnerBracket}
+                  count={count}
+                  setCount={setCount}
+                  setTwoPlayerMatch={setTwoPlayerMatch}
+                  setMatchDetails={setMatchDetails}
+                  rounds={gameObj?.rounds[7]}
+                  user={user}
+                  gameObj={gameObj}
+                  handleUpdateMatch={handleUpdateMatch}
+                  roundId={7}
+                />
+              </div>
+              <div>
+                <Bracket
+                  isWinnerBracket={isWinnerBracket}
+                  count={count}
+                  setCount={setCount}
+                  setTwoPlayerMatch={setTwoPlayerMatch}
+                  setMatchDetails={setMatchDetails}
+                  rounds={gameObj?.rounds[8]}
+                  user={user}
+                  gameObj={gameObj}
+                  handleUpdateMatch={handleUpdateMatch}
+                  roundId={8}
+                />
+              </div>
             </>
           )}
         </div>

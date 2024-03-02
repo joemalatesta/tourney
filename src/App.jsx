@@ -15,6 +15,7 @@ import CreateTeam from "./pages/CreateTeam/CreateTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import SeasonMatch from "./pages/SeasonMatch/SeasonMatch"
+import Schedule from "./pages/Schedule/Schedule"
 
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
@@ -78,7 +79,10 @@ function App() {
           <ScorekeeperNavBar user={user} handleLogout={handleLogout} />
         )
       }
-      if (!user || user && user.name !== 'Admin' && user.name !== 'Scorekeeper') {
+      if (
+        !user ||
+        (user && user.name !== "Admin" && user.name !== "Scorekeeper")
+      ) {
         setCurrentNavBar(<NavBar user={user} handleLogout={handleLogout} />)
       }
     }
@@ -118,7 +122,6 @@ function App() {
     })
   }
 
-
   const handleDeletePlayer = async (id) => {
     const deletedPlayer = await playerService.deleteOne(id)
     setPlayers(players.filter((player) => player._id !== deletedPlayer._id))
@@ -137,7 +140,7 @@ function App() {
   const handleDeleteTeam = async (id) => {
     const deletedTeam = await teamService.deleteOne(id)
     setTeams(teams.filter((team) => team._id !== deletedTeam._id))
-    navigate('view-teams')
+    navigate("view-teams")
     console.log(deletedTeam)
   }
 
@@ -220,34 +223,40 @@ function App() {
         <Route
           path="/brackets"
           element={
-            <Brackets
-              gameObj={singleMatch}
-              user={user}
-              handleUpdateMatch={handleUpdateMatch}
-              setTwoPlayerMatch={setTwoPlayerMatch}
-            />
+            <ProtectedRoute user={user}>
+              <Brackets
+                gameObj={singleMatch}
+                user={user}
+                handleUpdateMatch={handleUpdateMatch}
+                setTwoPlayerMatch={setTwoPlayerMatch}
+              />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/match-view"
           element={
-            <MatchView
-              match={twoPlayerMatch}
-              user={user}
-              handleUpdateMatch={handleUpdateMatch}
-            />
+            <ProtectedRoute user={user}>
+              <MatchView
+                match={twoPlayerMatch}
+                user={user}
+                handleUpdateMatch={handleUpdateMatch}
+              />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/view-tournaments"
           element={
-            <ViewTournaments
-              tourneyMatch={tourneyMatch}
-              setTourneyMatch={setTourneyMatch}
-              user={user}
-              handleDeleteMatch={handleDeleteMatch}
-              setSingleMatch={setSingleMatch}
-            />
+            <ProtectedRoute user={user}>
+              <ViewTournaments
+                tourneyMatch={tourneyMatch}
+                setTourneyMatch={setTourneyMatch}
+                user={user}
+                handleDeleteMatch={handleDeleteMatch}
+                setSingleMatch={setSingleMatch}
+              />
+            </ProtectedRoute>
           }
         />
         <Route
@@ -255,10 +264,10 @@ function App() {
           path="/create-team"
           element={
             <ProtectedRoute user={user}>
-              <CreateTeam 
-                players={players} 
-                handleEditTeam={handleEditTeam} 
-                handleAddTeam={handleAddTeam} 
+              <CreateTeam
+                players={players}
+                handleEditTeam={handleEditTeam}
+                handleAddTeam={handleAddTeam}
               />
             </ProtectedRoute>
           }
@@ -267,13 +276,14 @@ function App() {
           disable={isDisabled}
           path="/view-teams"
           element={
-            <ViewTeams
-              user={user}
-              teams={teams}
-              setTeams={setTeams}
-              setTeam={setTeam}
-              
-            />
+            <ProtectedRoute user={user}>
+              <ViewTeams
+                user={user}
+                teams={teams}
+                setTeams={setTeams}
+                setTeam={setTeam}
+              />
+            </ProtectedRoute>
           }
         />
         <Route
@@ -281,9 +291,9 @@ function App() {
           path="/view-team"
           element={
             <ProtectedRoute user={user}>
-              <ViewTeam 
-                team={team} 
-                user={user} 
+              <ViewTeam
+                team={team}
+                user={user}
                 handleDeleteTeam={handleDeleteTeam}
                 teams={teams}
                 setTeams={setTeams}
@@ -295,7 +305,20 @@ function App() {
         <Route
           disable={isDisabled}
           path="/season-match"
-          element={<SeasonMatch setTwoPlayerMatch={setTwoPlayerMatch} />}
+          element={
+            <ProtectedRoute user={user}>
+              <SeasonMatch setTwoPlayerMatch={setTwoPlayerMatch} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/view-schedule"
+          element={
+            <ProtectedRoute user={user}>
+              <Schedule />
+            </ProtectedRoute>
+          }
         />
       </Routes>
     </>
