@@ -40,6 +40,7 @@ function App() {
   const [teams, setTeams] = useState()
   const [team, setTeam] = useState({})
   const [currentNavBar, setCurrentNavBar] = useState()
+  const [schedule, setSchedule] = useState()
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -316,7 +317,7 @@ function App() {
           path="/view-schedule"
           element={
             <ProtectedRoute user={user}>
-              <Schedule />
+              <Schedule schedule={schedule} setSchedule={setSchedule} user={user} teams={teams} />
             </ProtectedRoute>
           }
         />
