@@ -1,30 +1,31 @@
 import { useState, useEffect } from "react"
 import { Routes, Route, useNavigate } from "react-router-dom"
 
-import Signup from "./pages/Signup/Signup"
-import Login from "./pages/Login/Login"
-import Landing from "./pages/Landing/Landing"
-import Profiles from "./pages/Profiles/Profiles"
-import ChangePassword from "./pages/ChangePassword/ChangePassword"
-import EditPlayer from "./pages/EditPlayers/EditPlayer"
-import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
-import CreateMatch from "./pages/CreateMatch/CreateMatch"
 import Brackets from "./pages/Brackets/Brackets"
-import MatchView from "./pages/MatchView/MatchView"
+import ChangePassword from "./pages/ChangePassword/ChangePassword"
+import CreateMatch from "./pages/CreateMatch/CreateMatch"
+import CreateSchedule from "./pages/CreateSchedule/CreateSchedule"
 import CreateTeam from "./pages/CreateTeam/CreateTeam"
-import ViewTeams from "./pages/ViewTeams/ViewTeams"
-import ViewTeam from "./pages/ViewTeam/ViewTeam"
-import SeasonMatch from "./pages/SeasonMatch/SeasonMatch"
+import EditPlayer from "./pages/EditPlayers/EditPlayer"
+import Landing from "./pages/Landing/Landing"
+import Login from "./pages/Login/Login"
+import MatchView from "./pages/MatchView/MatchView"
+import Profiles from "./pages/Profiles/Profiles"
 import Schedule from "./pages/Schedule/Schedule"
+import SeasonMatch from "./pages/SeasonMatch/SeasonMatch"
+import Signup from "./pages/Signup/Signup"
+import ViewTeam from "./pages/ViewTeam/ViewTeam"
+import ViewTeams from "./pages/ViewTeams/ViewTeams"
+import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
 
+import AdminNavBar from "./components/NavBar/AdminNavBar"
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
-import AdminNavBar from "./components/NavBar/AdminNavBar"
 import ScorekeeperNavBar from "./components/NavBar/ScorekeeperNavBar"
 
 import * as authService from "./services/authService"
-import * as playerService from "./services/playerService"
 import * as matchService from "./services/matchService"
+import * as playerService from "./services/playerService"
 import * as teamService from "./services/teamService"
 
 import "./App.css"
@@ -49,6 +50,14 @@ function App() {
     }
     fetchPlayers()
   }, [])
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      const data = await teamService.index()
+      setTeams(data)
+    }
+    fetchTeams()
+  }, []);
 
   useEffect(() => {
     const getTwoPlayerMatchData = async () => {
@@ -317,7 +326,25 @@ function App() {
           path="/view-schedule"
           element={
             <ProtectedRoute user={user}>
-              <Schedule schedule={schedule} setSchedule={setSchedule} user={user} teams={teams} />
+              <Schedule 
+                schedule={schedule} 
+                setSchedule={setSchedule} 
+                user={user} 
+                teams={teams} />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          disable={isDisabled}
+          path="/create-schedule"
+          element={
+            <ProtectedRoute user={user}>
+              <CreateSchedule
+                teams={teams}
+                players={players}
+                handleEditTeam={handleEditTeam}
+                handleAddTeam={handleAddTeam}
+              />
             </ProtectedRoute>
           }
         />

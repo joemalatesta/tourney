@@ -25,7 +25,9 @@ const ViewTeam = (props) => {
     getPlayerStats()
   }, [])
 
-  const handleEdit = () => {}
+  // const handleEdit = () => {
+
+  // } 
 
   return (
     <div className={`${styles.greenFelt} ${styles.bracket} ${styles.center}`}>
@@ -59,12 +61,11 @@ const ViewTeam = (props) => {
               </p>
             )
         )}
-        {(props.user?.name === "Admin" ||
-          props.user?.name === props.team.teamCaptain) && (
+        {/* {props.user?.name === "Admin" && (
           <button onClick={handleEdit} style={{ backgroundColor: "green" }}>
             Edit Team
           </button>
-        )}
+        )} **this is a place holder until funtionality is set up ** */}
       </h3>
       {props.user?.name === "Admin" && (
         <button onClick={() => props.handleDeleteTeam(props.team._id)}>

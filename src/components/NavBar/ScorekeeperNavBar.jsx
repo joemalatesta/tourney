@@ -8,7 +8,7 @@ const ScorekeeperNavBar = ({ user, handleLogout }) => {
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {user.name}</NavLink>
           <NavLink to="/view-schedule">Schedule</NavLink>
-          <NavLink to="/season-match">Season Match</NavLink>
+          <NavLink to="/season-match">Match</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
           <NavLink to="" onClick={handleLogout}>
