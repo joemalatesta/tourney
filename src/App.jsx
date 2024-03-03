@@ -20,7 +20,7 @@ import Schedule from "./pages/Schedule/Schedule"
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
 import AdminNavBar from "./components/NavBar/AdminNavBar"
-import ScorekeeperNavBar from "./components/NavBar/ScoreKeeperNavBar"
+import ScorekeeperNavBar from "./components/NavBar/ScorekeeperNavBar"
 
 import * as authService from "./services/authService"
 import * as playerService from "./services/playerService"
