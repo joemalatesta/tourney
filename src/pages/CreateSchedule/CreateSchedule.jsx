@@ -1,9 +1,11 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import * as scheduleService from '../../services/scheduleService'
 
 const CreateSchedule = (props) => {
-  const [date, setDate] = useState("")
+  const navigate = useNavigate()
+  const [date, setDate] = useState(null)
   const [homeTeam, setHomeTeam] = useState(null)
   const [visitor, setVisitor] = useState(null)
   const [table, setTable] = useState([1, 2, 3, 4])
@@ -11,10 +13,11 @@ const CreateSchedule = (props) => {
   const [adjustedTeams, setAdjustedTeams] = useState(props.teams)
   const [usedTable, setUsedTable] = useState()
   const [byeTeam, setByeTeam] = useState('')
-  const [disabled, setDisabled] = useState(false)
 
   const handleChangeDate = (event) => {
-    setDate(event.target.value)
+    let date = event.target.value
+    date.slice(0,5)
+    setDate(date.slice(5,10))
   }
 
   const handleChangeTable = (evt) => {
@@ -25,7 +28,6 @@ const CreateSchedule = (props) => {
     if (homeTeam === null) setHomeTeam(team)
     if (visitor === null && homeTeam !== null){
       setVisitor(team) 
-      setDisabled(true)
     } 
     setAdjustedTeams(adjustedTeams.filter((el) => el._id !== team._id))
     
@@ -42,25 +44,26 @@ const CreateSchedule = (props) => {
     if (adjustedTeams.length === 1) {
       setByeTeam(adjustedTeams[0])
     }
-    setDisabled(false)
   }
 
   const completedForm = (date !== '' && matches.length == 4 && byeTeam !== '')
-
+  const completedMatch = (homeTeam !== null && visitor !== null && usedTable !== null)
+  console.log(completedMatch);
   const handleSubmitToSchedule = () => {
     scheduleService.create({
       name: date,
       matches: matches,
       bye: byeTeam
     })
-    console.log(matches, byeTeam, date);
+    console.log(matches, byeTeam, date)
+    navigate('/view-schedule')
   }
 
   return (
     <div className="bracket">
       <h1>Create Match Here</h1>
       <h2>
-      {date === "" ? (
+      {date === null ? (
   <div>
     <label>Date</label>
     <input
@@ -70,7 +73,9 @@ const CreateSchedule = (props) => {
     />
   </div>
 ) : (
-  <span>{new Date(date).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' })}</span>
+  <span>
+    {date}
+</span>
 )}
       </h2>
       {matches.length < 4 && (
@@ -87,7 +92,7 @@ const CreateSchedule = (props) => {
       )}
       {matches.length < 4 && (
         <>
-        <button onClick={() => handleSubmitMatch()}>submit match</button>
+        <button disabled={!completedMatch} onClick={() => handleSubmitMatch()}>submit match</button>
           <div
             type="text"
             id="table"
@@ -112,7 +117,7 @@ const CreateSchedule = (props) => {
           </h2>
           {adjustedTeams?.map((team) => (
             <ul style={{ color: "white" }} key={team._id}>
-              <button disabled={disabled} onClick={() => handleSelectTeam(team)}>{team.teamName}</button>
+              <button disabled={completedForm} onClick={() => handleSelectTeam(team)}>{team.teamName}</button>
             </ul>
           ))}
         </>
