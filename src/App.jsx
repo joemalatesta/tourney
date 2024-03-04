@@ -57,7 +57,7 @@ function App() {
       setTeams(data)
     }
     fetchTeams()
-  }, []);
+  }, [])
 
   useEffect(() => {
     const getTwoPlayerMatchData = async () => {
@@ -326,15 +326,16 @@ function App() {
           path="/view-schedule"
           element={
             <ProtectedRoute user={user}>
-              <Schedule 
-                schedule={schedule} 
-                setSchedule={setSchedule} 
-                user={user} 
-                teams={teams} />
+              <Schedule
+                schedule={schedule}
+                setSchedule={setSchedule}
+                user={user}
+                teams={teams}
+              />
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           disable={isDisabled}
           path="/create-schedule"
           element={
