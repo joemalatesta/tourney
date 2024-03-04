@@ -95,6 +95,10 @@ a:visited {
   flex-direction: column;
   justify-content: center;
 } */
+.row {
+  display: flex;
+  flex-direction: row;
+}
 
 /* .match-width {
   width: 480px;

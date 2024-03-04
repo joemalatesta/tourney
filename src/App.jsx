@@ -9,6 +9,7 @@ import CreateTeam from "./pages/CreateTeam/CreateTeam"
 import EditPlayer from "./pages/EditPlayers/EditPlayer"
 import Landing from "./pages/Landing/Landing"
 import Login from "./pages/Login/Login"
+import Match from "./pages/Match/Match"
 import MatchView from "./pages/MatchView/MatchView"
 import Profiles from "./pages/Profiles/Profiles"
 import Schedule from "./pages/Schedule/Schedule"
@@ -41,7 +42,7 @@ function App() {
   const [teams, setTeams] = useState()
   const [team, setTeam] = useState({})
   const [currentNavBar, setCurrentNavBar] = useState()
-  const [schedule, setSchedule] = useState()
+  const [viewMatch, setViewMatch] = useState()
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -327,10 +328,9 @@ function App() {
           element={
             <ProtectedRoute user={user}>
               <Schedule
-                schedule={schedule}
-                setSchedule={setSchedule}
+                viewMatch={viewMatch}
+                setViewMatch={setViewMatch}
                 user={user}
-                teams={teams}
               />
             </ProtectedRoute>
           }
@@ -345,6 +345,19 @@ function App() {
                 players={players}
                 handleEditTeam={handleEditTeam}
                 handleAddTeam={handleAddTeam}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/match"
+          element={
+            <ProtectedRoute user={user}>
+              <Match
+                teams={teams}
+                viewMatch={viewMatch}
+                setTwoPlayerMatch={setTwoPlayerMatch}
               />
             </ProtectedRoute>
           }

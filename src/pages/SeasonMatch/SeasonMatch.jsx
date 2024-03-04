@@ -15,13 +15,13 @@ const SeasonMatch = (props) => {
   const [player1, setPlayer1] = useState(null)
   const [player2, setPlayer2] = useState(null)
   const [match, setMatch] = useState([])
-  const [isSubmitted, setIsSubmitted] = useState(false)
   const [message, setMessage] = useState("")
   const [match1, setMatch1] = useState(null)
   const [match2, setMatch2] = useState(null)
   const [match3, setMatch3] = useState(null)
 
 
+  console.log(props);
 
   useEffect(() => {
     const getTeamData = async () => {
@@ -69,7 +69,6 @@ const SeasonMatch = (props) => {
       if(match2 === null && match1 !== null) setMatch2([player1, player2])
       if(match3 === null && match1 !== null && match2 !== null) setMatch3([player1, player2])
       setMatch([player1, player2])
-      setIsSubmitted(true)
       setPlayer1(null)
       setPlayer2(null)
     } else {

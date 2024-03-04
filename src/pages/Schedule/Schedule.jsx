@@ -1,35 +1,40 @@
 import { useState, useEffect } from 'react'
 
+import ViewScheduleDate from '../../components/ViewScheduleDate/ViewScheduleDate'
+
 import * as scheduleService from '../../services/scheduleService'
 
+const Schedule = (props) => {
+  const [schedule, setSchedule] = useState([]);
 
+  console.log(props);
 
-const Schedule = () => {
-  const [schedule, setSchedule] = useState()
-
-  
   useEffect(() => {
     const fetchSchedule = async () => {
       const data = await scheduleService.index()
       setSchedule(data)
-    }
-    fetchSchedule()
-  }, [])
+    };
+    fetchSchedule();
+  }, []);
 
-  console.log(schedule);
+  const [displayedScheduleId, setDisplayedScheduleId] = useState(null);
+
+  const handleShow = (scheduleId) => {
+    setDisplayedScheduleId(scheduleId);
+  };
 
   return (
     <>
-    <div className='bracket'>
-          {schedule?.map(sched => (
-            <li key={sched._id}>
-              {sched.name}
-            </li>
-          ))}
-    </div>
-       
+      <div >
+        {schedule.map((sched) => (
+          <div className='row' onClick={() => handleShow(sched._id)} key={sched._id}>
+            {sched.name}
+            {displayedScheduleId === sched._id && <ViewScheduleDate setViewMatch={props.setViewMatch} match={sched} />}
+          </div>
+        ))}
+      </div>
     </>
-  )
-}
- 
-export default Schedule
+  );
+};
+
+export default Schedule;
