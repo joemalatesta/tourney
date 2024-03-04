@@ -53,7 +53,7 @@ const Match = (props) => {
     <>
       <h1>Match </h1>
       <div className="row">
-        <div>
+        <div className="bracket">
           <h1>{team1?.teamName}</h1>
           <div>
             <TeamPlayers
@@ -66,27 +66,27 @@ const Match = (props) => {
         </div>
         <div>
           <button onClick={() => handleSetPlayers()}>Set Players</button>
-          <div onClick={() => handleViewSingleMatch(match1)}>
+          <div className="bracket" onClick={() => handleViewSingleMatch(match1)}>
             Match 1
             {match1?.map((player) => (
               <li key={player._id}>{player.name}</li>
             ))}
           </div>
-          <div onClick={() => handleViewSingleMatch(match2)}>
+          <div className="bracket" onClick={() => handleViewSingleMatch(match2)}>
             Match 2
             {match2?.map((player) => (
               <li key={player._id}>{player.name}</li>
             ))}
           </div>
 
-          <div onClick={() => handleViewSingleMatch(match3)}>
+          <div className="bracket" onClick={() => handleViewSingleMatch(match3)}>
             Match 3
             {match3?.map((player) => (
               <li key={player._id}>{player.name}</li>
             ))}
           </div>
         </div>
-        <div>
+        <div className="bracket" >
           <h1>{team2?.teamName}</h1>
           <div>
             <TeamPlayers
