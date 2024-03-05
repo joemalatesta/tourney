@@ -90,6 +90,10 @@ a:visited {
   display: flex;
   justify-content: space-between;
 }
+.space-around {
+  display: flex;
+  justify-content: space-around;
+}
 
 /* .column {
   display: flex;

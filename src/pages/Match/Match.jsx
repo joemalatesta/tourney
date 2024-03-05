@@ -56,7 +56,7 @@ const Match = (props) => {
   return (
     <>
       <h1 className="center">Match </h1>
-      <div className="row space-between">
+      <div className="row space-around">
         <div className="bracket">
           <h1>{team1?.teamName}</h1>
           <div className="w355">
@@ -68,7 +68,7 @@ const Match = (props) => {
             />
           </div>
         </div>
-        {match3 === null && (
+        {match1 === null && (
           <button
             style={{ backgroundColor: `${color}` }}
             onClick={() => handleSetPlayers()}
@@ -89,12 +89,15 @@ const Match = (props) => {
         </div>
       </div>
       <div className="center">
+        {match1 !== null &&
+
         <div className="bracket" onClick={() => handleViewSingleMatch(match1)}>
-          Match
+          <p style={{color:'green'}}>Click for Match</p>
           {match1?.map((player) => (
             <li key={player._id}>{player.name}</li>
-          ))}
+            ))}
         </div>
+          }
         {/* <div className="bracket" onClick={() => handleViewSingleMatch(match2)}>
             Match 2
             {match2?.map((player) => (
