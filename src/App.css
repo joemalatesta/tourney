@@ -2,6 +2,7 @@
   display: flex;
   background-color: black;
   color:burlywood ;
+  min-width: 400px;
 }
 
 body {
@@ -85,10 +86,10 @@ a:visited {
   align-items: center;
 } */
 
-/* .space-between {
+.space-between {
   display: flex;
   justify-content: space-between;
-} */
+}
 
 /* .column {
   display: flex;
@@ -171,4 +172,17 @@ button {
   border-radius: 5px;
   background-color: firebrick;
   color:white;
+}
+.w300{
+  width: 275px;
+}
+
+.fWrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.w355 {
+  width: 355px;
+
 }

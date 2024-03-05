@@ -20,7 +20,7 @@ const Match = (props) => {
       setTeam2(props.viewMatch.visitor)
     }
     getTeamData()
-  }, [])
+  }, [props.viewMatch.homeTeam, props.viewMatch.visitor])
 
   useEffect(() => {}, [match])
 
@@ -34,6 +34,7 @@ const Match = (props) => {
   }
 
   const handleViewSingleMatch = (players) => {
+    if (players === null) return
     props.setTwoPlayerMatch(players)
     navigate("/match-view")
   }
@@ -42,20 +43,23 @@ const Match = (props) => {
     if (player1 !== null && player2 !== null) {
       if (match1 === null) setMatch1([player1, player2])
       if (match2 === null && match1 !== null) setMatch2([player1, player2])
-      if (match3 === null && match1 !== null && match2 !== null) setMatch3([player1, player2])
+      if (match3 === null && match1 !== null && match2 !== null)
+        setMatch3([player1, player2])
       setMatch([player1, player2])
       setPlayer1(null)
       setPlayer2(null)
     }
   }
 
+  let color = player1 == null || player2 == null ? "red" : "green"
+
   return (
     <>
-      <h1>Match </h1>
-      <div className="row">
+      <h1 className="center">Match </h1>
+      <div className="row space-between">
         <div className="bracket">
           <h1>{team1?.teamName}</h1>
-          <div>
+          <div className="w355">
             <TeamPlayers
               matchPlayer={player1}
               title="Team 1"
@@ -64,15 +68,34 @@ const Match = (props) => {
             />
           </div>
         </div>
-        <div>
-          <button onClick={() => handleSetPlayers()}>Set Players</button>
-          <div className="bracket" onClick={() => handleViewSingleMatch(match1)}>
-            Match 1
-            {match1?.map((player) => (
-              <li key={player._id}>{player.name}</li>
-            ))}
+        {match3 === null && (
+          <button
+            style={{ backgroundColor: `${color}` }}
+            onClick={() => handleSetPlayers()}
+          >
+            Set Players
+          </button>
+        )}
+        <div className="bracket">
+          <h1>{team2?.teamName}</h1>
+          <div className="w355">
+            <TeamPlayers
+              matchPlayer={player2}
+              title="Team 2"
+              team={team2}
+              handleChoosePlayer={handleChoosePlayer}
+            />
           </div>
-          <div className="bracket" onClick={() => handleViewSingleMatch(match2)}>
+        </div>
+      </div>
+      <div className="center">
+        <div className="bracket" onClick={() => handleViewSingleMatch(match1)}>
+          Match
+          {match1?.map((player) => (
+            <li key={player._id}>{player.name}</li>
+          ))}
+        </div>
+        {/* <div className="bracket" onClick={() => handleViewSingleMatch(match2)}>
             Match 2
             {match2?.map((player) => (
               <li key={player._id}>{player.name}</li>
@@ -84,19 +107,7 @@ const Match = (props) => {
             {match3?.map((player) => (
               <li key={player._id}>{player.name}</li>
             ))}
-          </div>
-        </div>
-        <div className="bracket" >
-          <h1>{team2?.teamName}</h1>
-          <div>
-            <TeamPlayers
-              matchPlayer={player2}
-              title="Team 2"
-              team={team2}
-              handleChoosePlayer={handleChoosePlayer}
-            />
-          </div>
-        </div>
+          </div> */}
       </div>
     </>
   )

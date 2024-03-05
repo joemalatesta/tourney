@@ -65,8 +65,9 @@ const AllPlayers = (props) => {
             <div className={styles.w300}>
               --{player.name} : {player.rank}
             </div>
-            {(player?.name === playerToDelete?.name && confirmDelete) && deleteDisplay
-            }
+            {player?.name === playerToDelete?.name &&
+              confirmDelete &&
+              deleteDisplay}
           </div>
         </div>
       ))}

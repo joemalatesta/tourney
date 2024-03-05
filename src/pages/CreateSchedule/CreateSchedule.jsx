@@ -1,23 +1,23 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import * as scheduleService from '../../services/scheduleService'
+import * as scheduleService from "../../services/scheduleService"
 
 const CreateSchedule = (props) => {
   const navigate = useNavigate()
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState()
   const [homeTeam, setHomeTeam] = useState(null)
   const [visitor, setVisitor] = useState(null)
   const [table, setTable] = useState([1, 2, 3, 4])
   const [matches, setMatches] = useState([])
   const [adjustedTeams, setAdjustedTeams] = useState(props.teams)
   const [usedTable, setUsedTable] = useState()
-  const [byeTeam, setByeTeam] = useState('')
+  const [byeTeam, setByeTeam] = useState("")
 
   const handleChangeDate = (event) => {
     let date = event.target.value
-    date.slice(0,5)
-    setDate(date.slice(5,10))
+    date.slice(0, 5)
+    setDate(date.slice(5, 10))
   }
 
   const handleChangeTable = (evt) => {
@@ -26,11 +26,10 @@ const CreateSchedule = (props) => {
 
   const handleSelectTeam = (team) => {
     if (homeTeam === null) setHomeTeam(team)
-    if (visitor === null && homeTeam !== null){
-      setVisitor(team) 
-    } 
+    if (visitor === null && homeTeam !== null) {
+      setVisitor(team)
+    }
     setAdjustedTeams(adjustedTeams.filter((el) => el._id !== team._id))
-    
   }
 
   const handleSubmitMatch = () => {
@@ -46,37 +45,31 @@ const CreateSchedule = (props) => {
     }
   }
 
-  const completedForm = (date !== '' && matches.length == 4 && byeTeam !== '')
-  const completedMatch = (homeTeam !== null && visitor !== null && usedTable !== null)
-  console.log(completedMatch);
+  const completedForm = date !== "" && matches.length == 4 && byeTeam !== ""
+  const completedMatch =
+    homeTeam !== null && visitor !== null && usedTable !== null
+
   const handleSubmitToSchedule = () => {
     scheduleService.create({
       name: date,
       matches: matches,
-      bye: byeTeam
+      bye: byeTeam,
     })
-    console.log(matches, byeTeam, date)
-    navigate('/view-schedule')
+    navigate("/view-schedule")
   }
 
   return (
     <div className="bracket">
       <h1>Create Match Here</h1>
       <h2>
-      {date === null ? (
-  <div>
-    <label>Date</label>
-    <input
-      type="date"
-      value={date}
-      onChange={handleChangeDate}
-    />
-  </div>
-) : (
-  <span>
-    {date}
-</span>
-)}
+        {date === undefined ? (
+          <div>
+            <label>Date</label>
+            <input type="date" value={date} onChange={handleChangeDate} />
+          </div>
+        ) : (
+          <span>{date}</span>
+        )}
       </h2>
       {matches.length < 4 && (
         <>
@@ -92,7 +85,12 @@ const CreateSchedule = (props) => {
       )}
       {matches.length < 4 && (
         <>
-        <button disabled={!completedMatch} onClick={() => handleSubmitMatch()}>submit match</button>
+          <button
+            disabled={!completedMatch}
+            onClick={() => handleSubmitMatch()}
+          >
+            submit match
+          </button>
           <div
             type="text"
             id="table"
@@ -103,7 +101,7 @@ const CreateSchedule = (props) => {
           >
             Choose the table -
             <select name="table" id="table">
-              <option value="">pick a table</option>
+              <option value="table">Pick a Table</option>
               {table.map((num) => (
                 <option key={num} value={num}>
                   {num}
@@ -112,12 +110,17 @@ const CreateSchedule = (props) => {
             </select>
           </div>
           <h2>
-            Pick the{" "}
+            Pick the
             {visitor === null && homeTeam !== null ? "Visitor" : "Home"} Team:
           </h2>
           {adjustedTeams?.map((team) => (
             <ul style={{ color: "white" }} key={team._id}>
-              <button disabled={completedForm} onClick={() => handleSelectTeam(team)}>{team.teamName}</button>
+              <button
+                disabled={completedForm}
+                onClick={() => handleSelectTeam(team)}
+              >
+                {team.teamName}
+              </button>
             </ul>
           ))}
         </>
@@ -130,10 +133,13 @@ const CreateSchedule = (props) => {
           <li>Visitor : {match.visitor.teamName}</li>
         </div>
       ))}
-      <h1>Bye</h1><h2>{byeTeam?.teamName}</h2>
-      {completedForm &&
-        <button onClick={()=>handleSubmitToSchedule()}>Submit to Schedule</button> 
-      }
+      <h1>Bye</h1>
+      <h2>{byeTeam?.teamName}</h2>
+      {completedForm && (
+        <button onClick={() => handleSubmitToSchedule()}>
+          Submit to Schedule
+        </button>
+      )}
     </div>
   )
 }

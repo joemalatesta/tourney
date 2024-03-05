@@ -4,7 +4,9 @@ import * as playerService from "../../services/playerService"
 
 const PlayerName = ({ team }) => {
   const [playerInfo, setPlayerInfo] = useState()
-  const sortedPlayers = playerInfo?.slice().sort((a, b) => a.name.localeCompare(b.name))
+  const sortedPlayers = playerInfo
+    ?.slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -20,16 +22,19 @@ const PlayerName = ({ team }) => {
       }
     }
     getPlayerStats()
-  }, [])
+  }, [team.teamPlayers])
 
   return (
     <>
       <div>
-        <span style={{color: 'antiquewhite'}}>Captain - </span> {team.teamCaptain} 
-        {sortedPlayers?.map((player) => (
-          player.name !== team.teamCaptain &&
-            <li key={player._id}>{player.name}</li>
-        ))}
+        <span style={{ color: "antiquewhite" }}>Captain - </span>{" "}
+        {team.teamCaptain}
+        {sortedPlayers?.map(
+          (player) =>
+            player.name !== team.teamCaptain && (
+              <li key={player._id}>{player.name}</li>
+            )
+        )}
       </div>
     </>
   )

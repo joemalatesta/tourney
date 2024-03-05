@@ -23,11 +23,11 @@ const ViewTeam = (props) => {
       }
     }
     getPlayerStats()
-  }, [])
+  }, [props.team.teamPlayers])
 
   // const handleEdit = () => {
 
-  // } 
+  // }
 
   return (
     <div className={`${styles.greenFelt} ${styles.bracket} ${styles.center}`}>
@@ -37,7 +37,7 @@ const ViewTeam = (props) => {
           (player) =>
             player.name === props.team.teamCaptain && (
               <p key={player._id}>
-                <span style={{color: 'antiquewhite'}}>Captain</span>
+                <span style={{ color: "antiquewhite" }}>Captain</span>
                 <br />
                 Name : {player.name}
                 <br />

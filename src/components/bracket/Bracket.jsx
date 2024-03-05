@@ -16,7 +16,7 @@ const Bracket = (props) => {
       setMatches(data)
     }
     getRounds()
-  }, [props.gameObj.rounds, props.gameObj.loserRounds, props.count])
+  }, [props.gameObj.rounds, props.gameObj.loserRounds, props.count, props.rounds])
 
   useEffect(() => {}, [props.count])
 

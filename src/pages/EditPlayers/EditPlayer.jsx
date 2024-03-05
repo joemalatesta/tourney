@@ -41,7 +41,6 @@ const EditPlayer = (props) => {
 
   return (
     <div className={`${styles.bracket} ${styles.greenFelt}`}>
-      
       <h1 className={styles.center}>Player Management</h1>
       <h2 className={styles.center}>{title}</h2>
       <form
