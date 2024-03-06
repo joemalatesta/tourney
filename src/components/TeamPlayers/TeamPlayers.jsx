@@ -28,8 +28,11 @@ const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer }) => {
           <div>
             <span
               style={matchPlayer?._id === player._id ? { color: "red" } : {}}
-            >
-              {player.name}
+            >{matchPlayer?._id === player._id ? 
+              <h2>{player.name}</h2>
+              :
+              <p>{player.name}</p>
+            }
             </span>{" "}
             ({player.rank}){" "}
             {player._id == team.teamCaptain ? "** Captain **" : ""}

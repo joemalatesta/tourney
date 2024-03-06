@@ -76,19 +76,7 @@ const Match = (props) => {
             Set Players
           </button>
         )}
-        <div className="bracket">
-          <h1>{team2?.teamName}</h1>
-          <div className="w355">
-            <TeamPlayers
-              matchPlayer={player2}
-              title="Team 2"
-              team={team2}
-              handleChoosePlayer={handleChoosePlayer}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="center">
+            <div className="center">
         {match1 !== null &&
 
         <div className="bracket" onClick={() => handleViewSingleMatch(match1)}>
@@ -112,6 +100,19 @@ const Match = (props) => {
             ))}
           </div> */}
       </div>
+        <div className="bracket">
+          <h1>{team2?.teamName}</h1>
+          <div className="w355">
+            <TeamPlayers
+              matchPlayer={player2}
+              title="Team 2"
+              team={team2}
+              handleChoosePlayer={handleChoosePlayer}
+            />
+          </div>
+        </div>
+      </div>
+  
     </>
   )
 }
