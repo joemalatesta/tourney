@@ -7,7 +7,7 @@ const AdminNavBar = ({ user, handleLogout }) => {
       <nav className={styles.redFelt}>
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {user.name}</NavLink>
-          <NavLink to="/view-schedule">Schedule</NavLink>
+          {/* <NavLink to="/view-schedule">Schedule</NavLink>
           <NavLink to="/create-schedule">Create New Schedule</NavLink>
           <NavLink to="/season-match">Match</NavLink>
           <NavLink to="/player-management">Player Management</NavLink>
@@ -16,7 +16,7 @@ const AdminNavBar = ({ user, handleLogout }) => {
           <NavLink to="/add-players-to-match">Create Tournament</NavLink>
           <NavLink to="/view-tournaments">View Tournaments</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
-          <NavLink to="/profiles">Profiles</NavLink>
+          <NavLink to="/profiles">Profiles</NavLink> */}
           <NavLink to="" onClick={handleLogout}>
             LOG OUT
           </NavLink>

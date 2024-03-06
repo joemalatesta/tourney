@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Routes, Route, useNavigate } from "react-router-dom"
 
+import AdminPage from "./pages/AdminPage/AdminPage"
 import Brackets from "./pages/Brackets/Brackets"
 import ChangePassword from "./pages/ChangePassword/ChangePassword"
 import CreateMatch from "./pages/CreateMatch/CreateMatch"
@@ -182,6 +183,14 @@ function App() {
           element={
             <ProtectedRoute user={user}>
               <Profiles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute user={user}>
+              <AdminPage user={user}/>
             </ProtectedRoute>
           }
         />
