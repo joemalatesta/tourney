@@ -56,7 +56,7 @@ const Match = (props) => {
   return (
     <>
       <h1 className="center">Match </h1>
-      <div className="row space-around">
+      <div className="row center space-around">
         <div className="bracket">
           <h1>{team1?.teamName}</h1>
           <div className="w355">
@@ -70,10 +70,11 @@ const Match = (props) => {
         </div>
         {match1 === null && (
           <button
+            className="bracket"
             style={{ backgroundColor: `${color}` }}
             onClick={() => handleSetPlayers()}
           >
-            Set Players
+            {color === 'red' ? '' : 'Set Players'}
           </button>
         )}
             <div className="center">
