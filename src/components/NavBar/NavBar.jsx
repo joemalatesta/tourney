@@ -15,6 +15,12 @@ const NavBar = ({ user, handleLogout, profile }) => {
         </div>
       )}
 
+      {profile?.accessLevel > 10 && profile?.accessLevel < 90 && (
+        <NavLink to="" onClick={handleLogout}>
+          LOG OUT
+        </NavLink>
+      )}
+
       {profile?.accessLevel === 10 && (
         <nav>
           <NavLink to="" onClick={handleLogout}>

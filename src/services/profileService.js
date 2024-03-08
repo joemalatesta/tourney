@@ -23,4 +23,16 @@ async function findOne(id) {
   }
 }
 
-export { getAllProfiles, findOne }
+async function update(profile) {
+  const res = await fetch(`${BASE_URL}/${profile._id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${tokenService.getToken()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(profile),
+  })
+  return res.json()
+}
+
+export { getAllProfiles, findOne, update }

@@ -43,6 +43,7 @@ function App() {
   const [team, setTeam] = useState({})
   const [viewMatch, setViewMatch] = useState()
   const [profile, setProfile] = useState(null)
+  const [profiles, setProfiles] = useState(null)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -51,6 +52,14 @@ function App() {
     }
     fetchProfile()
   }, [user]);
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      const data = await profileService.getAllProfiles()
+      setProfiles(data)
+    }
+    fetchProfiles()
+  }, [user])
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -157,6 +166,11 @@ function App() {
     setTourneyMatch([...tourneyMatch, updatedMatch])
   }
 
+  const handleUpdateProfiles = async (profileData) => {
+    const updatedProfile = await profileService.update(profileData)
+    setProfiles([...profiles, updatedProfile])
+  }
+
   return (
     <>
       <NavBar user={user} profile={profile} handleLogout={handleLogout} />
@@ -175,7 +189,7 @@ function App() {
           path="/admin"
           element={
             <ProtectedRoute user={user}>
-              <AdminPage user={user}/>
+              <AdminPage profiles={profiles} user={user} handleUpdateProfiles={handleUpdateProfiles}/>
             </ProtectedRoute>
           }
         />

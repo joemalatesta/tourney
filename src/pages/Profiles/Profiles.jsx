@@ -4,6 +4,7 @@ import * as profileService from "../../services/profileService"
 
 const Profiles = () => {
   const [profiles, setProfiles] = useState([])
+  console.log(profiles);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -21,12 +22,21 @@ const Profiles = () => {
     )
   }
 
+  const grabAccessLevel = (lvl) => {
+    if(lvl === 90) return "Admin"
+    if(lvl === 70) return "Validator"
+    if(lvl === 50) return "Team Captain"
+    if(lvl === 40) return "Assist Captain"
+    if(lvl === 30) return "Player"
+    if(lvl === 10) return "Not Approved"
+  }
+
   return (
     <main>
       <h1>List Of Users</h1>
       {profiles.map((profile) => (
         <p className="bracket" key={profile._id}>
-          <h3>Name: {profile.firstName} {profile.lastName} || Email: {profile.email2} || {profile.accessLevel} </h3>
+          <h3>Name: {profile.firstName} {profile.lastName} || Email: {profile.email2} || {grabAccessLevel(profile.accessLevel)} </h3>
         </p>
       ))}
     </main>
