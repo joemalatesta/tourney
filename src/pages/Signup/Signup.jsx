@@ -9,8 +9,11 @@ const Signup = ({ handleAuthEvt }) => {
 
   const [message, setMessage] = useState("")
   const [formData, setFormData] = useState({
-    name: "",
+    name: "Hello",
+    firstName: '',
+    lastName: '',
     email: "",
+    email2: '',
     password: "",
     passwordConf: "",
   })
@@ -39,10 +42,10 @@ const Signup = ({ handleAuthEvt }) => {
     }
   }
 
-  const { name, email, password, passwordConf } = formData
+  const { name, firstName, lastName, email, email2, password, passwordConf } = formData
 
   const isFormInvalid = () => {
-    return !(name && email && password && password === passwordConf)
+    return !(name && email && email2 && password && password === passwordConf)
   }
 
   return (
@@ -54,14 +57,38 @@ const Signup = ({ handleAuthEvt }) => {
         className={styles.center}
         onSubmit={handleSubmit}
       >
-        <div className="flex">
+        <div>
           <label>
-            Name
+            User Name
             <div>
               <input
                 type="text"
-                value={name}
-                name="name"
+                value={email}
+                name="email"
+                onChange={handleChange}
+              />
+            </div>
+          </label>
+          <br />
+          <label>
+            First Name
+            <div>
+              <input
+                type="text"
+                value={firstName}
+                name="firstName"
+                onChange={handleChange}
+              />
+            </div>
+          </label>
+          <br />
+          <label>
+            Last Name
+            <div>
+              <input
+                type="text"
+                value={lastName}
+                name="lastName"
                 onChange={handleChange}
               />
             </div>
@@ -72,8 +99,8 @@ const Signup = ({ handleAuthEvt }) => {
             <div>
               <input
                 type="text"
-                value={email}
-                name="email"
+                value={email2}
+                name="email2"
                 onChange={handleChange}
               />
             </div>

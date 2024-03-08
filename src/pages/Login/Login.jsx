@@ -46,7 +46,7 @@ const LoginPage = ({ handleAuthEvt }) => {
         <p className={styles.center}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit}>
           <label className={styles.center}>
-            User Name
+            Username:
             <input
               type="text"
               value={email}

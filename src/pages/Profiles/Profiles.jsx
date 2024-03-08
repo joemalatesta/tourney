@@ -25,7 +25,9 @@ const Profiles = () => {
     <main>
       <h1>List Of Users</h1>
       {profiles.map((profile) => (
-        <p key={profile._id}>{profile.name}</p>
+        <p className="bracket" key={profile._id}>
+          <h3>Name: {profile.firstName} {profile.lastName} || Email: {profile.email2} || {profile.accessLevel} </h3>
+        </p>
       ))}
     </main>
   )

@@ -20,15 +20,14 @@ import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
 
-import AdminNavBar from "./components/NavBar/AdminNavBar"
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
-import ScorekeeperNavBar from "./components/NavBar/ScorekeeperNavBar"
 
 import * as authService from "./services/authService"
 import * as matchService from "./services/matchService"
 import * as playerService from "./services/playerService"
 import * as teamService from "./services/teamService"
+import * as profileService from './services/profileService'
 
 import "./App.css"
 
@@ -42,8 +41,16 @@ function App() {
   const [twoPlayerMatch, setTwoPlayerMatch] = useState()
   const [teams, setTeams] = useState()
   const [team, setTeam] = useState({})
-  const [currentNavBar, setCurrentNavBar] = useState()
   const [viewMatch, setViewMatch] = useState()
+  const [profile, setProfile] = useState(null)
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await profileService.findOne(user?.profile)
+      setProfile(data)
+    }
+    fetchProfile()
+  }, [user]);
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -78,28 +85,6 @@ function App() {
     }
     fetchMatch()
   }, [])
-
-  useEffect(() => {
-    const handleNavBar = () => {
-      if (user?.name === "Admin") {
-        setCurrentNavBar(
-          <AdminNavBar user={user} handleLogout={handleLogout} />
-        )
-      }
-      if (user?.name === "Scorekeeper") {
-        setCurrentNavBar(
-          <ScorekeeperNavBar user={user} handleLogout={handleLogout} />
-        )
-      }
-      if (
-        !user ||
-        (user && user.name !== "Admin" && user.name !== "Scorekeeper")
-      ) {
-        setCurrentNavBar(<NavBar user={user} handleLogout={handleLogout} />)
-      }
-    }
-    handleNavBar()
-  }, [user])
 
   const handleLogout = () => {
     authService.logout()
@@ -174,10 +159,10 @@ function App() {
 
   return (
     <>
-      {currentNavBar}
+      <NavBar user={user} profile={profile} handleLogout={handleLogout} />
       <br />
       <Routes>
-        <Route path="/" element={<Landing user={user} players={players} />} />
+        <Route path="/" element={<Landing profile={profile} user={user} players={players} />} />
         <Route
           path="/profiles"
           element={

@@ -13,4 +13,14 @@ async function getAllProfiles() {
   }
 }
 
-export { getAllProfiles }
+async function findOne(id) {
+  if (id === undefined || id === null) return
+  try {
+    const res = await fetch(BASE_URL + `/${id}`)
+    return res.json()
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export { getAllProfiles, findOne }
