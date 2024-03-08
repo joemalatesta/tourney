@@ -1,9 +1,9 @@
 import image from '../../../public/notauthorized.jpg'
 const NotAuthorized = () => {
   return (
-    <>
-      <img src={image} alt="Not Authorized" />
-    </>
+    <div className='center'>
+      <img className='center' src={image} alt="Not Authorized" />
+    </div>
   )
 }
  

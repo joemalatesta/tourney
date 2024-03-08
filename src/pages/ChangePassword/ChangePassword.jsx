@@ -44,34 +44,37 @@ const ChangePassword = ({ handleAuthEvt }) => {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
-        <div className={styles.flex}>
+        <div className=''>
           <label>
-            Current Password
             <input
               type="password"
               value={password}
               name="password"
               onChange={handleChange}
-            />
+              />
+              Current Password
           </label>
+          <br/>
           <label>
-            New Password
             <input
               type="password"
               value={newPassword}
               name="newPassword"
               onChange={handleChange}
-            />
+              />
+              New Password
           </label>
+          <br/>
           <label>
-            Confirm New Password
             <input
               type="password"
               value={newPasswordConf}
               name="newPasswordConf"
               onChange={handleChange}
-            />
+              />
+              Confirm New Password
           </label>
+          <br/>
           <button disabled={isFormInvalid()}>Change Password</button>
           <Link to="/">Cancel</Link>
         </div>

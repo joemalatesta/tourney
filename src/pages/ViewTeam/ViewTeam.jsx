@@ -67,7 +67,7 @@ const ViewTeam = (props) => {
           </button>
         )} **this is a place holder until funtionality is set up ** */}
       </h3>
-      {props.user?.name === "Admin" && (
+      {props?.profile?.accessLevel === 90 && (
         <button onClick={() => props.handleDeleteTeam(props.team._id)}>
           Delete
         </button>

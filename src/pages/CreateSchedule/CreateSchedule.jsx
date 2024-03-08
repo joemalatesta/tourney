@@ -29,7 +29,7 @@ const CreateSchedule = (props) => {
     if (visitor === null && homeTeam !== null) {
       setVisitor(team)
     }
-    setAdjustedTeams(adjustedTeams.filter((el) => el._id !== team._id))
+    if(homeTeam === null || visitor=== null) setAdjustedTeams(adjustedTeams.filter((el) => el._id !== team._id))
   }
 
   const handleSubmitMatch = () => {
@@ -45,7 +45,7 @@ const CreateSchedule = (props) => {
     }
   }
 
-  const completedForm = date !== "" && matches.length == 4 && byeTeam !== ""
+  const completedForm = date !== undefined && matches.length == 4
   const completedMatch =
     homeTeam !== null && visitor !== null && usedTable !== null
 
