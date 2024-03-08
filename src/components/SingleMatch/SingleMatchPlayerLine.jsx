@@ -1,6 +1,15 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
-const SingleMatchPlayerLine = ({ player, profile, handleWinner }) => {
+const SingleMatchPlayerLine = ({
+  player,
+  profile,
+  handleWinner,
+  isDisabled,
+  setIsDisabled,
+  disableCheckboxes,
+  seeCheckboxes,
+  gameWinner,
+}) => {
   if (player?.value === "undefined") {
     player = {
       _id: Math.random(),
@@ -9,6 +18,10 @@ const SingleMatchPlayerLine = ({ player, profile, handleWinner }) => {
     }
   }
 
+  const defineWinner = (winner) => {
+    disableCheckboxes()
+    console.log(winner)
+  }
   return (
     <div className="flex" style={{ alignItems: "center" }}>
       <div
@@ -28,13 +41,22 @@ const SingleMatchPlayerLine = ({ player, profile, handleWinner }) => {
                 ) : (
                   <>Awaiting Player</>
                 )}
+                {gameWinner?._id === player?._id && (
+                  <h1 style={{color:'cornflowerblue'}} className="center">Winner</h1>
+                )}
 
-                <Checkboxes player={player} />
+                {seeCheckboxes && (
+                  <Checkboxes
+                    setIsDisabled={setIsDisabled}
+                    isDisabled={isDisabled}
+                    defineWinner={defineWinner}
+                    player={player}
+                    profile={profile}
+                    handleWinner={handleWinner}
+                  />
+                )}
                 <h2>({player.games})</h2>
               </div>
-              {profile.accessLevel >= 40 &&
-              <button onClick={()=> handleWinner(player)}>Winner</button>
-              }
             </div>
           </div>
         )}

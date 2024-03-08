@@ -329,7 +329,7 @@ function App() {
           disable={isDisabled}
           path="/view-team"
           element={
-            <ProtectedRoute access="90" profile={profile} user={user}>
+            <ProtectedRoute access="30" profile={profile} user={user}>
               <ViewTeam
                 profile={profile}
                 team={team}

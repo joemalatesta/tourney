@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { confetti } from '../../services/confetti'
 
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 
@@ -7,13 +8,17 @@ import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
   const [match] = useState(props.match)
+  const [seeCheckboxes, setSeeCheckboxes] = useState(true)
   const [gamesNeeded, setGamesNeeded] = useState()
   const [
     updatedPlayerStateWithMatchCount,
     setUpdatedPlayerStateWithMatchCount,
   ] = useState(match)
+  const [gameWinner, setGameWinner] = useState()
 
   useEffect(() => {}, [match])
+  useEffect(() => {}, [seeCheckboxes]);
+
 
   let order = gameService.getFirstPlayer(match)
   useEffect(() => {
@@ -55,11 +60,27 @@ const SingleMatch = (props) => {
     addGamesNeeded()
   }, [match, gamesNeeded])
 
+  const handleWinner = async (winner) => {
+    await setGameWinner(winner)
+    disableCheckboxes()
+    confetti.start(4000)
+  }
+
+  const disableCheckboxes = () => {
+    setSeeCheckboxes(!seeCheckboxes)
+  }
+
   return (
     <>
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
         {updatedPlayerStateWithMatchCount?.map((player, idx) => (
-          <SingleMatchPlayerLine profile={props.profile} handleWinner={props.handleWinner} player={player} key={idx} />
+          <SingleMatchPlayerLine 
+            gameWinner={gameWinner}
+            profile={props.profile}
+            seeCheckboxes={seeCheckboxes} 
+            handleWinner={handleWinner}
+            player={player} 
+            key={idx} />
         ))}
       </div>
     </>
