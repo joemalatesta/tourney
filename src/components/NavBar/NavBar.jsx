@@ -16,17 +16,21 @@ const NavBar = ({ user, handleLogout, profile }) => {
       )}
 
       {profile?.accessLevel > 10 && profile?.accessLevel < 90 && (
+        <>
+        <NavLink to="/">Welcome {profile.firstName}</NavLink>
         <NavLink to="" onClick={handleLogout}>
           LOG OUT
         </NavLink>
+        </>
       )}
 
       {profile?.accessLevel === 10 && (
-        <nav>
-          <NavLink to="" onClick={handleLogout}>
+        <div className={styles.navBar}>
+          <NavLink to="/">Welcome {profile.firstName} </NavLink> 
+          <NavLink to="" onClick={handleLogout}> 
             LOG OUT
           </NavLink>
-        </nav>
+        </div>
       )}
 
       {!user && (

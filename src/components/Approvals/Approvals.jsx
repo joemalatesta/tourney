@@ -42,11 +42,31 @@ const Approvals = ({profiles, handleUpdateProfiles}) => {
     approved: "",
     email: ""})
   }
+ 
+  const grabAccessLevel = (lvl) => {
+    if(lvl === 90) return "Admin"
+    if(lvl === 70) return "Validator"
+    if(lvl === 50) return "Team Captain"
+    if(lvl === 40) return "Assist Captain"
+    if(lvl === 30) return "Player"
+    if(lvl === 10) return "Not Approved"
+  }
 
   return (
     <>
+    <div className="bracket">
+      <h2>Access Levels</h2>
+          Admin = 90<br/>
+          Validator = 70<br/>
+          Team Captain = 50<br/>
+          Assistant Captain = 40<br/>
+          Player = 30<br/>
+          Not Approved = 10<br/>
+    </div>
+      <h1>Awaiting Approval</h1>
       <form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
         <div>
+          <br/>
           <label>Access Level</label>
           <input
             type="text"
@@ -60,11 +80,10 @@ const Approvals = ({profiles, handleUpdateProfiles}) => {
           <button type="submit">Submit Change</button>
         </div>
       </form>
-      <h1>Awaiting Approval</h1>
       {filteredNames?.length ?
       filteredNames?.map((profile) => (
         <li onClick={() => handleChangeProfile(profile)} key={profile._id}>
-          {profile.firstName} {profile.lastName}
+          Name:  {profile.firstName} {profile.lastName}  Access Number: {profile.accessLevel} - {grabAccessLevel(profile.accessLevel)}
         </li>
       ))
       :

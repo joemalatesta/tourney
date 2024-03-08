@@ -5,8 +5,7 @@ import Approvals from "../../components/Approvals/Approvals"
 
 const AdminPage = ({profiles, handleUpdateProfiles}) => {
   
-  useEffect(() => {}, [profiles]);
-
+  console.log(profiles);
   return (
     <>
       <div className="fWrap">
