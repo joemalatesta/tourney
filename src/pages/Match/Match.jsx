@@ -55,7 +55,14 @@ const Match = (props) => {
 
   return (
     <>
+      <div className="bracket">
       <h1 className="center">Match </h1>
+   
+      <p className="center">Pick players here for match play.</p>
+      <p className="center">Then press center button to confirm names then a second time to view match race</p>
+
+      </div>
+     
       <div className="row center space-around">
         <div className="bracket">
           <h1>{team1?.teamName}</h1>

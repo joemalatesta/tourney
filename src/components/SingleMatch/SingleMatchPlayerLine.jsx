@@ -1,6 +1,6 @@
 import Checkboxes from "../checkboxes/Checkboxes"
 
-const SingleMatchPlayerLine = ({ player }) => {
+const SingleMatchPlayerLine = ({ player, profile, handleWinner }) => {
   if (player?.value === "undefined") {
     player = {
       _id: Math.random(),
@@ -32,6 +32,9 @@ const SingleMatchPlayerLine = ({ player }) => {
                 <Checkboxes player={player} />
                 <h2>({player.games})</h2>
               </div>
+              {profile.accessLevel >= 40 &&
+              <button onClick={()=> handleWinner(player)}>Winner</button>
+              }
             </div>
           </div>
         )}

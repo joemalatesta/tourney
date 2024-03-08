@@ -59,7 +59,7 @@ const SingleMatch = (props) => {
     <>
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
         {updatedPlayerStateWithMatchCount?.map((player, idx) => (
-          <SingleMatchPlayerLine player={player} key={idx} />
+          <SingleMatchPlayerLine profile={props.profile} handleWinner={props.handleWinner} player={player} key={idx} />
         ))}
       </div>
     </>

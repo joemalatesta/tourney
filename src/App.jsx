@@ -54,7 +54,7 @@ function App() {
   }, [user])
 
   useEffect(() => {
-    if(user){
+    if (user) {
       const fetchProfiles = async () => {
         const data = await profileService.getAllProfiles()
         setProfiles(data)
@@ -189,7 +189,7 @@ function App() {
         <Route
           path="/profiles"
           element={
-            <ProtectedRoute  profile={profile} user={user}>
+            <ProtectedRoute profile={profile} user={user}>
               <Profiles />
             </ProtectedRoute>
           }
@@ -197,7 +197,7 @@ function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute access='90' profile={profile} user={user}>
+            <ProtectedRoute access="90" profile={profile} user={user}>
               <AdminPage
                 profiles={profiles}
                 user={user}
@@ -218,9 +218,9 @@ function App() {
           disable={isDisabled}
           path="/player-management"
           element={
-            <ProtectedRoute access='90' profile={profile} user={user}>
+            <ProtectedRoute access="90" profile={profile} user={user}>
               <EditPlayer
-               profile={profile}
+                profile={profile}
                 players={players}
                 playMatch={playMatch}
                 isDisabled={isDisabled}
@@ -235,9 +235,9 @@ function App() {
           disable={isDisabled}
           path="/add-players-to-match"
           element={
-            <ProtectedRoute access='90' profile={profile} user={user}>
+            <ProtectedRoute access="90" profile={profile} user={user}>
               <CreateMatch
-               profile={profile}
+                profile={profile}
                 playMatch={playMatch}
                 isDisabled={isDisabled}
                 handleAddMatch={handleAddMatch}
@@ -257,9 +257,9 @@ function App() {
         <Route
           path="/brackets"
           element={
-            <ProtectedRoute access='30' profile={profile} user={user}>
+            <ProtectedRoute access="30" profile={profile} user={user}>
               <Brackets
-               profile={profile}
+                profile={profile}
                 gameObj={singleMatch}
                 user={user}
                 handleUpdateMatch={handleUpdateMatch}
@@ -271,9 +271,9 @@ function App() {
         <Route
           path="/match-view"
           element={
-            <ProtectedRoute access='30' profile={profile} user={user}>
+            <ProtectedRoute access="30" profile={profile} user={user}>
               <MatchView
-               profile={profile}
+                profile={profile}
                 match={twoPlayerMatch}
                 user={user}
                 handleUpdateMatch={handleUpdateMatch}
@@ -284,9 +284,9 @@ function App() {
         <Route
           path="/view-tournaments"
           element={
-            <ProtectedRoute access='30' profile={profile} user={user}>
+            <ProtectedRoute access="30" profile={profile} user={user}>
               <ViewTournaments
-               profile={profile}
+                profile={profile}
                 tourneyMatch={tourneyMatch}
                 setTourneyMatch={setTourneyMatch}
                 user={user}
@@ -300,9 +300,9 @@ function App() {
           disable={isDisabled}
           path="/create-team"
           element={
-            <ProtectedRoute access='90' profile={profile} user={user}>
+            <ProtectedRoute access="90" profile={profile} user={user}>
               <CreateTeam
-               profile={profile}
+                profile={profile}
                 players={players}
                 handleEditTeam={handleEditTeam}
                 handleAddTeam={handleAddTeam}
@@ -314,9 +314,9 @@ function App() {
           disable={isDisabled}
           path="/view-teams"
           element={
-            <ProtectedRoute access='30' profile={profile} user={user}>
+            <ProtectedRoute access="30" profile={profile} user={user}>
               <ViewTeams
-               profile={profile}
+                profile={profile}
                 user={user}
                 teams={teams}
                 setTeams={setTeams}
@@ -329,9 +329,9 @@ function App() {
           disable={isDisabled}
           path="/view-team"
           element={
-            <ProtectedRoute access='90' profile={profile} user={user}>
+            <ProtectedRoute access="90" profile={profile} user={user}>
               <ViewTeam
-               profile={profile}
+                profile={profile}
                 team={team}
                 user={user}
                 handleDeleteTeam={handleDeleteTeam}
@@ -346,10 +346,11 @@ function App() {
           disable={isDisabled}
           path="/season-match"
           element={
-            <ProtectedRoute access='40' profile={profile} user={user}>
-              <SeasonMatch 
-               profile={profile}
-              setTwoPlayerMatch={setTwoPlayerMatch} />
+            <ProtectedRoute access="40" profile={profile} user={user}>
+              <SeasonMatch
+                profile={profile}
+                setTwoPlayerMatch={setTwoPlayerMatch}
+              />
             </ProtectedRoute>
           }
         />
@@ -357,13 +358,13 @@ function App() {
           disable={isDisabled}
           path="/view-schedule"
           element={
-            <ProtectedRoute access='30' profile={profile} user={user}>
-            <Schedule
-            profile={profile}
-              viewMatch={viewMatch}
-              setViewMatch={setViewMatch}
-              user={user}
-            />
+            <ProtectedRoute access="30" profile={profile} user={user}>
+              <Schedule
+                profile={profile}
+                viewMatch={viewMatch}
+                setViewMatch={setViewMatch}
+                user={user}
+              />
             </ProtectedRoute>
           }
         />
@@ -371,9 +372,9 @@ function App() {
           disable={isDisabled}
           path="/create-schedule"
           element={
-            <ProtectedRoute access='90' profile={profile} user={user}>
+            <ProtectedRoute access="90" profile={profile} user={user}>
               <CreateSchedule
-               profile={profile}
+                profile={profile}
                 teams={teams}
                 players={players}
                 handleEditTeam={handleEditTeam}
@@ -386,9 +387,9 @@ function App() {
           disable={isDisabled}
           path="/match"
           element={
-            <ProtectedRoute access='40' profile={profile} user={user}>
+            <ProtectedRoute access="30" profile={profile} user={user}>
               <Match
-               profile={profile}
+                profile={profile}
                 teams={teams}
                 viewMatch={viewMatch}
                 setTwoPlayerMatch={setTwoPlayerMatch}
