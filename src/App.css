@@ -97,11 +97,11 @@ a:visited {
   justify-content: space-around;
 }
 
-/* .column {
+.column {
   display: flex;
   flex-direction: column;
   justify-content: center;
-} */
+}
 .row {
   display: flex;
   flex-direction: row;

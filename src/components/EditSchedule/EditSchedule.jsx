@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 
 import * as scheduleService from "../../services/scheduleService"
 
-const EditSchedule = ({ handleDeleteSchedule, profile }) => {
+const EditSchedule = ({ handleDeleteSchedule }) => {
   const [schedules, setSchedules] = useState()
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [dateToDelete, setDateToDelete] = useState(null)
@@ -52,16 +52,21 @@ const EditSchedule = ({ handleDeleteSchedule, profile }) => {
   }
 
   return (
-    <>
-      <h1>Date Maintenance</h1>
-      {schedules?.map((date) => (
-        <li onClick={() => handlePopUp(date)} key={date._id}>
-          {date.name}  <button onClick={() => areYouSure(date)}>Delete</button>
-          {date?.name === dateToDelete?.name && confirmDelete &&
-              deleteDisplay}
-        </li>
-      ))}
-    </>
+    <div className="bracket column center">
+      <h2>Date Maintenance</h2>
+      {schedules?.length ?
+        schedules?.map((date) => (
+          <li onClick={() => handlePopUp(date)} key={date._id}>
+            {date.name}  <button onClick={() => areYouSure(date)}>Delete</button>
+            {date?.name === dateToDelete?.name && confirmDelete &&
+                deleteDisplay}
+          </li>
+        ))
+    :  
+    <h1>No dates to display</h1>
+    }
+    <br/>
+    </div>
   )
 }
 

@@ -2,7 +2,7 @@ import { useState, useRef } from "react"
 
 const Approvals = ({profiles, handleUpdateProfiles}) => {
   const formElement = useRef()
-  
+  const [highlighted, setHighlighted] = useState("rgb(235, 230, 140")
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -20,28 +20,34 @@ const Approvals = ({profiles, handleUpdateProfiles}) => {
   }
 
   const handleChangeProfile = (profile) => {
-    console.log(profile)
+    console.log(profile);
+    setHighlighted(profile._id);
     const updatedProfile = {
       ...profile,
       accessLevel: profile.accessLevel,
-    }
-    setFormData(updatedProfile)
-  }
+    };
+    setFormData(updatedProfile);
+  };
+
+
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value, approved: true })
   }
 
   const handleSubmit = async (evt) => {
-    evt.preventDefault()
-    await handleEditProfile(formData)
-    console.log(formData)
-    setFormData({firstName: "",
-    lastName: "",
-    accessLevel: "",
-    approved: "",
-    email: ""})
-  }
+    evt.preventDefault();
+    await handleEditProfile(formData);
+    console.log(formData);
+    setFormData({
+      firstName: "",
+      lastName: "",
+      accessLevel: "",
+      approved: "",
+      email: "",
+    });
+    setHighlighted(null)
+  };
  
   const grabAccessLevel = (lvl) => {
     if(lvl === 90) return "Admin"
@@ -52,43 +58,60 @@ const Approvals = ({profiles, handleUpdateProfiles}) => {
     if(lvl === 10) return "Not Approved"
   }
 
+  const checkHighlighted = (profileId) => {
+    return highlighted === profileId ? "red" : "rgb(235, 230, 140)";
+  };
   return (
     <>
     <div className="bracket">
-      <h2>Access Levels</h2>
+      <h2 className="center">Access Levels</h2>
+      <div className="center">
+
           Admin = 90<br/>
           Validator = 70<br/>
           Team Captain = 50<br/>
           Assistant Captain = 40<br/>
           Player = 30<br/>
           Not Approved = 10<br/>
-    </div>
-      <h1>Awaiting Approval</h1>
+      </div>
+      <h3 className="center">Awaiting Approval</h3>
+          <div className="column center">
+
       <form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
         <div>
           <br/>
           <label>Access Level</label>
+          <br/>
           <input
             type="text"
             name="accessLevel"
             value={formData.accessLevel}
             onChange={handleChange}
             required
-          />
+            />
         </div>
         <div>
           <button type="submit">Submit Change</button>
         </div>
       </form>
-      {filteredNames?.length ?
-      filteredNames?.map((profile) => (
-        <li onClick={() => handleChangeProfile(profile)} key={profile._id}>
-          Name:  {profile.firstName} {profile.lastName}  Access Number: {profile.accessLevel} - {grabAccessLevel(profile.accessLevel)}
-        </li>
-      ))
-      :
-       <h2>No people here</h2> 
-      }
+      <div className="column">
+        {filteredNames?.length ? (
+          filteredNames?.map((profile) => (
+            <li
+              style={{ color: checkHighlighted(profile._id) }}
+              onClick={() => handleChangeProfile(profile)}
+              key={profile._id}
+            >
+              Name: {profile.firstName} {profile.lastName} Access Number: {profile.accessLevel} - {grabAccessLevel(profile.accessLevel)}
+            </li>
+          ))
+        ) : (
+          <h3>No people here</h3>
+        )}
+      </div>
+      <br/>
+    </div>
+    </div>
     </>
   )
 }
