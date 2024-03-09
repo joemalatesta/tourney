@@ -1,5 +1,5 @@
 const confetti = {
-  maxCount: 400, //set max confetti count
+  maxCount: 100, //set max confetti count
   speed: 5, //set the particle animation speed
   frameInterval: 15, //the confetti animation frame interval in milliseconds
   alpha: 1.0, //the alpha opacity of the confetti (between 0 and 1, where 1 is opaque and 0 is invisible)
@@ -31,18 +31,14 @@ let supportsAnimationFrame =
   window.oRequestAnimationFrame ||
   window.msRequestAnimationFrame
 let colors = [
-  'rgba(30,144,255,',
-  'rgba(107,142,35,',
-  'rgba(255,215,0,',
-  'rgba(255,192,203,',
-  'rgba(106,90,205,',
-  'rgba(173,216,230,',
-  'rgba(238,130,238,',
-  'rgba(152,251,152,',
-  'rgba(70,130,180,',
-  'rgba(244,164,96,',
-  'rgba(210,105,30,',
-  'rgba(220,20,60,',
+  'rgba(255,0,0,',
+  'rgba(0,0,255,',
+  'rgba(0,195,0,',
+  'rgba(159,0,255,',
+  'rgba(255,255,0',
+  'rgba(255,165,0',
+  'rgba(153,108,0',
+  'rgba(0,0,0',
 ]
 let streamingConfetti = false
 let animationTimer = null
@@ -192,7 +188,7 @@ function drawParticles(context) {
     context.beginPath();
     x = particle.x + particle.tilt;
     y = particle.y + particle.tilt;
-    const ballDiameter = 64; // Adjust the diameter for larger pool balls
+    const ballDiameter = 45; // Adjust the diameter for larger pool balls
     context.arc(x, y, ballDiameter / 2, 0, 2 * Math.PI);
 
     // Fill the particle with a solid color
