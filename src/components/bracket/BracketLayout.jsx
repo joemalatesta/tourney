@@ -9,6 +9,7 @@ const BracketLayout = ({
   setTwoPlayerMatch,
   setMatchDetails,
   matchDetails,
+  profile
 }) => {
   const [isWinnerBracket, setIsWinnerBracket] = useState(true)
   const [count, setCount] = useState(0)
@@ -42,6 +43,7 @@ const BracketLayout = ({
             <>
               <div className="flex-column">
                 <Bracket
+                  profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}
@@ -56,6 +58,7 @@ const BracketLayout = ({
               </div>
               <div>
                 <Bracket
+                profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}
@@ -70,6 +73,7 @@ const BracketLayout = ({
               </div>
               <div>
                 <Bracket
+                profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}
@@ -84,6 +88,7 @@ const BracketLayout = ({
               </div>
               <div>
                 <Bracket
+                profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}
@@ -98,6 +103,7 @@ const BracketLayout = ({
               </div>
               <div>
                 <Bracket
+                profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}
@@ -112,6 +118,7 @@ const BracketLayout = ({
               </div>
               <div>
                 <Bracket
+                profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}
@@ -126,6 +133,7 @@ const BracketLayout = ({
               </div>
               <div>
                 <Bracket
+                profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}
@@ -140,6 +148,7 @@ const BracketLayout = ({
               </div>
               <div>
                 <Bracket
+                profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}
@@ -154,6 +163,7 @@ const BracketLayout = ({
               </div>
               <div>
                 <Bracket
+                profile={profile}
                   isWinnerBracket={isWinnerBracket}
                   count={count}
                   setCount={setCount}

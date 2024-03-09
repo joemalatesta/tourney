@@ -26,6 +26,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
 import * as authService from "./services/authService"
 import * as matchService from "./services/matchService"
 import * as playerService from "./services/playerService"
+import * as scheduleService from "./services/scheduleService"
 import * as teamService from "./services/teamService"
 import * as profileService from "./services/profileService"
 
@@ -154,6 +155,13 @@ function App() {
     console.log(deletedTeam)
   }
 
+  const handleDeleteSchedule = async (id) => {
+    const deletedDate = await scheduleService.deleteOne(id)
+    setTeams(teams.filter((team) => team._id !== deletedDate._id))
+    navigate("view-schedule")
+    console.log(deletedDate)
+  }
+
   const handleDeleteMatch = async (id) => {
     const deletedMatch = await matchService.deleteOne(id)
     setTourneyMatch(
@@ -199,9 +207,11 @@ function App() {
           element={
             <ProtectedRoute access="90" profile={profile} user={user}>
               <AdminPage
+                profile={profile}
                 profiles={profiles}
                 user={user}
                 handleUpdateProfiles={handleUpdateProfiles}
+                handleDeleteSchedule={handleDeleteSchedule}
               />
             </ProtectedRoute>
           }

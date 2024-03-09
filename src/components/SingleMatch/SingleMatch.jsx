@@ -63,7 +63,7 @@ const SingleMatch = (props) => {
   const handleWinner = async (winner) => {
     await setGameWinner(winner)
     disableCheckboxes()
-    confetti.start(4000)
+    confetti.start(10000)
   }
 
   const disableCheckboxes = () => {

@@ -9,6 +9,8 @@ import * as styles from "./ViewTeams.module.css"
 const ViewTeams = ({ setTeam, teams, setTeams }) => {
   const navigate = useNavigate()
 
+  console.log(teams);
+
   useEffect(() => {
     const fetchTeams = async () => {
       const data = await teamService.index()

@@ -1,5 +1,5 @@
 const confetti = {
-  maxCount: 500, //set max confetti count
+  maxCount: 900, //set max confetti count
   speed: 5, //set the particle animation speed
   frameInterval: 15, //the confetti animation frame interval in milliseconds
   alpha: 1.0, //the alpha opacity of the confetti (between 0 and 1, where 1 is opaque and 0 is invisible)
@@ -51,7 +51,7 @@ let lastFrameTime = Date.now()
 let particles = []
 let waveAngle = 0
 let context = null
-
+console.log(animationTimer);
 function resetParticle(particle, width, height) {
   particle.color =
     colors[(Math.random() * colors.length) | 0] + (confetti.alpha + ')')

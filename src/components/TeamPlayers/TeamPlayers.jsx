@@ -32,22 +32,22 @@ const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer }) => {
   return (
     <div className="green-felt">
       <h3>Players</h3>
-      {sortedPlayers?.map((player) => (
-        <div onClick={() => handleChoosePlayer(player, title)} key={player._id}>
+      {sortedPlayers?.map((player) => 
+        <div onClick={() => handleChoosePlayer(player, title)} key={player?._id}>
           <div>
             <span
-              style={matchPlayer?._id === player._id ? { color: "green" } : {}}
-            >{matchPlayer?._id === player._id ? 
-              <h2>{player.name} ({player.rank})</h2>
+              style={matchPlayer?._id === player?._id ? { color: "green" } : {}}
+            >{matchPlayer?._id === player?._id ? 
+              <h2>{player?.name} ({player?.rank})</h2>
               :
-              <p>{player.name} ({player.rank})</p>
+              <p>{player?.name} ({player?.rank})</p>
             }
             </span>
             
-            {player._id == team.teamCaptain ? "** Captain **" : ""}
+            {player?._id == team?.teamCaptain ? "** Captain **" : ""}
           </div>
         </div>
-      ))}
+      )}
     </div>
   )
 }

@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom"
 
 import Approvals from "../../components/Approvals/Approvals"
+import EditSchedule from "../../components/EditSchedule/EditSchedule"
 
-const AdminPage = ({profiles, handleUpdateProfiles}) => {
+const AdminPage = ({profiles, handleUpdateProfiles, handleDeleteSchedule, profile}) => {
   
   console.log(profiles);
   return (
@@ -19,6 +20,8 @@ const AdminPage = ({profiles, handleUpdateProfiles}) => {
         <NavLink className="bracket" to="/profiles">Profiles</NavLink>
       </div>
       <Approvals profiles={profiles} handleUpdateProfiles={handleUpdateProfiles}/>
+      <br/>
+      <EditSchedule handleDeleteSchedule={handleDeleteSchedule} profile={profile}/>
     </>
   )
 }

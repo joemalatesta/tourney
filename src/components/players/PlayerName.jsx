@@ -31,7 +31,7 @@ const PlayerName = ({ team }) => {
         {team.teamCaptain}
         {sortedPlayers?.map(
           (player) =>
-            player.name !== team.teamCaptain && (
+            player?.name !== team.teamCaptain && (
               <li key={player._id}>{player.name}</li>
             )
         )}

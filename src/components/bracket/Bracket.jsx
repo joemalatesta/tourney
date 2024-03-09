@@ -25,6 +25,7 @@ const Bracket = (props) => {
       {matches?.map((matchInfo, idx) => (
         <div className={`${styles.bracket} ${styles.greenFelt}`} key={idx}>
           <BracketView
+            profile={props.profile}
             isWinnerBracket={props.isWinnerBracket}
             count={props.count}
             setCount={props.setCount}

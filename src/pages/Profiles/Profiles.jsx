@@ -35,9 +35,9 @@ const Profiles = () => {
     <main>
       <h1>List Of Users</h1>
       {profiles.map((profile) => (
-        <p className="bracket" key={profile._id}>
+        <div className="bracket" key={profile._id}>
           <h3>Name: {profile.firstName} {profile.lastName} || Email: {profile.email2} || {grabAccessLevel(profile.accessLevel)} </h3>
-        </p>
+        </div>
       ))}
     </main>
   )

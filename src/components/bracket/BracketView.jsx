@@ -100,7 +100,7 @@ const BracketView = (props) => {
                 <div className="flex end"></div>
               </div>
             </div>
-            {props?.user?.name === "Admin" && (
+            {props.profile.accessLevel >= 70 && (
               <WinnerCheckbox
                 count={props.count}
                 setCount={props.setCount}
