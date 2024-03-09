@@ -1,5 +1,5 @@
 const confetti = {
-  maxCount: 900, //set max confetti count
+  maxCount: 400, //set max confetti count
   speed: 5, //set the particle animation speed
   frameInterval: 15, //the confetti animation frame interval in milliseconds
   alpha: 1.0, //the alpha opacity of the confetti (between 0 and 1, where 1 is opaque and 0 is invisible)
@@ -182,24 +182,26 @@ function isConfettiRunning() {
 }
 
 function drawParticles(context) {
-  let particle
-  let x, y, x2, y2
+  let particle;
+  let x, y, x2, y2;
+  context.font = "16px Arial"; // Adjust font size for the ball numbers
+  context.textAlign = "center";
+
   for (let i = 0; i < particles.length; i++) {
-    particle = particles[i]
-    context.beginPath()
-    context.lineWidth = particle.diameter
-    x2 = particle.x + particle.tilt
-    x = x2 + particle.diameter / 2
-    y2 = particle.y + particle.tilt + particle.diameter / 2
-    if (confetti.gradient) {
-      let gradient = context.createLinearGradient(x, particle.y, x2, y2)
-      gradient.addColorStop('0', particle.color)
-      gradient.addColorStop('1.0', particle.color2)
-      context.strokeStyle = gradient
-    } else context.strokeStyle = particle.color
-    context.moveTo(x, particle.y)
-    context.lineTo(x2, y2)
-    context.stroke()
+    particle = particles[i];
+    context.beginPath();
+    x = particle.x + particle.tilt;
+    y = particle.y + particle.tilt;
+    const ballDiameter = 64; // Adjust the diameter for larger pool balls
+    context.arc(x, y, ballDiameter / 2, 0, 2 * Math.PI);
+
+    // Fill the particle with a solid color
+    context.fillStyle = particle.color;
+    context.fill();
+
+    // Draw the pool ball number in the center
+    context.fillStyle = "#ffffff"; // White color for ball numbers
+    context.fillText((i % 9) + 1, x, y + 6); // Adjust vertical position
   }
 }
 

@@ -25,7 +25,7 @@ const SingleMatch = (props) => {
     gamesWon: 0
   })
 
-
+  console.log(props.matchId);
   const handleWonGame = (player, number) => {
 
     setPlayer1(prevPlayer1 => {
@@ -108,8 +108,16 @@ const SingleMatch = (props) => {
   console.log(player2)
   console.log(player1);
 
+  const findTeam = () => {
+    
+  }
+
+
+
   const handleSaveMatch = () => {
     const match = {
+      homeTeam:findTeam,
+      visitors:findTeam,
       player1: player1,
       player2: player2,
       gamesPlayed: player1.gamesWon + player2.gamesWon,
