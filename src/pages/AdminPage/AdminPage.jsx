@@ -5,7 +5,6 @@ import EditSchedule from "../../components/EditSchedule/EditSchedule"
 
 const AdminPage = ({profiles, handleUpdateProfiles, handleDeleteSchedule, profile}) => {
   
-  console.log(profiles);
   return (
     <>
       <div className="fWrap">

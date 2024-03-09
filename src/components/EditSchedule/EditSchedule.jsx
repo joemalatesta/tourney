@@ -45,7 +45,6 @@ const EditSchedule = ({ handleDeleteSchedule }) => {
           <button onClick={cancelDeleteAction}>No</button>
         </div>)
 
-  console.log(schedules)
 
   const handlePopUp = (date) => {
     console.log(date)

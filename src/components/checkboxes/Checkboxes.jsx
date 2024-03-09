@@ -3,7 +3,8 @@ import { useState, useEffect } from "react"
 const Checkboxes = ({
   player,
   profile,
-  handleWinner
+  handleWinner,
+  handleWonGame
 }) => {
   const [checkboxes, setCheckboxes] = useState([])
   const [checkedCheckboxes, setCheckedCheckboxes] = useState([])
@@ -43,8 +44,15 @@ const Checkboxes = ({
   const handleCheckboxChange = (index) => {
     setCheckedCheckboxes((prevCheckboxes) =>
       prevCheckboxes.map((checkbox, i) => (i === index ? !checkbox : checkbox))
-    )
-  }
+    );
+  
+  
+    setCheckedCheckboxes((updatedCheckboxes) => {
+      const number = updatedCheckboxes.filter((el) => el === true).length;
+      handleWonGame(player, number);
+      return updatedCheckboxes; 
+    });
+  };
 
   return (
     <>

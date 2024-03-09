@@ -16,6 +16,32 @@ const SingleMatch = (props) => {
   ] = useState(match)
   const [gameWinner, setGameWinner] = useState()
   const [gameLoser, setGameLoser] = useState()
+  const [player1, setPlayer1] = useState({
+    player: match[0],
+    gamesWon: 0
+  })
+  const [player2, setPlayer2] = useState({
+    player: match[1],
+    gamesWon: 0
+  })
+
+
+  const handleWonGame = (player, number) => {
+
+    setPlayer1(prevPlayer1 => {
+      if (player._id === prevPlayer1.player._id) {
+        return { ...prevPlayer1, gamesWon: number };
+      }
+      return prevPlayer1;
+    });
+  
+    setPlayer2(prevPlayer2 => {
+      if (player._id === prevPlayer2.player._id) {
+        return { ...prevPlayer2, gamesWon: number };
+      }
+      return prevPlayer2;
+    });
+  };
 
   useEffect(() => {}, [match])
   useEffect(() => {}, [seeCheckboxes]);
@@ -77,14 +103,29 @@ const SingleMatch = (props) => {
     setSeeCheckboxes(!seeCheckboxes)
   }
 
-  console.log(gameWinner, 'winner')
-  console.log(gameLoser, "game Loser")
+  console.log(gameLoser)
+  console.log(gameWinner);
+  console.log(player2)
+  console.log(player1);
+
+  const handleSaveMatch = () => {
+    const match = {
+      player1: player1,
+      player2: player2,
+      gamesPlayed: player1.gamesWon + player2.gamesWon,
+      completed: '' ,
+      winningPlayer: gameWinner,
+      date: "date"
+    }
+    console.log(match);
+  }
 
   return (
     <>
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
         {updatedPlayerStateWithMatchCount?.map((player, idx) => (
           <SingleMatchPlayerLine 
+            handleWonGame={handleWonGame}
             gameWinner={gameWinner}
             profile={props.profile}
             seeCheckboxes={seeCheckboxes} 
@@ -93,6 +134,7 @@ const SingleMatch = (props) => {
             key={idx} />
         ))}
       </div>
+      <button onClick={handleSaveMatch}>Validate Match</button>
     </>
   )
 }

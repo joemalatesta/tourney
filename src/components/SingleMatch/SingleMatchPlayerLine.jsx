@@ -9,6 +9,7 @@ const SingleMatchPlayerLine = ({
   disableCheckboxes,
   seeCheckboxes,
   gameWinner,
+  handleWonGame
 }) => {
   if (player?.value === "undefined") {
     player = {
@@ -47,6 +48,7 @@ const SingleMatchPlayerLine = ({
 
                 {seeCheckboxes && (
                   <Checkboxes
+                    handleWonGame={handleWonGame}
                     setIsDisabled={setIsDisabled}
                     isDisabled={isDisabled}
                     defineWinner={defineWinner}
