@@ -15,6 +15,7 @@ const SingleMatch = (props) => {
     setUpdatedPlayerStateWithMatchCount,
   ] = useState(match)
   const [gameWinner, setGameWinner] = useState()
+  const [gameLoser, setGameLoser] = useState()
 
   useEffect(() => {}, [match])
   useEffect(() => {}, [seeCheckboxes]);
@@ -60,15 +61,24 @@ const SingleMatch = (props) => {
     addGamesNeeded()
   }, [match, gamesNeeded])
 
+  const handleLoser = async (winner) => {
+    let loser = match.filter(loser => winner._id !== loser._id)
+    setGameLoser(loser[0])
+  }
+
   const handleWinner = async (winner) => {
+    handleLoser(winner)
     await setGameWinner(winner)
     disableCheckboxes()
-    confetti.start(10000)
+    confetti.start(5000)
   }
 
   const disableCheckboxes = () => {
     setSeeCheckboxes(!seeCheckboxes)
   }
+
+  console.log(gameWinner, 'winner')
+  console.log(gameLoser, "game Loser")
 
   return (
     <>

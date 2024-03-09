@@ -14,7 +14,7 @@ const Landing = ({ profile }) => {
           <h1 className={`${styles.bracket} ${styles.textColorYellow}`}>
             Tavern's Wednesday Night 9 Ball
           </h1>
-          <p className="bracket">
+          {/* <p className="bracket">
             The way this works, during the season players are rated on their
             games won and lost. They start as a lvl 50, when you win a match you
             go up one rank point and down one point when you lose.
@@ -133,7 +133,7 @@ const Landing = ({ profile }) => {
               113 & up 10:2
             </div>
           </div>
-          <br />
+          <br /> */}
         </main>
       )}
     </>
