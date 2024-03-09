@@ -45,6 +45,7 @@ function App() {
   const [viewMatch, setViewMatch] = useState()
   const [profile, setProfile] = useState(null)
   const [profiles, setProfiles] = useState(null)
+  const [matchId, setMatchId] = useState(null)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -283,6 +284,8 @@ function App() {
           element={
             <ProtectedRoute access="30" profile={profile} user={user}>
               <MatchView
+                matchId={matchId}
+                setMatchDate={setMatchId}
                 profile={profile}
                 match={twoPlayerMatch}
                 user={user}
@@ -370,6 +373,7 @@ function App() {
           element={
             <ProtectedRoute access="30" profile={profile} user={user}>
               <Schedule
+                setMatchId={setMatchId}
                 profile={profile}
                 viewMatch={viewMatch}
                 setViewMatch={setViewMatch}
@@ -399,6 +403,7 @@ function App() {
           element={
             <ProtectedRoute access="30" profile={profile} user={user}>
               <Match
+                matchId={matchId}
                 profile={profile}
                 teams={teams}
                 viewMatch={viewMatch}

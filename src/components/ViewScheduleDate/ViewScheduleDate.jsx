@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom"
 
-const ViewScheduleDate = ({ match, setViewMatch }) => {
+const ViewScheduleDate = ({ match, setViewMatch, setMatchId}) => {
   const navigate = useNavigate()
-
-  const handleViewMatch = (match) => {
-    setViewMatch(match)
+  
+  const handleViewMatch = (currentMatch) => {
+    setViewMatch(currentMatch)
+    setMatchId(match)
     navigate("/match")
   }
 

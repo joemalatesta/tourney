@@ -14,7 +14,7 @@ const SingleMatch = (props) => {
     updatedPlayerStateWithMatchCount,
     setUpdatedPlayerStateWithMatchCount,
   ] = useState(match)
-  const [gameWinner, setGameWinner] = useState()
+  const [gameWinner, setGameWinner] = useState(null)
   const [gameLoser, setGameLoser] = useState()
   const [player1, setPlayer1] = useState({
     player: match[0],
@@ -113,9 +113,9 @@ const SingleMatch = (props) => {
       player1: player1,
       player2: player2,
       gamesPlayed: player1.gamesWon + player2.gamesWon,
-      completed: '' ,
+      completed: gameWinner !== null ? 'Yes' : "NO",
       winningPlayer: gameWinner,
-      date: "date"
+      date: props.matchId.name,
     }
     console.log(match);
   }

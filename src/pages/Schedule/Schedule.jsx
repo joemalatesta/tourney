@@ -36,6 +36,7 @@ const Schedule = (props) => {
                 <ViewScheduleDate
                   setViewMatch={props.setViewMatch}
                   match={sched}
+                  setMatchId={props.setMatchId}
                 />
               )}
             </div>
