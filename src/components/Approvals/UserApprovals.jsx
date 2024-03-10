@@ -1,6 +1,6 @@
 import { useState, useRef } from "react"
 
-const Approvals = ({profiles, handleUpdateProfiles}) => {
+const UserApprovals = ({profiles, handleUpdateProfiles}) => {
   const formElement = useRef()
   const [highlighted, setHighlighted] = useState("rgb(235, 230, 140")
   const [formData, setFormData] = useState({
@@ -116,4 +116,4 @@ const Approvals = ({profiles, handleUpdateProfiles}) => {
   )
 }
 
-export default Approvals
+export default UserApprovals

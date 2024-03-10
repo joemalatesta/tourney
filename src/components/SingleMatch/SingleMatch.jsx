@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
-import { confetti } from '../../services/confetti'
+import { confetti } from "../../services/confetti"
 
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 
 import * as gameService from "../../services/gameService"
+import * as scheduleService from "../../services/scheduleService"
+
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
@@ -15,37 +17,33 @@ const SingleMatch = (props) => {
     setUpdatedPlayerStateWithMatchCount,
   ] = useState(match)
   const [gameWinner, setGameWinner] = useState(null)
-  const [gameLoser, setGameLoser] = useState()
   const [player1, setPlayer1] = useState({
     player: match[0],
-    gamesWon: 0
+    gamesWon: 0,
   })
   const [player2, setPlayer2] = useState({
     player: match[1],
-    gamesWon: 0
+    gamesWon: 0,
   })
 
-  console.log(props.matchId);
   const handleWonGame = (player, number) => {
-
-    setPlayer1(prevPlayer1 => {
+    setPlayer1((prevPlayer1) => {
       if (player._id === prevPlayer1.player._id) {
-        return { ...prevPlayer1, gamesWon: number };
+        return { ...prevPlayer1, gamesWon: number }
       }
-      return prevPlayer1;
-    });
-  
-    setPlayer2(prevPlayer2 => {
+      return prevPlayer1
+    })
+
+    setPlayer2((prevPlayer2) => {
       if (player._id === prevPlayer2.player._id) {
-        return { ...prevPlayer2, gamesWon: number };
+        return { ...prevPlayer2, gamesWon: number }
       }
-      return prevPlayer2;
-    });
-  };
+      return prevPlayer2
+    })
+  }
 
   useEffect(() => {}, [match])
-  useEffect(() => {}, [seeCheckboxes]);
-
+  useEffect(() => {}, [seeCheckboxes])
 
   let order = gameService.getFirstPlayer(match)
   useEffect(() => {
@@ -87,13 +85,12 @@ const SingleMatch = (props) => {
     addGamesNeeded()
   }, [match, gamesNeeded])
 
-  const handleLoser = async (winner) => {
-    let loser = match.filter(loser => winner._id !== loser._id)
-    setGameLoser(loser[0])
-  }
+  let home
+  let visitor
 
   const handleWinner = async (winner) => {
-    handleLoser(winner)
+    await findTeam(player1)
+    await findTeam(player2)
     await setGameWinner(winner)
     disableCheckboxes()
     confetti.start(5000)
@@ -103,43 +100,91 @@ const SingleMatch = (props) => {
     setSeeCheckboxes(!seeCheckboxes)
   }
 
-  console.log(gameLoser)
-  console.log(gameWinner);
-  console.log(player2)
-  console.log(player1);
-
-  const findTeam = () => {
-    
-  }
-
-
-
-  const handleSaveMatch = () => {
-    const match = {
-      homeTeam:findTeam,
-      visitors:findTeam,
-      player1: player1,
-      player2: player2,
-      gamesPlayed: player1.gamesWon + player2.gamesWon,
-      completed: gameWinner !== null ? 'Yes' : "NO",
-      winningPlayer: gameWinner,
-      date: props.matchId.name,
+  const findTeamByPlayerId = async (data, playerId) => {
+    console.log(data)
+    for (const match of data.matches) {
+      if (match.homeTeam.teamPlayers.includes(playerId)) {
+        home = match.homeTeam.teamName
+        console.log(home, "HOME")
+        return home
+      }
+      if (match.visitor.teamPlayers.includes(playerId)) {
+        visitor = match.visitor.teamName
+        console.log(visitor, "VISITOR")
+        return visitor
+      }
     }
-    console.log(match);
   }
+
+  const findTeam = async (player) => {
+    const team = await findTeamByPlayerId(props.matchId, player.player._id)
+    return team
+  }
+
+  // const handleSaveMatch = async () => {
+  //   const homeTeam = await findTeam(player1)
+  //   const visitorTeam = await findTeam(player2)
+  //   const match = {
+  //     homeTeam: homeTeam,
+  //     visitors: visitorTeam,
+  //     player1: player1,
+  //     player2: player2,
+  //     gamesPlayed: player1.gamesWon + player2.gamesWon,
+  //     completed: gameWinner !== null ? "Yes" : "NO",
+  //     winningPlayer: gameWinner,
+  //     date: props.matchId.name,
+  //   }
+  //   await scheduleService.update({...props.matchId, matchesforApproval: [ match ] })
+  //   console.log(props.matchId)
+  // }
+
+  const handleSaveMatch = async () => {
+    try {
+      const homeTeam = await findTeam(player1);
+      const visitorTeam = await findTeam(player2);
+  
+      const newMatch = {
+        homeTeam: homeTeam,
+        visitors: visitorTeam,
+        player1: player1,
+        player2: player2,
+        gamesPlayed: player1.gamesWon + player2.gamesWon,
+        completed: gameWinner !== null ? "Yes" : "NO",
+        winningPlayer: gameWinner,
+        date: props.matchId.name,
+      };
+  
+      // Retrieve the existing matchesforApproval array
+      const existingMatches = props.matchId.matchesforApproval || [];
+  
+      // Create a new array with the existing matches and the new match
+      const updatedMatches = [...existingMatches, newMatch];
+  
+      // Update the matchesforApproval array in the scheduleService
+      await scheduleService.update({
+        ...props.matchId,
+        matchesforApproval: updatedMatches,
+      });
+  
+      console.log("Match saved successfully!");
+    } catch (error) {
+      console.error("Error saving match:", error);
+    }
+  };
 
   return (
     <>
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
         {updatedPlayerStateWithMatchCount?.map((player, idx) => (
-          <SingleMatchPlayerLine 
+          <SingleMatchPlayerLine
             handleWonGame={handleWonGame}
             gameWinner={gameWinner}
             profile={props.profile}
-            seeCheckboxes={seeCheckboxes} 
+            seeCheckboxes={seeCheckboxes}
             handleWinner={handleWinner}
-            player={player} 
-            key={idx} />
+            player={player}
+            key={idx}
+          />
         ))}
       </div>
       <button onClick={handleSaveMatch}>Validate Match</button>

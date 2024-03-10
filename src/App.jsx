@@ -11,6 +11,7 @@ import EditPlayer from "./pages/EditPlayers/EditPlayer"
 import Landing from "./pages/Landing/Landing"
 import Login from "./pages/Login/Login"
 import Match from "./pages/Match/Match"
+import MatchApproval from "./pages/MatchApproval/MatchApproval"
 import MatchView from "./pages/MatchView/MatchView"
 import Profiles from "./pages/Profiles/Profiles"
 import Schedule from "./pages/Schedule/Schedule"
@@ -408,6 +409,18 @@ function App() {
                 teams={teams}
                 viewMatch={viewMatch}
                 setTwoPlayerMatch={setTwoPlayerMatch}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/match-approval"
+          element={
+            <ProtectedRoute access="70" profile={profile} user={user}>
+              <MatchApproval
+                profile={profile}
+                teams={teams}
               />
             </ProtectedRoute>
           }

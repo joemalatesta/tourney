@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 
-import Approvals from "../../components/Approvals/Approvals"
+import Approvals from "../../components/Approvals/UserApprovals"
 import EditSchedule from "../../components/EditSchedule/EditSchedule"
 
 const AdminPage = ({profiles, handleUpdateProfiles, handleDeleteSchedule, profile}) => {
@@ -17,6 +17,7 @@ const AdminPage = ({profiles, handleUpdateProfiles, handleDeleteSchedule, profil
         <NavLink className="bracket" to="/add-players-to-match">Create Tournament</NavLink>
         <NavLink className="bracket" to="/view-tournaments">View Tournaments</NavLink>
         <NavLink className="bracket" to="/profiles">Profiles</NavLink>
+        <NavLink className="bracket" to="/match-approval">Match Approval</NavLink>
       </div>
       <Approvals profiles={profiles} handleUpdateProfiles={handleUpdateProfiles}/>
       <br/>

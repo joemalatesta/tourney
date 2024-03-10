@@ -177,29 +177,156 @@ function isConfettiRunning() {
   return streamingConfetti
 }
 
+// function drawParticles(context) {
+//   let particle;
+//   let x, y ;
+//   context.font = "16px Arial"; // Adjust font size for the ball numbers
+//   context.textAlign = "center";
+
+//   for (let i = 0; i < particles.length; i++) {
+//     particle = particles[i];
+//     context.beginPath();
+//     x = particle.x + particle.tilt;
+//     y = particle.y + particle.tilt;
+//     const ballDiameter = 45; // Adjust the diameter for larger pool balls
+//     context.arc(x, y, ballDiameter / 2, 0, 2 * Math.PI);
+
+//     // Fill the particle with a solid color
+//     context.fillStyle = particle.color;
+//     context.fill();
+
+//     // Draw the pool ball number in the center
+//     context.fillStyle = "#ffffff"; // White color for ball numbers
+//     context.fillText((i % 9) + 1, x, y + 6); // Adjust vertical position
+//   }
+// }
+
+// function drawParticles(context) {
+//   let particle;
+//   let x, y, x2, y2;
+//   context.font = "16px Arial"; // Adjust font size for the ball numbers
+//   context.textAlign = "center";
+
+//   for (let i = 0; i < particles.length; i++) {
+//     particle = particles[i];
+//     context.beginPath();
+//     x = particle.x + particle.tilt;
+//     y = particle.y + particle.tilt;
+//     const ballDiameter = 45; // Adjust the diameter for larger pool balls
+
+//     // Draw a small white circle around the number
+//     context.arc(x, y, ballDiameter / 2 + 3, 0, 2 * Math.PI);
+//     context.fillStyle = "#ffffff"; // White color for the circle
+//     context.fill();
+
+//     // Draw the main colored circle for the particle
+//     context.beginPath();
+//     context.arc(x, y, ballDiameter / 2, 0, 2 * Math.PI);
+
+//     // Fill the particle with a solid color or color stripe
+//     if (i % 2 === 0) {
+//       // Apply color stripe to every other particle
+//       context.fillStyle = "red"; // Change this to the desired color
+//     } else {
+//       // Fill the other particles with a solid color
+//       context.fillStyle = particle.color;
+//     }
+
+//     context.fill();
+
+//     // Draw the pool ball number in the center
+//     context.fillStyle = "#ffffff"; // White color for ball numbers
+//     context.fillText((i % 9) + 1, x, y + 6); // Adjust vertical position
+//   }
+// }
+
 function drawParticles(context) {
   let particle;
-  let x, y, x2, y2;
+  let x, y;
   context.font = "16px Arial"; // Adjust font size for the ball numbers
   context.textAlign = "center";
 
   for (let i = 0; i < particles.length; i++) {
     particle = particles[i];
-    context.beginPath();
     x = particle.x + particle.tilt;
     y = particle.y + particle.tilt;
     const ballDiameter = 45; // Adjust the diameter for larger pool balls
+    const whiteDiskRadius = 15; // Adjust the radius of the white disk
+
+    // Draw the main colored circle for the particle
+    context.beginPath();
     context.arc(x, y, ballDiameter / 2, 0, 2 * Math.PI);
 
-    // Fill the particle with a solid color
-    context.fillStyle = particle.color;
+    // Assign specific numbers to each colored ball
+    switch (getBallColor(i)) {
+      case 'red':
+        context.fillStyle = "#ff0000"; // Red ball with the number 3
+        break;
+      case 'blue':
+        context.fillStyle = "#0000ff"; // Blue ball with the number 2
+        break;
+      case 'orange':
+        context.fillStyle = "#ffa500"; // Orange ball with the number 5
+        break;
+      case 'purple':
+        context.fillStyle = "#800080"; // Purple ball with the number 4
+        break;
+      case 'green':
+        context.fillStyle = "#008000"; // Green ball with the number 6
+        break;
+      case 'brown':
+        context.fillStyle = "#a52a2a"; // Brown ball with the number 7
+        break;
+      case 'yellow':
+        context.fillStyle = "#ffff00"; // Yellow ball with the number 1
+        break;
+      default:
+        context.fillStyle = particle.color;
+        break;
+    }
+
     context.fill();
 
-    // Draw the pool ball number in the center
-    context.fillStyle = "#ffffff"; // White color for ball numbers
-    context.fillText((i % 9) + 1, x, y + 6); // Adjust vertical position
+    // Draw a smaller white disk with the number in the middle
+    context.beginPath();
+    context.arc(x, y, whiteDiskRadius, 0, 2 * Math.PI);
+    context.fillStyle = "#ffffff"; // White color for the disk
+    context.fill();
+
+    // Draw the pool ball number on top of the smaller white disk
+    context.fillStyle = "#000000"; // Black color for ball numbers
+    context.fillText(getBallNumber(getBallColor(i)), x, y + 6); // Adjust vertical position
   }
 }
+
+function getBallColor(index) {
+  // Derive ball color based on the index and the colors array
+  return colors[index % colors.length];
+}
+
+function getBallNumber(color) {
+  // Assign numbers based on ball color
+  switch (color) {
+    case 'rgba(255,0,0,':
+      return 3;
+    case 'rgba(0,0,255,':
+      return 2;
+    case 'rgba(255,165,0':
+      return 5;
+    case 'rgba(159,0,255,':
+      return 4;
+    case 'rgba(0,195,0,':
+      return 6;
+    case 'rgba(153,108,0':
+      return 7;
+    case 'rgba(255,255,0':
+      return 1;
+    default:
+      return 0;
+  }
+}
+
+
 
 function updateParticles() {
   let width = window.innerWidth
