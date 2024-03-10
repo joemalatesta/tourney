@@ -121,28 +121,11 @@ const SingleMatch = (props) => {
     return team
   }
 
-  // const handleSaveMatch = async () => {
-  //   const homeTeam = await findTeam(player1)
-  //   const visitorTeam = await findTeam(player2)
-  //   const match = {
-  //     homeTeam: homeTeam,
-  //     visitors: visitorTeam,
-  //     player1: player1,
-  //     player2: player2,
-  //     gamesPlayed: player1.gamesWon + player2.gamesWon,
-  //     completed: gameWinner !== null ? "Yes" : "NO",
-  //     winningPlayer: gameWinner,
-  //     date: props.matchId.name,
-  //   }
-  //   await scheduleService.update({...props.matchId, matchesforApproval: [ match ] })
-  //   console.log(props.matchId)
-  // }
-
   const handleSaveMatch = async () => {
     try {
-      const homeTeam = await findTeam(player1);
-      const visitorTeam = await findTeam(player2);
-  
+      const homeTeam = await findTeam(player1)
+      const visitorTeam = await findTeam(player2)
+
       const newMatch = {
         homeTeam: homeTeam,
         visitors: visitorTeam,
@@ -152,25 +135,21 @@ const SingleMatch = (props) => {
         completed: gameWinner !== null ? "Yes" : "NO",
         winningPlayer: gameWinner,
         date: props.matchId.name,
-      };
-  
-      // Retrieve the existing matchesforApproval array
-      const existingMatches = props.matchId.matchesforApproval || [];
-  
-      // Create a new array with the existing matches and the new match
-      const updatedMatches = [...existingMatches, newMatch];
-  
-      // Update the matchesforApproval array in the scheduleService
+      }
+
+      const existingMatches = props.matchId.matchesforApproval || []
+      const updatedMatches = [...existingMatches, newMatch]
+
       await scheduleService.update({
         ...props.matchId,
         matchesforApproval: updatedMatches,
-      });
-  
-      console.log("Match saved successfully!");
+      })
+
+      console.log("Match saved successfully!")
     } catch (error) {
-      console.error("Error saving match:", error);
+      console.error("Error saving match:", error)
     }
-  };
+  }
 
   return (
     <>
