@@ -17,6 +17,7 @@ const SingleMatch = (props) => {
     setUpdatedPlayerStateWithMatchCount,
   ] = useState(match)
   const [gameWinner, setGameWinner] = useState(null)
+  const [gameLoser, setGameLoser] = useState(null)
   const [winningTeam, setWinningTeam] = useState(null)
   const [losingTeam, setLosingTeam] = useState(null)
   const [player1, setPlayer1] = useState({
@@ -91,8 +92,9 @@ const SingleMatch = (props) => {
   const findLoser = (winner) => {
     let loser
     if(player1._id !== winner._id) loser = player1
-    if(player2._id !== winner._id) loser = player1
+    if(player2._id !== winner._id) loser = player2
     console.log(loser.player)
+    setGameLoser(loser.player)
     findLosingTeamByPlayerId(props.matchId, loser.player._id)
   }
 
@@ -157,6 +159,7 @@ const SingleMatch = (props) => {
         gamesPlayed: player1.gamesWon + player2.gamesWon,
         completed: gameWinner !== null ? "Yes" : "NO",
         winningPlayer: gameWinner,
+        losingPlayer: gameLoser,
         date: props.matchId.name,
       }
 

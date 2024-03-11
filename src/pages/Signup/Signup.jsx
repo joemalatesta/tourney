@@ -9,7 +9,7 @@ const Signup = ({ handleAuthEvt }) => {
 
   const [message, setMessage] = useState("")
   const [formData, setFormData] = useState({
-    name: "Hello",
+    name: `${Math.random()}`,
     firstName: '',
     lastName: '',
     email: "",
