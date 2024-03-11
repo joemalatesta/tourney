@@ -47,17 +47,17 @@ const ViewTeam = (props) => {
                 Loss: {player.matchLoss}<br />
               </p>
             )
-        )}
+            )}
         {sortedPlayers?.map(
           (player) =>
-            player?.name !== props.team.teamCaptain && (
-              <p key={player?._id}>
+          player?.name !== props.team.teamCaptain && (
+            <p key={player?._id}>
                 Name : {player?.name}
                 <br />
                 Rank : {player?.rank} <br />
                 Matches Played : {player?.matchesPlayed} <br />
-                Wins: 0<br />
-                Loss: 0<br />
+                Wins: {player.matchWin}<br />
+                Loss: {player.matchLoss}<br />
               </p>
             )
         )}

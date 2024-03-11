@@ -13,16 +13,29 @@ async function create(player) {
   return res.json()
 }
 
+// async function update(player) {
+//   const res = await fetch(`${BASE_URL}/${player._id}`, {
+//     method: "PUT",
+//     headers: {
+//       Authorization: `Bearer ${tokenService.getToken()}`,
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(player),
+//   })
+//   return res.json()
+// }
+
 async function update(player) {
-  const res = await fetch(`${BASE_URL}/${player._id}`, {
+  const playerId = player._id || player.id;  // Use _id if available, fallback to id
+  const res = await fetch(`${BASE_URL}/${playerId}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${tokenService.getToken()}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(player),
-  })
-  return res.json()
+  });
+  return res.json();
 }
 
 async function index() {

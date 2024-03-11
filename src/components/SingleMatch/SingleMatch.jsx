@@ -12,23 +12,57 @@ const SingleMatch = (props) => {
   const [match] = useState(props.match)
   const [seeCheckboxes, setSeeCheckboxes] = useState(true)
   const [gamesNeeded, setGamesNeeded] = useState()
-  const [
-    updatedPlayerStateWithMatchCount,
-    setUpdatedPlayerStateWithMatchCount,
-  ] = useState(match)
+  const [updatedPlayerStateWithMatchCount,setUpdatedPlayerStateWithMatchCount] = useState(match)
   const [gameWinner, setGameWinner] = useState(null)
   const [gameLoser, setGameLoser] = useState(null)
   const [winningTeam, setWinningTeam] = useState(null)
   const [losingTeam, setLosingTeam] = useState(null)
-  const [player1, setPlayer1] = useState({
-    player: match[0],
-    gamesWon: 0,
-  })
-  const [player2, setPlayer2] = useState({
-    player: match[1],
-    gamesWon: 0,
-  })
+  const [player1, setPlayer1] = useState({player: match[0], gamesWon: 0})
+  const [player2, setPlayer2] = useState({player: match[1], gamesWon: 0})
+  let order = gameService.getFirstPlayer(match)
 
+  useEffect(() => {}, [match])
+  useEffect(() => {}, [seeCheckboxes])
+  
+  useEffect(() => {
+    const getGameRace = async () => {
+      try {
+        if (order !== undefined) {
+          const data = await gameService.getGameRace(match[0], match[1])
+          setGamesNeeded(data)
+        }
+      } catch (error) {
+        console.error("Error fetching game race:", error)
+      }
+    }
+    getGameRace()
+  }, [match, order])
+  
+  useEffect(() => {
+    const addGamesNeeded = async () => {
+      try {
+        if (match && gamesNeeded && gamesNeeded.length >= 2) {
+          setUpdatedPlayerStateWithMatchCount((prevPlayerInfo) => {
+            if (
+              prevPlayerInfo &&
+              prevPlayerInfo.length &&
+              prevPlayerInfo[0].games !== gamesNeeded[0] &&
+              prevPlayerInfo[1].games !== gamesNeeded[1]
+              ) {
+                return [
+                  { ...prevPlayerInfo[0], games: gamesNeeded[0] },
+                  { ...prevPlayerInfo[1], games: gamesNeeded[1] },
+                ]
+              }
+            })
+          }
+        } catch (error) {
+          console.error("Error updating player state:", error)
+        }
+      }
+      addGamesNeeded()
+    }, [match, gamesNeeded])
+    
   const handleWonGame = (player, number) => {
     setPlayer1((prevPlayer1) => {
       if (player._id === prevPlayer1.player._id) {
@@ -43,88 +77,6 @@ const SingleMatch = (props) => {
       }
       return prevPlayer2
     })
-  }
-
-  useEffect(() => {}, [match])
-  useEffect(() => {}, [seeCheckboxes])
-
-  let order = gameService.getFirstPlayer(match)
-  useEffect(() => {
-    const getGameRace = async () => {
-      try {
-        if (order !== undefined) {
-          const data = await gameService.getGameRace(match[0], match[1])
-          setGamesNeeded(data)
-        }
-      } catch (error) {
-        console.error("Error fetching game race:", error)
-      }
-    }
-    getGameRace()
-  }, [match, order])
-
-  useEffect(() => {
-    const addGamesNeeded = async () => {
-      try {
-        if (match && gamesNeeded && gamesNeeded.length >= 2) {
-          setUpdatedPlayerStateWithMatchCount((prevPlayerInfo) => {
-            if (
-              prevPlayerInfo &&
-              prevPlayerInfo.length &&
-              prevPlayerInfo[0].games !== gamesNeeded[0] &&
-              prevPlayerInfo[1].games !== gamesNeeded[1]
-            ) {
-              return [
-                { ...prevPlayerInfo[0], games: gamesNeeded[0] },
-                { ...prevPlayerInfo[1], games: gamesNeeded[1] },
-              ]
-            }
-          })
-        }
-      } catch (error) {
-        console.error("Error updating player state:", error)
-      }
-    }
-    addGamesNeeded()
-  }, [match, gamesNeeded])
-
-
-  const findLoser = (winner) => {
-    let loser
-    if(player1._id !== winner._id) loser = player1
-    if(player2._id !== winner._id) loser = player2
-    console.log(loser.player)
-    setGameLoser(loser.player)
-    findLosingTeamByPlayerId(props.matchId, loser.player._id)
-  }
-
-  const handleWinner = async (winner) => {
-    await setGameWinner(winner)
-    await findLoser(winner)
-    findWinningTeamByPlayerId(props.matchId, winner._id)
-    disableCheckboxes()
-    confetti.start(5000)
-  }
-
-  const disableCheckboxes = () => {
-    setSeeCheckboxes(!seeCheckboxes)
-  }
-
-  const findLosingTeamByPlayerId = async (data, playerId) => {
-    console.log('hit loser team check', playerId)
-    let team 
-    for (const match of data.matches) {
-      if (match.homeTeam.teamPlayers.includes(playerId)) {
-          team = match.homeTeam.teamName
-          await setLosingTeam(team)
-          console.log(team, 'HTEAM');
-      }
-      if (match.visitor.teamPlayers.includes(playerId)) {
-          team = match.visitor.teamName
-          await setLosingTeam(team)
-          console.log(team, 'VTEAM');
-      }
-    }
   }
 
   const findWinningTeamByPlayerId = async (data, playerId) => {
@@ -147,7 +99,47 @@ const SingleMatch = (props) => {
     }
   }
 
- 
+  const handleWinner = async (winner) => {
+    console.log("*************************************************",winner);
+    await setGameWinner(winner)
+    await findLoser(winner)
+    findWinningTeamByPlayerId(props.matchId, winner._id)
+    disableCheckboxes()
+    confetti.start(5000)
+  }
+
+  const findLosingTeamByPlayerId = async (data, playerId) => {
+    console.log('h', playerId)
+    let team 
+    for (const match of data.matches) {
+      if (match.homeTeam.teamPlayers.includes(playerId)) {
+          team = match.homeTeam.teamName
+          await setLosingTeam(team)
+          console.log(team, 'HTEAM');
+      }
+      if (match.visitor.teamPlayers.includes(playerId)) {
+          team = match.visitor.teamName
+          await setLosingTeam(team)
+          console.log(team, 'VTEAM');
+      }
+    }
+  }
+
+  const findLoser = (winner) => {
+    console.log(winner._id);
+    let loser
+    console.log('p1', player1.player._id)
+    console.log('p2', player2.player._id)
+    if(player1.player._id === winner._id) loser = player2
+    else loser = player1
+    console.log(loser.player)
+    setGameLoser(loser.player)
+    findLosingTeamByPlayerId(props.matchId, loser.player._id)
+  }
+
+  const disableCheckboxes = () => {
+    setSeeCheckboxes(!seeCheckboxes)
+  }
 
   const handleSaveMatch = async () => {
     try {

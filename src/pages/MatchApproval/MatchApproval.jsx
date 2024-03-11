@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 
 import * as scheduleService from "../../services/scheduleService"
 import * as playerService from '../../services/playerService'
-import * as teamService from '../../services/teamService'
+// import * as teamService from '../../services/teamService'
 
 const MatchApproval = () => {
   const [scheduleDates, setScheduleDates] = useState()
@@ -16,8 +16,7 @@ const MatchApproval = () => {
   }, [])
 
   const handleLosers = (team, player) => {
-    console.log(parseInt(player.matchLoss) + 1);
-    let loser = {...player, matchesPlayed : (player.matchesPlayed + 1), matchloss: (parseInt(player.matchLoss) + 1), rank: (player.rank - 1) }
+    let loser = {...player, matchesPlayed : (player.matchesPlayed + 1), matchLoss: (parseInt(player.matchLoss) + 1), rank: (player.rank - 1) }
     playerService.update(loser)
   }
 

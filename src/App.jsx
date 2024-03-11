@@ -72,7 +72,7 @@ function App() {
       setPlayers(data)
     }
     fetchPlayers()
-  }, [])
+  }, [user])
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -209,6 +209,7 @@ function App() {
           element={
             <ProtectedRoute access="90" profile={profile} user={user}>
               <AdminPage
+                players={players}
                 profile={profile}
                 profiles={profiles}
                 user={user}
