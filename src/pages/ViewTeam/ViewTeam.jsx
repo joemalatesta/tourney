@@ -7,7 +7,7 @@ const ViewTeam = (props) => {
   const [playerInfo, setPlayerInfo] = useState()
   const sortedPlayers = playerInfo
     ?.slice()
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => a?.name.localeCompare(b.name))
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -35,7 +35,7 @@ const ViewTeam = (props) => {
       <h3 className={`${styles.bracket} ${styles.w75percent}`}>
         {sortedPlayers?.map(
           (player) =>
-            player.name === props.team.teamCaptain && (
+            player?.name === props.team.teamCaptain && (
               <p key={player._id}>
                 <span style={{ color: "antiquewhite" }}>Captain</span>
                 <br />
@@ -43,19 +43,19 @@ const ViewTeam = (props) => {
                 <br />
                 Rank : {player.rank} <br />
                 Matches Played : {player.matchesPlayed} <br />
-                Wins: 0<br />
-                Loss: 0<br />
+                Wins: {player.matchWin}<br />
+                Loss: {player.matchLoss}<br />
               </p>
             )
         )}
         {sortedPlayers?.map(
           (player) =>
-            player.name !== props.team.teamCaptain && (
-              <p key={player._id}>
-                Name : {player.name}
+            player?.name !== props.team.teamCaptain && (
+              <p key={player?._id}>
+                Name : {player?.name}
                 <br />
-                Rank : {player.rank} <br />
-                Matches Played : {player.matchesPlayed} <br />
+                Rank : {player?.rank} <br />
+                Matches Played : {player?.matchesPlayed} <br />
                 Wins: 0<br />
                 Loss: 0<br />
               </p>

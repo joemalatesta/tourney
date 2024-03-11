@@ -16,12 +16,14 @@ const MatchApproval = () => {
   }, [])
 
   const handleLosers = (team, player) => {
-    let loser = {...player, matchesPlayed : (player.matchesPlayed + 1), matchWin: (player.matchLoss + 1), rank: (player.rank - 1) }
+    console.log(parseInt(player.matchLoss) + 1);
+    let loser = {...player, matchesPlayed : (player.matchesPlayed + 1), matchloss: (parseInt(player.matchLoss) + 1), rank: (player.rank - 1) }
     playerService.update(loser)
   }
 
   const handleWinners = (team, player) => {
-    let winner = {...player, matchesPlayed : (player.matchesPlayed + 1), matchWin: (player.matchWin + 1), rank: (player.rank + 1) }
+    console.log(player);
+    let winner = {...player, matchesPlayed : (player.matchesPlayed + 1), matchWin: (parseInt(player.matchWin) + 1), rank: (player.rank + 1) }
     playerService.update(winner)
   }
 

@@ -6,7 +6,7 @@ const PlayerName = ({ team }) => {
   const [playerInfo, setPlayerInfo] = useState()
   const sortedPlayers = playerInfo
     ?.slice()
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => a?.name.localeCompare(b.name))
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -32,7 +32,7 @@ const PlayerName = ({ team }) => {
         {sortedPlayers?.map(
           (player) =>
             player?.name !== team.teamCaptain && (
-              <li key={player._id}>{player.name}</li>
+              <li key={player?._id}>{player?.name}</li>
             )
         )}
       </div>
