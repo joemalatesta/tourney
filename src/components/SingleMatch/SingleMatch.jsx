@@ -144,6 +144,7 @@ const SingleMatch = (props) => {
   const handleSaveMatch = async () => {
     try {
       const newMatch = {
+        confirmed: 'NO',
         winningTeam: winningTeam,
         losingTeam: losingTeam,
         player1: player1,

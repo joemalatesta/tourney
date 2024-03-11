@@ -56,7 +56,7 @@ const EditSchedule = ({ handleDeleteSchedule }) => {
       {schedules?.length ?
         schedules?.map((date) => (
           <li onClick={() => handlePopUp(date)} key={date._id}>
-            {date.name}  <button onClick={() => areYouSure(date)}>Delete</button>
+            {date.name}  {!confirmDelete && <button onClick={() => areYouSure(date)}>Delete</button>}
             {date?.name === dateToDelete?.name && confirmDelete &&
                 deleteDisplay}
           </li>
