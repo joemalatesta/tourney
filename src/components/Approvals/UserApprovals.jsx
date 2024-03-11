@@ -67,12 +67,12 @@ const UserApprovals = ({profiles, handleUpdateProfiles}) => {
       <h2 className="center">Access Levels</h2>
       <div className="center">
 
-          Admin = 90<br/>
-          Validator = 70<br/>
-          Team Captain = 50<br/>
-          Assistant Captain = 40<br/>
-          Player = 30<br/>
-          Not Approved = 10<br/>
+          Admin - Has ability to change anything on the page.<br/>
+          Score Admin - Has ability to approve matches, adjust player info.<br/>
+          Team Captain - Has ability to finalize matches.<br/>
+          Assistant Captain - Has ability to submit matches.<br/>
+          Player - Has ability to see teams, and matches.<br/>
+          Not Approved - Cannot view any pages.<br/>
       </div>
       <h3 className="center">Awaiting Approval</h3>
           <div className="column center">
@@ -82,13 +82,24 @@ const UserApprovals = ({profiles, handleUpdateProfiles}) => {
           <br/>
           <label>Access Level</label>
           <br/>
-          <input
+          <div
             type="text"
             name="accessLevel"
             value={formData.accessLevel}
+            id="accessLevel"
             onChange={handleChange}
             required
-            />
+            >
+              <select name="accessLevel" id="accessLevel">
+                <option> Pick access level</option>
+                <option value="90">Admin</option>
+                <option value="70">Score Admin</option>
+                <option value="50">Captain</option>
+                <option value="40">Assistant Captain</option>
+                <option value="30">Player</option>
+                <option value="10">Not Authorized</option>
+              </select>
+            </div>
         </div>
         <div>
           <button type="submit">Submit Change</button>

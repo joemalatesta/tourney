@@ -6,7 +6,7 @@ const Landing = ({ profile }) => {
         <h4
           className={`${styles.center} ${styles.bracket} ${styles.textColorYellow}`}
         >
-          Please be pateint {profile.firstName} while we approve you for this
+          Please be pateint {profile.firstName}, while we approve you for this
           site.
         </h4>
       ) : (

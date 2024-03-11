@@ -250,7 +250,7 @@ function drawParticles(context) {
     particle = particles[i];
     x = particle.x + particle.tilt;
     y = particle.y + particle.tilt;
-    const ballDiameter = 45; // Adjust the diameter for larger pool balls
+    const ballDiameter = 90; // Adjust the diameter for larger pool balls
     const whiteDiskRadius = 15; // Adjust the radius of the white disk
 
     // Draw the main colored circle for the particle

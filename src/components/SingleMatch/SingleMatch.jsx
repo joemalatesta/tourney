@@ -17,6 +17,8 @@ const SingleMatch = (props) => {
     setUpdatedPlayerStateWithMatchCount,
   ] = useState(match)
   const [gameWinner, setGameWinner] = useState(null)
+  const [winningTeam, setWinningTeam] = useState(null)
+  const [losingTeam, setLosingTeam] = useState(null)
   const [player1, setPlayer1] = useState({
     player: match[0],
     gamesWon: 0,
@@ -58,7 +60,7 @@ const SingleMatch = (props) => {
       }
     }
     getGameRace()
-  }, [match])
+  }, [match, order])
 
   useEffect(() => {
     const addGamesNeeded = async () => {
@@ -85,13 +87,19 @@ const SingleMatch = (props) => {
     addGamesNeeded()
   }, [match, gamesNeeded])
 
-  let home
-  let visitor
+
+  const findLoser = (winner) => {
+    let loser
+    if(player1._id !== winner._id) loser = player1
+    if(player2._id !== winner._id) loser = player1
+    console.log(loser.player)
+    findLosingTeamByPlayerId(props.matchId, loser.player._id)
+  }
 
   const handleWinner = async (winner) => {
-    await findTeam(player1)
-    await findTeam(player2)
     await setGameWinner(winner)
+    await findLoser(winner)
+    findWinningTeamByPlayerId(props.matchId, winner._id)
     disableCheckboxes()
     confetti.start(5000)
   }
@@ -100,35 +108,50 @@ const SingleMatch = (props) => {
     setSeeCheckboxes(!seeCheckboxes)
   }
 
-  const findTeamByPlayerId = async (data, playerId) => {
-    console.log(data)
+  const findLosingTeamByPlayerId = async (data, playerId) => {
+    console.log('hit loser team check', playerId)
+    let team 
     for (const match of data.matches) {
       if (match.homeTeam.teamPlayers.includes(playerId)) {
-        home = match.homeTeam.teamName
-        console.log(home, "HOME")
-        return home
+          team = match.homeTeam.teamName
+          await setLosingTeam(team)
+          console.log(team, 'HTEAM');
       }
       if (match.visitor.teamPlayers.includes(playerId)) {
-        visitor = match.visitor.teamName
-        console.log(visitor, "VISITOR")
-        return visitor
+          team = match.visitor.teamName
+          await setLosingTeam(team)
+          console.log(team, 'VTEAM');
       }
     }
   }
 
-  const findTeam = async (player) => {
-    const team = await findTeamByPlayerId(props.matchId, player.player._id)
-    return team
+  const findWinningTeamByPlayerId = async (data, playerId) => {
+    console.log(data)
+    console.log(playerId)
+    let team 
+    for (const match of data.matches) {
+      if (match.homeTeam.teamPlayers.includes(playerId)) {
+          team = match.homeTeam.teamName
+          await setWinningTeam(team)
+          console.log(team, 'HTEAM');
+        return team
+      }
+      if (match.visitor.teamPlayers.includes(playerId)) {
+          team = match.visitor.teamName
+          await setWinningTeam(team)
+          console.log(team, 'VTEAM');
+        return team
+      }
+    }
   }
+
+ 
 
   const handleSaveMatch = async () => {
     try {
-      const homeTeam = await findTeam(player1)
-      const visitorTeam = await findTeam(player2)
-
       const newMatch = {
-        homeTeam: homeTeam,
-        visitors: visitorTeam,
+        winningTeam: winningTeam,
+        losingTeam: losingTeam,
         player1: player1,
         player2: player2,
         gamesPlayed: player1.gamesWon + player2.gamesWon,
@@ -144,7 +167,7 @@ const SingleMatch = (props) => {
         ...props.matchId,
         matchesforApproval: updatedMatches,
       })
-
+      console.log(newMatch);
       console.log("Match saved successfully!")
     } catch (error) {
       console.error("Error saving match:", error)

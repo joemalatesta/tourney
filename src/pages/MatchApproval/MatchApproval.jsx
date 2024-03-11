@@ -19,17 +19,23 @@ const MatchApproval = () => {
     <>
       match approvals
       {scheduleDates?.map((match) => (
-        <li key={match._id}>
+        <li className="bracket green-felt2" key={match._id}>
           {match.name} <br />
           {match.matchesforApproval.map((eachMatch, idx) => (
-            <div key={idx}>
-              Home Team : {eachMatch.homeTeam}
+            <div className="bracket" key={idx}>
+              Completed : {eachMatch.completed}<br/>
+              Winning Team : {eachMatch.winningTeam? eachMatch.winningTeam : "No Winner"}
               <br />
-              Visitors : {eachMatch.visitors}
+              Winning Player : {eachMatch?.winningPlayer!==null ? eachMatch?.winningPlayer.name : "No Winner"}<br/>
               <br />
-              Games Played : {eachMatch.gamesPlayed}
+              Losing Team : {eachMatch?.losingTeam!==null ? eachMatch?.losingTeam : "No Loser"}
               <br />
-              Winning Player : {eachMatch.winningPlayer.name}
+              Player games :<br/> 
+              <div className="bracket green-felt">
+                {eachMatch.player1.player.name} : {eachMatch.player1.gamesWon}<br/>
+                {eachMatch.player2.player.name} : {eachMatch.player2.gamesWon}<br/>
+              </div>
+              Games Played : {eachMatch.gamesPlayed}<br/>
             </div>
           ))}
         </li>

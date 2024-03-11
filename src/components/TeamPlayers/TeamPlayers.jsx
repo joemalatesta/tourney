@@ -36,7 +36,7 @@ const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer }) => {
         <div onClick={() => handleChoosePlayer(player, title)} key={player?._id}>
           <div>
             <span
-              style={matchPlayer?._id === player?._id ? { color: "green" } : {}}
+              style={matchPlayer?._id === player?._id ? { color: "yellow" } : {}}
             >{matchPlayer?._id === player?._id ? 
               <h2>{player?.name} ({player?.rank})</h2>
               :
