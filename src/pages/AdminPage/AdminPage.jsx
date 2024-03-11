@@ -95,7 +95,8 @@ const AdminPage = ({
         <div>
           <p>
             To reset all players league stats back to 0. (games played, wins,
-            loss) (rank will remain!) Press this button <button onClick={()=> resetPlayerStats() } >ARE YOU SURE?</button>
+            loss) (rank will remain!) Press this button 
+            <button onClick={()=> resetPlayerStats() } >ARE YOU SURE?</button>
           </p>
         </div>
       </div>

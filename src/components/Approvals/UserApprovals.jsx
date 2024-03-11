@@ -106,6 +106,7 @@ const UserApprovals = ({profiles, handleUpdateProfiles}) => {
         </div>
       </form>
       <div className="column">
+        Not Approved : 
         {filteredNames?.length ? (
           filteredNames?.map((profile) => (
             <li
@@ -113,7 +114,21 @@ const UserApprovals = ({profiles, handleUpdateProfiles}) => {
               onClick={() => handleChangeProfile(profile)}
               key={profile._id}
             >
-              Name: {profile.firstName} {profile.lastName} Access Number: {profile.accessLevel} - {grabAccessLevel(profile.accessLevel)}
+              Name: {profile.firstName} {profile.lastName} - {grabAccessLevel(profile.accessLevel)}
+            </li>
+          ))
+        ) : (
+          <h3>No people here</h3>
+        )}
+        Approved Players : 
+        {profiles?.length ? (
+          profiles?.map((profile) => (
+            <li
+              style={{ color: checkHighlighted(profile._id) }}
+              onClick={() => handleChangeProfile(profile)}
+              key={profile._id}
+            >
+              Name: {profile.firstName} {profile.lastName} - {grabAccessLevel(profile.accessLevel)}
             </li>
           ))
         ) : (
