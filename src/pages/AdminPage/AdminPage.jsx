@@ -83,17 +83,17 @@ const AdminPage = ({
         handleUpdateProfiles={handleUpdateProfiles}
       />
       <br />
+      <div className="bracket center column">
+          <h1 className="center">DANGER ZONE</h1>
+        <div>
       <EditSchedule
         handleDeleteSchedule={handleDeleteSchedule}
         profile={profile}
       />
-      <div className="bracket center column">
-        <div>
-          <h1 className="bracket center">DANGER ZONE</h1>
         </div>
         <br />
         <div>
-          <p>
+          <p className="bracket">
             To reset all players league stats back to 0. (games played, wins,
             loss) (rank will remain!) Press this button 
             <button onClick={()=> resetPlayerStats() } >ARE YOU SURE?</button>

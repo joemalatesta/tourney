@@ -27,9 +27,9 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
 import * as authService from "./services/authService"
 import * as matchService from "./services/matchService"
 import * as playerService from "./services/playerService"
+import * as profileService from "./services/profileService"
 import * as scheduleService from "./services/scheduleService"
 import * as teamService from "./services/teamService"
-import * as profileService from "./services/profileService"
 
 import "./App.css"
 
@@ -59,6 +59,14 @@ function App() {
   }, [user])
 
   useEffect(() => {
+    const fetchScheduledDates = async () => {
+      const data = await scheduleService.index()
+      setScheduleDates(data)
+    }
+    fetchScheduledDates()
+  }, [random]);
+
+  useEffect(() => {
     if (user) {
       const fetchProfiles = async () => {
         const data = await profileService.getAllProfiles()
@@ -84,6 +92,7 @@ function App() {
     fetchTeams()
   }, [team, random])
 
+  console.log(random);
   useEffect(() => {}, [profiles])
 
   useEffect(() => {
@@ -128,6 +137,11 @@ function App() {
     })
   }
 
+  const fetchTeams = async () => {
+    const data = await teamService.index()
+    setTeams(data)
+  }
+
   const handleEditTeam = async (editedTeamData) => {
     try {
       const updatedTeam = await teamService.update(editedTeamData)
@@ -143,6 +157,7 @@ function App() {
     } catch (error) {
       console.error("Error updating team:", error)
     }
+    fetchTeams()
   }
 
   const handleDeletePlayer = async (id) => {
@@ -242,7 +257,7 @@ function App() {
           disable={isDisabled}
           path="/player-management"
           element={
-            <ProtectedRoute access="90" profile={profile} user={user}>
+            <ProtectedRoute access="70" profile={profile} user={user}>
               <EditPlayer
                 profile={profile}
                 players={players}

@@ -189,6 +189,9 @@ button {
 }
 
 .w355 {
-  width: 355px;
+  width: 250px;
+}
 
+.margin {
+  padding: 20px;
 }

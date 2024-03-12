@@ -43,7 +43,7 @@ const ViewTeam = (props) => {
                 <br />
                 Rank : {player.rank} <br />
                 Matches Played : {player.matchesPlayed} <br />
-                Win % : {player?.matchWin == 0 ? "No Matches Won" : `${(player?.matchWin/(player?.matchesPlayed *100)).toFixed(2)}%` }<br/>
+                Win % : {player?.matchWin == 0 ? "No Matches Won" : `${(player?.matchWin/(player?.matchesPlayed)).toFixed(2)*100} %` }<br/>
                 Wins: {player.matchWin}<br />
                 Loss: {player.matchLoss}<br />
               </p>

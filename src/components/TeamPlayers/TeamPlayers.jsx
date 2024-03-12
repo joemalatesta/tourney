@@ -30,7 +30,7 @@ const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer }) => {
   }, [team])
 
   return (
-    <div className="green-felt">
+    <div className="green-felt margin">
       <h3>Players</h3>
       {sortedPlayers?.map((player) => 
         <div onClick={() => handleChoosePlayer(player, title)} key={player?._id}>

@@ -15,22 +15,44 @@ const NavBar = ({ user, handleLogout, profile }) => {
         </div>
       )}
 
-      {profile?.accessLevel > 10 && profile?.accessLevel < 90 && (
-       <div className={styles.navBar}>
-        <NavLink to="/">Welcome {profile.firstName} </NavLink>
-        <NavLink to="/view-schedule"> Schedule </NavLink>
-        <NavLink to="/auth/change-password">Change Password</NavLink>
-        <NavLink to="" onClick={handleLogout}>
-          LOG OUT
+      {profile?.accessLevel === 70 && (
+        <div className={styles.navBar}>
+          <NavLink to="/">Welcome {profile.firstName}</NavLink>
+          <NavLink to="/view-schedule">
+          Schedule
         </NavLink>
+          <NavLink to="/player-management">
+          Player Management
+        </NavLink>
+        <NavLink to="/view-teams">
+          View Teams
+        </NavLink>
+          <NavLink to="/match-approval">
+            Match Approval
+          </NavLink>
+          <NavLink to="/auth/change-password">Change Password</NavLink>
+          <NavLink to="" onClick={handleLogout}>
+            LOG OUT
+          </NavLink>
+        </div>
+      )}
+
+      {profile?.accessLevel > 10 && profile?.accessLevel < 70 && (
+        <div className={styles.navBar}>
+          <NavLink to="/">Welcome {profile.firstName} </NavLink>
+          <NavLink to="/view-schedule"> Schedule </NavLink>
+          <NavLink to="/auth/change-password">Change Password</NavLink>
+          <NavLink to="" onClick={handleLogout}>
+            LOG OUT
+          </NavLink>
         </div>
       )}
 
       {profile?.accessLevel === 10 && (
         <div className={styles.navBar}>
-          <NavLink to="/">Welcome {profile.firstName} </NavLink> 
+          <NavLink to="/">Welcome {profile.firstName} </NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
-          <NavLink to="" onClick={handleLogout}> 
+          <NavLink to="" onClick={handleLogout}>
             LOG OUT
           </NavLink>
         </div>

@@ -81,7 +81,7 @@ const Match = (props) => {
             style={{ backgroundColor: `${color}` }}
             onClick={() => handleSetPlayers()}
           >
-            {color === 'red' ? '' : 'Set Players'}
+            {color === 'red' ? 'Choose Players to see a match' : 'Set Players'}
           </button>
         )}
             <div className="center">

@@ -189,7 +189,9 @@ const SingleMatch = (props) => {
           />
         ))}
       </div>
-      <button onClick={handleSaveMatch}>Validate Match</button>
+      {props.profile.accessLevel >= 40 && (
+        <button onClick={handleSaveMatch}>Validate Match</button>
+      )}
     </>
   )
 }

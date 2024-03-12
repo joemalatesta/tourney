@@ -12,7 +12,7 @@ const UserApprovals = ({profiles, handleUpdateProfiles}) => {
   })
 
   const filteredNames = profiles?.filter((el) => el.approved === false)
-
+  const filteredApprovedNames = profiles?.filter((el) => el.approved === true)
   const handleEditProfile = async (editedPlayerData) => {
     console.log(formData)
     await handleUpdateProfiles(editedPlayerData)
@@ -51,7 +51,7 @@ const UserApprovals = ({profiles, handleUpdateProfiles}) => {
  
   const grabAccessLevel = (lvl) => {
     if(lvl === 90) return "Admin"
-    if(lvl === 70) return "Validator"
+    if(lvl === 70) return "Score Admin"
     if(lvl === 50) return "Team Captain"
     if(lvl === 40) return "Assist Captain"
     if(lvl === 30) return "Player"
@@ -105,7 +105,7 @@ const UserApprovals = ({profiles, handleUpdateProfiles}) => {
           <button type="submit">Submit Change</button>
         </div>
       </form>
-      <div className="column">
+      <div className="bracket column">
         Not Approved : 
         {filteredNames?.length ? (
           filteredNames?.map((profile) => (
@@ -120,9 +120,10 @@ const UserApprovals = ({profiles, handleUpdateProfiles}) => {
         ) : (
           <h3>No people here</h3>
         )}
+        <br/>
         Approved Players : 
         {profiles?.length ? (
-          profiles?.map((profile) => (
+          filteredApprovedNames?.map((profile) => (
             <li
               style={{ color: checkHighlighted(profile._id) }}
               onClick={() => handleChangeProfile(profile)}

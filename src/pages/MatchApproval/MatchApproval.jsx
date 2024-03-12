@@ -65,7 +65,7 @@ const MatchApproval = ({
 
   const handleConfirmMatch = async (match) => {
     console.log(match)
-    setRandom(Math.random())
+    setRandom(Math.random()+1)
     // await handleSetConfirmMatch(match)
     // await handleSetConfirmMatch(match.losingTeam)
     await handleWinners(match.winningTeam, match.winningPlayer)

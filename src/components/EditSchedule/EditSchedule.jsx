@@ -52,7 +52,7 @@ const EditSchedule = ({ handleDeleteSchedule }) => {
 
   return (
     <div className="bracket column center">
-      <h2>Date Maintenance</h2>
+      <h4>Date Maintenance</h4>
       {schedules?.length ?
         schedules?.map((date) => (
           <li onClick={() => handlePopUp(date)} key={date._id}>
