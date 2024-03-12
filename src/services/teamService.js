@@ -14,15 +14,20 @@ async function create(team) {
 }
 
 async function update(team) {
-  const res = await fetch(`${BASE_URL}/${team._id}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${tokenService.getToken()}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(team),
-  })
-  return res.json()
+  try {
+    const res = await fetch(`${BASE_URL}/${team._id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${tokenService.getToken()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(team),
+    })
+    return res.json()
+  } catch (error) {
+    console.error("Error updating team:", error)
+    throw error
+  }
 }
 
 async function index() {

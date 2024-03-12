@@ -12,18 +12,23 @@ const SingleMatch = (props) => {
   const [match] = useState(props.match)
   const [seeCheckboxes, setSeeCheckboxes] = useState(true)
   const [gamesNeeded, setGamesNeeded] = useState()
-  const [updatedPlayerStateWithMatchCount,setUpdatedPlayerStateWithMatchCount] = useState(match)
+  const [
+    updatedPlayerStateWithMatchCount,
+    setUpdatedPlayerStateWithMatchCount,
+  ] = useState(match)
   const [gameWinner, setGameWinner] = useState(null)
   const [gameLoser, setGameLoser] = useState(null)
   const [winningTeam, setWinningTeam] = useState(null)
   const [losingTeam, setLosingTeam] = useState(null)
-  const [player1, setPlayer1] = useState({player: match[0], gamesWon: 0})
-  const [player2, setPlayer2] = useState({player: match[1], gamesWon: 0})
+  const [player1, setPlayer1] = useState({ player: match[0], gamesWon: 0 })
+  const [player2, setPlayer2] = useState({ player: match[1], gamesWon: 0 })
   let order = gameService.getFirstPlayer(match)
+
+  console.log(props)
 
   useEffect(() => {}, [match])
   useEffect(() => {}, [seeCheckboxes])
-  
+
   useEffect(() => {
     const getGameRace = async () => {
       try {
@@ -37,7 +42,7 @@ const SingleMatch = (props) => {
     }
     getGameRace()
   }, [match, order])
-  
+
   useEffect(() => {
     const addGamesNeeded = async () => {
       try {
@@ -48,21 +53,21 @@ const SingleMatch = (props) => {
               prevPlayerInfo.length &&
               prevPlayerInfo[0].games !== gamesNeeded[0] &&
               prevPlayerInfo[1].games !== gamesNeeded[1]
-              ) {
-                return [
-                  { ...prevPlayerInfo[0], games: gamesNeeded[0] },
-                  { ...prevPlayerInfo[1], games: gamesNeeded[1] },
-                ]
-              }
-            })
-          }
-        } catch (error) {
-          console.error("Error updating player state:", error)
+            ) {
+              return [
+                { ...prevPlayerInfo[0], games: gamesNeeded[0] },
+                { ...prevPlayerInfo[1], games: gamesNeeded[1] },
+              ]
+            }
+          })
         }
+      } catch (error) {
+        console.error("Error updating player state:", error)
       }
-      addGamesNeeded()
-    }, [match, gamesNeeded])
-    
+    }
+    addGamesNeeded()
+  }, [match, gamesNeeded])
+
   const handleWonGame = (player, number) => {
     setPlayer1((prevPlayer1) => {
       if (player._id === prevPlayer1.player._id) {
@@ -82,25 +87,25 @@ const SingleMatch = (props) => {
   const findWinningTeamByPlayerId = async (data, playerId) => {
     console.log(data)
     console.log(playerId)
-    let team 
+    let team
     for (const match of data.matches) {
       if (match.homeTeam.teamPlayers.includes(playerId)) {
-          team = match.homeTeam.teamName
-          await setWinningTeam(team)
-          console.log(team, 'HTEAM');
+        team = match.homeTeam
+        await setWinningTeam(team)
+        console.log(team, "HTEAM")
         return team
       }
       if (match.visitor.teamPlayers.includes(playerId)) {
-          team = match.visitor.teamName
-          await setWinningTeam(team)
-          console.log(team, 'VTEAM');
+        team = match.visitor
+        await setWinningTeam(team)
+        console.log(team, "VTEAM")
         return team
       }
     }
   }
 
   const handleWinner = async (winner) => {
-    console.log("*************************************************",winner);
+    console.log("*************************************************", winner)
     await setGameWinner(winner)
     await findLoser(winner)
     findWinningTeamByPlayerId(props.matchId, winner._id)
@@ -109,30 +114,29 @@ const SingleMatch = (props) => {
   }
 
   const findLosingTeamByPlayerId = async (data, playerId) => {
-    console.log('h', playerId)
-    let team 
+    console.log("h", playerId)
+    let team
     for (const match of data.matches) {
       if (match.homeTeam.teamPlayers.includes(playerId)) {
-          team = match.homeTeam.teamName
-          await setLosingTeam(team)
-          console.log(team, 'HTEAM');
+        team = match.homeTeam
+        await setLosingTeam(team)
+        console.log(team, "HTEAM")
       }
       if (match.visitor.teamPlayers.includes(playerId)) {
-          team = match.visitor.teamName
-          await setLosingTeam(team)
-          console.log(team, 'VTEAM');
+        team = match.visitor
+        await setLosingTeam(team)
+        console.log(team, "VTEAM")
       }
     }
   }
 
   const findLoser = (winner) => {
-    console.log(winner._id);
+    console.log(winner._id)
     let loser
-    console.log('p1', player1.player._id)
-    console.log('p2', player2.player._id)
-    if(player1.player._id === winner._id) loser = player2
+    console.log("p1", player1.player._id)
+    console.log("p2", player2.player._id)
+    if (player1.player._id === winner._id) loser = player2
     else loser = player1
-    console.log(loser.player)
     setGameLoser(loser.player)
     findLosingTeamByPlayerId(props.matchId, loser.player._id)
   }
@@ -144,7 +148,7 @@ const SingleMatch = (props) => {
   const handleSaveMatch = async () => {
     try {
       const newMatch = {
-        confirmed: 'NO',
+        confirmed: "NO",
         winningTeam: winningTeam,
         losingTeam: losingTeam,
         player1: player1,
@@ -163,7 +167,7 @@ const SingleMatch = (props) => {
         ...props.matchId,
         matchesforApproval: updatedMatches,
       })
-      console.log(newMatch);
+      console.log(newMatch)
       console.log("Match saved successfully!")
     } catch (error) {
       console.error("Error saving match:", error)

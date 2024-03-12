@@ -39,6 +39,7 @@ function App() {
   const [players, setPlayers] = useState([])
   const [user, setUser] = useState(authService.getUser())
   const [tourneyMatch, setTourneyMatch] = useState()
+  const [scheduleDates, setScheduleDates] = useState()
   const [singleMatch, setSingleMatch] = useState()
   const [twoPlayerMatch, setTwoPlayerMatch] = useState()
   const [teams, setTeams] = useState()
@@ -47,6 +48,7 @@ function App() {
   const [profile, setProfile] = useState(null)
   const [profiles, setProfiles] = useState(null)
   const [matchId, setMatchId] = useState(null)
+  const [random, setRandom] = useState(Math.random())
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -72,7 +74,7 @@ function App() {
       setPlayers(data)
     }
     fetchPlayers()
-  }, [user])
+  }, [user, random])
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -80,7 +82,7 @@ function App() {
       setTeams(data)
     }
     fetchTeams()
-  }, [])
+  }, [team, random])
 
   useEffect(() => {}, [profiles])
 
@@ -127,12 +129,20 @@ function App() {
   }
 
   const handleEditTeam = async (editedTeamData) => {
-    const editedTeam = await teamService.update(editedTeamData)
-    setPlayers((prevPlayers) => {
-      return prevPlayers.map((player) =>
-        player._id === editedTeam._id ? editedTeam : player
-      )
-    })
+    try {
+      const updatedTeam = await teamService.update(editedTeamData)
+      setTeams((prevTeams) => {
+        return prevTeams.map((team) =>
+          team._id === updatedTeam._id
+            ? { ...team, wins: updatedTeam.wins, losses: updatedTeam.losses }
+            : team
+        )
+      })
+
+      console.log("Team updated successfully:", updatedTeam)
+    } catch (error) {
+      console.error("Error updating team:", error)
+    }
   }
 
   const handleDeletePlayer = async (id) => {
@@ -209,6 +219,7 @@ function App() {
           element={
             <ProtectedRoute access="90" profile={profile} user={user}>
               <AdminPage
+                handleEditTeam={handleEditTeam}
                 players={players}
                 profile={profile}
                 profiles={profiles}
@@ -420,6 +431,10 @@ function App() {
           element={
             <ProtectedRoute access="70" profile={profile} user={user}>
               <MatchApproval
+                setRandom={setRandom}
+                scheduleDates={scheduleDates}
+                setScheduleDates={setScheduleDates}
+                handleEditTeam={handleEditTeam}
                 profile={profile}
                 teams={teams}
               />
