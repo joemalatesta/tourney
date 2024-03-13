@@ -92,7 +92,6 @@ function App() {
     fetchTeams()
   }, [team, random])
 
-  console.log(random);
   useEffect(() => {}, [profiles])
 
   useEffect(() => {
@@ -137,6 +136,16 @@ function App() {
     })
   }
 
+  const fetchScheduledDates = async () => {
+    const data = await scheduleService.index()
+    setScheduleDates(data)
+  }
+
+  const fetchPlayers = async () => {
+    const data = await playerService.index()
+    setPlayers(data)
+  }
+
   const fetchTeams = async () => {
     const data = await teamService.index()
     setTeams(data)
@@ -158,6 +167,8 @@ function App() {
       console.error("Error updating team:", error)
     }
     fetchTeams()
+    fetchPlayers()
+    fetchScheduledDates()
   }
 
   const handleDeletePlayer = async (id) => {

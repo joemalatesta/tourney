@@ -4,7 +4,7 @@ import { confetti } from "../../services/confetti"
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 
 import * as gameService from "../../services/gameService"
-import * as scheduleService from "../../services/scheduleService"
+import * as playedMatchService from "../../services/playedMatchService"
 
 import * as styles from "./SingleMatch.module.css"
 
@@ -23,8 +23,6 @@ const SingleMatch = (props) => {
   const [player1, setPlayer1] = useState({ player: match[0], gamesWon: 0 })
   const [player2, setPlayer2] = useState({ player: match[1], gamesWon: 0 })
   let order = gameService.getFirstPlayer(match)
-
-  console.log(props)
 
   useEffect(() => {}, [match])
   useEffect(() => {}, [seeCheckboxes])
@@ -85,20 +83,16 @@ const SingleMatch = (props) => {
   }
 
   const findWinningTeamByPlayerId = async (data, playerId) => {
-    console.log(data)
-    console.log(playerId)
     let team
     for (const match of data.matches) {
       if (match.homeTeam.teamPlayers.includes(playerId)) {
         team = match.homeTeam
         await setWinningTeam(team)
-        console.log(team, "HTEAM")
         return team
       }
       if (match.visitor.teamPlayers.includes(playerId)) {
         team = match.visitor
         await setWinningTeam(team)
-        console.log(team, "VTEAM")
         return team
       }
     }
@@ -110,31 +104,25 @@ const SingleMatch = (props) => {
     await findLoser(winner)
     findWinningTeamByPlayerId(props.matchId, winner._id)
     disableCheckboxes()
-    confetti.start(5000)
+    confetti.start(1000)
   }
 
   const findLosingTeamByPlayerId = async (data, playerId) => {
-    console.log("h", playerId)
     let team
     for (const match of data.matches) {
       if (match.homeTeam.teamPlayers.includes(playerId)) {
         team = match.homeTeam
         await setLosingTeam(team)
-        console.log(team, "HTEAM")
       }
       if (match.visitor.teamPlayers.includes(playerId)) {
         team = match.visitor
         await setLosingTeam(team)
-        console.log(team, "VTEAM")
       }
     }
   }
 
   const findLoser = (winner) => {
-    console.log(winner._id)
     let loser
-    console.log("p1", player1.player._id)
-    console.log("p2", player2.player._id)
     if (player1.player._id === winner._id) loser = player2
     else loser = player1
     setGameLoser(loser.player)
@@ -145,34 +133,68 @@ const SingleMatch = (props) => {
     setSeeCheckboxes(!seeCheckboxes)
   }
 
+  let gameCompleted = gameWinner !== null ? true : false
+
+  const extractGamesInfo = () => {
+    const winner = gameWinner !== null ? gameWinner : null;
+    const loser = gameLoser !== null ? gameLoser : null;
+  
+    const winnerGamesWon = winner ? (winner._id === player1.player._id ? player1.gamesWon : player2.gamesWon) : null;
+    const loserGamesWon = loser ? (loser._id === player1.player._id ? player1.gamesWon : player2.gamesWon) : null;
+  
+    return { winnerGamesWon, loserGamesWon };
+  };
+
+  // const handleSaveMatch = async () => {
+  //   try {
+  //     const { winnerGamesWon, loserGamesWon } = extractGamesInfo();
+  //     const gameData = {
+  //       completed: gameCompleted,
+  //       confirmed: false,
+  //       winningTeam: winningTeam._id,
+  //       losingTeam: losingTeam._id,
+  //       winningPlayer: gameWinner._id,
+  //       losingPlayer: gameLoser._id,
+  //       winnerGamesPlayed: winnerGamesWon,
+  //       loserGamesPlayed: loserGamesWon,
+  //       date: props.matchId.name,
+  //     }
+
+  
+  //     await playedMatchService.create({gameData})
+  //     console.log(gameData, "Match saved successfully!")
+  //   } catch (error) {
+  //     console.error("Error saving match:", error)
+  //   }
+  // }
+
   const handleSaveMatch = async () => {
     try {
-      const newMatch = {
-        confirmed: "NO",
+      const { winnerGamesWon, loserGamesWon } = extractGamesInfo();
+      const gameData = {
+        completed: gameCompleted,
+        confirmed: false,
         winningTeam: winningTeam,
         losingTeam: losingTeam,
-        player1: player1,
-        player2: player2,
-        gamesPlayed: player1.gamesWon + player2.gamesWon,
-        completed: gameWinner !== null ? "Yes" : "NO",
         winningPlayer: gameWinner,
         losingPlayer: gameLoser,
-        date: props.matchId.name,
-      }
-
-      const existingMatches = props.matchId.matchesforApproval || []
-      const updatedMatches = [...existingMatches, newMatch]
-
-      await scheduleService.update({
-        ...props.matchId,
-        matchesforApproval: updatedMatches,
-      })
-      console.log(newMatch)
-      console.log("Match saved successfully!")
+        winnerGamesPlayed: winnerGamesWon,
+        loserGamesPlayed: loserGamesWon,
+        matchDate: props.matchId.name,
+      };
+  
+      // Log the payload before making the network request
+      console.log("Game Data:", gameData);
+  
+      // Make the network request
+      await playedMatchService.create({ gameData });
+  
+      console.log("Match saved successfully!");
     } catch (error) {
-      console.error("Error saving match:", error)
+      console.error("Error saving match:", error);
     }
-  }
+  };
+
 
   return (
     <>
