@@ -1,5 +1,5 @@
 import * as tokenService from "./tokenService"
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/playedMatch`
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/triMatch`
 
 async function create(match) {
   const res = await fetch(BASE_URL, {
@@ -57,5 +57,6 @@ async function deleteOne(id) {
   })
   return res.json()
 }
+
 
 export { index, create, findOne, deleteOne, update }

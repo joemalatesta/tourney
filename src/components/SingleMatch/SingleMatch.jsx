@@ -9,6 +9,7 @@ import * as playedMatchService from "../../services/playedMatchService"
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
+  console.log('This is the props to send to each match ',props);
   const [match] = useState(props.match)
   const [seeCheckboxes, setSeeCheckboxes] = useState(true)
   const [gamesNeeded, setGamesNeeded] = useState()
@@ -99,7 +100,6 @@ const SingleMatch = (props) => {
   }
 
   const handleWinner = async (winner) => {
-    console.log("*************************************************", winner)
     await setGameWinner(winner)
     await findLoser(winner)
     findWinningTeamByPlayerId(props.matchId, winner._id)
@@ -136,41 +136,26 @@ const SingleMatch = (props) => {
   let gameCompleted = gameWinner !== null ? true : false
 
   const extractGamesInfo = () => {
-    const winner = gameWinner !== null ? gameWinner : null;
-    const loser = gameLoser !== null ? gameLoser : null;
-  
-    const winnerGamesWon = winner ? (winner._id === player1.player._id ? player1.gamesWon : player2.gamesWon) : null;
-    const loserGamesWon = loser ? (loser._id === player1.player._id ? player1.gamesWon : player2.gamesWon) : null;
-  
-    return { winnerGamesWon, loserGamesWon };
-  };
+    const winner = gameWinner !== null ? gameWinner : null
+    const loser = gameLoser !== null ? gameLoser : null
 
-  // const handleSaveMatch = async () => {
-  //   try {
-  //     const { winnerGamesWon, loserGamesWon } = extractGamesInfo();
-  //     const gameData = {
-  //       completed: gameCompleted,
-  //       confirmed: false,
-  //       winningTeam: winningTeam._id,
-  //       losingTeam: losingTeam._id,
-  //       winningPlayer: gameWinner._id,
-  //       losingPlayer: gameLoser._id,
-  //       winnerGamesPlayed: winnerGamesWon,
-  //       loserGamesPlayed: loserGamesWon,
-  //       date: props.matchId.name,
-  //     }
+    const winnerGamesWon = winner
+      ? winner._id === player1.player._id
+        ? player1.gamesWon
+        : player2.gamesWon
+      : null
+    const loserGamesWon = loser
+      ? loser._id === player1.player._id
+        ? player1.gamesWon
+        : player2.gamesWon
+      : null
 
-  
-  //     await playedMatchService.create({gameData})
-  //     console.log(gameData, "Match saved successfully!")
-  //   } catch (error) {
-  //     console.error("Error saving match:", error)
-  //   }
-  // }
+    return { winnerGamesWon, loserGamesWon }
+  }
 
   const handleSaveMatch = async () => {
     try {
-      const { winnerGamesWon, loserGamesWon } = extractGamesInfo();
+      const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
       const gameData = {
         completed: gameCompleted,
         confirmed: false,
@@ -181,20 +166,14 @@ const SingleMatch = (props) => {
         winnerGamesPlayed: winnerGamesWon,
         loserGamesPlayed: loserGamesWon,
         matchDate: props.matchId.name,
-      };
-  
-      // Log the payload before making the network request
-      console.log("Game Data:", gameData);
-  
-      // Make the network request
-      await playedMatchService.create({ gameData });
-  
-      console.log("Match saved successfully!");
-    } catch (error) {
-      console.error("Error saving match:", error);
-    }
-  };
+      }
+      await playedMatchService.create({ gameData })
 
+      console.log("Match saved successfully!")
+    } catch (error) {
+      console.error("Error saving match:", error)
+    }
+  }
 
   return (
     <>

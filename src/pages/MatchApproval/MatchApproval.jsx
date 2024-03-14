@@ -80,7 +80,6 @@ const MatchApproval = ({ handleEditTeam }) => {
       console.error("Error confirming match:", error)
     }
   }
-  console.log(playedData);
   return (
     <>
       <h1>Match Approvals</h1>

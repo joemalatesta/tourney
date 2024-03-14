@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
+import MatchHandler from "../../components/MatchHandler/MatchHandler"
 
 const Match = (props) => {
   const navigate = useNavigate()
@@ -13,6 +14,23 @@ const Match = (props) => {
   const [match1, setMatch1] = useState(null)
   const [match2, setMatch2] = useState(null)
   const [match3, setMatch3] = useState(null)
+  const [completeMatch, setCompleteMatch] = useState({
+    match1: "",
+    match2: "",
+    match3: "",
+  })
+  
+
+  useEffect(() => {
+    if(match1 !== null && match2 !== null && match3 !== null) setCompleteMatch({match1, match2, match3})
+  }, [match1,match2,match3])
+
+  useEffect(() => {
+    if(match1 !== null && match2 !== null && match3 !== null) props.setTriMatch(completeMatch)
+  }, [completeMatch]);
+
+
+  console.log('This is the complete match',completeMatch);
 
   useEffect(() => {
     const getTeamData = () => {
@@ -36,15 +54,15 @@ const Match = (props) => {
   const handleViewSingleMatch = (players) => {
     if (players === null) return
     props.setTwoPlayerMatch(players)
-    navigate("/match-view")
+    // navigate("/match-view")
+    navigate('/tri-match-view')
   }
 
   const handleSetPlayers = () => {
     if (player1 !== null && player2 !== null) {
       if (match1 === null) setMatch1([player1, player2])
       if (match2 === null && match1 !== null) setMatch2([player1, player2])
-      if (match3 === null && match1 !== null && match2 !== null)
-        setMatch3([player1, player2])
+      if (match3 === null && match1 !== null && match2 !== null) setMatch3([player1, player2])
       setMatch([player1, player2])
       setPlayer1(null)
       setPlayer2(null)
@@ -56,13 +74,15 @@ const Match = (props) => {
   return (
     <>
       <div className="bracket">
-      <h1 className="center">Match </h1>
-   
-      <p className="center">Pick players here for match play.</p>
-      <p className="center">Then press center button to confirm names then a second time to view match race</p>
+        <h1 className="center">Match </h1>
 
+        <p className="center">Pick players here for match play.</p>
+        <p className="center">
+          Then press center button to confirm names then a second time to view
+          match race
+        </p>
       </div>
-     
+
       <div className="row center space-around">
         <div className="bracket">
           <h1>{team1?.teamName}</h1>
@@ -81,33 +101,17 @@ const Match = (props) => {
             style={{ backgroundColor: `${color}` }}
             onClick={() => handleSetPlayers()}
           >
-            {color === 'red' ? 'Choose Players to see a match' : 'Set Players'}
+            {color === "red" ? "Choose Players For Match" : "Match 1"}
           </button>
         )}
-            <div className="center">
-        {match1 !== null &&
-
-        <div className="bracket" onClick={() => handleViewSingleMatch(match1)}>
-          <p style={{color:'green'}}>Click for Match</p>
-          {match1?.map((player) => (
-            <li key={player._id}>{player.name}</li>
-            ))}
-        </div>
-          }
-        {/* <div className="bracket" onClick={() => handleViewSingleMatch(match2)}>
-            Match 2
-            {match2?.map((player) => (
-              <li key={player._id}>{player.name}</li>
-            ))}
-          </div>
-
-          <div className="bracket" onClick={() => handleViewSingleMatch(match3)}>
-            Match 3
-            {match3?.map((player) => (
-              <li key={player._id}>{player.name}</li>
-            ))}
-          </div> */}
-      </div>
+      <MatchHandler
+        match1={match1}
+        match2={match2}
+        match3={match3}
+        handleViewSingleMatch={handleViewSingleMatch}
+        handleSetPlayers={handleSetPlayers}
+        color={color}
+      />
         <div className="bracket">
           <h1>{team2?.teamName}</h1>
           <div className="w355">
@@ -120,7 +124,6 @@ const Match = (props) => {
           </div>
         </div>
       </div>
-  
     </>
   )
 }

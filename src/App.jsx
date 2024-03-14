@@ -30,8 +30,10 @@ import * as playerService from "./services/playerService"
 import * as profileService from "./services/profileService"
 import * as scheduleService from "./services/scheduleService"
 import * as teamService from "./services/teamService"
+import * as playedMatchService from './services/playedMatchService'
 
 import "./App.css"
+import TriMatchView from "./pages/TriMatchView/TriMatchView"
 
 function App() {
   const navigate = useNavigate()
@@ -48,7 +50,17 @@ function App() {
   const [profile, setProfile] = useState(null)
   const [profiles, setProfiles] = useState(null)
   const [matchId, setMatchId] = useState(null)
-  const [random, setRandom] = useState(Math.random())
+  const [matchInProgress, setMatchInProgress] = useState([])
+  const [allPlayedMatches, setAllPlayedMatches] = useState()
+  const [triMatch, setTriMatch] = useState()
+  
+  useEffect(() => {
+    const fetchAllPlayedMatches = async () => {
+      const data = await playedMatchService.index()
+      setAllPlayedMatches(data)
+    }
+    fetchAllPlayedMatches()
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -64,7 +76,7 @@ function App() {
       setScheduleDates(data)
     }
     fetchScheduledDates()
-  }, [random]);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -82,7 +94,7 @@ function App() {
       setPlayers(data)
     }
     fetchPlayers()
-  }, [user, random])
+  }, [user, ])
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -90,7 +102,7 @@ function App() {
       setTeams(data)
     }
     fetchTeams()
-  }, [team, random])
+  }, [team,])
 
   useEffect(() => {}, [profiles])
 
@@ -222,6 +234,13 @@ function App() {
       profiles.filter((profile) => profile._id !== updatedProfile._id)
     )
   }
+
+  const handleSaveMatchInProgress = (id) => {
+    const data = playedMatchService.findOne(id)
+    setMatchInProgress(data)
+  }
+
+  console.log('******************TRIMATCH*******************',triMatch);
 
   return (
     <>
@@ -442,6 +461,10 @@ function App() {
           element={
             <ProtectedRoute access="30" profile={profile} user={user}>
               <Match
+                setTriMatch={setTriMatch}
+                handleSaveMatchInProgress={handleSaveMatchInProgress}
+                matchInProgress={matchInProgress}
+                setMatchInProgress={setMatchInProgress}
                 matchId={matchId}
                 profile={profile}
                 teams={teams}
@@ -457,12 +480,26 @@ function App() {
           element={
             <ProtectedRoute access="70" profile={profile} user={user}>
               <MatchApproval
-                setRandom={setRandom}
+                allPlayedMatches={allPlayedMatches}
                 scheduleDates={scheduleDates}
                 setScheduleDates={setScheduleDates}
                 handleEditTeam={handleEditTeam}
                 profile={profile}
                 teams={teams}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          disable={isDisabled}
+          path="/tri-match-view"
+          element={
+            <ProtectedRoute access="30" profile={profile} user={user}> 
+              <TriMatchView
+                profile={profile}
+                matchId={matchId}
+                triMatch={triMatch}
+              
               />
             </ProtectedRoute>
           }
