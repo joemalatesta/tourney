@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
 import MatchHandler from "../../components/MatchHandler/MatchHandler"
+import MatchView from "../../pages/MatchView/MatchView"
 
 const Match = (props) => {
   const navigate = useNavigate()
@@ -30,8 +31,6 @@ const Match = (props) => {
   }, [completeMatch]);
 
 
-  console.log('This is the complete match',completeMatch);
-
   useEffect(() => {
     const getTeamData = () => {
       setTeam1(props.viewMatch.homeTeam)
@@ -49,13 +48,6 @@ const Match = (props) => {
     if (title === "Team 2") {
       setPlayer2(player)
     }
-  }
-
-  const handleViewSingleMatch = (players) => {
-    if (players === null) return
-    props.setTwoPlayerMatch(players)
-    // navigate("/match-view")
-    navigate('/tri-match-view')
   }
 
   const handleSetPlayers = () => {
@@ -108,7 +100,6 @@ const Match = (props) => {
         match1={match1}
         match2={match2}
         match3={match3}
-        handleViewSingleMatch={handleViewSingleMatch}
         handleSetPlayers={handleSetPlayers}
         color={color}
       />
@@ -120,10 +111,43 @@ const Match = (props) => {
               title="Team 2"
               team={team2}
               handleChoosePlayer={handleChoosePlayer}
-            />
+              />
           </div>
         </div>
       </div>
+      { match3 !== null &&
+      <>
+        <h1>Match 3</h1>
+        <MatchView 
+          match={match3}
+          matchId={props.matchId}
+          profile={props.profile} 
+          
+          />
+          </>
+      }
+      { match2 !== null &&
+      <>
+        <h1>Match 2</h1>
+        <MatchView 
+          match={match2}
+          matchId={props.matchId}
+          profile={props.profile} 
+          
+          />
+          </>
+      }
+      { match1 !== null &&
+      <>
+        <h1>Match 1</h1>
+        <MatchView 
+          match={match1}
+          matchId={props.matchId}
+          profile={props.profile} 
+          
+          />
+          </>
+      }
     </>
   )
 }

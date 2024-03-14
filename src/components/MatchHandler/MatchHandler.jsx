@@ -12,9 +12,7 @@ const MatchHandler = ({
           {match1 !== null && (
             <div
               className="bracket"
-              onClick={() => handleViewSingleMatch(match1)}
             >
-              <p style={{ color: "green" }}>Click for Match</p>
               {match1?.map((player) => (
                 <li key={player._id}>{player.name}</li>
               ))}

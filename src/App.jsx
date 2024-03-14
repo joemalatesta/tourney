@@ -240,8 +240,6 @@ function App() {
     setMatchInProgress(data)
   }
 
-  console.log('******************TRIMATCH*******************',triMatch);
-
   return (
     <>
       <NavBar user={user} profile={profile} handleLogout={handleLogout} />

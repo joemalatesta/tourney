@@ -180,6 +180,7 @@ const SingleMatch = (props) => {
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
         {updatedPlayerStateWithMatchCount?.map((player, idx) => (
           <SingleMatchPlayerLine
+            handleSaveMatch={handleSaveMatch}
             handleWonGame={handleWonGame}
             gameWinner={gameWinner}
             profile={props.profile}
@@ -190,9 +191,6 @@ const SingleMatch = (props) => {
           />
         ))}
       </div>
-      {props.profile.accessLevel >= 40 && (
-        <button onClick={handleSaveMatch}>Validate Match</button>
-      )}
     </>
   )
 }
