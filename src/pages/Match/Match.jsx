@@ -5,6 +5,8 @@ import MatchView from "../../pages/MatchView/MatchView"
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
 import MatchHandler from "../../components/MatchHandler/MatchHandler"
 
+import * as triMatchService from '../../services/triMatchService'
+
 const Match = (props) => {
   const [team1, setTeam1] = useState(null)
   const [team2, setTeam2] = useState(null)
@@ -71,8 +73,9 @@ const Match = (props) => {
     }
   }
 
-  const showFinalSubmitForApprovalButton = () => {
-  
+  const showFinalSubmitForApprovalButton = async () => {
+    console.log(completeMatch)
+    await triMatchService.create(completeMatch)
       console.log("hi there")
   }
 
