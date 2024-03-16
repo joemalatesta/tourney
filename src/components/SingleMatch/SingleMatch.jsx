@@ -4,12 +4,10 @@ import { confetti } from "../../services/confetti"
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 
 import * as gameService from "../../services/gameService"
-import * as playedMatchService from "../../services/playedMatchService"
-
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
-  console.log('This is the props to send to each match ',props);
+
   const [match] = useState(props.match)
   const [seeCheckboxes, setSeeCheckboxes] = useState(true)
   const [gamesNeeded, setGamesNeeded] = useState()
@@ -152,7 +150,7 @@ const SingleMatch = (props) => {
 
     return { winnerGamesWon, loserGamesWon }
   }
-
+  
   const handleSaveMatch = async () => {
     try {
       const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
@@ -167,13 +165,40 @@ const SingleMatch = (props) => {
         loserGamesPlayed: loserGamesWon,
         matchDate: props.matchId.name,
       }
-      await playedMatchService.create({ gameData })
 
+      console.log(props.number);
+      if (props.number === 1) {
+        console.log('props #1');
+        props.setCompleteMatch(prevCompleteMatch => ({
+          ...prevCompleteMatch,
+          match1: gameData
+        }));
+      }
+      if (props.number === 2) {
+        console.log('props #2');
+
+        props.setCompleteMatch(prevCompleteMatch => ({
+          ...prevCompleteMatch,
+          match2: gameData
+        }));
+      }
+      if (props.number === 3) {
+        console.log('props #3');
+
+        props.setCompleteMatch(prevCompleteMatch => ({
+          ...prevCompleteMatch,
+          match3: gameData
+        }));
+      }
+      if (props.match1 !== null && props.match2 !== null && props.match3 !== null) props.setShowButton(!props.showButton)
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', props.completeMatch);
       console.log("Match saved successfully!")
     } catch (error) {
       console.error("Error saving match:", error)
     }
   }
+  
+
 
   return (
     <>

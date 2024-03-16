@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+
+import MatchView from "../../pages/MatchView/MatchView"
 
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
 import MatchHandler from "../../components/MatchHandler/MatchHandler"
-import MatchView from "../../pages/MatchView/MatchView"
 
 const Match = (props) => {
-  const navigate = useNavigate()
   const [team1, setTeam1] = useState(null)
   const [team2, setTeam2] = useState(null)
   const [player1, setPlayer1] = useState(null)
@@ -15,21 +14,23 @@ const Match = (props) => {
   const [match1, setMatch1] = useState(null)
   const [match2, setMatch2] = useState(null)
   const [match3, setMatch3] = useState(null)
+  const [showButton, setShowButton] = useState(false)
   const [completeMatch, setCompleteMatch] = useState({
+    date: props?.matchId?.name,
+    homeTeam: team1,
+    visitingTeam: team2,
     match1: "",
     match2: "",
     match3: "",
   })
-  
 
   useEffect(() => {
-    if(match1 !== null && match2 !== null && match3 !== null) setCompleteMatch({match1, match2, match3})
-  }, [match1,match2,match3])
-
-  useEffect(() => {
-    if(match1 !== null && match2 !== null && match3 !== null) props.setTriMatch(completeMatch)
-  }, [completeMatch]);
-
+    setCompleteMatch((prevMatch) => ({
+      ...prevMatch,
+      homeTeam: team1,
+      visitingTeam: team2,
+    }))
+  }, [team1, team2])
 
   useEffect(() => {
     const getTeamData = () => {
@@ -37,7 +38,7 @@ const Match = (props) => {
       setTeam2(props.viewMatch.visitor)
     }
     getTeamData()
-  }, [props.viewMatch.homeTeam, props.viewMatch.visitor])
+  }, [props?.viewMatch?.homeTeam, props?.viewMatch?.visitor])
 
   useEffect(() => {}, [match])
 
@@ -50,16 +51,31 @@ const Match = (props) => {
     }
   }
 
-  const handleSetPlayers = () => {
+  console.log(team1)
+  console.log(team2)
+
+  const handleSetPlayers = async () => {
     if (player1 !== null && player2 !== null) {
-      if (match1 === null) setMatch1([player1, player2])
-      if (match2 === null && match1 !== null) setMatch2([player1, player2])
-      if (match3 === null && match1 !== null && match2 !== null) setMatch3([player1, player2])
+      if (match1 === null) {
+        await setMatch1([player1, player2])
+      }
+      if (match2 === null && match1 !== null) {
+        await setMatch2([player1, player2])
+      }
+      if (match3 === null && match1 !== null && match2 !== null) {
+        await setMatch3([player1, player2])
+      }
       setMatch([player1, player2])
       setPlayer1(null)
       setPlayer2(null)
     }
   }
+
+  const showFinalSubmitForApprovalButton = () => {
+  
+      console.log("hi there")
+  }
+
 
   let color = player1 == null || player2 == null ? "red" : "green"
 
@@ -96,13 +112,13 @@ const Match = (props) => {
             {color === "red" ? "Choose Players For Match" : "Match 1"}
           </button>
         )}
-      <MatchHandler
-        match1={match1}
-        match2={match2}
-        match3={match3}
-        handleSetPlayers={handleSetPlayers}
-        color={color}
-      />
+        <MatchHandler
+          match1={match1}
+          match2={match2}
+          match3={match3}
+          handleSetPlayers={handleSetPlayers}
+          color={color}
+        />
         <div className="bracket">
           <h1>{team2?.teamName}</h1>
           <div className="w355">
@@ -111,43 +127,66 @@ const Match = (props) => {
               title="Team 2"
               team={team2}
               handleChoosePlayer={handleChoosePlayer}
-              />
+            />
           </div>
         </div>
       </div>
-      { match3 !== null &&
-      <>
-        <h1>Match 3</h1>
-        <MatchView 
-          match={match3}
-          matchId={props.matchId}
-          profile={props.profile} 
-          
-          />
-          </>
+      { showButton === true && 
+        <button onClick={showFinalSubmitForApprovalButton}>Approve the Match</button>
       }
-      { match2 !== null &&
-      <>
-        <h1>Match 2</h1>
-        <MatchView 
-          match={match2}
-          matchId={props.matchId}
-          profile={props.profile} 
-          
+      {match3 !== null && (
+        <>
+          {}
+          <h1>Match 3</h1>
+          <MatchView
+            setShowButton={setShowButton}
+            match1={match1}
+            match2={match2}
+            match3={match3}
+            showButton={showButton}
+            setCompleteMatch={setCompleteMatch}
+            completeMatch={completeMatch}
+            matchNumber={3}
+            match={match3}
+            matchId={props.matchId}
+            profile={props.profile}
           />
-          </>
-      }
-      { match1 !== null &&
-      <>
-        <h1>Match 1</h1>
-        <MatchView 
-          match={match1}
-          matchId={props.matchId}
-          profile={props.profile} 
-          
+        </>
+      )}
+      {match2 !== null && (
+        <>
+          <h1>Match 2</h1>
+          <MatchView
+               match1={match1}
+               match2={match2}
+               match3={match3}
+               showButton={showButton}
+            setCompleteMatch={setCompleteMatch}
+            completeMatch={completeMatch}
+            matchNumber={2}
+            match={match2}
+            matchId={props.matchId}
+            profile={props.profile}
           />
-          </>
-      }
+        </>
+      )}
+      {match1 !== null && (
+        <>
+          <h1>Match 1</h1>
+          <MatchView
+             match1={match1}
+             match2={match2}
+             match3={match3}
+             showButton={showButton}
+            setCompleteMatch={setCompleteMatch}
+            completeMatch={completeMatch}
+            matchNumber={1}
+            match={match1}
+            matchId={props.matchId}
+            profile={props.profile}
+          />
+        </>
+      )}
     </>
   )
 }
