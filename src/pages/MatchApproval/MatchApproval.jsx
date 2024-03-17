@@ -21,149 +21,157 @@ const MatchApproval = () => {
     fetchData()
   }, [])
 
-  let data = playedData.map((match) => [match])
-
-  data = data.reduce((acc, currentItem, index, arr) => {
-    for (let i = index + 1; i < arr.length; i++) {
-      const comparedItem = arr[i]
-      if (
-        currentItem.date === comparedItem.date &&
-        currentItem.homeTeam === comparedItem.homeTeam &&
-        currentItem.visitingTeam === comparedItem.visitingTeam
-      ) {
-        return [currentItem, comparedItem]
+  const compareObjects = (obj1, obj2, propertiesToCompare) => {
+    for (let property of propertiesToCompare) {
+      if (obj1[property] !== obj2[property]) {
+        return false
       }
     }
-    return acc
-  }, [])
+    return true
+  }
 
+  useEffect(() => {
+    const matchedIndices = new Set()
 
-//   const compareObjects = (obj1, obj2, propertiesToCompare) => {
-//     for (let property of propertiesToCompare) {
-//         if (obj1[property] !== obj2[property]) {
-//             return false;
-//         }
-//     }
-//     // If all values are equal, return true
-//     return true;
-// }
-// // Example objects to compare
-// const obj1 = { a: 1, b: 2, c: 3, d: 4 };
-// const obj2 = { a: 1, b: 2, c: 3, d: 4 };
-// const obj3 = { a: 1, b: 2, c: 3, d: 5 };
+    const data = playedData.reduce((acc, currentItem, index, arr) => {
+      if (matchedIndices.has(index)) {
+        return acc
+      }
 
-// const propertiesToCompare = ['c', 'd'];
-// console.log(compareObjects(obj1, obj2, propertiesToCompare)); // Output: true
-// console.log(compareObjects(obj1, obj3, propertiesToCompare));
+      const propertiesToCompare = ["homeTeam._id", "visitingTeam._id"]
+
+      const matchingIndex = arr.findIndex(
+        (item, i) =>
+          i !== index &&
+          !matchedIndices.has(i) &&
+          compareObjects(currentItem, item, propertiesToCompare)
+      )
+      if (matchingIndex !== -1) {
+        const matchingItem = arr[matchingIndex]
+        matchedIndices.add(index)
+        matchedIndices.add(matchingIndex)
+        acc.push([currentItem, matchingItem])
+      }
+      return acc
+    }, [])
+
+    console.log(data)
+  }, [playedData])
 
   return (
     <>
-      {playedData?.map((match) => (
-        <li className="bracket" key={match._id}>
-          Date: {match.date}
-          <br />
-          Home Team : {match.homeTeam.teamName}
-          <br />
-          Visiting Team : {match.visitingTeam.teamName}
-          <br />
-          <div className="row">
-            <div className="bracket ">
-              Match 1<br />
-              Completed : {match.match1.completed ? " YES" : " NO"}
-              <br />
-              Winning Team :{" "}
-              {match.match1.winningTeam == undefined
-                ? "None"
-                : match.match1.winningTeam.teamName}
-              <br />
-              Losing Team :{" "}
-              {match.match1.losingTeam === undefined
-                ? "None"
-                : match.match1.losingTeam.teamName}
-              <br />
-              <div>
-                Winning Player :{" "}
-                {match.match1.winningPlayer === undefined
+      {playedData.length ? (
+        playedData?.map((match) => (
+          <li className="bracket" key={match._id}>
+            Date: {match.date}
+            <br />
+            Home Team : {match.homeTeam.teamName}
+            <br />
+            Visiting Team : {match.visitingTeam.teamName}
+            <br />
+            <div className="row">
+              <div className="bracket ">
+                Match 1<br />
+                Completed : {match.match1.completed ? " YES" : " NO"}
+                <br />
+                Winning Team :{" "}
+                {match.match1.winningTeam == undefined
                   ? "None"
-                  : match.match1.winningPlayer.name}{" "}
+                  : match.match1.winningTeam.teamName}
                 <br />
-                Games Won : {match.match1.winnerGamesPlayed}
-                <br />
-                Losing Player :{" "}
-                {match.match1.losingPlayer === undefined
+                Losing Team :{" "}
+                {match.match1.losingTeam === undefined
                   ? "None"
-                  : match.match1.losingPlayer.name}{" "}
+                  : match.match1.losingTeam.teamName}
                 <br />
-                Games Won : {match.match1.loserGamesPlayed}
+                <div>
+                  Winning Player :{" "}
+                  {match.match1.winningPlayer === undefined
+                    ? "None"
+                    : match.match1.winningPlayer.name}{" "}
+                  <br />
+                  Games Won : {match.match1.winnerGamesPlayed}
+                  <br />
+                  Losing Player :{" "}
+                  {match.match1.losingPlayer === undefined
+                    ? "None"
+                    : match.match1.losingPlayer.name}{" "}
+                  <br />
+                  Games Won : {match.match1.loserGamesPlayed}
+                  <br />
+                </div>
+              </div>
+              <div className="bracket ">
+                Match 2<br />
+                Completed : {match.match2.completed ? " YES" : " NO"}
                 <br />
+                Winning Team :{" "}
+                {match.match2.winningTeam == undefined
+                  ? "None"
+                  : match.match2.winningTeam.teamName}
+                <br />
+                Losing Team :{" "}
+                {match.match2.losingTeam === undefined
+                  ? "None"
+                  : match.match2.losingTeam.teamName}
+                <br />
+                <div>
+                  Winning Player :{" "}
+                  {match.match2.winningPlayer === undefined
+                    ? "None"
+                    : match.match2.winningPlayer.name}{" "}
+                  <br />
+                  Games Won : {match.match2.winnerGamesPlayed}
+                  <br />
+                  Losing Player :{" "}
+                  {match.match2.losingPlayer === undefined
+                    ? "None"
+                    : match.match2.losingPlayer.name}{" "}
+                  <br />
+                  Games Won : {match.match2.loserGamesPlayed}
+                  <br />
+                </div>
+              </div>
+              <div className="bracket ">
+                Match 3<br />
+                Completed : {match.match3.completed ? " YES" : " NO"}
+                <br />
+                Winning Team :{" "}
+                {match.match3.winningTeam == undefined
+                  ? "None"
+                  : match.match3.winningTeam.teamName}
+                <br />
+                Losing Team :{" "}
+                {match.match3.losingTeam === undefined
+                  ? "None"
+                  : match.match3.losingTeam.teamName}
+                <br />
+                <div>
+                  Winning Player :{" "}
+                  {match.match3.winningPlayer === undefined
+                    ? "None"
+                    : match.match3.winningPlayer.name}{" "}
+                  <br />
+                  Games Won : {match.match3.winnerGamesPlayed}
+                  <br />
+                  Losing Player :{" "}
+                  {match.match3.losingPlayer === undefined
+                    ? "None"
+                    : match.match3.losingPlayer.name}{" "}
+                  <br />
+                  Games Won : {match.match3.loserGamesPlayed}
+                  <br />
+                </div>
               </div>
             </div>
-            <div className="bracket ">
-              Match 2<br />
-              Completed : {match.match2.completed ? " YES" : " NO"}
-              <br />
-              Winning Team :{" "}
-              {match.match2.winningTeam == undefined
-                ? "None"
-                : match.match2.winningTeam.teamName}
-              <br />
-              Losing Team :{" "}
-              {match.match2.losingTeam === undefined
-                ? "None"
-                : match.match2.losingTeam.teamName}
-              <br />
-              <div>
-                Winning Player :{" "}
-                {match.match2.winningPlayer === undefined
-                  ? "None"
-                  : match.match2.winningPlayer.name}{" "}
-                <br />
-                Games Won : {match.match2.winnerGamesPlayed}
-                <br />
-                Losing Player :{" "}
-                {match.match2.losingPlayer === undefined
-                  ? "None"
-                  : match.match2.losingPlayer.name}{" "}
-                <br />
-                Games Won : {match.match2.loserGamesPlayed}
-                <br />
-              </div>
-            </div>
-            <div className="bracket ">
-              Match 3<br />
-              Completed : {match.match3.completed ? " YES" : " NO"}
-              <br />
-              Winning Team :{" "}
-              {match.match3.winningTeam == undefined
-                ? "None"
-                : match.match3.winningTeam.teamName}
-              <br />
-              Losing Team :{" "}
-              {match.match3.losingTeam === undefined
-                ? "None"
-                : match.match3.losingTeam.teamName}
-              <br />
-              <div>
-                Winning Player :{" "}
-                {match.match3.winningPlayer === undefined
-                  ? "None"
-                  : match.match3.winningPlayer.name}{" "}
-                <br />
-                Games Won : {match.match3.winnerGamesPlayed}
-                <br />
-                Losing Player :{" "}
-                {match.match3.losingPlayer === undefined
-                  ? "None"
-                  : match.match3.losingPlayer.name}{" "}
-                <br />
-                Games Won : {match.match3.loserGamesPlayed}
-                <br />
-              </div>
-            </div>
-          </div>
-          Submitted By : {match.submittedBy}
-        </li>
-      ))}
+            Submitted By : {match.submittedBy}
+          </li>
+        ))
+      ) : (
+        <div className="center">
+          <h1>All Matches have been Approved</h1>
+        </div>
+      )}
     </>
   )
 }

@@ -1,8 +1,7 @@
 const MatchHandler = ({ match1, match2, match3, handleSetPlayers, color, completeMatch }) => {
-  console.log(completeMatch);
+
   return (
     <>
-      
       <div className="column $$$">
         <div className="column">
           {match1 === null && (
