@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { confetti } from "../../services/confetti"
+
 
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 
@@ -96,13 +96,12 @@ const SingleMatch = (props) => {
       }
     }
   }
-
+  console.log(props.fireConfetti);
   const handleWinner = async (winner) => {
     await setGameWinner(winner)
     await findLoser(winner)
     findWinningTeamByPlayerId(props.matchId, winner._id)
     disableCheckboxes()
-    confetti.start(1000)
   }
 
   const findLosingTeamByPlayerId = async (data, playerId) => {

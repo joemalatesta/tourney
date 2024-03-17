@@ -5,10 +5,9 @@ import MatchView from "../../pages/MatchView/MatchView"
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
 import MatchHandler from "../../components/MatchHandler/MatchHandler"
 
-import * as triMatchService from '../../services/triMatchService'
+import * as triMatchService from "../../services/triMatchService"
 
 const Match = (props) => {
-  console.log(props);
   const [team1, setTeam1] = useState(null)
   const [team2, setTeam2] = useState(null)
   const [player1, setPlayer1] = useState(null)
@@ -25,7 +24,7 @@ const Match = (props) => {
     match1: "",
     match2: "",
     match3: "",
-    submittedBy: `${props.profile.firstName} ${props.profile.lastName}`
+    submittedBy: `${props.profile.firstName} ${props.profile.lastName}`,
   })
 
   useEffect(() => {
@@ -55,9 +54,6 @@ const Match = (props) => {
     }
   }
 
-  console.log(team1)
-  console.log(team2)
-
   const handleSetPlayers = async () => {
     if (player1 !== null && player2 !== null) {
       if (match1 === null) {
@@ -78,9 +74,8 @@ const Match = (props) => {
   const finalSubmitForApprovalButton = async () => {
     console.log(completeMatch)
     await triMatchService.create(completeMatch)
-      console.log("hi there")
+    console.log("hi there")
   }
-
 
   let color = player1 == null || player2 == null ? "red" : "green"
 
@@ -108,8 +103,7 @@ const Match = (props) => {
             />
           </div>
         </div>
-    
-   
+
         <MatchHandler
           match1={match1}
           match2={match2}
@@ -129,14 +123,17 @@ const Match = (props) => {
           </div>
         </div>
       </div>
-      { showButton === true && 
-        <button onClick={ finalSubmitForApprovalButton }>Approve the Match</button>
-      }
+      {showButton === true && (
+        <button onClick={finalSubmitForApprovalButton}>
+          Approve the Match
+        </button>
+      )}
       {match3 !== null && (
         <>
           {}
           <h1>Match 3</h1>
           <MatchView
+            fire={props.fire}
             setShowButton={setShowButton}
             match1={match1}
             match2={match2}
@@ -155,10 +152,11 @@ const Match = (props) => {
         <>
           <h1>Match 2</h1>
           <MatchView
-               match1={match1}
-               match2={match2}
-               match3={match3}
-               showButton={showButton}
+            fire={props.fire}
+            match1={match1}
+            match2={match2}
+            match3={match3}
+            showButton={showButton}
             setCompleteMatch={setCompleteMatch}
             completeMatch={completeMatch}
             matchNumber={2}
@@ -172,10 +170,10 @@ const Match = (props) => {
         <>
           <h1>Match 1</h1>
           <MatchView
-             match1={match1}
-             match2={match2}
-             match3={match3}
-             showButton={showButton}
+            match1={match1}
+            match2={match2}
+            match3={match3}
+            showButton={showButton}
             setCompleteMatch={setCompleteMatch}
             completeMatch={completeMatch}
             matchNumber={1}

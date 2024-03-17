@@ -148,6 +148,8 @@ function App() {
     })
   }
 
+
+
   const fetchScheduledDates = async () => {
     const data = await scheduleService.index()
     setScheduleDates(data)
