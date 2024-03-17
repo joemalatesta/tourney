@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 
-
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 
 import * as gameService from "../../services/gameService"
@@ -96,7 +95,7 @@ const SingleMatch = (props) => {
       }
     }
   }
-  console.log(props.fireConfetti);
+
   const handleWinner = async (winner) => {
     await setGameWinner(winner)
     await findLoser(winner)
@@ -149,7 +148,7 @@ const SingleMatch = (props) => {
 
     return { winnerGamesWon, loserGamesWon }
   }
-  
+
   const handleSaveMatch = async () => {
     try {
       const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
@@ -166,37 +165,35 @@ const SingleMatch = (props) => {
       }
 
       if (props.number === 1) {
-        console.log('props #1');
-        props.setCompleteMatch(prevCompleteMatch => ({
+        props.setCompleteMatch((prevCompleteMatch) => ({
           ...prevCompleteMatch,
-          match1: gameData
-        }));
+          match1: gameData,
+        }))
       }
       if (props.number === 2) {
-        console.log('props #2');
-
-        props.setCompleteMatch(prevCompleteMatch => ({
+        props.setCompleteMatch((prevCompleteMatch) => ({
           ...prevCompleteMatch,
-          match2: gameData
-        }));
+          match2: gameData,
+        }))
       }
       if (props.number === 3) {
-        console.log('props #3');
-
-        props.setCompleteMatch(prevCompleteMatch => ({
+        props.setCompleteMatch((prevCompleteMatch) => ({
           ...prevCompleteMatch,
-          match3: gameData
-        }));
+          match3: gameData,
+        }))
       }
-      if (props.match1 !== null && props.match2 !== null && props.match3 !== null) props.setShowButton(!props.showButton)
+      if (
+        props.match1 !== null &&
+        props.match2 !== null &&
+        props.match3 !== null
+      )
+        props.setShowButton(!props.showButton)
       setIsSubmitted(!isSubmitted)
       console.log("Match saved successfully!")
     } catch (error) {
       console.error("Error saving match:", error)
     }
   }
-  
-
 
   return (
     <>

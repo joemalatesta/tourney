@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom"
 
-const ViewScheduleDate = ({ match, setViewMatch, setMatchId}) => {
+const ViewScheduleDate = ({ match, setViewMatch, setMatchId }) => {
   const navigate = useNavigate()
-  
+
   const handleViewMatch = (currentMatch) => {
     setViewMatch(currentMatch)
     setMatchId(match)

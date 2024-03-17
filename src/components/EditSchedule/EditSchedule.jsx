@@ -36,15 +36,15 @@ const EditSchedule = ({ handleDeleteSchedule }) => {
   }
 
   const deleteDisplay = (
-        <div style={{ width: "700px" }}>
-          <p>
-            Are you sure you want to delete {dateToDelete?.name}?(This action
-            cannot be undone!)
-          </p>
-          <button onClick={confirmDeleteAction}>Yes</button>
-          <button onClick={cancelDeleteAction}>No</button>
-        </div>)
-
+    <div style={{ width: "700px" }}>
+      <p>
+        Are you sure you want to delete {dateToDelete?.name}?(This action cannot
+        be undone!)
+      </p>
+      <button onClick={confirmDeleteAction}>Yes</button>
+      <button onClick={cancelDeleteAction}>No</button>
+    </div>
+  )
 
   const handlePopUp = (date) => {
     console.log(date)
@@ -53,18 +53,22 @@ const EditSchedule = ({ handleDeleteSchedule }) => {
   return (
     <div className="bracket column center">
       <h4>Date Maintenance</h4>
-      {schedules?.length ?
+      {schedules?.length ? (
         schedules?.map((date) => (
           <li onClick={() => handlePopUp(date)} key={date._id}>
-            {date.name}  {!confirmDelete && <button onClick={() => areYouSure(date)}>Delete</button>}
-            {date?.name === dateToDelete?.name && confirmDelete &&
-                deleteDisplay}
+            {date.name}{" "}
+            {!confirmDelete && (
+              <button onClick={() => areYouSure(date)}>Delete</button>
+            )}
+            {date?.name === dateToDelete?.name &&
+              confirmDelete &&
+              deleteDisplay}
           </li>
         ))
-    :  
-    <h1>No dates to display</h1>
-    }
-    <br/>
+      ) : (
+        <h1>No dates to display</h1>
+      )}
+      <br />
     </div>
   )
 }

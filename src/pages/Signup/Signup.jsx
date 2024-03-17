@@ -10,10 +10,10 @@ const Signup = ({ handleAuthEvt }) => {
   const [message, setMessage] = useState("")
   const [formData, setFormData] = useState({
     name: `${Math.random()}`,
-    firstName: '',
-    lastName: '',
+    firstName: "",
+    lastName: "",
     email: "",
-    email2: '',
+    email2: "",
     password: "",
     passwordConf: "",
   })
@@ -42,7 +42,8 @@ const Signup = ({ handleAuthEvt }) => {
     }
   }
 
-  const { name, firstName, lastName, email, email2, password, passwordConf } = formData
+  const { name, firstName, lastName, email, email2, password, passwordConf } =
+    formData
 
   const isFormInvalid = () => {
     return !(name && email && email2 && password && password === passwordConf)

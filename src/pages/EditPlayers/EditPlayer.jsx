@@ -92,49 +92,49 @@
 
 // export default EditPlayer
 
-import { useState, useRef, useEffect } from "react";
-import AllPlayers from "../../components/players/AllPlayers";
-import * as styles from "./EditPlayers.module.css";
+import { useState, useRef, useEffect } from "react"
+import AllPlayers from "../../components/players/AllPlayers"
+import * as styles from "./EditPlayers.module.css"
 
 const EditPlayer = (props) => {
-  const formElement = useRef();
-  const playerNameInput = useRef(); // Ref for the player name input field
-  const [validForm, setValidForm] = useState(false);
-  const [title, setTitle] = useState("Add Players");
+  const formElement = useRef()
+  const playerNameInput = useRef() // Ref for the player name input field
+  const [validForm, setValidForm] = useState(false)
+  const [title, setTitle] = useState("Add Players")
   const [formData, setFormData] = useState({
     name: "",
     rank: 0,
     matchesPlayed: 0,
-  });
+  })
 
   const handleChange = (evt) => {
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-  };
+    setFormData({ ...formData, [evt.target.name]: evt.target.value })
+  }
 
   useEffect(() => {
     formElement.current.checkValidity()
       ? setValidForm(true)
-      : setValidForm(false);
-  }, [formData]);
+      : setValidForm(false)
+  }, [formData])
 
   const handleSubmit = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
     if (title === "Add Players") {
-      props.handleAddPlayer(formData);
-      setFormData({ name: "", rank: 0, matchesPlayed: 0 });
+      props.handleAddPlayer(formData)
+      setFormData({ name: "", rank: 0, matchesPlayed: 0 })
       // Set focus on the player name input field
-      playerNameInput.current.focus();
+      playerNameInput.current.focus()
     }
     if (title === "Edit Player") {
-      props.handleEditPlayer(formData);
-      setFormData({ name: "", rank: 0, matchesPlayed: 0 });
-      setTitle("Add Players");
+      props.handleEditPlayer(formData)
+      setFormData({ name: "", rank: 0, matchesPlayed: 0 })
+      setTitle("Add Players")
     }
-  };
+  }
 
   const changeTitle = () => {
-    setTitle("Edit Player");
-  };
+    setTitle("Edit Player")
+  }
 
   return (
     <div className={`${styles.bracket} ${styles.greenFelt}`}>
@@ -147,7 +147,9 @@ const EditPlayer = (props) => {
         onSubmit={handleSubmit}
       >
         <div className={styles.center}>
-          <label className={styles.center}>Players Name (unique required)</label>
+          <label className={styles.center}>
+            Players Name (unique required)
+          </label>
           <input
             className={styles.center}
             type="text"
@@ -183,7 +185,7 @@ const EditPlayer = (props) => {
       />
       <p>{props.players.length} players</p>
     </div>
-  );
-};
+  )
+}
 
-export default EditPlayer;
+export default EditPlayer

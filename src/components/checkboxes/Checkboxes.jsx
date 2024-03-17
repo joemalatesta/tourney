@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react"
 
-const Checkboxes = ({
-  player,
-  profile,
-  handleWinner,
-  handleWonGame
-}) => {
+const Checkboxes = ({ player, profile, handleWinner, handleWonGame }) => {
   const [checkboxes, setCheckboxes] = useState([])
   const [checkedCheckboxes, setCheckedCheckboxes] = useState([])
   const [isDisabled, setIsDisabled] = useState(false)
@@ -14,11 +9,12 @@ const Checkboxes = ({
   }, [player.games])
 
   useEffect(() => {
-    const checkCheckboxes = () =>{
-      if (checkedCheckboxes.every((el) => el === true)) setIsDisabled(!isDisabled)
+    const checkCheckboxes = () => {
+      if (checkedCheckboxes.every((el) => el === true))
+        setIsDisabled(!isDisabled)
     }
     checkCheckboxes()
-  }, [checkedCheckboxes]);
+  }, [checkedCheckboxes])
 
   useEffect(() => {
     const getCheckboxes = () => {
@@ -44,15 +40,14 @@ const Checkboxes = ({
   const handleCheckboxChange = (index) => {
     setCheckedCheckboxes((prevCheckboxes) =>
       prevCheckboxes.map((checkbox, i) => (i === index ? !checkbox : checkbox))
-    );
-  
-  
+    )
+
     setCheckedCheckboxes((updatedCheckboxes) => {
-      const number = updatedCheckboxes.filter((el) => el === true).length;
-      handleWonGame(player, number);
-      return updatedCheckboxes; 
-    });
-  };
+      const number = updatedCheckboxes.filter((el) => el === true).length
+      handleWonGame(player, number)
+      return updatedCheckboxes
+    })
+  }
 
   return (
     <>

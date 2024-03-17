@@ -10,8 +10,7 @@ const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer }) => {
   // .sort((a, b) => a.name.localeCompare(b.name))
 
   // sorted by rank
-  const sortedPlayers = playerInfo?.sort((a,b)=> b.rank - a.rank)
-
+  const sortedPlayers = playerInfo?.sort((a, b) => b.rank - a.rank)
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -32,22 +31,32 @@ const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer }) => {
   return (
     <div className="green-felt margin">
       <h3>Players</h3>
-      {sortedPlayers?.map((player) => 
-        <div onClick={() => handleChoosePlayer(player, title)} key={player?._id}>
+      {sortedPlayers?.map((player) => (
+        <div
+          onClick={() => handleChoosePlayer(player, title)}
+          key={player?._id}
+        >
           <div>
             <span
-              style={matchPlayer?._id === player?._id ? { color: "yellow" } : {}}
-            >{matchPlayer?._id === player?._id ? 
-              <h2>{player?.name} ({player?.rank})</h2>
-              :
-              <p>{player?.name} ({player?.rank})</p>
-            }
+              style={
+                matchPlayer?._id === player?._id ? { color: "yellow" } : {}
+              }
+            >
+              {matchPlayer?._id === player?._id ? (
+                <h2>
+                  {player?.name} ({player?.rank})
+                </h2>
+              ) : (
+                <p>
+                  {player?.name} ({player?.rank})
+                </p>
+              )}
             </span>
-            
+
             {player?._id == team?.teamCaptain ? "** Captain **" : ""}
           </div>
         </div>
-      )}
+      ))}
     </div>
   )
 }

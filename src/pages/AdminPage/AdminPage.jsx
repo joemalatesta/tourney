@@ -5,7 +5,7 @@ import AdminCreate from "../../components/Create/AdminCreate"
 import Approvals from "../../components/Approvals/UserApprovals"
 import EditSchedule from "../../components/EditSchedule/EditSchedule"
 
-import * as playerService from '../../services/playerService'
+import * as playerService from "../../services/playerService"
 
 const AdminPage = ({
   players,
@@ -24,23 +24,23 @@ const AdminPage = ({
     for (const player of players) {
       if (player && player._id) {
         try {
-          const data = {...player,
-            matchLoss : 0,
-            matchWin : 0,
-            matchesPlayed : 0
+          const data = {
+            ...player,
+            matchLoss: 0,
+            matchWin: 0,
+            matchesPlayed: 0,
           }
           await playerService.update(data)
-          console.log(`Player ${player.id} updated successfully.`);
+          console.log(`Player ${player.id} updated successfully.`)
         } catch (error) {
-          console.error(`Error updating player ${player.id}:`, error);
+          console.error(`Error updating player ${player.id}:`, error)
         }
       } else {
-        console.error("Invalid player object:", player);
+        console.error("Invalid player object:", player)
       }
     }
-    console.log("Players reset:", players);
-  };
-  
+    console.log("Players reset:", players)
+  }
 
   return (
     <>
@@ -84,19 +84,19 @@ const AdminPage = ({
       />
       <br />
       <div className="bracket center column">
-          <h1 className="center">DANGER ZONE</h1>
+        <h1 className="center">DANGER ZONE</h1>
         <div>
-      <EditSchedule
-        handleDeleteSchedule={handleDeleteSchedule}
-        profile={profile}
-      />
+          <EditSchedule
+            handleDeleteSchedule={handleDeleteSchedule}
+            profile={profile}
+          />
         </div>
         <br />
         <div>
           <p className="bracket">
             To reset all players league stats back to 0. (games played, wins,
-            loss) (rank will remain!) Press this button 
-            <button onClick={()=> resetPlayerStats() } >ARE YOU SURE?</button>
+            loss) (rank will remain!) Press this button
+            <button onClick={() => resetPlayerStats()}>ARE YOU SURE?</button>
           </p>
         </div>
       </div>

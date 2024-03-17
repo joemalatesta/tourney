@@ -1,7 +1,6 @@
 import SingleMatch from "../../components/SingleMatch/SingleMatch"
 
 const MatchView = (props) => {
-  console.log(props);
   return (
     <>
       <SingleMatch

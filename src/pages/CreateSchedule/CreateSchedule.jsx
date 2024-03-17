@@ -29,7 +29,8 @@ const CreateSchedule = (props) => {
     if (visitor === null && homeTeam !== null) {
       setVisitor(team)
     }
-    if(homeTeam === null || visitor=== null) setAdjustedTeams(adjustedTeams.filter((el) => el._id !== team._id))
+    if (homeTeam === null || visitor === null)
+      setAdjustedTeams(adjustedTeams.filter((el) => el._id !== team._id))
   }
 
   const handleSubmitMatch = () => {

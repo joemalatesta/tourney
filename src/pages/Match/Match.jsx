@@ -8,6 +8,7 @@ import MatchHandler from "../../components/MatchHandler/MatchHandler"
 import * as triMatchService from "../../services/triMatchService"
 
 const Match = (props) => {
+  const [finalSubmit, setFinalSubmit] = useState(false)
   const [team1, setTeam1] = useState(null)
   const [team2, setTeam2] = useState(null)
   const [player1, setPlayer1] = useState(null)
@@ -72,9 +73,8 @@ const Match = (props) => {
   }
 
   const finalSubmitForApprovalButton = async () => {
-    console.log(completeMatch)
     await triMatchService.create(completeMatch)
-    console.log("hi there")
+    setFinalSubmit(!finalSubmit)
   }
 
   let color = player1 == null || player2 == null ? "red" : "green"
@@ -123,17 +123,27 @@ const Match = (props) => {
           </div>
         </div>
       </div>
-      {showButton === true && (
-        <button onClick={finalSubmitForApprovalButton}>
-          Approve the Match
-        </button>
+      {showButton === true && finalSubmit === false && (
+        <>
+          <div className="center">
+            <h1> Match is Complete</h1>
+            <br />
+          </div>
+
+          <div className="center">
+            <button
+              style={{ width: "100px", height: "100px" }}
+              onClick={finalSubmitForApprovalButton}
+            >
+              Approve the Match
+            </button>
+          </div>
+        </>
       )}
       {match3 !== null && (
         <>
-          {}
           <h1>Match 3</h1>
           <MatchView
-            fire={props.fire}
             setShowButton={setShowButton}
             match1={match1}
             match2={match2}
@@ -152,7 +162,6 @@ const Match = (props) => {
         <>
           <h1>Match 2</h1>
           <MatchView
-            fire={props.fire}
             match1={match1}
             match2={match2}
             match3={match3}

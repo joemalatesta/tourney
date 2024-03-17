@@ -47,7 +47,7 @@ let lastFrameTime = Date.now()
 let particles = []
 let waveAngle = 0
 let context = null
-console.log(animationTimer)
+
 function resetParticle(particle, width, height) {
   particle.color =
     colors[(Math.random() * colors.length) | 0] + (confetti.alpha + ")")
@@ -180,7 +180,7 @@ function isConfettiRunning() {
 function drawParticles(context) {
   let particle
   let x, y
-  context.font = "16px Arial" 
+  context.font = "16px Arial"
   context.textAlign = "center"
 
   for (let i = 0; i < particles.length; i++) {

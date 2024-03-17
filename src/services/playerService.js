@@ -26,7 +26,7 @@ async function create(player) {
 // }
 
 async function update(player) {
-  const playerId = player._id || player.id;  // Use _id if available, fallback to id
+  const playerId = player._id || player.id // Use _id if available, fallback to id
   const res = await fetch(`${BASE_URL}/${playerId}`, {
     method: "PUT",
     headers: {
@@ -34,8 +34,8 @@ async function update(player) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(player),
-  });
-  return res.json();
+  })
+  return res.json()
 }
 
 async function index() {

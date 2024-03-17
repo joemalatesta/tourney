@@ -43,23 +43,41 @@ const ViewTeam = (props) => {
                 <br />
                 Rank : {player.rank} <br />
                 Matches Played : {player.matchesPlayed} <br />
-                Win % : {player?.matchWin == 0 ? "No Matches Won" : `${(player?.matchWin/(player?.matchesPlayed)).toFixed(2)*100} %` }<br/>
-                Wins: {player.matchWin}<br />
-                Loss: {player.matchLoss}<br />
+                Win % :{" "}
+                {player?.matchWin == 0
+                  ? "No Matches Won"
+                  : `${
+                      (player?.matchWin / player?.matchesPlayed).toFixed(2) *
+                      100
+                    } %`}
+                <br />
+                Wins: {player.matchWin}
+                <br />
+                Loss: {player.matchLoss}
+                <br />
               </p>
             )
-            )}
+        )}
         {sortedPlayers?.map(
           (player) =>
-          player?.name !== props.team.teamCaptain && (
-            <p key={player?._id}>
+            player?.name !== props.team.teamCaptain && (
+              <p key={player?._id}>
                 Name : {player?.name}
                 <br />
                 Rank : {player?.rank} <br />
                 Matches Played : {player?.matchesPlayed} <br />
-                Win % : {player?.matchWin == 0 ? "No Matches Won" : `${(player?.matchWin/(player?.matchesPlayed)).toFixed(2) * 100 }%` }<br/>
-                Wins: {player.matchWin}<br />
-                Loss: {player.matchLoss}<br />
+                Win % :{" "}
+                {player?.matchWin == 0
+                  ? "No Matches Won"
+                  : `${
+                      (player?.matchWin / player?.matchesPlayed).toFixed(2) *
+                      100
+                    }%`}
+                <br />
+                Wins: {player.matchWin}
+                <br />
+                Loss: {player.matchLoss}
+                <br />
               </p>
             )
         )}

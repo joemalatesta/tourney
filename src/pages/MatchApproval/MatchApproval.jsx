@@ -22,7 +22,7 @@ const MatchApproval = () => {
   }, [])
 
   let data = playedData.map((match) => [match])
-  console.log(data)
+
   data = data.reduce((acc, currentItem, index, arr) => {
     for (let i = index + 1; i < arr.length; i++) {
       const comparedItem = arr[i]
@@ -56,9 +56,6 @@ const MatchApproval = () => {
 // console.log(compareObjects(obj1, obj2, propertiesToCompare)); // Output: true
 // console.log(compareObjects(obj1, obj3, propertiesToCompare));
 
-  
-
-  console.log(data)
   return (
     <>
       {playedData?.map((match) => (

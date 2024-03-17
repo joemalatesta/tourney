@@ -22,12 +22,12 @@ const Profiles = () => {
   }
 
   const grabAccessLevel = (lvl) => {
-    if(lvl === 90) return "Admin"
-    if(lvl === 70) return "Validator"
-    if(lvl === 50) return "Team Captain"
-    if(lvl === 40) return "Assist Captain"
-    if(lvl === 30) return "Player"
-    if(lvl === 10) return "Not Approved"
+    if (lvl === 90) return "Admin"
+    if (lvl === 70) return "Validator"
+    if (lvl === 50) return "Team Captain"
+    if (lvl === 40) return "Assist Captain"
+    if (lvl === 30) return "Player"
+    if (lvl === 10) return "Not Approved"
   }
 
   return (
@@ -35,7 +35,10 @@ const Profiles = () => {
       <h1>List Of Users</h1>
       {profiles.map((profile) => (
         <div className="bracket" key={profile._id}>
-          <h3>Name: {profile.firstName} {profile.lastName} || Email: {profile.email2} || {grabAccessLevel(profile.accessLevel)} </h3>
+          <h3>
+            Name: {profile.firstName} {profile.lastName} || Email:{" "}
+            {profile.email2} || {grabAccessLevel(profile.accessLevel)}{" "}
+          </h3>
         </div>
       ))}
     </main>

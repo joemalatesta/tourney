@@ -21,7 +21,7 @@ const ViewTeams = ({ setTeam, teams, setTeams }) => {
     await setTeam(team)
     navigate("/view-team")
   }
-  console.log(teams)
+
   return (
     <div className={`${styles.center} ${styles.bracket}`}>
       <h1>Teams</h1>

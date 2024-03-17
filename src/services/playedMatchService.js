@@ -38,9 +38,8 @@ async function findOne(id) {
   if (id === undefined || id === null) return
   try {
     const res = await fetch(BASE_URL + `/${id}`)
-      .populate("winningPlayer") 
+      .populate("winningPlayer")
       .exec()
-
 
     return res.json()
   } catch (err) {

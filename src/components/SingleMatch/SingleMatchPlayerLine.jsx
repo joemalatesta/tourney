@@ -11,7 +11,7 @@ const SingleMatchPlayerLine = ({
   gameWinner,
   handleWonGame,
   handleSaveMatch,
-  isSubmitted
+  isSubmitted,
 }) => {
   if (player?.value === "undefined") {
     player = {
@@ -23,7 +23,6 @@ const SingleMatchPlayerLine = ({
 
   const defineWinner = (winner) => {
     disableCheckboxes()
-    console.log(winner)
   }
   return (
     <div className="flex" style={{ alignItems: "center" }}>
@@ -44,14 +43,16 @@ const SingleMatchPlayerLine = ({
                 ) : (
                   <>Awaiting Player</>
                 )}
-                {gameWinner?._id === player?._id && isSubmitted === false &&(
+                {gameWinner?._id === player?._id && isSubmitted === false && (
                   <>
                     <button onClick={handleSaveMatch}>Validate Match</button>
                   </>
                 )}
-                   {gameWinner?._id === player?._id &&(
+                {gameWinner?._id === player?._id && (
                   <>
-                    <h1 style={{color:'cornflowerblue'}} className="center">Winner</h1>
+                    <h1 style={{ color: "cornflowerblue" }} className="center">
+                      Winner
+                    </h1>
                   </>
                 )}
 

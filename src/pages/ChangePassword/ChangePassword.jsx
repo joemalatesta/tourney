@@ -44,37 +44,37 @@ const ChangePassword = ({ handleAuthEvt }) => {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
-        <div className=''>
+        <div className="">
           <label>
             <input
               type="password"
               value={password}
               name="password"
               onChange={handleChange}
-              />
-              Current Password
+            />
+            Current Password
           </label>
-          <br/>
+          <br />
           <label>
             <input
               type="password"
               value={newPassword}
               name="newPassword"
               onChange={handleChange}
-              />
-              New Password
+            />
+            New Password
           </label>
-          <br/>
+          <br />
           <label>
             <input
               type="password"
               value={newPasswordConf}
               name="newPasswordConf"
               onChange={handleChange}
-              />
-              Confirm New Password
+            />
+            Confirm New Password
           </label>
-          <br/>
+          <br />
           <button disabled={isFormInvalid()}>Change Password</button>
           <Link to="/">Cancel</Link>
         </div>
