@@ -86,9 +86,11 @@ const Match = (props) => {
 
         <p className="center">Pick players here for match play.</p>
         <p className="center">
-          Then press center button to confirm names then a second time to view
-          match race
+          Press the green center button to confirm names scroll down to view the match.<br/>
         </p>
+          <p className="center">After you validate the match you can choose your next match players.</p>
+          <p className="center">When all 3 matches have been played press the final  </p>  
+          <p className="center">match complete the match and submit your scores.</p>
       </div>
 
       <div className="row center space-around">
@@ -105,6 +107,7 @@ const Match = (props) => {
         </div>
 
         <MatchHandler
+          completeMatch={completeMatch}
           match1={match1}
           match2={match2}
           match3={match3}
