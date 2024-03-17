@@ -55,7 +55,7 @@ const MatchHandler = ({
             <div
               className="bracket column"
             >
-              {match1?.map((player) => (
+              {match2?.map((player) => (
                 <li key={player._id}>{player.name}</li>
               ))}
             </div>
@@ -64,7 +64,7 @@ const MatchHandler = ({
             <div
               className="bracket column"
             >
-              {match1?.map((player) => (
+              {match3?.map((player) => (
                 <li key={player._id}>{player.name}</li>
               ))}
             </div>

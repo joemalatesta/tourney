@@ -48,15 +48,15 @@ const AdminPage = ({
         <NavLink className="bracket" to="/view-schedule">
           Schedule
         </NavLink>
-        <NavLink className="bracket" to="/season-match">
+        {/* <NavLink className="bracket" to="/season-match">
           Match
-        </NavLink>
+        </NavLink> */}
         <NavLink className="bracket" to="/view-teams">
           View Teams
         </NavLink>
-        <NavLink className="bracket" to="/view-tournaments">
+        {/* <NavLink className="bracket" to="/view-tournaments">
           View Tournaments
-        </NavLink>
+        </NavLink> */}
         <NavLink className="bracket" to="/player-management">
           Player Management
         </NavLink>
