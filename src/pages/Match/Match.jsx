@@ -8,6 +8,7 @@ import MatchHandler from "../../components/MatchHandler/MatchHandler"
 import * as triMatchService from '../../services/triMatchService'
 
 const Match = (props) => {
+  console.log(props);
   const [team1, setTeam1] = useState(null)
   const [team2, setTeam2] = useState(null)
   const [player1, setPlayer1] = useState(null)
@@ -24,6 +25,7 @@ const Match = (props) => {
     match1: "",
     match2: "",
     match3: "",
+    submittedBy: `${props.profile.firstName} ${props.profile.lastName}`
   })
 
   useEffect(() => {
@@ -73,7 +75,7 @@ const Match = (props) => {
     }
   }
 
-  const showFinalSubmitForApprovalButton = async () => {
+  const finalSubmitForApprovalButton = async () => {
     console.log(completeMatch)
     await triMatchService.create(completeMatch)
       console.log("hi there")
@@ -135,7 +137,7 @@ const Match = (props) => {
         </div>
       </div>
       { showButton === true && 
-        <button onClick={showFinalSubmitForApprovalButton}>Approve the Match</button>
+        <button onClick={ finalSubmitForApprovalButton }>Approve the Match</button>
       }
       {match3 !== null && (
         <>

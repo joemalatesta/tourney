@@ -8,7 +8,7 @@ const MatchHandler = ({
 }) => {
   return (
     <>
-        <div className="center">
+        <div className="column">
           {match1 !== null && (
             <div
               className="bracket"
@@ -32,7 +32,7 @@ const MatchHandler = ({
               className="bracket"
               onClick={() => handleViewSingleMatch(match1)}
             >
-              <p style={{ color: "green" }}>Click for Match</p>
+              <p style={{ color: "green" }}></p>
               {match2?.map((player) => (
                 <li key={player._id}>{player.name}</li>
               ))}
@@ -52,7 +52,7 @@ const MatchHandler = ({
               className="bracket"
               onClick={() => handleViewSingleMatch(match1)}
             >
-              <p style={{ color: "green" }}>Click for Match</p>
+              <p style={{ color: "green" }}></p>
               {match2?.map((player) => (
                 <li key={player._id}>{player.name}</li>
               ))}

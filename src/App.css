@@ -188,6 +188,11 @@ button {
   flex-wrap: wrap;
 }
 
+.noWrap {
+  display: flex;
+  flex-wrap:nowrap;
+}
+
 .w355 {
   width: 250px;
 }
