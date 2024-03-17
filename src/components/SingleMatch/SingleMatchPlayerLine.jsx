@@ -10,7 +10,8 @@ const SingleMatchPlayerLine = ({
   seeCheckboxes,
   gameWinner,
   handleWonGame,
-  handleSaveMatch
+  handleSaveMatch,
+  isSubmitted
 }) => {
   if (player?.value === "undefined") {
     player = {
@@ -43,9 +44,13 @@ const SingleMatchPlayerLine = ({
                 ) : (
                   <>Awaiting Player</>
                 )}
-                {gameWinner?._id === player?._id && (
+                {gameWinner?._id === player?._id && isSubmitted === false &&(
                   <>
                     <button onClick={handleSaveMatch}>Validate Match</button>
+                  </>
+                )}
+                   {gameWinner?._id === player?._id &&(
+                  <>
                     <h1 style={{color:'cornflowerblue'}} className="center">Winner</h1>
                   </>
                 )}

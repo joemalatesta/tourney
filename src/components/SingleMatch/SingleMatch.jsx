@@ -7,7 +7,7 @@ import * as gameService from "../../services/gameService"
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
-
+  const [isSubmitted, setIsSubmitted] = useState(false)
   const [match] = useState(props.match)
   const [seeCheckboxes, setSeeCheckboxes] = useState(true)
   const [gamesNeeded, setGamesNeeded] = useState()
@@ -166,7 +166,6 @@ const SingleMatch = (props) => {
         matchDate: props.matchId.name,
       }
 
-      console.log(props.number);
       if (props.number === 1) {
         console.log('props #1');
         props.setCompleteMatch(prevCompleteMatch => ({
@@ -191,7 +190,7 @@ const SingleMatch = (props) => {
         }));
       }
       if (props.match1 !== null && props.match2 !== null && props.match3 !== null) props.setShowButton(!props.showButton)
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', props.completeMatch);
+      setIsSubmitted(!isSubmitted)
       console.log("Match saved successfully!")
     } catch (error) {
       console.error("Error saving match:", error)
@@ -205,6 +204,7 @@ const SingleMatch = (props) => {
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
         {updatedPlayerStateWithMatchCount?.map((player, idx) => (
           <SingleMatchPlayerLine
+            isSubmitted={isSubmitted}
             handleSaveMatch={handleSaveMatch}
             handleWonGame={handleWonGame}
             gameWinner={gameWinner}
