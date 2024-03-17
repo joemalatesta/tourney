@@ -99,7 +99,7 @@ const Match = (props) => {
       <div className="row center space-around">
         <div className="bracket">
           <h2>{team1?.teamName}</h2>
-          <div className="w355">
+          <div className="w325">
             <TeamPlayers
               matchPlayer={player1}
               title="Team 1"
@@ -108,15 +108,8 @@ const Match = (props) => {
             />
           </div>
         </div>
-        {match1 === null && (
-          <button
-            className="bracket"
-            style={{ backgroundColor: `${color}` }}
-            onClick={() => handleSetPlayers()}
-          >
-            {color === "red" ? "Choose Players For Match" : "Match 1"}
-          </button>
-        )}
+    
+   
         <MatchHandler
           match1={match1}
           match2={match2}
@@ -126,7 +119,7 @@ const Match = (props) => {
         />
         <div className="bracket">
           <h2>{team2?.teamName}</h2>
-          <div className="w225">
+          <div className="w325">
             <TeamPlayers
               matchPlayer={player2}
               title="Team 2"
