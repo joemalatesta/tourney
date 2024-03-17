@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
-// import * as playerService from "../../services/playerService"
+import * as playerService from "../../services/playerService"
 import * as triMatchService from "../../services/triMatchService"
 
 const MatchApproval = () => {
   const [playedData, setPlayedData] = useState([])
+  const [homeWins, setHomeWins] = useState(0)
+  const [awayWins, setAwayWins] = useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,48 +23,54 @@ const MatchApproval = () => {
     fetchData()
   }, [])
 
-  const compareObjects = (obj1, obj2, propertiesToCompare) => {
-    for (let property of propertiesToCompare) {
-      if (obj1[property] !== obj2[property]) {
-        return false
-      }
+ const handleWinners = async (team, player) => {
+  try {
+    let winningTeam = { ...team, wins: parseInt(team.wins) + 1 }
+    console.log(winningTeam)
+    await handleEditTeam(winningTeam)
+
+    let winner = {
+     ...player,
+      matchesPlayed: player.matchesPlayed + 1,
+     matchWin: parseInt(player.matchWin) + 1,
+     rank: player.rank + 1,
     }
-    return true
+    await playerService.update(winner)
+   } catch (error) {
+    console.error("Error handling winners:", error)
   }
+}
 
   useEffect(() => {
-    const matchedIndices = new Set()
+    const grabTeamWins = () => {
+      let homeWinCount = 0;
+      let awayWinCount = 0;
 
-    const data = playedData.reduce((acc, currentItem, index, arr) => {
-      if (matchedIndices.has(index)) {
-        return acc
-      }
+      playedData.forEach(match => {
+        if (match.match1.winningTeam.teamName === match.homeTeam.teamName) homeWinCount++;
+        if (match.match1.winningTeam.teamName === match.visitingTeam.teamName) awayWinCount++;
 
-      const propertiesToCompare = ["homeTeam._id", "visitingTeam._id"]
+        if (match.match2.winningTeam.teamName === match.homeTeam.teamName) homeWinCount++;
+        if (match.match2.winningTeam.teamName === match.visitingTeam.teamName) awayWinCount++;
 
-      const matchingIndex = arr.findIndex(
-        (item, i) =>
-          i !== index &&
-          !matchedIndices.has(i) &&
-          compareObjects(currentItem, item, propertiesToCompare)
-      )
-      if (matchingIndex !== -1) {
-        const matchingItem = arr[matchingIndex]
-        matchedIndices.add(index)
-        matchedIndices.add(matchingIndex)
-        acc.push([currentItem, matchingItem])
-      }
-      return acc
-    }, [])
+        if (match.match3.winningTeam.teamName === match.homeTeam.teamName) homeWinCount++;
+        if (match.match3.winningTeam.teamName === match.visitingTeam.teamName) awayWinCount++;
+      });
+      setHomeWins(homeWinCount);
+      setAwayWins(awayWinCount);
+    }
 
-    console.log(data)
+    grabTeamWins();
   }, [playedData])
+
+  console.log(homeWins, awayWins);
 
   return (
     <>
       {playedData.length ? (
         playedData?.map((match) => (
           <li className="bracket" key={match._id}>
+            
             Date: {match.date}
             <br />
             Home Team : {match.homeTeam.teamName}
@@ -165,6 +173,7 @@ const MatchApproval = () => {
               </div>
             </div>
             Submitted By : {match.submittedBy}
+            <h1>Match Winner: {homeWins>awayWins?match.homeTeam.teamName : match.visitingTeam.teamName}</h1>
           </li>
         ))
       ) : (
@@ -178,58 +187,43 @@ const MatchApproval = () => {
 
 export default MatchApproval
 
-// // const handleLosers = async (team, player) => {
-// //   try {
-// //     let losingTeam = { ...team, loss: parseInt(team.loss) + 1 }
-// //     console.log("This is the losing team", losingTeam)
-// //     await handleEditTeam(losingTeam)
 
-// //     let loser = {
-// //       ...player,
-// //       matchesPlayed: player.matchesPlayed + 1,
-// //       matchLoss: parseInt(player.matchLoss) + 1,
-// //       rank: player.rank - 1,
-// //     }
-// //     await playerService.update(loser)
-// //   } catch (error) {
-// //     console.error("Error handling losers:", error)
-// //   }
-// // }
+// // // const handleLosers = async (team, player) => {
+// // //   try {
+// // //     let losingTeam = { ...team, loss: parseInt(team.loss) + 1 }
+// // //     console.log("This is the losing team", losingTeam)
+// // //     await handleEditTeam(losingTeam)
 
-// // const handleWinners = async (team, player) => {
-// //   try {
-// //     let winningTeam = { ...team, wins: parseInt(team.wins) + 1 }
-// //     console.log(winningTeam)
-// //     await handleEditTeam(winningTeam)
+// // //     let loser = {
+// // //       ...player,
+// // //       matchesPlayed: player.matchesPlayed + 1,
+// // //       matchLoss: parseInt(player.matchLoss) + 1,
+// // //       rank: player.rank - 1,
+// // //     }
+// // //     await playerService.update(loser)
+// // //   } catch (error) {
+// // //     console.error("Error handling losers:", error)
+// // //   }
+// // // }
 
-// //     let winner = {
-// //       ...player,
-// //       matchesPlayed: player.matchesPlayed + 1,
-// //       matchWin: parseInt(player.matchWin) + 1,
-// //       rank: player.rank + 1,
-// //     }
-// //     await playerService.update(winner)
-// //   } catch (error) {
-// //     console.error("Error handling winners:", error)
-// //   }
-// // }
 
-// // const handleConfirmMatch = async (matchIndex) => {
-// //   try {
-// //     const match = playedData[matchIndex]
-// //     setPlayedData((prevMatches) => {
-// //       const updatedMatches = [...prevMatches]
-// //       updatedMatches[matchIndex] = {
-// //         ...updatedMatches[matchIndex],
-// //         isDisabled: true,
-// //         confirmed: true
-// //       }
-// //       return updatedMatches
-// //     })
-// //     await playedMatchService.update(playedData)
-// //     await handleWinners(match.winningTeam, match.winningPlayer)
-// //     await handleLosers(match.losingTeam, match.losingPlayer)
-// //   } catch (error) {
-// //     console.error("Error confirming match:", error)
-// //   }
-// // }
+
+// // // const handleConfirmMatch = async (matchIndex) => {
+// // //   try {
+// // //     const match = playedData[matchIndex]
+// // //     setPlayedData((prevMatches) => {
+// // //       const updatedMatches = [...prevMatches]
+// // //       updatedMatches[matchIndex] = {
+// // //         ...updatedMatches[matchIndex],
+// // //         isDisabled: true,
+// // //         confirmed: true
+// // //       }
+// // //       return updatedMatches
+// // //     })
+// // //     await playedMatchService.update(playedData)
+// // //     await handleWinners(match.winningTeam, match.winningPlayer)
+// // //     await handleLosers(match.losingTeam, match.losingPlayer)
+// // //   } catch (error) {
+// // //     console.error("Error confirming match:", error)
+// // //   }
+// // // }

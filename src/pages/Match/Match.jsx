@@ -25,6 +25,7 @@ const Match = (props) => {
     match1: "",
     match2: "",
     match3: "",
+    isSubmitted: '',
     submittedBy: `${props.profile.firstName} ${props.profile.lastName}`,
   })
 

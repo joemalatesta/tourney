@@ -21,7 +21,9 @@ const SingleMatchPlayerLine = ({
     }
   }
 
-  const defineWinner = (winner) => {
+  
+
+  const defineWinner = () => {
     disableCheckboxes()
   }
   return (
