@@ -98,7 +98,7 @@ const Match = (props) => {
 
       <div className="row center space-around">
         <div className="bracket">
-          <h1>{team1?.teamName}</h1>
+          <h2>{team1?.teamName}</h2>
           <div className="w355">
             <TeamPlayers
               matchPlayer={player1}
@@ -125,7 +125,7 @@ const Match = (props) => {
           color={color}
         />
         <div className="bracket">
-          <h1>{team2?.teamName}</h1>
+          <h2>{team2?.teamName}</h2>
           <div className="w355">
             <TeamPlayers
               matchPlayer={player2}
