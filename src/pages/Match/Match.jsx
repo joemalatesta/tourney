@@ -126,7 +126,7 @@ const Match = (props) => {
         />
         <div className="bracket">
           <h2>{team2?.teamName}</h2>
-          <div className="w355">
+          <div className="w225">
             <TeamPlayers
               matchPlayer={player2}
               title="Team 2"

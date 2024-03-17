@@ -180,7 +180,7 @@ button {
   color:white;
 }
 .w300{
-  width: 275px;
+  width: 225px;
 }
 
 .fWrap {
@@ -193,8 +193,8 @@ button {
   flex-wrap:nowrap;
 }
 
-.w355 {
-  width: 250px;
+.w225 {
+  width: 225px;
 }
 
 .margin {
