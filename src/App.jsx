@@ -41,7 +41,6 @@ function App() {
   const [players, setPlayers] = useState([])
   const [user, setUser] = useState(authService.getUser())
   const [tourneyMatch, setTourneyMatch] = useState()
-  const [scheduleDates, setScheduleDates] = useState()
   const [singleMatch, setSingleMatch] = useState()
   const [twoPlayerMatch, setTwoPlayerMatch] = useState()
   const [teams, setTeams] = useState()
@@ -51,17 +50,8 @@ function App() {
   const [profiles, setProfiles] = useState(null)
   const [matchId, setMatchId] = useState(null)
   const [matchInProgress, setMatchInProgress] = useState([])
-  const [allPlayedMatches, setAllPlayedMatches] = useState()
   const [triMatch, setTriMatch] = useState()
   
-  useEffect(() => {
-    const fetchAllPlayedMatches = async () => {
-      const data = await playedMatchService.index()
-      setAllPlayedMatches(data)
-    }
-    fetchAllPlayedMatches()
-  }, []);
-
   useEffect(() => {
     const fetchProfile = async () => {
       const data = await profileService.findOne(user?.profile)
@@ -69,14 +59,6 @@ function App() {
     }
     fetchProfile()
   }, [user])
-
-  useEffect(() => {
-    const fetchScheduledDates = async () => {
-      const data = await scheduleService.index()
-      setScheduleDates(data)
-    }
-    fetchScheduledDates()
-  }, []);
 
   useEffect(() => {
     if (user) {
@@ -148,13 +130,6 @@ function App() {
     })
   }
 
-
-
-  const fetchScheduledDates = async () => {
-    const data = await scheduleService.index()
-    setScheduleDates(data)
-  }
-
   const fetchPlayers = async () => {
     const data = await playerService.index()
     setPlayers(data)
@@ -171,19 +146,19 @@ function App() {
       setTeams((prevTeams) => {
         return prevTeams.map((team) =>
           team._id === updatedTeam._id
-            ? { ...team, wins: updatedTeam.wins, losses: updatedTeam.losses }
+            ? { ...team, wins: updatedTeam.wins , losses: updatedTeam.losses }
             : team
         )
       })
-
       console.log("Team updated successfully:", updatedTeam)
     } catch (error) {
       console.error("Error updating team:", error)
     }
-    fetchTeams()
-    fetchPlayers()
-    fetchScheduledDates()
-  }
+    
+    await fetchTeams()
+    await fetchPlayers()
+}
+
 
   const handleDeletePlayer = async (id) => {
     const deletedPlayer = await playerService.deleteOne(id)
@@ -264,6 +239,7 @@ function App() {
           element={
             <ProtectedRoute access="90" profile={profile} user={user}>
               <AdminPage
+                teams={teams}
                 handleEditTeam={handleEditTeam}
                 players={players}
                 profile={profile}
@@ -480,9 +456,6 @@ function App() {
           element={
             <ProtectedRoute access="70" profile={profile} user={user}>
               <MatchApproval
-                allPlayedMatches={allPlayedMatches}
-                scheduleDates={scheduleDates}
-                setScheduleDates={setScheduleDates}
                 handleEditTeam={handleEditTeam}
                 profile={profile}
                 teams={teams}

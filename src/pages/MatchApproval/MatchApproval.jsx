@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"
-import * as playerService from "../../services/playerService"
+// import * as playerService from "../../services/playerService"
+// import * as teamService from "../../services/teamService"
 import * as triMatchService from "../../services/triMatchService"
 
 const MatchApproval = () => {
   const [playedData, setPlayedData] = useState([])
-  const [homeWins, setHomeWins] = useState(0)
-  const [awayWins, setAwayWins] = useState(0)
+  // const [homeWins, setHomeWins] = useState()
+  // const [awayWins, setAwayWins] = useState()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,54 +24,36 @@ const MatchApproval = () => {
     fetchData()
   }, [])
 
- const handleWinners = async (team, player) => {
-  try {
-    let winningTeam = { ...team, wins: parseInt(team.wins) + 1 }
-    console.log(winningTeam)
-    await handleEditTeam(winningTeam)
+  let matchData = playedData?.map(match=>
+    match
+    )
 
-    let winner = {
-     ...player,
-      matchesPlayed: player.matchesPlayed + 1,
-     matchWin: parseInt(player.matchWin) + 1,
-     rank: player.rank + 1,
+  
+      
+    if (matchData && matchData.length > 0) {
+      const groupedArrays = matchData.reduce((groups, current) => {
+        const key = current.homeTeam.teamName; // Property to group by
+        if (!groups[key]) {
+          groups[key] = []; // Create a new array for this key if it doesn't exist
+        }
+        groups[key].push(current); // Push current item to the array corresponding to the key
+        return groups;
+      }, {});
+    
+      const result = Object.values(groupedArrays); // Convert the object of arrays into an array of arrays
+    
+      console.log('Result:', result);
+    } else {
+      console.log('matchData is empty');
     }
-    await playerService.update(winner)
-   } catch (error) {
-    console.error("Error handling winners:", error)
-  }
-}
+    
 
-  useEffect(() => {
-    const grabTeamWins = () => {
-      let homeWinCount = 0;
-      let awayWinCount = 0;
-
-      playedData.forEach(match => {
-        if (match.match1.winningTeam.teamName === match.homeTeam.teamName) homeWinCount++;
-        if (match.match1.winningTeam.teamName === match.visitingTeam.teamName) awayWinCount++;
-
-        if (match.match2.winningTeam.teamName === match.homeTeam.teamName) homeWinCount++;
-        if (match.match2.winningTeam.teamName === match.visitingTeam.teamName) awayWinCount++;
-
-        if (match.match3.winningTeam.teamName === match.homeTeam.teamName) homeWinCount++;
-        if (match.match3.winningTeam.teamName === match.visitingTeam.teamName) awayWinCount++;
-      });
-      setHomeWins(homeWinCount);
-      setAwayWins(awayWinCount);
-    }
-
-    grabTeamWins();
-  }, [playedData])
-
-  console.log(homeWins, awayWins);
 
   return (
     <>
       {playedData.length ? (
         playedData?.map((match) => (
           <li className="bracket" key={match._id}>
-            
             Date: {match.date}
             <br />
             Home Team : {match.homeTeam.teamName}
@@ -173,7 +156,15 @@ const MatchApproval = () => {
               </div>
             </div>
             Submitted By : {match.submittedBy}
-            <h1>Match Winner: {homeWins>awayWins?match.homeTeam.teamName : match.visitingTeam.teamName}</h1>
+            {/* <h1>
+              Match Winner:{" "}
+              {homeWins > awayWins
+                ? match.homeTeam.teamName
+                : match.visitingTeam.teamName}
+            </h1> */}
+            {/* <button onClick={() => handleSubmitChanges(match)}>
+              Submit Changes to Teams and Players
+            </button> */}
           </li>
         ))
       ) : (
@@ -187,43 +178,64 @@ const MatchApproval = () => {
 
 export default MatchApproval
 
+// // // // const handleConfirmMatch = async (matchIndex) => {
+// // // //   try {
+// // // //     const match = playedData[matchIndex]
+// // // //     setPlayedData((prevMatches) => {
+// // // //       const updatedMatches = [...prevMatches]
+// // // //       updatedMatches[matchIndex] = {
+// // // //         ...updatedMatches[matchIndex],
+// // // //         isDisabled: true,
+// // // //         confirmed: true
+// // // //       }
+// // // //       return updatedMatches
+// // // //     })
+// // // //     await playedMatchService.update(playedData)
+// // // //     await handleWinners(match.winningTeam, match.winningPlayer)
+// // // //     await handleLosers(match.losingTeam, match.losingPlayer)
+// // // //   } catch (error) {
+// // // //     console.error("Error confirming match:", error)
+// // // //   }
+// // // // }
 
-// // // const handleLosers = async (team, player) => {
-// // //   try {
-// // //     let losingTeam = { ...team, loss: parseInt(team.loss) + 1 }
-// // //     console.log("This is the losing team", losingTeam)
-// // //     await handleEditTeam(losingTeam)
+// const grabTeamWins = () => {
+//   let homeWinCount = 0
+//   let awayWinCount = 0
+//   playedData.forEach((match) => {
+//     if (match.match1.winningTeam.teamName === match.homeTeam.teamName)
+//       homeWinCount++
+//     if (match.match1.winningTeam.teamName === match.visitingTeam.teamName)
+//       awayWinCount++
+//     if (match.match2.winningTeam.teamName === match.homeTeam.teamName)
+//       homeWinCount++
+//     if (match.match2.winningTeam.teamName === match.visitingTeam.teamName)
+//       awayWinCount++
+//     if (match.match3.winningTeam.teamName === match.homeTeam.teamName)
+//       homeWinCount++
+//     if (match.match3.winningTeam.teamName === match.visitingTeam.teamName)
+//       awayWinCount++
+//   })
+//   setHomeWins(homeWinCount)
+//   setAwayWins(awayWinCount)
+// }
 
-// // //     let loser = {
-// // //       ...player,
-// // //       matchesPlayed: player.matchesPlayed + 1,
-// // //       matchLoss: parseInt(player.matchLoss) + 1,
-// // //       rank: player.rank - 1,
-// // //     }
-// // //     await playerService.update(loser)
-// // //   } catch (error) {
-// // //     console.error("Error handling losers:", error)
-// // //   }
-// // // }
 
+// const handleSubmitChanges = async (match) => {
+//   await grabTeamWins()
+//   console.log(match);
+//   let homeTeam = match.homeTeam
+//   let visitingTeam = match.visitingTeam
+//   let updatedHomeScores = {
+//     ...homeTeam, 
+//     wins: homeTeam.wins + homeWins, 
+//     loss: homeTeam.loss + (3 - homeWins)}
 
+//   let updatedAwayScores = {
+//     ...visitingTeam, 
+//     wins: visitingTeam.wins + awayWins, 
+//     loss: visitingTeam.loss + (3 - awayWins)}
 
-// // // const handleConfirmMatch = async (matchIndex) => {
-// // //   try {
-// // //     const match = playedData[matchIndex]
-// // //     setPlayedData((prevMatches) => {
-// // //       const updatedMatches = [...prevMatches]
-// // //       updatedMatches[matchIndex] = {
-// // //         ...updatedMatches[matchIndex],
-// // //         isDisabled: true,
-// // //         confirmed: true
-// // //       }
-// // //       return updatedMatches
-// // //     })
-// // //     await playedMatchService.update(playedData)
-// // //     await handleWinners(match.winningTeam, match.winningPlayer)
-// // //     await handleLosers(match.losingTeam, match.losingPlayer)
-// // //   } catch (error) {
-// // //     console.error("Error confirming match:", error)
-// // //   }
-// // // }
+//   console.log(updatedAwayScores, updatedHomeScores)
+//   await teamService.update(updatedAwayScores)
+//   await teamService.update(updatedHomeScores)
+// }
