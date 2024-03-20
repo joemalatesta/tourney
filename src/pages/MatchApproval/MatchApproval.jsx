@@ -1,30 +1,13 @@
-import { useState, useEffect } from "react"
 // import * as playerService from "../../services/playerService"
 // import * as teamService from "../../services/teamService"
+import { useState, useEffect } from "react"
 import * as triMatchService from "../../services/triMatchService"
 
 const MatchApproval = () => {
   const [playedData, setPlayedData] = useState([])
-  const [matchPairs, setMatchPairs] = useState()
-  let matchData = playedData?.map((match) => match)
+  const [matchPairs, setMatchPairs] = useState([])
 
-  useEffect(() => {
-    if (matchData && matchData.length > 0) {
-      const groupedArrays = matchData.reduce((groups, current) => {
-        const key = current.homeTeam.teamName
-        if (!groups[key]) {
-          groups[key] = []
-        }
-        groups[key].push(current)
-        return groups
-      }, {})
-
-      const result = Object.values(groupedArrays)
-      setMatchPairs(result)
-    } else {
-      setMatchPairs([])
-    }
-  }, [playedData])
+  console.log(playedData)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +18,20 @@ const MatchApproval = () => {
           isDisabled: false,
         }))
         setPlayedData(matchStates)
+        if (matchStates && matchStates.length > 0) {
+          const groupedArrays = matchStates.reduce((groups, current) => {
+            const key = current.date + "|" + current.homeTeam.teamName
+            if (!groups[key]) {
+              groups[key] = []
+            }
+            groups[key].push(current)
+            return groups
+          }, {})
+          const result = Object.values(groupedArrays)
+          setMatchPairs(result)
+        } else {
+          setMatchPairs([])
+        }
       } catch (error) {
         console.error("Error fetching played matches:", error)
       }
@@ -44,93 +41,219 @@ const MatchApproval = () => {
 
   return (
     <>
-      <div className="bracket">
-        {matchPairs?.map((match, idx) => (
-          <div className="bracket" key={idx}>
-            {console.log(match)}
-            <li>{match[0].date}</li>
-            Home Team : {match[0].homeTeam.teamName}<br/>
-
-            <br />
-            Visiting Team : {match[0].visitingTeam.teamName}<br/>
-
-            <div className=" row">
-              <div className="bracket ">
-                <div className="center">
-                  Match 1<br />
+      {!matchPairs?.length && <h1>No Matches to Display</h1>}
+      {matchPairs?.length && (
+        <div className="bracket">
+          {matchPairs?.map((match, idx) => (
+            <div className="bracket" key={idx}>
+              {match.length === 1 && 
+              <h2>Warning Only one Person has submitted Stats</h2>
+              }
+              <li>{match[0].date}</li>
+              Home Team : {match[0].homeTeam.teamName}
+              <br />
+              <br />
+              Visiting Team : {match[0].visitingTeam.teamName}
+              <br />
+              <div className=" row">
+                <div className="bracket ">
+                  <div className="center">
+                    Match 1<br />
+                  </div>
+                  Winner :{" "}
+                  {match[0].match1.winningPlayer.name ===
+                  match[1]?.match1.winningPlayer.name ? (
+                    <div style={{ color: "green " }}>
+                      {match[0].match1.winningPlayer.name}
+                    </div>
+                  ) : (
+                    <div style={{ color: "red" }}>
+                      {match[0].match1.winningPlayer.name}
+                      <br />
+                      OR <br />
+                      {match[1]?.match1?.winningPlayer.name} ?
+                    </div>
+                  )}
+                  <br />
+                  <div>
+                    {" "}
+                    Games Won :{" "}
+                    {match[0].match1.winnerGamesPlayed ===
+                    match[1]?.match1.winnerGamesPlayed ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match1.winnerGamesPlayed}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match1.winnerGamesPlayed} OR{" "}
+                        {match[1]?.match1?.winnerGamesPlayed} ?
+                      </div>
+                    )}
+                    Loser :{" "}
+                    {match[0].match1.losingPlayer.name ===
+                    match[1]?.match1?.losingPlayer.name ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match1.losingPlayer.name}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match1.losingPlayer.name}
+                        <br />
+                        OR <br />
+                        {match[1]?.match1.losingPlayer.name} ?
+                      </div>
+                    )}
+                  </div>
+                  <br />
+                  <div>
+                    {" "}
+                    Games Won :{" "}
+                    {match[0].match1.loserGamesPlayed ===
+                    match[1]?.match1.loserGamesPlayed ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match1.loserGamesPlayed}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match1.loserGamesPlayed} OR{" "}
+                        {match[1]?.match1.loserGamesPlayed} ?
+                      </div>
+                    )}
+                  </div>
                 </div>
-                Winner : {match[0].match1.winningPlayer.name}
-                <br />
-                <div> Games Won : {match[0].match1.winnerGamesPlayed}</div>
-                Loser : {match[0].match1.losingPlayer.name}
-                <br />
-                <div> Games Won : {match[0].match1.loserGamesPlayed}</div>
-              </div>
-              <div className="bracket">
-                <div className="center">
-                  Match 2<br />
+                <div className="bracket ">
+                  <div className="center">
+                    Match 2<br />
+                  </div>
+                  Winner :{" "}
+                  {match[0].match2.winningPlayer.name ===
+                  match[1]?.match2.winningPlayer.name ? (
+                    <div style={{ color: "green " }}>
+                      {match[0].match2.winningPlayer.name}
+                    </div>
+                  ) : (
+                    <div style={{ color: "red" }}>
+                      {match[0].match2.winningPlayer.name} <br />
+                      OR <br />
+                      {match[1]?.match2.winningPlayer.name} ?
+                    </div>
+                  )}
+                  <br />
+                  <div>
+                    {" "}
+                    Games Won :{" "}
+                    {match[0].match2.winnerGamesPlayed ===
+                    match[1]?.match2.winnerGamesPlayed ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match2.winnerGamesPlayed}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match2.winnerGamesPlayed} OR{" "}
+                        {match[1]?.match2.winnerGamesPlayed} ?
+                      </div>
+                    )}
+                    Loser :{" "}
+                    {match[0].match2.losingPlayer.name ===
+                    match[1]?.match2.losingPlayer.name ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match2.losingPlayer.name}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match2.losingPlayer.name}
+                        <br />
+                        OR
+                        <br />
+                        {match[1]?.match2.losingPlayer.name} ?
+                      </div>
+                    )}
+                  </div>
+                  <br />
+                  <div>
+                    {" "}
+                    Games Won :{" "}
+                    {match[0].match2.loserGamesPlayed ===
+                    match[1]?.match2.loserGamesPlayed ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match2.loserGamesPlayed}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match2.loserGamesPlayed} OR{" "}
+                        {match[1]?.match2.loserGamesPlayed} ?
+                      </div>
+                    )}
+                  </div>
                 </div>
-                Winner : {match[0].match2.winningPlayer.name}
-                <br />
-                <div> Games Won : {match[0].match2.winnerGamesPlayed}</div>
-                Loser : {match[0].match2.losingPlayer.name}
-                <br />
-                <div> Games Won : {match[0].match2.loserGamesPlayed}</div>
-              </div>
-              <div className="bracket">
-                <div className="center">
-                  Match 3<br />
+                <div className="bracket ">
+                  <div className="center">
+                    Match 3<br />
+                  </div>
+                  Winner :{" "}
+                  {match[0].match3.winningPlayer.name ===
+                  match[1]?.match3.winningPlayer.name ? (
+                    <div style={{ color: "green " }}>
+                      {match[0].match3.winningPlayer.name}
+                    </div>
+                  ) : (
+                    <div style={{ color: "red" }}>
+                      {match[0].match3.winningPlayer.name} OR{" "}
+                      {match[1]?.match3.winningPlayer.name} ?
+                    </div>
+                  )}
+                  <br />
+                  <div>
+                    {" "}
+                    Games Won :{" "}
+                    {match[0].match3.winnerGamesPlayed ===
+                    match[1]?.match3.winnerGamesPlayed ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match3.winnerGamesPlayed}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match3.winnerGamesPlayed} OR{" "}
+                        {match[1]?.match3.winnerGamesPlayed} ?
+                      </div>
+                    )}
+                    Loser :{" "}
+                    {match[0].match3.losingPlayer.name ===
+                    match[1]?.match3.losingPlayer.name ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match3.losingPlayer.name}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match3.losingPlayer.name} OR{" "}
+                        {match[1]?.match3.losingPlayer.name} ?
+                      </div>
+                    )}
+                  </div>
+                  <br />
+                  <div>
+                    {" "}
+                    Games Won :{" "}
+                    {match[0].match3.loserGamesPlayed ===
+                    match[1]?.match3.loserGamesPlayed ? (
+                      <div style={{ color: "green " }}>
+                        {match[0].match3.loserGamesPlayed}
+                      </div>
+                    ) : (
+                      <div style={{ color: "red" }}>
+                        {match[0].match3.loserGamesPlayed} OR{" "}
+                        {match[1]?.match3.loserGamesPlayed} ?
+                      </div>
+                    )}
+                  </div>
                 </div>
-                Winner : {match[0].match3.winningPlayer.name}
-                <br />
-                <div> Games Won : {match[0].match3.winnerGamesPlayed}</div>
-                Loser : {match[0].match3.losingPlayer.name}
-                <br />
-                <div> Games Won : {match[0].match3.loserGamesPlayed}</div>
-              </div><br/>
-               {match[0]?.submittedBy}
               </div>
-              <div className="row">
-                
-              <div className="bracket">
-                <div className="center">
-                  Match 1<br />
-                </div>
-                Winner : {match[1]?.match1.winningPlayer.name}
-                <br />
-                <div> Games Won : {match[1]?.match1.winnerGamesPlayed}</div>
-                Loser : {match[1]?.match1.losingPlayer.name}
-                <br />
-                <div> Games Won : {match[1]?.match1.loserGamesPlayed}</div>
-              </div>
-              <div className="bracket">
-                <div className="center">
-                  Match 2<br />
-                </div>
-                Winner : {match[1]?.match2.winningPlayer.name}
-                <br />
-                <div> Games Won : {match[1]?.match2.winnerGamesPlayed}</div>
-                Loser : {match[1]?.match2.losingPlayer.name}
-                <br />
-                <div> Games Won : {match[1]?.match2.loserGamesPlayed}</div>
-              </div>
-              <div className="bracket">
-                <div className="center">
-                  Match 3<br />
-                </div>
-                Winner : {match[1]?.match3.winningPlayer.name}
-                <br />
-                <div> Games Won : {match[1]?.match3.winnerGamesPlayed}</div>
-                Loser : {match[1]?.match3.losingPlayer.name}
-                <br />
-                <div> Games Won : {match[1]?.match3.loserGamesPlayed}</div>
-              </div>
-              {match.length >1 ? ` ${match[1]?.submittedBy}` : ''}
+              Match submitted by : {match[0]?.submittedBy}{" "}
+              {match.length > 1 ? ` & ${match[1]?.submittedBy}` : ""}
             </div>
-            Match submitted by : {match[0]?.submittedBy} {match.length >1 ? ` & ${match[1]?.submittedBy}` : ''}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </>
   )
 }

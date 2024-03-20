@@ -53,7 +53,7 @@ const AdminPage = ({
             wins: 0,
           }
           await teamService.update(data)
-          console.log(`Team ${team.id} updated successfully.`)
+          console.log(`Team updated successfully.`)
         } catch (error) {
           console.error(`Error updating team ${team.id}:`, error)
         }
