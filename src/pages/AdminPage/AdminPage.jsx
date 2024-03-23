@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
+import { playerData } from "../../../public/playerData.js"
 
 import AdminCreate from "../../components/Create/AdminCreate"
 import Approvals from "../../components/Approvals/UserApprovals"
 import EditSchedule from "../../components/EditSchedule/EditSchedule"
 
 import * as playerService from "../../services/playerService"
-import * as teamService from '../../services/teamService'
+import * as teamService from "../../services/teamService"
 
 const AdminPage = ({
   players,
@@ -14,7 +15,7 @@ const AdminPage = ({
   handleUpdateProfiles,
   handleDeleteSchedule,
   profile,
-  teams
+  teams,
 }) => {
   const [viewCreate, setViewCreate] = useState(false)
 
@@ -62,6 +63,17 @@ const AdminPage = ({
       }
     }
     console.log("Teams reset:", teams)
+  }
+
+  const seedPeopleStats = async () => {
+    try {
+      for (const player of playerData) {
+        await playerService.create(player)
+      }
+      console.log("Player data seeded successfully")
+    } catch (error) {
+      console.error("Error seeding player data:", error)
+    }
   }
 
   return (
@@ -122,9 +134,13 @@ const AdminPage = ({
             <button onClick={() => resetPlayerStats()}>ARE YOU SURE?</button>
           </p>
           <p className="bracket">
-            To reset all Team league stats back to 0. (games played, wins,
-            loss) Press this button
+            To reset all Team league stats back to 0. (games played, wins, loss)
+            Press this button
             <button onClick={() => resetTeamStats()}>ARE YOU SURE?</button>
+          </p>
+          <p className="bracket">
+            Use this to seed the players data
+            <button onClick={() => seedPeopleStats()}>Seed People</button>
           </p>
         </div>
       </div>
