@@ -1,4 +1,4 @@
-// import * as playerService from "../../services/playerService"
+import * as playerService from "../../services/playerService"
 // import * as teamService from "../../services/teamService"
 import { useState, useEffect } from "react"
 import * as triMatchService from "../../services/triMatchService"
@@ -8,6 +8,7 @@ const MatchApproval = () => {
   const [matchPairs, setMatchPairs] = useState([])
 
   console.log(playedData)
+  console.log(matchPairs)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,7 +16,6 @@ const MatchApproval = () => {
         const data = await triMatchService.index()
         const matchStates = data.map((match) => ({
           ...match,
-          isDisabled: false,
         }))
         setPlayedData(matchStates)
         if (matchStates && matchStates.length > 0) {
@@ -39,6 +39,70 @@ const MatchApproval = () => {
     fetchData()
   }, [])
 
+  const handleFinalSubmit = async (match) => {
+    // Player stat adjusting code
+
+    const winner1 = await match[0].match1.winningPlayer
+    const winner2 = await match[0].match2.winningPlayer
+    const winner3 = await match[0].match3.winningPlayer
+
+    const loser1 = await match[0].match1.losingPlayer
+    const loser2 = await match[0].match2.losingPlayer
+    const loser3 = await match[0].match3.losingPlayer
+
+    let winData1 = await {
+      ...winner1,
+      rank: winner1.rank + 1,
+      matchesPlayed: winner1.matchesPlayed + 1,
+      matchWin: winner1.matchWin + 1,
+      gamesWon: winner1.gamesWon + winner1.winnerGamesPlayed,
+      gamesLoss: winner1.gamesLoss + loser1.loserGamesPlayed
+    }
+    let winData2 = await {
+      ...winner2,
+      rank: winner2.rank + 1,
+      matchesPlayed: winner2.matchesPlayed + 1,
+      matchWin: winner2.matchWin + 1,
+    }
+    let winData3 = await {
+      ...winner3,
+      rank: winner3.rank + 1,
+      matchesPlayed: winner3.matchesPlayed + 1,
+      matchWin: winner3.matchWin + 1,
+    }
+
+    let loserData1 = await {
+      ...loser1,
+      rank: loser1.rank - 1,
+      matchesPlayed: loser1.matchesPlayed + 1,
+      matchLoss: loser1.matchLoss + 1,
+    }
+    let loserData2 = await {
+      ...loser2,
+      rank: loser2.rank - 1,
+      matchesPlayed: loser2.matchesPlayed + 1,
+      matchLoss: loser2.matchLoss + 1,
+    }
+    let loserData3 = await {
+      ...loser3,
+      rank: loser3.rank - 1,
+      matchesPlayed: loser3.matchesPlayed + 1,
+      matchLoss: loser3.matchLoss + 1,
+    }
+
+    playerService.update(winData1)
+    playerService.update(winData2)
+    playerService.update(winData3)
+
+    playerService.update(loserData1)
+    playerService.update(loserData2)
+    playerService.update(loserData3)
+
+    // Team stat adjusting code
+
+    console.log(match)
+  }
+
   return (
     <>
       {!matchPairs?.length && <h1>No Matches to Display</h1>}
@@ -46,9 +110,9 @@ const MatchApproval = () => {
         <div className="bracket">
           {matchPairs?.map((match, idx) => (
             <div className="bracket" key={idx}>
-              {match.length === 1 && 
-              <h2>Warning Only one Person has submitted Stats</h2>
-              }
+              {match.length === 1 && (
+                <h2>Warning Only one Person has submitted Stats</h2>
+              )}
               <li>{match[0].date}</li>
               Home Team : {match[0].homeTeam.teamName}
               <br />
@@ -249,7 +313,10 @@ const MatchApproval = () => {
                 </div>
               </div>
               Match submitted by : {match[0]?.submittedBy}{" "}
-              {match.length > 1 ? ` & ${match[1]?.submittedBy}` : ""}
+              {match.length > 1 ? ` & ${match[1]?.submittedBy}` : ""}{" "}
+              <button onClick={() => handleFinalSubmit(match)}>
+                Submit Final Stats
+              </button>
             </div>
           ))}
         </div>
@@ -299,125 +366,3 @@ export default MatchApproval
 //   await teamService.update(updatedAwayScores)
 //   await teamService.update(updatedHomeScores)
 // }
-
-//  {playedData.length ? (
-//     playedData?.map((match) => (
-//       <li className="bracket" key={match._id}>
-//         Date: {match.date}
-//         <br />
-//         Home Team : {match.homeTeam.teamName}
-//         <br />
-//         Visiting Team : {match.visitingTeam.teamName}
-//         <br />
-//         <div className="row">
-//           <div className="bracket ">
-//             Match 1<br />
-//             Completed : {match.match1.completed ? " YES" : " NO"}
-//             <br />
-//             Winning Team :{" "}
-//             {match.match1.winningTeam == undefined
-//               ? "None"
-//               : match.match1.winningTeam.teamName}
-//             <br />
-//             Losing Team :{" "}
-//             {match.match1.losingTeam === undefined
-//               ? "None"
-//               : match.match1.losingTeam.teamName}
-//             <br />
-//             <div>
-//               Winning Player :{" "}
-//               {match.match1.winningPlayer === undefined
-//                 ? "None"
-//                 : match.match1.winningPlayer.name}{" "}
-//               <br />
-//               Games Won : {match.match1.winnerGamesPlayed}
-//               <br />
-//               Losing Player :{" "}
-//               {match.match1.losingPlayer === undefined
-//                 ? "None"
-//                 : match.match1.losingPlayer.name}{" "}
-//               <br />
-//               Games Won : {match.match1.loserGamesPlayed}
-//               <br />
-//             </div>
-//           </div>
-//           <div className="bracket ">
-//             Match 2<br />
-//             Completed : {match.match2.completed ? " YES" : " NO"}
-//             <br />
-//             Winning Team :{" "}
-//             {match.match2.winningTeam == undefined
-//               ? "None"
-//               : match.match2.winningTeam.teamName}
-//             <br />
-//             Losing Team :{" "}
-//             {match.match2.losingTeam === undefined
-//               ? "None"
-//               : match.match2.losingTeam.teamName}
-//             <br />
-//             <div>
-//               Winning Player :{" "}
-//               {match.match2.winningPlayer === undefined
-//                 ? "None"
-//                 : match.match2.winningPlayer.name}{" "}
-//               <br />
-//               Games Won : {match.match2.winnerGamesPlayed}
-//               <br />
-//               Losing Player :{" "}
-//               {match.match2.losingPlayer === undefined
-//                 ? "None"
-//                 : match.match2.losingPlayer.name}{" "}
-//               <br />
-//               Games Won : {match.match2.loserGamesPlayed}
-//               <br />
-//             </div>
-//           </div>
-//           <div className="bracket ">
-//             Match 3<br />
-//             Completed : {match.match3.completed ? " YES" : " NO"}
-//             <br />
-//             Winning Team :{" "}
-//             {match.match3.winningTeam == undefined
-//               ? "None"
-//               : match.match3.winningTeam.teamName}
-//             <br />
-//             Losing Team :{" "}
-//             {match.match3.losingTeam === undefined
-//               ? "None"
-//               : match.match3.losingTeam.teamName}
-//             <br />
-//             <div>
-//               Winning Player :{" "}
-//               {match.match3.winningPlayer === undefined
-//                 ? "None"
-//                 : match.match3.winningPlayer.name}{" "}
-//               <br />
-//               Games Won : {match.match3.winnerGamesPlayed}
-//               <br />
-//               Losing Player :{" "}
-//               {match.match3.losingPlayer === undefined
-//                 ? "None"
-//                 : match.match3.losingPlayer.name}{" "}
-//               <br />
-//               Games Won : {match.match3.loserGamesPlayed}
-//               <br />
-//             </div>
-//           </div>
-//         </div>
-//         Submitted By : {match.submittedBy}
-//         {/* <h1>
-//           Match Winner:{" "}
-//           {homeWins > awayWins
-//             ? match.homeTeam.teamName
-//             : match.visitingTeam.teamName}
-//         </h1>
-//          <button onClick={() => handleSubmitChanges(match)}>
-//           Submit Changes to Teams and Players
-//         </button>
-//       </li>
-//     ))
-//   ) : (
-//     <div className="center">
-//       <h1>All Matches have been Approved</h1>
-//     </div>
-//   )}
