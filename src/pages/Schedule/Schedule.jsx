@@ -24,6 +24,7 @@ const Schedule = (props) => {
   return (
     <>
       <div className="bracket">
+        {schedule.length === 0 && <h1>Nothing scheduled yet</h1>}
         {schedule.map((sched) => (
           <div
             onClick={() => handleShow(sched._id)}

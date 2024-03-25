@@ -30,7 +30,6 @@ import * as playerService from "./services/playerService"
 import * as profileService from "./services/profileService"
 import * as scheduleService from "./services/scheduleService"
 import * as teamService from "./services/teamService"
-import * as playedMatchService from './services/playedMatchService'
 
 import "./App.css"
 import TriMatchView from "./pages/TriMatchView/TriMatchView"
@@ -210,11 +209,6 @@ function App() {
     setProfiles(
       profiles.filter((profile) => profile._id !== updatedProfile._id)
     )
-  }
-
-  const handleSaveMatchInProgress = (id) => {
-    const data = playedMatchService.findOne(id)
-    setMatchInProgress(data)
   }
 
   return (
@@ -438,7 +432,6 @@ function App() {
             <ProtectedRoute access="30" profile={profile} user={user}>
               <Match
                 setTriMatch={setTriMatch}
-                handleSaveMatchInProgress={handleSaveMatchInProgress}
                 matchInProgress={matchInProgress}
                 setMatchInProgress={setMatchInProgress}
                 matchId={matchId}

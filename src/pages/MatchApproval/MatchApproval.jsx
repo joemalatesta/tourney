@@ -105,8 +105,8 @@ const MatchApproval = () => {
 
   return (
     <>
-      {!matchPairs?.length && <h1>No Matches to Display</h1>}
-      {matchPairs?.length && (
+      {!matchPairs?.length && <h1 className="bracket center">No Matches to Display</h1>}
+      {matchPairs?.length > 0  && (
         <div className="bracket">
           {matchPairs?.map((match, idx) => (
             <div className="bracket" key={idx}>
