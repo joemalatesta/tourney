@@ -56,7 +56,7 @@ const CreateSchedule = (props) => {
       matches: matches,
       bye: byeTeam,
     })
-    navigate("/view-schedule")
+    navigate("/admin")
   }
 
   return (
@@ -72,6 +72,11 @@ const CreateSchedule = (props) => {
           <span>{date}</span>
         )}
       </h2>
+      {completedForm && (
+        <button onClick={() => handleSubmitToSchedule()}>
+          Submit to Schedule
+        </button>
+      )}
       {matches.length < 4 && (
         <>
           <h2>
@@ -136,11 +141,6 @@ const CreateSchedule = (props) => {
       ))}
       <h1>Bye</h1>
       <h2>{byeTeam?.teamName}</h2>
-      {completedForm && (
-        <button onClick={() => handleSubmitToSchedule()}>
-          Submit to Schedule
-        </button>
-      )}
     </div>
   )
 }

@@ -200,3 +200,21 @@ button {
 .margin {
   padding: 20px;
 }
+
+.round-border {
+  width: 60px;
+  height: 60px;
+  border: 3px solid white;
+  border-color: antiquewhite;
+  border-radius: 100%;
+}
+
+.padding {
+  padding: 10px;
+  margin: 0px;
+}
+
+.selected {
+  background-color:green;
+  color: black;
+}

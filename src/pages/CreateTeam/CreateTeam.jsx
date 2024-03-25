@@ -56,7 +56,7 @@ const CreateTeam = (props) => {
         teamPlayers: team,
       }
       await props.handleAddTeam(updatedFormData)
-      navigate("/view-teams")
+      navigate("/admin")
     } else return <h1>select all players and captain</h1>
   }
 
