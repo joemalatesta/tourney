@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import ViewScheduleDate from "../../components/ViewScheduleDate/ViewScheduleDate";
 import * as scheduleService from "../../services/scheduleService";
 
+
 const Schedule = (props) => {
   const [schedule, setSchedule] = useState([]);
   const [view, setView] = useState(null);
   const [selected, setSelected] = useState(null);
+  const [flippingItemId, setFlippingItemId] = useState(null);
 
   useEffect(() => {
     const fetchSchedule = async () => {
@@ -27,6 +29,7 @@ const Schedule = (props) => {
 
   const handleSelect = (schedId) => {
     setSelected(schedId);
+    setFlippingItemId(schedId);
   };
 
   return (
@@ -39,14 +42,14 @@ const Schedule = (props) => {
               handleShow(sched);
               handleSelect(sched._id);
             }}
-            className={`flex center round-border padding ${selected === sched._id ? 'selected' : ''}`}
+            className={`flex center round-border padding ${selected === sched._id ? 'selected' : ''} ${flippingItemId === sched._id ? 'flip' : ''}`}
             key={sched._id}
           >
             <div className="center flex">{sched.name}</div>
-            <div className="row center fWrap padding"></div>
           </div>
         ))}
       </div>
+
       <div className="fWrap">{view}</div>
     </>
   );
