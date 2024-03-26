@@ -251,5 +251,9 @@ button {
   }
 }
 
-
+@media screen and (max-width: 950px) {
+  body {
+    width: 800px;
+  }
+}
 
