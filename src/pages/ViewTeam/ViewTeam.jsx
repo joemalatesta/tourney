@@ -43,14 +43,14 @@ const ViewTeam = (props) => {
                 <br />
                 Rank : {player.rank} <br />
                 Matches Played : {player.matchesPlayed} <br />
-                Win % :{" "}
+                {/* Win % :{" "}
                 {player?.matchWin == 0
                   ? "No Matches Won"
                   : `${
                       (player?.matchWin / player?.matchesPlayed).toFixed(2) *
                       100
                     } %`}
-                <br />
+                <br /> */}
                 Wins: {player.matchWin}
                 <br />
                 Loss: {player.matchLoss}
@@ -66,14 +66,14 @@ const ViewTeam = (props) => {
                 <br />
                 Rank : {player?.rank} <br />
                 Matches Played : {player?.matchesPlayed} <br />
-                Win % :{" "}
+                {/* Win % :{" "}
                 {player?.matchWin == 0
                   ? "No Matches Won"
                   : `${
                       (player?.matchWin / player?.matchesPlayed).toFixed(2) *
                       100
                     }%`}
-                <br />
+                <br /> */}
                 Wins: {player.matchWin}
                 <br />
                 Loss: {player.matchLoss}

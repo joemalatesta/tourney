@@ -8,6 +8,7 @@ const Profiles = () => {
   useEffect(() => {
     const fetchProfiles = async () => {
       const profileData = await profileService.getAllProfiles()
+      profileData.sort((a, b) => b.accessLevel - a.accessLevel)
       setProfiles(profileData)
     }
     fetchProfiles()

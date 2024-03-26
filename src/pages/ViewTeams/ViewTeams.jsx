@@ -37,17 +37,7 @@ const ViewTeams = ({ setTeam, teams, setTeams }) => {
               key={team._id}
             >
               <h3 onClick={() => handleGetTeam(team)}>{team.teamName}</h3>
-              <p>
-                Wins: {team.wins} Losses: {team.loss}
-              </p>
-              <p>
-                Win %:{" "}
-                {team.wins == 0
-                  ? "No Wins"
-                  : `${
-                      (team.wins / (team.wins + team.loss)).toFixed(2) * 100
-                    }%`}
-              </p>
+        
               <PlayerName team={team} />
             </div>
           ))}

@@ -33,6 +33,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName} </NavLink>
           <NavLink to="/view-schedule"> Schedule </NavLink>
+          <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
           <NavLink to="" onClick={handleLogout}>
             LOG OUT
