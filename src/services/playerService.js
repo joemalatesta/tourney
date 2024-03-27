@@ -26,7 +26,9 @@ async function create(player) {
 // }
 
 async function update(player) {
-  const playerId = player._id || player.id // Use _id if available, fallback to id
+  console.log(player);
+  const playerId = player._id || player.id 
+  console.log(playerId)
   const res = await fetch(`${BASE_URL}/${playerId}`, {
     method: "PUT",
     headers: {

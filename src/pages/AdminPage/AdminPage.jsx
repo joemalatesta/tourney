@@ -2,9 +2,11 @@ import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import { playerData } from "../../../public/playerData.js"
 
+import AdminAddProfileToPlayer from '../../components/AdminAddProfileToPlayer/AdminAddProfileToPlayer'
 import AdminCreate from "../../components/Create/AdminCreate"
 import Approvals from "../../components/Approvals/UserApprovals"
 import EditSchedule from "../../components/EditSchedule/EditSchedule"
+
 
 import * as playerService from "../../services/playerService"
 import * as teamService from "../../services/teamService"
@@ -117,6 +119,7 @@ const AdminPage = ({
         handleUpdateProfiles={handleUpdateProfiles}
       />
       <br />
+      <AdminAddProfileToPlayer players={players} profiles={profiles}/>
       <div className="bracket center column">
         <h1 className="center">DANGER ZONE</h1>
         <h2>End of Season Maintenance</h2>

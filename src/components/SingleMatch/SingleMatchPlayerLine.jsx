@@ -12,6 +12,8 @@ const SingleMatchPlayerLine = ({
   handleWonGame,
   handleSaveMatch,
   isSubmitted,
+  winnerGames,
+  loserGames
 }) => {
   if (player?.value === "undefined") {
     player = {
@@ -50,13 +52,25 @@ const SingleMatchPlayerLine = ({
                     <button onClick={handleSaveMatch}>Validate Match</button>
                   </>
                 )}
-                {gameWinner?._id === player?._id && (
+                {gameWinner?._id === player?._id && isSubmitted === true &&
                   <>
-                    <h1 style={{ color: "cornflowerblue" }} className="center">
-                      Winner
-                    </h1>
+                    <h2 style={{color:'red', margin:'15px'}}>WINNER</h2>
+                    <h2 style={{ color: "cornflowerblue" }} className="center">
+                      Games
+                      Won : <h1 style={{color: 'gold'}}>{winnerGames}</h1><br/>
+                    </h2>
                   </>
-                )}
+                }
+                {gameWinner !== null && gameWinner?._id !== player?._id && isSubmitted === true &&
+                  <>
+                  <h2 style={{ color: "cornflowerblue" }} className="center">
+                    Games
+                    Won : <h1 style={{color: 'gold', margin: '20px'}}>{loserGames}</h1><br/>
+                  </h2>
+                </>
+                }
+                
+                
 
                 {seeCheckboxes && (
                   <Checkboxes
@@ -69,7 +83,11 @@ const SingleMatchPlayerLine = ({
                     handleWinner={handleWinner}
                   />
                 )}
-                <h2>({player.games})</h2>
+                  { isSubmitted === false && (
+                  <>
+                    <h2>({player.games})</h2>
+                  </>
+                )}
               </div>
             </div>
           </div>

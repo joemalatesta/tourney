@@ -93,75 +93,10 @@ const Match = (props) => {
           <p className="center">When all 3 matches have been played press the final  </p>  
           <p className="center">match complete the match and submit your scores.</p>
       </div>
-      {match1 !== null && (
-        <>
-          <h1>Match 1</h1>
-          <MatchView
-            match1={match1}
-            match2={match2}
-            match3={match3}
-            showButton={showButton}
-            setCompleteMatch={setCompleteMatch}
-            completeMatch={completeMatch}
-            matchNumber={1}
-            match={match1}
-            matchId={props.matchId}
-            profile={props.profile}
-            />
-        </>
-      )}
-      {match2 !== null && (
-        <>
-          <h1>Match 2</h1>
-          <MatchView
-            match1={match1}
-            match2={match2}
-            match3={match3}
-            showButton={showButton}
-            setCompleteMatch={setCompleteMatch}
-            completeMatch={completeMatch}
-            matchNumber={2}
-            match={match2}
-            matchId={props.matchId}
-            profile={props.profile}
-            />
-        </>
-      )}
-      {match3 !== null && (
-        <>
-          <h1>Match 3</h1>
-          <MatchView
-            setShowButton={setShowButton}
-            match1={match1}
-            match2={match2}
-            match3={match3}
-            showButton={showButton}
-            setCompleteMatch={setCompleteMatch}
-            completeMatch={completeMatch}
-            matchNumber={3}
-            match={match3}
-            matchId={props.matchId}
-            profile={props.profile}
-            />
-        </>
-      )}
-      {showButton === true && finalSubmit === false && (
-        <>
-          <div className="center">
-            <h1> Match is Complete</h1>
-            <br />
-          </div>
-
-          <div className="center">
-            <button
-              style={{ width: "100px", height: "100px" }}
-              onClick={finalSubmitForApprovalButton}
-            >
-              Approve the Match
-            </button>
-          </div>
-        </>
-      )}
+   
+   
+    
+ 
 
       <div className="row center space-around">
         <div className="bracket">
@@ -196,7 +131,75 @@ const Match = (props) => {
           </div>
         </div>
       </div>
+      {showButton === true && finalSubmit === false && (
+        <>
+          <div className="center">
+            <h1> Match is Complete</h1>
+            <br />
+          </div>
 
+          <div className="center">
+            <button
+              style={{ width: "100px", height: "100px" }}
+              onClick={finalSubmitForApprovalButton}
+              >
+              Approve the Match
+            </button>
+          </div>
+        </>
+      )}
+      {match3 !== null && (
+        <>
+          <h1 className="center">Match 3</h1>
+          <MatchView
+            setShowButton={setShowButton}
+            match1={match1}
+            match2={match2}
+            match3={match3}
+            showButton={showButton}
+            setCompleteMatch={setCompleteMatch}
+            completeMatch={completeMatch}
+            matchNumber={3}
+            match={match3}
+            matchId={props.matchId}
+            profile={props.profile}
+            />
+        </>
+      )}
+         {match2 !== null && (
+        <>
+          <h1 className="center">Match 2</h1>
+          <MatchView
+            match1={match1}
+            match2={match2}
+            match3={match3}
+            showButton={showButton}
+            setCompleteMatch={setCompleteMatch}
+            completeMatch={completeMatch}
+            matchNumber={2}
+            match={match2}
+            matchId={props.matchId}
+            profile={props.profile}
+            />
+        </>
+            )}
+               {match1 !== null && (
+        <>
+          <h1 className="center">Match 1</h1>
+          <MatchView
+            match1={match1}
+            match2={match2}
+            match3={match3}
+            showButton={showButton}
+            setCompleteMatch={setCompleteMatch}
+            completeMatch={completeMatch}
+            matchNumber={1}
+            match={match1}
+            matchId={props.matchId}
+            profile={props.profile}
+            />
+        </>
+      )}
     </>
   )
 }

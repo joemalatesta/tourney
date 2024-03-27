@@ -20,6 +20,8 @@ const SingleMatch = (props) => {
   const [losingTeam, setLosingTeam] = useState(null)
   const [player1, setPlayer1] = useState({ player: match[0], gamesWon: 0 })
   const [player2, setPlayer2] = useState({ player: match[1], gamesWon: 0 })
+  const [loserGames, setLoserGames] = useState()
+  const [winnerGames, setWinnerGames] = useState()
   let order = gameService.getFirstPlayer(match)
 
   useEffect(() => {}, [match])
@@ -134,7 +136,7 @@ const SingleMatch = (props) => {
   const extractGamesInfo = () => {
     const winner = gameWinner !== null ? gameWinner : null
     const loser = gameLoser !== null ? gameLoser : null
-
+  
     const winnerGamesWon = winner
       ? winner._id === player1.player._id
         ? player1.gamesWon
@@ -145,10 +147,15 @@ const SingleMatch = (props) => {
         ? player1.gamesWon
         : player2.gamesWon
       : null
-
+    console.log("Winner games won:", winnerGamesWon);
+    console.log("Loser games won:", loserGamesWon);
+    
+    setWinnerGames(winnerGamesWon)
+    setLoserGames(loserGamesWon)
+    
     return { winnerGamesWon, loserGamesWon }
   }
-
+  
   const handleSaveMatch = async () => {
     try {
       const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
@@ -201,6 +208,8 @@ const SingleMatch = (props) => {
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
         {updatedPlayerStateWithMatchCount?.map((player, idx) => (
           <SingleMatchPlayerLine
+            loserGames={loserGames}
+            winnerGames={winnerGames}
             isSubmitted={isSubmitted}
             handleSaveMatch={handleSaveMatch}
             handleWonGame={handleWonGame}
