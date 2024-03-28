@@ -221,6 +221,7 @@ const SingleMatch = (props) => {
             key={idx}
           />
         ))}
+      <button onClick={()=>props.handleCancel(props.mth)}>Cancel this match</button>
       </div>
     </>
   )

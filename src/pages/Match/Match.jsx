@@ -80,6 +80,13 @@ const Match = (props) => {
 
   let color = player1 == null || player2 == null ? "red" : "green"
 
+
+  const handleCancel = (mth) => {
+    if( mth === "m1" )setMatch1(null)
+    if( mth === "m2" )setMatch2(null)
+    if( mth === "m3" )setMatch3(null)
+  }
+
   return (
     <>
       <div className="bracket">
@@ -152,6 +159,8 @@ const Match = (props) => {
         <>
           <h1 className="center">Match 3</h1>
           <MatchView
+            mth="m3"
+            handleCancel={handleCancel}
             setShowButton={setShowButton}
             match1={match1}
             match2={match2}
@@ -170,6 +179,8 @@ const Match = (props) => {
         <>
           <h1 className="center">Match 2</h1>
           <MatchView
+            mth='m2'
+            handleCancel={handleCancel}
             match1={match1}
             match2={match2}
             match3={match3}
@@ -187,6 +198,8 @@ const Match = (props) => {
         <>
           <h1 className="center">Match 1</h1>
           <MatchView
+            mth='m1'
+            handleCancel={handleCancel}
             match1={match1}
             match2={match2}
             match3={match3}

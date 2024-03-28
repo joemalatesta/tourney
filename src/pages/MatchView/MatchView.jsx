@@ -4,7 +4,9 @@ const MatchView = (props) => {
   return (
     <>
       <SingleMatch
+        mth={props.mth}
         setShowButton={props.setShowButton}
+        handleCancel={props.handleCancel}
         match1={props.match1}
         match2={props.match2}
         match3={props.match3}
