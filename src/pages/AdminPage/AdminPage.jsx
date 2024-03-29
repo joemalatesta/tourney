@@ -34,6 +34,8 @@ const AdminPage = ({
             matchLoss: 0,
             matchWin: 0,
             matchesPlayed: 0,
+            gamesWon: 0,
+            gamesLoss: 0,
           }
           await playerService.update(data)
           console.log(`Player ${player.id} updated successfully.`)

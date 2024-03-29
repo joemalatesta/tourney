@@ -53,7 +53,7 @@ const AllPlayers = (props) => {
 
   return (
     <div className={styles.bracket}>
-      {sortedPlayers?.map((player) => (
+      {props.players?.map((player) => (
         <div key={player._id}>
           <div style={{ width: "800px", display: "flex" }}>
             <div>

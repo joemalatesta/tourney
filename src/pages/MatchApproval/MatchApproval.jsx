@@ -1,14 +1,12 @@
 import * as playerService from "../../services/playerService"
-// import * as teamService from "../../services/teamService"
+import * as teamService from "../../services/teamService"
 import { useState, useEffect } from "react"
 import * as triMatchService from "../../services/triMatchService"
 
 const MatchApproval = () => {
-  const [playedData, setPlayedData] = useState([])
+  const [, setPlayedData] = useState([])
   const [matchPairs, setMatchPairs] = useState([])
-
-  console.log(playedData)
-  console.log(matchPairs)
+  const [showEdit, setShowEdit] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,80 +37,185 @@ const MatchApproval = () => {
     fetchData()
   }, [])
 
-  const handleFinalSubmit = async (match) => {
-    // Player stat adjusting code
+  const handleSubmitMatch = async (num, match) => {
+    if (num === 1) {
+      let winData1 = {
+        ...match[0].match1.winningPlayer,
+        rank: match[0].match1.winningPlayer.rank + 1,
+        matchesPlayed: match[0].match1.winningPlayer.matchesPlayed + 1,
+        matchWin: match[0].match1.winningPlayer.matchWin + 1,
+        gamesWon:
+          match[0].match1.winnerGamesPlayed +
+          match[0].match1.winningPlayer.gamesWon,
+        gamesLoss:
+          match[0].match1.winningPlayer.gamesLoss +
+          match[0].match1.loserGamesPlayed,
+      }
 
-    const winner1 = await match[0].match1.winningPlayer
-    const winner2 = await match[0].match2.winningPlayer
-    const winner3 = await match[0].match3.winningPlayer
+      let loserData1 = {
+        ...match[0].match1.losingPlayer,
+        rank: match[0].match1.losingPlayer.rank - 1,
+        matchesPlayed: match[0].match1.losingPlayer.matchesPlayed + 1,
+        matchLoss: match[0].match1.losingPlayer.matchLoss + 1,
+        gamesWon:
+          match[0].match1.losingPlayer.gamesWon +
+          match[0].match1.winnerGamesPlayed,
+        gamesLoss:
+          match[0].match1.losingPlayer.gamesLoss +
+          match[0].match1.loserGamesPlayed,
+      }
 
-    const loser1 = await match[0].match1.losingPlayer
-    const loser2 = await match[0].match2.losingPlayer
-    const loser3 = await match[0].match3.losingPlayer
-
-    let winData1 = await {
-      ...winner1,
-      rank: winner1.rank + 1,
-      matchesPlayed: winner1.matchesPlayed + 1,
-      matchWin: winner1.matchWin + 1,
-      gamesWon: winner1.gamesWon + winner1.winnerGamesPlayed,
-      gamesLoss: winner1.gamesLoss + loser1.loserGamesPlayed
-    }
-    let winData2 = await {
-      ...winner2,
-      rank: winner2.rank + 1,
-      matchesPlayed: winner2.matchesPlayed + 1,
-      matchWin: winner2.matchWin + 1,
-    }
-    let winData3 = await {
-      ...winner3,
-      rank: winner3.rank + 1,
-      matchesPlayed: winner3.matchesPlayed + 1,
-      matchWin: winner3.matchWin + 1,
-    }
-
-    let loserData1 = await {
-      ...loser1,
-      rank: loser1.rank - 1,
-      matchesPlayed: loser1.matchesPlayed + 1,
-      matchLoss: loser1.matchLoss + 1,
-    }
-    let loserData2 = await {
-      ...loser2,
-      rank: loser2.rank - 1,
-      matchesPlayed: loser2.matchesPlayed + 1,
-      matchLoss: loser2.matchLoss + 1,
-    }
-    let loserData3 = await {
-      ...loser3,
-      rank: loser3.rank - 1,
-      matchesPlayed: loser3.matchesPlayed + 1,
-      matchLoss: loser3.matchLoss + 1,
+      playerService.update(winData1)
+      playerService.update(loserData1)
     }
 
-    playerService.update(winData1)
-    playerService.update(winData2)
-    playerService.update(winData3)
+    if (num === 2) {
+      let winData2 = {
+        ...match[0].match2.winningPlayer,
+        rank: match[0].match2.winningPlayer.rank + 1,
+        matchesPlayed:
+          parseInt(match[0].match2.winningPlayer.matchesPlayed) + 1,
+        matchWin: parseInt(match[0].match2.winningPlayer.matchWin) + 1,
+        gamesWon:
+          match[0].match2.winnerGamesPlayed +
+          match[0].match2.winningPlayer.gamesWon,
+        gamesLoss:
+          match[0].match2.winningPlayer.gamesLoss +
+          match[0].match2.loserGamesPlayed,
+      }
 
-    playerService.update(loserData1)
-    playerService.update(loserData2)
-    playerService.update(loserData3)
+      let loserData2 = {
+        ...match[0].match2.losingPlayer,
+        rank: match[0].match2.losingPlayer.rank - 1,
+        matchesPlayed: match[0].match2.losingPlayer.matchesPlayed + 1,
+        matchLoss: match[0].match2.losingPlayer.matchLoss + 1,
+        gamesWon:
+          match[0].match2.losingPlayer.gamesWon +
+          match[0].match2.loserGamesPlayed,
+        gamesLoss:
+          match[0].match2.losingPlayer.gamesLoss +
+          match[0].match2.winnerGamesPlayed,
+      }
 
-    // Team stat adjusting code
+      console.log(winData2)
+      console.log(loserData2)
+      playerService.update(winData2)
+      playerService.update(loserData2)
+    }
 
-    console.log(match)
+    if (num === 3) {
+      let winData3 = {
+        ...match[0].match3.winningPlayer,
+        rank: match[0].match3.winningPlayer.rank + 1,
+        matchesPlayed:
+          parseInt(match[0].match3.winningPlayer.matchesPlayed) + 1,
+        matchWin: parseInt(match[0].match3.winningPlayer.matchWin) + 1,
+        gamesWon:
+          match[0].match3.winnerGamesPlayed +
+          match[0].match3.winningPlayer.gamesWon,
+        gamesLoss:
+          match[0].match3.winningPlayer.gamesLoss +
+          match[0].match3.loserGamesPlayed,
+      }
+
+      let loserData3 = {
+        ...match[0].match3.losingPlayer,
+        rank: match[0].match3.losingPlayer.rank - 1,
+        matchesPlayed: match[0].match3.losingPlayer.matchesPlayed + 1,
+        matchLoss: match[0].match3.losingPlayer.matchLoss + 1,
+        gamesWon:
+          match[0].match3.losingPlayer.gamesWon +
+          match[0].match3.loserGamesPlayed,
+        gamesLoss:
+          match[0].match3.losingPlayer.gamesLoss +
+          match[0].match3.winnerGamesPlayed,
+      }
+      console.log(winData3)
+      console.log(loserData3)
+      playerService.update(winData3)
+      playerService.update(loserData3)
+    }
+    // let homeTeam = match.homeTeam
+    // let visitingTeam = match.visitingTeam
+    // let updatedHomeScores = {
+    //   ...homeTeam,
+    //   wins: homeTeam.wins + homeWins,
+    //   loss: homeTeam.loss + (3 - homeWins),
+    // }
+
+    // let updatedAwayScores = {
+    //   ...visitingTeam,
+    //   wins: visitingTeam.wins + awayWins,
+    //   loss: visitingTeam.loss + (3 - awayWins),
+    // }
+
+    // console.log(updatedAwayScores, updatedHomeScores)
+    // await teamService.update(updatedAwayScores)
+    // await teamService.update(updatedHomeScores)
+  }
+
+  const isMatchGreen = (match, num) => {
+    if (num === 1) {
+      return (
+        match[0].match1.winningPlayer.name ===
+          match[1].match1.winningPlayer.name &&
+        match[0].match1.winnerGamesPlayed ===
+          match[1].match1.winnerGamesPlayed &&
+        match[0].match1.losingPlayer.name ===
+          match[1].match1?.losingPlayer.name &&
+        match[0].match1.loserGamesPlayed === match[1].match1.loserGamesPlayed
+      )
+    }
+    if (num === 2) {
+      return (
+        match[0].match2.winningPlayer.name ===
+          match[1].match2.winningPlayer.name &&
+        match[0].match2.winnerGamesPlayed ===
+          match[1].match2.winnerGamesPlayed &&
+        match[0].match2.losingPlayer.name ===
+          match[1].match2.losingPlayer.name &&
+        match[0].match2.loserGamesPlayed === match[1].match2.loserGamesPlayed
+      )
+    }
+    if (num === 3) {
+      return (
+        match[0].match3.winningPlayer.name ===
+          match[1].match3.winningPlayer.name &&
+        match[0].match3.winnerGamesPlayed ===
+          match[1].match3.winnerGamesPlayed &&
+        match[0].match3.losingPlayer.name ===
+          match[1].match3.losingPlayer.name &&
+        match[0].match3.loserGamesPlayed === match[1].match3.loserGamesPlayed
+      )
+    }
+  }
+
+  let editScreen = (
+    <h1>this is the edit screen</h1>
+  )
+
+
+  const handleEditMatch = (idx) => {
+    setShowEdit(idx)
+    console.log(idx);
+
   }
 
   return (
     <>
-      {!matchPairs?.length && <h1 className="bracket center">No Matches to Display</h1>}
-      {matchPairs?.length > 0  && (
+      {!matchPairs?.length && (
+        <h1 className="bracket center">No Matches to Display</h1>
+      )}
+      {matchPairs?.length > 0 && (
         <div className="bracket">
           {matchPairs?.map((match, idx) => (
             <div className="bracket" key={idx}>
               {match.length === 1 && (
                 <h2>Warning Only one Person has submitted Stats</h2>
               )}
+              {
+                // Match 1
+              }
               <li>{match[0].date}</li>
               Home Team : {match[0].homeTeam.teamName}
               <br />
@@ -184,7 +287,29 @@ const MatchApproval = () => {
                       </div>
                     )}
                   </div>
+                  {match.length > 1 && !isMatchGreen(match, 1) && (
+                    <button
+                      onClick={() =>
+                        handleEditMatch(idx)
+                      }
+                    >
+                      Edit
+                    </button>
+                  )}
+                  {showEdit === idx &&
+                  editScreen}
+                  {match.length > 1 && isMatchGreen(match, 1) && (
+                    <>
+                      <button onClick={() => handleSubmitMatch(1, match)}>
+                        Submit Match 1
+                      </button>
+                    </>
+                  )}
                 </div>
+                {
+                  // Match 2
+                }
+
                 <div className="bracket ">
                   <div className="center">
                     Match 2<br />
@@ -249,7 +374,19 @@ const MatchApproval = () => {
                       </div>
                     )}
                   </div>
+                  {match.length > 1 && !isMatchGreen(match, 2) && (
+                    <button>Edit</button>
+                  )}
+                  {match.length > 1 && isMatchGreen(match, 2) && (
+                    <button onClick={() => handleSubmitMatch(2, match)}>
+                      Submit Match 2
+                    </button>
+                  )}
                 </div>
+
+                {
+                  // Match 3
+                }
                 <div className="bracket ">
                   <div className="center">
                     Match 3<br />
@@ -310,13 +447,18 @@ const MatchApproval = () => {
                       </div>
                     )}
                   </div>
+                  {match.length > 1 && !isMatchGreen(match, 3) && (
+                    <button>Edit</button>
+                  )}
+                  {match.length > 1 && isMatchGreen(match, 3) && (
+                    <button onClick={() => handleSubmitMatch(3, match)}>
+                      Submit Match 3
+                    </button>
+                  )}
                 </div>
               </div>
               Match submitted by : {match[0]?.submittedBy}{" "}
               {match.length > 1 ? ` & ${match[1]?.submittedBy}` : ""}{" "}
-              <button onClick={() => handleFinalSubmit(match)}>
-                Submit Final Stats
-              </button>
             </div>
           ))}
         </div>
@@ -326,43 +468,3 @@ const MatchApproval = () => {
 }
 
 export default MatchApproval
-
-// // // // const handleConfirmMatch = async (matchIndex) => {
-// // // //   try {
-// // // //     const match = playedData[matchIndex]
-// // // //     setPlayedData((prevMatches) => {
-// // // //       const updatedMatches = [...prevMatches]
-// // // //       updatedMatches[matchIndex] = {
-// // // //         ...updatedMatches[matchIndex],
-// // // //         isDisabled: true,
-// // // //         confirmed: true
-// // // //       }
-// // // //       return updatedMatches
-// // // //     })
-// // // //     await playedMatchService.update(playedData)
-// // // //     await handleWinners(match.winningTeam, match.winningPlayer)
-// // // //     await handleLosers(match.losingTeam, match.losingPlayer)
-// // // //   } catch (error) {
-// // // //     console.error("Error confirming match:", error)
-// // // //   }
-// // // // }
-
-// const handleSubmitChanges = async (match) => {
-//   await grabTeamWins()
-//   console.log(match);
-//   let homeTeam = match.homeTeam
-//   let visitingTeam = match.visitingTeam
-//   let updatedHomeScores = {
-//     ...homeTeam,
-//     wins: homeTeam.wins + homeWins,
-//     loss: homeTeam.loss + (3 - homeWins)}
-
-//   let updatedAwayScores = {
-//     ...visitingTeam,
-//     wins: visitingTeam.wins + awayWins,
-//     loss: visitingTeam.loss + (3 - awayWins)}
-
-//   console.log(updatedAwayScores, updatedHomeScores)
-//   await teamService.update(updatedAwayScores)
-//   await teamService.update(updatedHomeScores)
-// }

@@ -74,6 +74,7 @@ const Match = (props) => {
   }
 
   const finalSubmitForApprovalButton = async () => {
+    console.log(completeMatch);
     await triMatchService.create(completeMatch)
     setFinalSubmit(!finalSubmit)
   }

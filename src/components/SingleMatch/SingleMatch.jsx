@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { confetti } from '../../services/confetti.js'
 import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
 
 import * as gameService from "../../services/gameService"
@@ -147,9 +146,6 @@ const SingleMatch = (props) => {
         ? player1.gamesWon
         : player2.gamesWon
       : null
-    console.log("Winner games won:", winnerGamesWon);
-    console.log("Loser games won:", loserGamesWon);
-    
     setWinnerGames(winnerGamesWon)
     setLoserGames(loserGamesWon)
     
@@ -196,7 +192,6 @@ const SingleMatch = (props) => {
       )
         props.setShowButton(!props.showButton)
       setIsSubmitted(!isSubmitted)
-      confetti.start(5000)
       console.log("Match saved successfully!")
     } catch (error) {
       console.error("Error saving match:", error)
