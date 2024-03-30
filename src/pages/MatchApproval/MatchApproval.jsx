@@ -1,12 +1,16 @@
-import * as playerService from "../../services/playerService"
-import * as teamService from "../../services/teamService"
 import { useState, useEffect } from "react"
+
+import * as playerService from "../../services/playerService"
+// import * as teamService from "../../services/teamService"
 import * as triMatchService from "../../services/triMatchService"
+
+import EditMatchApprovals from "../../components/EditMatchApprovals/EditMatchApprovals"
 
 const MatchApproval = () => {
   const [, setPlayedData] = useState([])
   const [matchPairs, setMatchPairs] = useState([])
   const [showEdit, setShowEdit] = useState(null)
+  const [showButton, setShowButton] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,8 +112,8 @@ const MatchApproval = () => {
         ...match[0].match3.winningPlayer,
         rank: match[0].match3.winningPlayer.rank + 1,
         matchesPlayed:
-          parseInt(match[0].match3.winningPlayer.matchesPlayed) + 1,
-        matchWin: parseInt(match[0].match3.winningPlayer.matchWin) + 1,
+          match[0].match3.winningPlayer.matchesPlayed + 1,
+        matchWin: match[0].match3.winningPlayer.matchWin + 1,
         gamesWon:
           match[0].match3.winnerGamesPlayed +
           match[0].match3.winningPlayer.gamesWon,
@@ -190,15 +194,10 @@ const MatchApproval = () => {
     }
   }
 
-  let editScreen = (
-    <h1>this is the edit screen</h1>
-  )
-
-
   const handleEditMatch = (idx) => {
     setShowEdit(idx)
-    console.log(idx);
-
+    setShowButton(false)
+    console.log(idx)
   }
 
   return (
@@ -227,77 +226,82 @@ const MatchApproval = () => {
                   <div className="center">
                     Match 1<br />
                   </div>
-                  Winner :{" "}
-                  {match[0].match1.winningPlayer.name ===
-                  match[1]?.match1.winningPlayer.name ? (
-                    <div style={{ color: "green " }}>
-                      {match[0].match1.winningPlayer.name}
-                    </div>
+                  {showEdit === idx && showButton === false ? (
+                    <EditMatchApprovals
+                      match0={match[0].match1}
+                      match1={match[1].match1}
+                    />
                   ) : (
-                    <div style={{ color: "red" }}>
-                      {match[0].match1.winningPlayer.name}
+                    <>
+                      Winner :{" "}
+                      {match[0].match1.winningPlayer.name ===
+                      match[1]?.match1.winningPlayer.name ? (
+                        <div style={{ color: "green " }}>
+                          {match[0].match1.winningPlayer.name}
+                        </div>
+                      ) : (
+                        <div style={{ color: "red" }}>
+                          {match[0].match1.winningPlayer.name}
+                          <br />
+                          OR <br />
+                          {match[1]?.match1?.winningPlayer.name} ?
+                        </div>
+                      )}
                       <br />
-                      OR <br />
-                      {match[1]?.match1?.winningPlayer.name} ?
-                    </div>
+                      <div>
+                        {" "}
+                        Games Won :{" "}
+                        {match[0].match1.winnerGamesPlayed ===
+                        match[1]?.match1.winnerGamesPlayed ? (
+                          <div style={{ color: "green " }}>
+                            {match[0].match1.winnerGamesPlayed}
+                          </div>
+                        ) : (
+                          <div style={{ color: "red" }}>
+                            {match[0].match1.winnerGamesPlayed} OR{" "}
+                            {match[1]?.match1?.winnerGamesPlayed} games won?
+                          </div>
+                        )}
+                        Loser :{" "}
+                        {match[0].match1.losingPlayer.name ===
+                        match[1]?.match1?.losingPlayer.name ? (
+                          <div style={{ color: "green " }}>
+                            {match[0].match1.losingPlayer.name}
+                          </div>
+                        ) : (
+                          <div style={{ color: "red" }}>
+                            {match[0].match1.losingPlayer.name}
+                            <br />
+                            OR <br />
+                            {match[1]?.match1.losingPlayer.name} ?
+                          </div>
+                        )}
+                      </div>
+                      <br />
+                      <div>
+                        {" "}
+                        Games Won :{" "}
+                        {match[0].match1.loserGamesPlayed ===
+                        match[1]?.match1.loserGamesPlayed ? (
+                          <div style={{ color: "green " }}>
+                            {match[0].match1.loserGamesPlayed}
+                          </div>
+                        ) : (
+                          <div style={{ color: "red" }}>
+                            {match[0].match1.loserGamesPlayed} OR{" "}
+                            {match[1]?.match1.loserGamesPlayed} games won?
+                          </div>
+                        )}
+                      </div>
+                      {match.length > 1 &&
+                        !isMatchGreen(match, 1) &&
+                        showButton && (
+                          <button onClick={() => handleEditMatch(idx)}>
+                            Edit
+                          </button>
+                        )}
+                    </>
                   )}
-                  <br />
-                  <div>
-                    {" "}
-                    Games Won :{" "}
-                    {match[0].match1.winnerGamesPlayed ===
-                    match[1]?.match1.winnerGamesPlayed ? (
-                      <div style={{ color: "green " }}>
-                        {match[0].match1.winnerGamesPlayed}
-                      </div>
-                    ) : (
-                      <div style={{ color: "red" }}>
-                        {match[0].match1.winnerGamesPlayed} OR{" "}
-                        {match[1]?.match1?.winnerGamesPlayed} ?
-                      </div>
-                    )}
-                    Loser :{" "}
-                    {match[0].match1.losingPlayer.name ===
-                    match[1]?.match1?.losingPlayer.name ? (
-                      <div style={{ color: "green " }}>
-                        {match[0].match1.losingPlayer.name}
-                      </div>
-                    ) : (
-                      <div style={{ color: "red" }}>
-                        {match[0].match1.losingPlayer.name}
-                        <br />
-                        OR <br />
-                        {match[1]?.match1.losingPlayer.name} ?
-                      </div>
-                    )}
-                  </div>
-                  <br />
-                  <div>
-                    {" "}
-                    Games Won :{" "}
-                    {match[0].match1.loserGamesPlayed ===
-                    match[1]?.match1.loserGamesPlayed ? (
-                      <div style={{ color: "green " }}>
-                        {match[0].match1.loserGamesPlayed}
-                      </div>
-                    ) : (
-                      <div style={{ color: "red" }}>
-                        {match[0].match1.loserGamesPlayed} OR{" "}
-                        {match[1]?.match1.loserGamesPlayed} ?
-                      </div>
-                    )}
-                  </div>
-                  {match.length > 1 && !isMatchGreen(match, 1) && (
-                    <button
-                      onClick={() =>
-                        handleEditMatch(idx)
-                      }
-                    >
-                      Edit
-                    </button>
-                  )}
-                  {showEdit === idx &&
-                  editScreen}
                   {match.length > 1 && isMatchGreen(match, 1) && (
                     <>
                       <button onClick={() => handleSubmitMatch(1, match)}>

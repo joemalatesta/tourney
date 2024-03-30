@@ -36,59 +36,85 @@ const ViewTeam = (props) => {
         {sortedPlayers?.map(
           (player) =>
             player?.name === props.team.teamCaptain && (
-              <p key={player?._id}>
-                Name : {player?.name}
+              <div className="bracket" key={player?._id}>
+                <h2>Name : {player?.name}</h2>
+                Rank : <span style={{color:'gold', fontWeight:'bolder'}}>{player?.rank}</span> <br />
+                Match Information
+                <div className="bracket">
+                Matches Played : <span style={{color:'gold', fontWeight:'bolder'}}>{player?.matchesPlayed}</span> <br />
+                  Match Win % :{" "}
+                  {player?.matchWin == 0
+                    ? "No Matches Won"
+                    : <span style={{color:'gold', fontWeight:'bolder'}}>{(
+                        (player?.matchWin / player?.matchesPlayed) *
+                        100
+                      ).toFixed(2)}%</span>}
+                  <br />
+                  Wins: <span style={{color:'gold', fontWeight:'bolder'}}>{player.matchWin}</span>
+                  <br />
+                  Loss: <span style={{color:'gold', fontWeight:'bolder'}}>{player.matchLoss}</span>
+                </div>
+                Game Information
+                <div className="bracket">
+                Total Games : <span style={{color:'gold', fontWeight:'bolder'}}>{player.gamesWon + player.gamesLoss}</span>
                 <br />
-                Rank : {player?.rank} <br />
-                Matches Played : {player?.matchesPlayed} <br />
-                Match Win % :{" "}
-                {player?.matchWin == 0
-                  ? "No Matches Won"
-                  : `${
-                      (player?.matchWin / player?.matchesPlayed).toFixed(2) *
+                Games Won: <span style={{color:'gold', fontWeight:'bolder'}}>{player.gamesWon}</span>
+                <br />
+                Games Loss: <span style={{color:'gold', fontWeight:'bolder'}}>{player.gamesLoss}</span>
+                <br />
+                Game win % :{" "}
+                {player.gamesWon == 0
+                  ? "No games won"
+                  : 
+                      <span style={{color:'gold', fontWeight:'bolder'}}>{(player.gamesWon / ((player.gamesWon + player.gamesLoss)) *
                       100
-                    }%`}
+                    ).toFixed(2)}</span>}
+
+                </div>
                 <br />
-                Wins: {player.matchWin}
-                <br />
-                Loss: {player.matchLoss}
-                <br />
-                Total Games : {player.gamesWon + player.gamesLoss}<br/>
-                Games Won: {player.gamesWon}
-                <br />
-                Games Loss: {player.gamesLoss}
-                <br />
-                Game win % : {player.gamesWon == 0 ? 'No games won' : (player.gamesWon / (player.gamesWon + player.gamesLoss)).toFixed(4) * 100} 
-              </p>
+              </div>
             )
         )}
         {sortedPlayers?.map(
           (player) =>
             player?.name !== props.team.teamCaptain && (
-              <p key={player?._id}>
-                Name : {player?.name}
-                <br />
-                Rank : {player?.rank} <br />
-                Matches Played : {player?.matchesPlayed} <br />
+              <div className="bracket" key={player?._id}>
+              <h2>Name : {player?.name}</h2>
+              Rank : <span style={{color:'gold', fontWeight:'bolder'}}>{player?.rank}</span> <br />
+              Match Information
+              <div className="bracket">
+              Matches Played : <span style={{color:'gold', fontWeight:'bolder'}}>{player?.matchesPlayed}</span> <br />
                 Match Win % :{" "}
                 {player?.matchWin == 0
                   ? "No Matches Won"
-                  : `${
-                      (player?.matchWin / player?.matchesPlayed).toFixed(2) *
+                  : <span style={{color:'gold', fontWeight:'bolder'}}>{(
+                      (player?.matchWin / player?.matchesPlayed) *
                       100
-                    }%`} 
+                    ).toFixed(2)}%</span>}
                 <br />
-                Wins: {player.matchWin}
+                Wins: <span style={{color:'gold', fontWeight:'bolder'}}>{player.matchWin}</span>
                 <br />
-                Loss: {player.matchLoss}
-                <br />
-                Total Games : {player.gamesWon + player.gamesLoss}<br/>
-                Games Won: {player.gamesWon}
-                <br />
-                Games Loss: {player.gamesLoss}
-                <br />
-                Game win % : {player.gamesWon == 0 ? 'No games won' : (player.gamesWon / (player.gamesWon + player.gamesLoss)).toFixed(4) * 100} 
-              </p>
+                Loss: <span style={{color:'gold', fontWeight:'bolder'}}>{player.matchLoss}</span>
+              </div>
+              Game Information
+              <div className="bracket">
+              Total Games : <span style={{color:'gold', fontWeight:'bolder'}}>{player.gamesWon + player.gamesLoss}</span>
+              <br />
+              Games Won: <span style={{color:'gold', fontWeight:'bolder'}}>{player.gamesWon}</span>
+              <br />
+              Games Loss: <span style={{color:'gold', fontWeight:'bolder'}}>{player.gamesLoss}</span>
+              <br />
+              Game win % :{" "}
+              {player.gamesWon == 0
+                ? "No games won"
+                : 
+                    <span style={{color:'gold', fontWeight:'bolder'}}>{(player.gamesWon / ((player.gamesWon + player.gamesLoss)) *
+                    100
+                  ).toFixed(2)}</span>}
+
+              </div>
+              <br />
+            </div>
             )
         )}
         {/* {props.user?.name === "Admin" && (
