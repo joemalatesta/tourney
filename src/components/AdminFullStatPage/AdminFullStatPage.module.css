@@ -1,7 +1,7 @@
 .container {
   color: green ;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(10, 1fr);
   gap: 0px;
   border: 1px solid white;
 
@@ -19,9 +19,10 @@
 
 .teamRow {
   display: grid;
-  align-items: center;
-  justify-content: center;
   gap: 0px;
+  border: 1px solid white;
+  border-bottom: 1px solid white;
+  align-content: space-around;
 }
 
 .column {
@@ -56,8 +57,14 @@
 }
 
 .team {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: space-between;
   grid-column: 1;
   padding: 8px;
+  border-bottom: 1px solid white;
 }
 
 .border {
