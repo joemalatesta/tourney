@@ -1,0 +1,69 @@
+.container {
+  color: green ;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0px;
+  border: 1px solid white;
+
+}
+
+.teamContainer {
+  width: 500px;
+  color: green ;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0px;
+  border: 4px solid white;
+  justify-content: flex-end;
+}
+
+.teamRow {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  gap: 0px;
+}
+
+.column {
+  border: 2px solid white;
+}
+
+.title {
+  font-weight: bold;
+  padding: 8px;
+  background-color: lightgray;
+  text-align: center;
+  border: 1px solid white;
+}
+
+.row {
+  display: grid;
+  gap: 0px;
+  border: 1px solid white;
+  border-bottom: 1px solid white;
+  align-content: space-around;
+}
+
+.player {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: space-between;
+  grid-column: 1;
+  padding: 8px;
+  border-bottom: 1px solid white;
+}
+
+.team {
+  grid-column: 1;
+  padding: 8px;
+}
+
+.border {
+  border: 5px solid white;
+}
+
+
+
+

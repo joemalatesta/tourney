@@ -40,6 +40,7 @@ const Schedule = (props) => {
       <div className="bracket flex fWrap padding">
         {schedule.length === 0 && <h1>Nothing scheduled yet</h1>}
         {schedule.map((sched) => (
+          sched.completed !== true && 
           <div
             onClick={() => {
               handleShow(sched)
