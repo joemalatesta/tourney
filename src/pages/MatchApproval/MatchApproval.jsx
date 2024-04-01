@@ -7,10 +7,15 @@ import * as triMatchService from "../../services/triMatchService"
 import EditMatchApprovals from "../../components/EditMatchApprovals/EditMatchApprovals"
 
 const MatchApproval = () => {
-  const [, setPlayedData] = useState([])
+  const [playedData, setPlayedData] = useState([])
   const [matchPairs, setMatchPairs] = useState([])
   const [showEdit, setShowEdit] = useState(null)
   const [showButton, setShowButton] = useState(true)
+  const [homeWins, setHomeWins] = useState(0)
+  const [awayWins, setAwayWins] = useState(0)
+
+
+  console.log(playedData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +46,9 @@ const MatchApproval = () => {
     fetchData()
   }, [])
 
+
+  console.log(homeWins, awayWins);
+
   const handleSubmitMatch = async (num, match) => {
     if (num === 1) {
       let winData1 = {
@@ -67,6 +75,11 @@ const MatchApproval = () => {
         gamesLoss:
           match[0].match1.losingPlayer.gamesLoss +
           match[0].match1.loserGamesPlayed,
+      }
+      if (match[0]?.match1.winningTeam._id === match[0]?.homeTeam._id) {
+        setHomeWins(homeWins+1 )
+      } else {
+        setAwayWins(awayWins+1)
       }
 
       playerService.update(winData1)
@@ -101,8 +114,11 @@ const MatchApproval = () => {
           match[0].match2.winnerGamesPlayed,
       }
 
-      console.log(winData2)
-      console.log(loserData2)
+      if (match[0]?.match2.winningTeam._id === match[0]?.homeTeam._id) {
+        setHomeWins(homeWins+1 )
+      } else {
+        setAwayWins(awayWins+1)
+      }
       playerService.update(winData2)
       playerService.update(loserData2)
     }
@@ -134,8 +150,11 @@ const MatchApproval = () => {
           match[0].match3.losingPlayer.gamesLoss +
           match[0].match3.winnerGamesPlayed,
       }
-      console.log(winData3)
-      console.log(loserData3)
+      if (match[0]?.match3.winningTeam._id === match[0]?.homeTeam._id) {
+        setHomeWins(homeWins+1 )
+      } else {
+        setAwayWins(awayWins+1)
+      }
       playerService.update(winData3)
       playerService.update(loserData3)
     }
@@ -218,9 +237,13 @@ const MatchApproval = () => {
               <li>{match[0].date}</li>
               Home Team : {match[0].homeTeam.teamName}
               <br />
+              Home Team Wins : {homeWins}
               <br />
               Visiting Team : {match[0].visitingTeam.teamName}
               <br />
+              Visiting Team Wins : {awayWins}
+              <br />
+              <button>Submit Team Stats</button>
               <div className=" row">
                 <div className="bracket ">
                   <div className="center">

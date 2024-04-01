@@ -8,7 +8,7 @@ const ViewTeam = (props) => {
   const sortedPlayers = playerInfo
     ?.slice()
     .sort((a, b) => a?.name.localeCompare(b.name))
-
+  console.log(props);
   useEffect(() => {
     const getPlayerStats = async () => {
       try {
@@ -33,10 +33,17 @@ const ViewTeam = (props) => {
     <div className={`${styles.greenFelt} ${styles.bracket} ${styles.center}`}>
       <h1>{props.team.teamName}</h1>
       <h3 className={`${styles.bracket} ${styles.w75percent}`}>
+        <div className="bracket">
+              <h2>Team Stats:</h2>
+              Wins: {props.team?.wins} <br/>
+              Loss: {props.team?.loss} <br/>
+              Win Percentage: {((props.team?.wins/(props.team?.wins+props.team?.loss) * 100).toFixed(2))} %
+              </div>
         {sortedPlayers?.map(
           (player) =>
             player?.name === props.team.teamCaptain && (
               <div className="bracket" key={player?._id}>
+                <h2>Team Captain</h2>
                 <h2>Name : {player?.name}</h2>
                 Rank : <span style={{color:'gold', fontWeight:'bolder'}}>{player?.rank}</span> <br />
                 Match Information
