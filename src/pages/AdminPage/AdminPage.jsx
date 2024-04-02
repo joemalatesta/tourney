@@ -82,9 +82,6 @@ const AdminPage = ({
     }
   }
 
-
-
-
   return (
     <>
       <div className="fWrap">

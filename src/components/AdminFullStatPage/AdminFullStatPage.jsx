@@ -1,46 +1,71 @@
 import * as styles from "./AdminFullStatPage.module.css"
-import Papa from 'papaparse'; 
+import Papa from "papaparse"
 const AdminFullStatPage = ({ teams, players }) => {
+  const calculateWinPercentage = (team) => {
+    const totalMatches = team.wins + team.loss;
+    return totalMatches === 0 ? 0 : (team.wins / totalMatches) * 100;
+  };
+
+  const sortedTeams = [...teams].sort((a, b) => calculateWinPercentage(b) - calculateWinPercentage(a));
+  const calculateTotalGames = (player) => player.gamesWon + player.gamesLoss;
+  const calculateRankDifference = (rank, startRank) => {
+    if (rank - startRank > 0)
+      return rank - startRank;
+    if (rank - startRank < 0)
+      return rank - startRank;
+    if (rank - startRank === 0)
+      return rank - startRank;
+  };
 
   const getRankDifference = (rank, startRank) => {
-    if(rank - startRank > 0 ) return <p style={{color: 'green'}}>{rank - startRank}</p>
-    if(rank - startRank < 0 ) return <p style={{color: 'red'}}>{rank - startRank}</p>
-    if(rank - startRank === 0) return <p style={{color: 'white'}}>{rank - startRank}</p>
+    if (rank - startRank > 0)
+      return <p style={{ color: "green" }}>{rank - startRank}</p>
+    if (rank - startRank < 0)
+      return <p style={{ color: "red" }}>{rank - startRank}</p>
+    if (rank - startRank === 0)
+      return <p style={{ color: "white" }}>{rank - startRank}</p>
   }
 
   const downloadPlayerCSV = () => {
-    console.log("Downloading CSV...");
-    const allData = [...players]
-    const filteredData = allData.map(item => {
-      const { _id, createdAt, updatedAt, __v, profile, ...rest } = item;
-      return rest; 
-    })
+    console.log("Downloading Player CSV...");
+    // Prepare data for CSV conversion
+    const filteredData = players.map((player) => {
+      const { _id, createdAt, updatedAt, __v, profile, seasonRankStart, ...rest } = player;
+      return {
+        ...rest,
+        totalGames: calculateTotalGames(player), // Add total games to player object
+        rankUpDown: calculateRankDifference(player.rank, player.seasonRankStart), // Add rank up/down to player object
+      };
+    });
+    // Convert data to CSV format
     const csv = Papa.unparse(filteredData);
-    console.log("CSV converted successfully:", csv); 
-    const blob = new Blob([csv], { type: 'text/csv' });
-    console.log("Blob created successfully:", blob); 
+    console.log("Player CSV converted successfully:", csv);
+    // Create Blob and initiate download
+    const blob = new Blob([csv], { type: "text/csv" });
+    console.log("Player Blob created successfully:", blob);
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'stats.csv';
+    a.download = "player_stats.csv";
     a.click();
     window.URL.revokeObjectURL(url);
   };
   const downloadTeamCSV = () => {
-    console.log("Downloading CSV...");
-    const allData = [...teams]
-    const filteredData = allData.map(item => {
+    console.log("Downloading Team CSV...");
+    const teamsWithWinPercentage = sortedTeams.map((team) => ({
+      ...team,
+      winPercentage: calculateWinPercentage(team).toFixed(2),
+    }));
+    const filteredData = teamsWithWinPercentage.map((item) => {
       const { _id, createdAt, updatedAt, __v, teamPlayers, ...rest } = item;
-      return rest; 
-    })
+      return rest;
+    });
     const csv = Papa.unparse(filteredData);
-    console.log("CSV converted successfully:", csv); 
-    const blob = new Blob([csv], { type: 'text/csv' });
-    console.log("Blob created successfully:", blob); 
+    const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'stats.csv';
+    a.download = "team_stats.csv";
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -54,30 +79,30 @@ const AdminFullStatPage = ({ teams, players }) => {
           <div className={styles.title}>Match Wins</div>
           <div className={styles.title}>Match Loss</div>
           <div className={styles.title}>Win Percentage</div>
-          
+
           <div className={`${styles.teamRow} ${styles.column}`}>
-            {teams.map((team) => (
+            {sortedTeams.map((team) => (
               <div className={styles.team} key={team._id}>
                 {team.teamName}
               </div>
             ))}
           </div>
           <div className={`${styles.teamRow} border`}>
-            {teams.map((team) => (
+            {sortedTeams.map((team) => (
               <div className={styles.team} key={team._id}>
                 {team.wins}
               </div>
             ))}
           </div>
           <div className={`${styles.teamRow} border`}>
-            {teams.map((team) => (
+            {sortedTeams.map((team) => (
               <div className={styles.team} key={team._id}>
                 {team.loss}
               </div>
             ))}
           </div>
           <div className={`${styles.teamRow} border`}>
-            {teams.map((team) => (
+            {sortedTeams.map((team) => (
               <div className={styles.team} key={team._id}>
                 {((team?.wins / (team?.wins + team?.loss)) * 100).toFixed(2)}
               </div>
@@ -165,12 +190,12 @@ const AdminFullStatPage = ({ teams, players }) => {
         <div className={styles.row}>
           {players.map((player) => (
             <div className={styles.player} key={player._id}>
-              {getRankDifference(player.rank,player.seasonRankStart) }
+              {getRankDifference(player.rank, player.seasonRankStart)}
             </div>
           ))}
         </div>
       </div>
-        <button onClick={downloadPlayerCSV}>Download Player CSV</button>
+      <button onClick={downloadPlayerCSV}>Download Player CSV</button>
     </>
   )
 }
