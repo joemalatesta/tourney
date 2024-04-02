@@ -33,6 +33,7 @@ import * as teamService from "./services/teamService"
 
 import "./App.css"
 import TriMatchView from "./pages/TriMatchView/TriMatchView"
+import AdminFullStatPage from "./pages/AdminFullStatPage/AdminFullStatPage"
 
 function App() {
   const navigate = useNavigate()
@@ -464,6 +465,19 @@ function App() {
                 profile={profile}
                 matchId={matchId}
                 triMatch={triMatch}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/admin-stats-page"
+          element={
+            <ProtectedRoute access="80" profile={profile} user={user}>
+              <AdminFullStatPage
+                profile={profile}
+                players={players}
+                teams={teams}
               />
             </ProtectedRoute>
           }

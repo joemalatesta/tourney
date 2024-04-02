@@ -7,6 +7,8 @@ const NavBar = ({ user, handleLogout, profile }) => {
       {profile?.accessLevel === 90 && (
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName}</NavLink>
+          <NavLink to="/view-schedule">Schedule</NavLink>
+          <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/admin">Admin Page</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
           <NavLink to="" onClick={handleLogout}>

@@ -2,9 +2,8 @@ import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import { playerData } from "../../../public/playerData.js"
 
-import AdminAddProfileToPlayer from "../../components/AdminAddProfileToPlayer/AdminAddProfileToPlayer"
+import AdminAddProfileToPlayer from "../../components/AdminAddProfileToPlayer/AdminAddProfileToPlayer.jsx"
 import AdminCreate from "../../components/Create/AdminCreate"
-import AdminFullStatPage from "../../components/AdminFullStatPage/AdminFullStatPage.jsx"
 import Approvals from "../../components/Approvals/UserApprovals"
 import EditSchedule from "../../components/EditSchedule/EditSchedule"
 
@@ -83,20 +82,23 @@ const AdminPage = ({
   return (
     <>
       <div className="fWrap">
-        <NavLink className="bracket" to="/view-schedule">
+        {/* <NavLink className="bracket" to="/view-schedule">
           Schedule
-        </NavLink>
+        </NavLink> */}
         {/* <NavLink className="bracket" to="/season-match">
           Match
         </NavLink> */}
-        <NavLink className="bracket" to="/view-teams">
+        {/* <NavLink className="bracket" to="/view-teams">
           View Teams
-        </NavLink>
+        </NavLink> */}
         {/* <NavLink className="bracket" to="/view-tournaments">
           View Tournaments
         </NavLink> */}
         <NavLink className="bracket" to="/player-management">
           Player Management
+        </NavLink>
+        <NavLink className="bracket" to="/admin-stats-page">
+          Player and Team Stats
         </NavLink>
         <NavLink className="bracket" to="/match-approval">
           Match Approval
@@ -121,9 +123,6 @@ const AdminPage = ({
         handleUpdateProfiles={handleUpdateProfiles}
       />
       <br />
-      <div className="bracket">
-        <AdminFullStatPage players={players} teams={teams} />
-      </div>
 
       <AdminAddProfileToPlayer players={players} profiles={profiles} />
       <div className="bracket center column">
