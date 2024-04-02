@@ -25,7 +25,7 @@ const Match = (props) => {
     match1: "",
     match2: "",
     match3: "",
-    isSubmitted: '',
+    isSubmitted: "",
     submittedBy: `${props.profile.firstName} ${props.profile.lastName}`,
   })
 
@@ -74,18 +74,17 @@ const Match = (props) => {
   }
 
   const finalSubmitForApprovalButton = async () => {
-    console.log(completeMatch);
+    console.log(completeMatch)
     await triMatchService.create(completeMatch)
     setFinalSubmit(!finalSubmit)
   }
 
   let color = player1 == null || player2 == null ? "red" : "green"
 
-
   const handleCancel = (mth) => {
-    if( mth === "m1" )setMatch1(null)
-    if( mth === "m2" )setMatch2(null)
-    if( mth === "m3" )setMatch3(null)
+    if (mth === "m1") setMatch1(null)
+    if (mth === "m2") setMatch2(null)
+    if (mth === "m3") setMatch3(null)
   }
 
   return (
@@ -95,16 +94,20 @@ const Match = (props) => {
 
         <p className="center">Pick players here for match play.</p>
         <p className="center">
-          Press the green center button to confirm names scroll down to view the match.<br/>
+          Press the green center button to confirm names scroll down to view the
+          match.
+          <br />
         </p>
-          <p className="center">After you validate the match you can choose your next match players.</p>
-          <p className="center">When all 3 matches have been played press the final  </p>  
-          <p className="center">match complete the match and submit your scores.</p>
+        <p className="center">
+          After you validate the match you can choose your next match players.
+        </p>
+        <p className="center">
+          When all 3 matches have been played press the final{" "}
+        </p>
+        <p className="center">
+          match complete the match and submit your scores.
+        </p>
       </div>
-   
-   
-    
- 
 
       <div className="row center space-around">
         <div className="bracket">
@@ -150,7 +153,7 @@ const Match = (props) => {
             <button
               style={{ width: "100px", height: "100px" }}
               onClick={finalSubmitForApprovalButton}
-              >
+            >
               Approve the Match
             </button>
           </div>
@@ -173,14 +176,14 @@ const Match = (props) => {
             match={match3}
             matchId={props.matchId}
             profile={props.profile}
-            />
+          />
         </>
       )}
-         {match2 !== null && (
+      {match2 !== null && (
         <>
           <h1 className="center">Match 2</h1>
           <MatchView
-            mth='m2'
+            mth="m2"
             handleCancel={handleCancel}
             match1={match1}
             match2={match2}
@@ -192,14 +195,14 @@ const Match = (props) => {
             match={match2}
             matchId={props.matchId}
             profile={props.profile}
-            />
+          />
         </>
-            )}
-               {match1 !== null && (
+      )}
+      {match1 !== null && (
         <>
           <h1 className="center">Match 1</h1>
           <MatchView
-            mth='m1'
+            mth="m1"
             handleCancel={handleCancel}
             match1={match1}
             match2={match2}
@@ -211,7 +214,7 @@ const Match = (props) => {
             match={match1}
             matchId={props.matchId}
             profile={props.profile}
-            />
+          />
         </>
       )}
     </>

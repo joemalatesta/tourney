@@ -50,7 +50,7 @@ function App() {
   const [matchId, setMatchId] = useState(null)
   const [matchInProgress, setMatchInProgress] = useState([])
   const [triMatch, setTriMatch] = useState()
-  
+
   useEffect(() => {
     const fetchProfile = async () => {
       const data = await profileService.findOne(user?.profile)
@@ -75,7 +75,7 @@ function App() {
       setPlayers(data)
     }
     fetchPlayers()
-  }, [user, ])
+  }, [user])
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -83,7 +83,7 @@ function App() {
       setTeams(data)
     }
     fetchTeams()
-  }, [team,])
+  }, [team])
 
   useEffect(() => {}, [profiles])
 
@@ -145,7 +145,7 @@ function App() {
       setTeams((prevTeams) => {
         return prevTeams.map((team) =>
           team._id === updatedTeam._id
-            ? { ...team, wins: updatedTeam.wins , losses: updatedTeam.losses }
+            ? { ...team, wins: updatedTeam.wins, losses: updatedTeam.losses }
             : team
         )
       })
@@ -153,11 +153,10 @@ function App() {
     } catch (error) {
       console.error("Error updating team:", error)
     }
-    
+
     await fetchTeams()
     await fetchPlayers()
-}
-
+  }
 
   const handleDeletePlayer = async (id) => {
     const deletedPlayer = await playerService.deleteOne(id)
@@ -456,16 +455,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route 
+        <Route
           disable={isDisabled}
           path="/tri-match-view"
           element={
-            <ProtectedRoute access="30" profile={profile} user={user}> 
+            <ProtectedRoute access="30" profile={profile} user={user}>
               <TriMatchView
                 profile={profile}
                 matchId={matchId}
                 triMatch={triMatch}
-              
               />
             </ProtectedRoute>
           }

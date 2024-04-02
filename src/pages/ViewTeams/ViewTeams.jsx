@@ -34,15 +34,15 @@ const ViewTeams = ({ setTeam, teams, setTeams }) => {
             <div
               style={{ width: "200px" }}
               className={styles.bracket}
-              key={team._id} 
+              key={team._id}
               onClick={() => handleGetTeam(team)}
             >
               <h3>{team.teamName}</h3>
               <div className="bracket">
-              Team Stats:
-              Wins: {team.wins} <br/>
-              Loss: {team.loss} <br/>
-              Win Percentage: {((team.wins/(team.wins+team.loss) * 100).toFixed(2))} %
+                Team Stats: Wins: {team.wins} <br />
+                Loss: {team.loss} <br />
+                Win Percentage:{" "}
+                {((team.wins / (team.wins + team.loss)) * 100).toFixed(2)} %
               </div>
               <PlayerName team={team} />
             </div>

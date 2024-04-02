@@ -135,7 +135,7 @@ const SingleMatch = (props) => {
   const extractGamesInfo = () => {
     const winner = gameWinner !== null ? gameWinner : null
     const loser = gameLoser !== null ? gameLoser : null
-  
+
     const winnerGamesWon = winner
       ? winner._id === player1.player._id
         ? player1.gamesWon
@@ -148,10 +148,10 @@ const SingleMatch = (props) => {
       : null
     setWinnerGames(winnerGamesWon)
     setLoserGames(loserGamesWon)
-    
+
     return { winnerGamesWon, loserGamesWon }
   }
-  
+
   const handleSaveMatch = async () => {
     try {
       const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
@@ -216,7 +216,9 @@ const SingleMatch = (props) => {
             key={idx}
           />
         ))}
-      <button onClick={()=>props.handleCancel(props.mth)}>Cancel this match</button>
+        <button onClick={() => props.handleCancel(props.mth)}>
+          Cancel this match
+        </button>
       </div>
     </>
   )

@@ -9,25 +9,38 @@ const EditMatchApprovals = ({ match0, match1 }) => {
         <>
           Winning Player:
           <br />
-          <p onClick={()=> handleChange(match0.winningPlayer)}>{match0.winningPlayer.name}</p><br />
-          <p onClick={()=> handleChange(match1.winningPlayer)}>{match1.winningPlayer.name}</p>
+          <p onClick={() => handleChange(match0.winningPlayer)}>
+            {match0.winningPlayer.name}
+          </p>
+          <br />
+          <p onClick={() => handleChange(match1.winningPlayer)}>
+            {match1.winningPlayer.name}
+          </p>
         </>
       )}
       {match0.winnerGamesPlayed !== match1.winnerGamesPlayed && (
         <>
           Winner games won:
-          <p onClick={()=> handleChange(match0.winnerGamesPlayed)}>{match0.winnerGamesPlayed}</p><br />
-          <p onClick={()=> handleChange(match1.winnerGamesPlayed)}>{match1.winnerGamesPlayed}</p>
+          <p onClick={() => handleChange(match0.winnerGamesPlayed)}>
+            {match0.winnerGamesPlayed}
+          </p>
+          <br />
+          <p onClick={() => handleChange(match1.winnerGamesPlayed)}>
+            {match1.winnerGamesPlayed}
+          </p>
         </>
       )}
       {match0.losingPlayer.name !== match1.losingPlayer.name && (
         <>
           Losing Player:
           <br />
-          <p onClick={() => handleChange(match0.losingPlayer)} >{match0.losingPlayer.name}</p>
+          <p onClick={() => handleChange(match0.losingPlayer)}>
+            {match0.losingPlayer.name}
+          </p>
           <br />
-          <p onClick={() => handleChange(match1.losingPlayer)}>{match1.losingPlayer.name}</p>
-          
+          <p onClick={() => handleChange(match1.losingPlayer)}>
+            {match1.losingPlayer.name}
+          </p>
         </>
       )}
       {match0.loserGamesPlayed !== match1.loserGamesPlayed && (

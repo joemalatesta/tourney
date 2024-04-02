@@ -1,15 +1,14 @@
 .container {
-  color: green ;
+  color: green;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: 0px;
   border: 1px solid white;
-
 }
 
 .teamContainer {
   width: 500px;
-  color: green ;
+  color: green;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0px;
@@ -70,7 +69,3 @@
 .border {
   border: 5px solid white;
 }
-
-
-
-

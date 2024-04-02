@@ -24,7 +24,7 @@ const Schedule = (props) => {
           match={sched}
           setMatchId={props.setMatchId}
         />
-        <br/>
+        <br />
         <div className="bracket center">Bye Team: {sched?.bye?.teamName}</div>
       </>
     )
@@ -39,21 +39,23 @@ const Schedule = (props) => {
     <>
       <div className="bracket flex fWrap padding">
         {schedule.length === 0 && <h1>Nothing scheduled yet</h1>}
-        {schedule.map((sched) => (
-          sched.completed !== true && 
-          <div
-            onClick={() => {
-              handleShow(sched)
-              handleSelect(sched._id)
-            }}
-            className={`flex center round-border padding ${
-              selected === sched._id ? "selected" : ""
-            } ${flippingItemId === sched._id ? "flip" : ""}`}
-            key={sched._id}
-          >
-            <div className="center flex">{sched.name}</div>
-          </div>
-        ))}
+        {schedule.map(
+          (sched) =>
+            sched.completed !== true && (
+              <div
+                onClick={() => {
+                  handleShow(sched)
+                  handleSelect(sched._id)
+                }}
+                className={`flex center round-border padding ${
+                  selected === sched._id ? "selected" : ""
+                } ${flippingItemId === sched._id ? "flip" : ""}`}
+                key={sched._id}
+              >
+                <div className="center flex">{sched.name}</div>
+              </div>
+            )
+        )}
       </div>
 
       <div className="fWrap">{view}</div>

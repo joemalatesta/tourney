@@ -14,8 +14,7 @@ const MatchApproval = () => {
   const [homeWins, setHomeWins] = useState(0)
   const [awayWins, setAwayWins] = useState(0)
 
-
-  console.log(playedData);
+  console.log(playedData)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,8 +45,7 @@ const MatchApproval = () => {
     fetchData()
   }, [])
 
-
-  console.log(homeWins, awayWins);
+  console.log(homeWins, awayWins)
 
   const handleSubmitMatch = async (num, match) => {
     if (num === 1) {
@@ -77,9 +75,9 @@ const MatchApproval = () => {
           match[0].match1.loserGamesPlayed,
       }
       if (match[0]?.match1.winningTeam._id === match[0]?.homeTeam._id) {
-        setHomeWins(homeWins+1 )
+        setHomeWins(homeWins + 1)
       } else {
-        setAwayWins(awayWins+1)
+        setAwayWins(awayWins + 1)
       }
 
       playerService.update(winData1)
@@ -115,9 +113,9 @@ const MatchApproval = () => {
       }
 
       if (match[0]?.match2.winningTeam._id === match[0]?.homeTeam._id) {
-        setHomeWins(homeWins+1 )
+        setHomeWins(homeWins + 1)
       } else {
-        setAwayWins(awayWins+1)
+        setAwayWins(awayWins + 1)
       }
       playerService.update(winData2)
       playerService.update(loserData2)
@@ -127,8 +125,7 @@ const MatchApproval = () => {
       let winData3 = {
         ...match[0].match3.winningPlayer,
         rank: match[0].match3.winningPlayer.rank + 1,
-        matchesPlayed:
-          match[0].match3.winningPlayer.matchesPlayed + 1,
+        matchesPlayed: match[0].match3.winningPlayer.matchesPlayed + 1,
         matchWin: match[0].match3.winningPlayer.matchWin + 1,
         gamesWon:
           match[0].match3.winnerGamesPlayed +
@@ -151,9 +148,9 @@ const MatchApproval = () => {
           match[0].match3.winnerGamesPlayed,
       }
       if (match[0]?.match3.winningTeam._id === match[0]?.homeTeam._id) {
-        setHomeWins(homeWins+1 )
+        setHomeWins(homeWins + 1)
       } else {
-        setAwayWins(awayWins+1)
+        setAwayWins(awayWins + 1)
       }
       playerService.update(winData3)
       playerService.update(loserData3)

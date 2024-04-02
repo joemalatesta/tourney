@@ -45,7 +45,7 @@ const UserApprovals = ({ profiles, handleUpdateProfiles }) => {
       email: "",
     })
     setHighlighted(null)
-    console.log('Submitted Form Data',formData)
+    console.log("Submitted Form Data", formData)
   }
 
   const grabAccessLevel = (lvl) => {

@@ -2,20 +2,19 @@ import * as styles from "./AdminFullStatPage.module.css"
 import Papa from "papaparse"
 const AdminFullStatPage = ({ teams, players }) => {
   const calculateWinPercentage = (team) => {
-    const totalMatches = team.wins + team.loss;
-    return totalMatches === 0 ? 0 : (team.wins / totalMatches) * 100;
-  };
+    const totalMatches = team.wins + team.loss
+    return totalMatches === 0 ? 0 : (team.wins / totalMatches) * 100
+  }
 
-  const sortedTeams = [...teams].sort((a, b) => calculateWinPercentage(b) - calculateWinPercentage(a));
-  const calculateTotalGames = (player) => player.gamesWon + player.gamesLoss;
+  const sortedTeams = [...teams].sort(
+    (a, b) => calculateWinPercentage(b) - calculateWinPercentage(a)
+  )
+  const calculateTotalGames = (player) => player.gamesWon + player.gamesLoss
   const calculateRankDifference = (rank, startRank) => {
-    if (rank - startRank > 0)
-      return rank - startRank;
-    if (rank - startRank < 0)
-      return rank - startRank;
-    if (rank - startRank === 0)
-      return rank - startRank;
-  };
+    if (rank - startRank > 0) return rank - startRank
+    if (rank - startRank < 0) return rank - startRank
+    if (rank - startRank === 0) return rank - startRank
+  }
 
   const getRankDifference = (rank, startRank) => {
     if (rank - startRank > 0)
@@ -27,48 +26,54 @@ const AdminFullStatPage = ({ teams, players }) => {
   }
 
   const downloadPlayerCSV = () => {
-    console.log("Downloading Player CSV...");
-    // Prepare data for CSV conversion
+    console.log("Downloading Player CSV...")
     const filteredData = players.map((player) => {
-      const { _id, createdAt, updatedAt, __v, profile, seasonRankStart, ...rest } = player;
+      const { _id, createdAt, updatedAt, __v, profile, ...rest } = player
       return {
-        ...rest,
-        totalGames: calculateTotalGames(player), // Add total games to player object
-        rankUpDown: calculateRankDifference(player.rank, player.seasonRankStart), // Add rank up/down to player object
-      };
-    });
-    // Convert data to CSV format
-    const csv = Papa.unparse(filteredData);
-    console.log("Player CSV converted successfully:", csv);
-    // Create Blob and initiate download
-    const blob = new Blob([csv], { type: "text/csv" });
-    console.log("Player Blob created successfully:", blob);
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "player_stats.csv";
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
+        name: rest.name,
+        seasonRankStart: rest.seasonRankStart,
+        rank: rest.rank,
+        rankUpDown: calculateRankDifference(
+          player.rank,
+          player.seasonRankStart
+        ),
+        matchesPlayed: rest.matchesPlayed,
+        matchWin: rest.matchWin,
+        matchLoss: rest.matchLoss,
+        totalGames: calculateTotalGames(player),
+        gamesWon: rest.gamesWon,
+        gamesLoss: rest.gamesLoss,
+      }
+    })
+
+    const csv = Papa.unparse(filteredData)
+    const blob = new Blob([csv], { type: "text/csv" })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "player_stats.csv"
+    a.click()
+    window.URL.revokeObjectURL(url)
+  }
   const downloadTeamCSV = () => {
-    console.log("Downloading Team CSV...");
+    console.log("Downloading Team CSV...")
     const teamsWithWinPercentage = sortedTeams.map((team) => ({
       ...team,
       winPercentage: calculateWinPercentage(team).toFixed(2),
-    }));
+    }))
     const filteredData = teamsWithWinPercentage.map((item) => {
-      const { _id, createdAt, updatedAt, __v, teamPlayers, ...rest } = item;
-      return rest;
-    });
-    const csv = Papa.unparse(filteredData);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "team_stats.csv";
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
+      const { _id, createdAt, updatedAt, __v, teamPlayers, ...rest } = item
+      return rest
+    })
+    const csv = Papa.unparse(filteredData)
+    const blob = new Blob([csv], { type: "text/csv" })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "team_stats.csv"
+    a.click()
+    window.URL.revokeObjectURL(url)
+  }
 
   return (
     <>
