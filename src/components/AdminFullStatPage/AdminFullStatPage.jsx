@@ -1,5 +1,5 @@
 import * as styles from "./AdminFullStatPage.module.css"
-
+import Papa from 'papaparse'; 
 const AdminFullStatPage = ({ teams, players }) => {
 
   const getRankDifference = (rank, startRank) => {
@@ -7,6 +7,43 @@ const AdminFullStatPage = ({ teams, players }) => {
     if(rank - startRank < 0 ) return <p style={{color: 'red'}}>{rank - startRank}</p>
     if(rank - startRank === 0) return <p style={{color: 'white'}}>{rank - startRank}</p>
   }
+
+  const downloadPlayerCSV = () => {
+    console.log("Downloading CSV...");
+    const allData = [...players]
+    const filteredData = allData.map(item => {
+      const { _id, createdAt, updatedAt, __v, profile, ...rest } = item;
+      return rest; 
+    })
+    const csv = Papa.unparse(filteredData);
+    console.log("CSV converted successfully:", csv); 
+    const blob = new Blob([csv], { type: 'text/csv' });
+    console.log("Blob created successfully:", blob); 
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'stats.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+  const downloadTeamCSV = () => {
+    console.log("Downloading CSV...");
+    const allData = [...teams]
+    const filteredData = allData.map(item => {
+      const { _id, createdAt, updatedAt, __v, teamPlayers, ...rest } = item;
+      return rest; 
+    })
+    const csv = Papa.unparse(filteredData);
+    console.log("CSV converted successfully:", csv); 
+    const blob = new Blob([csv], { type: 'text/csv' });
+    console.log("Blob created successfully:", blob); 
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'stats.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
 
   return (
     <>
@@ -48,6 +85,7 @@ const AdminFullStatPage = ({ teams, players }) => {
           </div>
         </div>
       </div>
+      <button onClick={downloadTeamCSV}>Download Team CSV</button>
       <h1>Player Stats</h1>
       <div className={`${styles.container}`}>
         <div className={styles.title}>Player</div>
@@ -132,6 +170,7 @@ const AdminFullStatPage = ({ teams, players }) => {
           ))}
         </div>
       </div>
+        <button onClick={downloadPlayerCSV}>Download Player CSV</button>
     </>
   )
 }

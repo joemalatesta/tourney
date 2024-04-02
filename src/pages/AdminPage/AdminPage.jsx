@@ -2,6 +2,7 @@ import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import { playerData } from "../../../public/playerData.js"
 
+
 import AdminAddProfileToPlayer from '../../components/AdminAddProfileToPlayer/AdminAddProfileToPlayer'
 import AdminCreate from "../../components/Create/AdminCreate"
 import AdminFullStatPage from "../../components/AdminFullStatPage/AdminFullStatPage.jsx"
@@ -80,6 +81,9 @@ const AdminPage = ({
       console.error("Error seeding player data:", error)
     }
   }
+
+
+
 
   return (
     <>
