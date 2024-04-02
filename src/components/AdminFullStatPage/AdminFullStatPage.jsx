@@ -1,13 +1,6 @@
 import * as styles from "./AdminFullStatPage.module.css"
 
 const AdminFullStatPage = ({ teams, players }) => {
-  let sortedPlayers = []
-
-  if (players.length > 0) {
-    sortedPlayers = players
-      ?.slice()
-      .sort((a, b) => a?.name.localeCompare(b?.name))
-  }
 
   const getRankDifference = (rank, startRank) => {
     if(rank - startRank > 0 ) return <p style={{color: 'green'}}>{rank - startRank}</p>
@@ -69,70 +62,70 @@ const AdminFullStatPage = ({ teams, players }) => {
         <div className={styles.title}>Rank up/down</div>
 
         <div className={`${styles.row}`}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.name}
             </div>
           ))}
         </div>
         <div className={`${styles.row}`}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.rank}
             </div>
           ))}
         </div>
         <div className={styles.row}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.matchesPlayed}
             </div>
           ))}
         </div>
         <div className={styles.row}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.matchWin}
             </div>
           ))}
         </div>
         <div className={styles.row}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.matchLoss}
             </div>
           ))}
         </div>
         <div className={styles.row}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.gamesWon + player.gamesLoss}
             </div>
           ))}
         </div>
         <div className={styles.row}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.gamesWon}
             </div>
           ))}
         </div>
         <div className={styles.row}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.gamesLoss}
             </div>
           ))}
         </div>
         <div className={styles.row}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {player.seasonRankStart}
             </div>
           ))}
         </div>
         <div className={styles.row}>
-          {sortedPlayers.map((player) => (
+          {players.map((player) => (
             <div className={styles.player} key={player._id}>
               {getRankDifference(player.rank,player.seasonRankStart) }
             </div>
