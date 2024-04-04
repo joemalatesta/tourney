@@ -126,7 +126,7 @@ const UserApprovals = ({ profiles, handleUpdateProfiles }) => {
             )}
             <br />
             Approved Players :
-            {profiles?.length ? (
+            {filteredApprovedNames?.length ? (
               filteredApprovedNames?.map((profile) => (
                 <li
                   style={{ color: checkHighlighted(profile._id) }}

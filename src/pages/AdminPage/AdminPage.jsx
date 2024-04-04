@@ -23,6 +23,29 @@ const AdminPage = ({
   const handleShowCreate = () => {
     setViewCreate(!viewCreate)
   }
+  const adjustRankForEOS = async() => {
+    for (const player of players) {
+      if (player && player._id) {
+        try {
+          const data = {
+            ...player,
+            matchLoss: 0,
+            matchWin: 0,
+            matchesPlayed: 0,
+            gamesWon: 0,
+            gamesLoss: 0,
+            seasonRankStart: player.rank
+          }
+          await playerService.update(data)
+          console.log(`Player ${player.id} updated successfully.`)
+        } catch (error) {
+          console.error(`Error updating player ${player.id}:`, error)
+        }
+      } else {
+        console.error("Invalid player object:", player)
+      }
+    }
+  }
 
   const resetPlayerStats = async () => {
     for (const player of players) {
@@ -77,6 +100,11 @@ const AdminPage = ({
     } catch (error) {
       console.error("Error seeding player data:", error)
     }
+  }
+
+  const handleEOS = () => {
+    resetTeamStats()
+    adjustRankForEOS()
   }
 
   return (
@@ -153,6 +181,9 @@ const AdminPage = ({
                 Use this to seed the players data
                 <button onClick={() => seedPeopleStats()}>Seed People</button>
               </p>
+              <p className="bracket">
+                End Of Season<br/> 
+                <button onClick={handleEOS}>Set all stats to 0 and carry over player rank</button></p>
             </div>
           </div>
         </>

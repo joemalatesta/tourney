@@ -263,14 +263,14 @@ const MatchApproval = () => {
         <div className="bracket">
           {matchPairs?.map((match, idx) => (
             <>
-              {match[0].completed === true && match[1].completed === true && (
+                {match.length === 1 && (
+                  <h2>Warning Only one Person has submitted Stats</h2>
+                )}
+              {match[0]?.completed === true && (
                 <button onClick={()=>handleCloseDate(match)}>Close out {match[0].date}? </button>
               )}
-              {match[0].completed === false && match[1].completed === false && (
+              {match[0]?.completed === false && (
                 <div className="bracket" key={idx}>
-                  {match.length === 1 && (
-                    <h2>Warning Only one Person has submitted Stats</h2>
-                  )}
                   {
                     // Match 1
                   }

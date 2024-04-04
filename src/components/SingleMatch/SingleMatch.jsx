@@ -153,6 +153,7 @@ const SingleMatch = (props) => {
   }
 
   const handleSaveMatch = async () => {
+    setIsSubmitted(!isSubmitted)
     try {
       const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
       const gameData = {
@@ -190,8 +191,8 @@ const SingleMatch = (props) => {
         props.match2 !== null &&
         props.match3 !== null
       )
-        props.setShowButton(!props.showButton)
-      setIsSubmitted(!isSubmitted)
+      props.setShowButton(!props.showButton)
+     
       console.log("Match saved successfully!")
     } catch (error) {
       console.error("Error saving match:", error)
