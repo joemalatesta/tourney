@@ -123,8 +123,6 @@ const AdminPage = ({
         handleUpdateProfiles={handleUpdateProfiles}
       />
       <br />
-      {console.log(profile)}
-
       {profile.firstName === 'Joe' && profile.lastName === 'Malatesta' && (
         <>
           <AdminAddProfileToPlayer players={players} profiles={profiles} />
