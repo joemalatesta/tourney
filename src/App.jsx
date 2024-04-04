@@ -473,7 +473,7 @@ function App() {
           disable={isDisabled}
           path="/admin-stats-page"
           element={
-            <ProtectedRoute access="80" profile={profile} user={user}>
+            <ProtectedRoute access="50" profile={profile} user={user}>
               <AdminFullStatPage
                 profile={profile}
                 players={players}
