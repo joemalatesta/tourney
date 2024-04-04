@@ -124,34 +124,40 @@ const AdminPage = ({
       />
       <br />
 
-      <AdminAddProfileToPlayer players={players} profiles={profiles} />
-      <div className="bracket center column">
-        <h1 className="center">DANGER ZONE</h1>
-        <h2>End of Season Maintenance</h2>
-        <div>
-          <EditSchedule
-            handleDeleteSchedule={handleDeleteSchedule}
-            profile={profile}
-          />
-        </div>
-        <br />
-        <div>
-          <p className="bracket">
-            To reset all players league stats back to 0. (games played, wins,
-            loss) (rank will remain!) Press this button
-            <button onClick={() => resetPlayerStats()}>ARE YOU SURE?</button>
-          </p>
-          <p className="bracket">
-            To reset all Team league stats back to 0. (games played, wins, loss)
-            Press this button
-            <button onClick={() => resetTeamStats()}>ARE YOU SURE?</button>
-          </p>
-          <p className="bracket">
-            Use this to seed the players data
-            <button onClick={() => seedPeopleStats()}>Seed People</button>
-          </p>
-        </div>
-      </div>
+      {profile._id === "660c5c66be8770cff0be752c" && (
+        <>
+          <AdminAddProfileToPlayer players={players} profiles={profiles} />
+          <div className="bracket center column">
+            <h1 className="center">DANGER ZONE</h1>
+            <h2>End of Season Maintenance</h2>
+            <div>
+              <EditSchedule
+                handleDeleteSchedule={handleDeleteSchedule}
+                profile={profile}
+              />
+            </div>
+            <br />
+            <div>
+              <p className="bracket">
+                To reset all players league stats back to 0. (games played,
+                wins, loss) (rank will remain!) Press this button
+                <button onClick={() => resetPlayerStats()}>
+                  ARE YOU SURE?
+                </button>
+              </p>
+              <p className="bracket">
+                To reset all Team league stats back to 0. (games played, wins,
+                loss) Press this button
+                <button onClick={() => resetTeamStats()}>ARE YOU SURE?</button>
+              </p>
+              <p className="bracket">
+                Use this to seed the players data
+                <button onClick={() => seedPeopleStats()}>Seed People</button>
+              </p>
+            </div>
+          </div>
+        </>
+      )}
     </>
   )
 }
