@@ -263,9 +263,7 @@ const MatchApproval = () => {
         <div className="bracket">
           {matchPairs?.map((match, idx) => (
             <>
-                {match.length === 1 && (
-                  <h2>Warning Only one Person has submitted Stats</h2>
-                )}
+             
               {match[0]?.completed === true && (
                 <button onClick={()=>handleCloseDate(match)}>Close out {match[0].date}? </button>
               )}
