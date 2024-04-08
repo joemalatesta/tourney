@@ -1,7 +1,7 @@
 .container {
   color: green;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(11, 1fr);
   gap: 0px;
   border: 1px solid white;
 }

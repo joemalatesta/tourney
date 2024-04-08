@@ -139,6 +139,7 @@ const AdminFullStatPage = ({ teams, players }) => {
           <div className={styles.title}>Games Won</div>
           <div className={styles.title}>Games Loss</div>
           <div className={styles.title}>Total Games</div>
+          <div className={styles.title}>Win %</div>
 
           <div className={`${styles.row}`}>
             {players.map((player) => (
@@ -207,6 +208,13 @@ const AdminFullStatPage = ({ teams, players }) => {
             {players.map((player) => (
               <div className={styles.player} key={player._id}>
                 {player.gamesWon + player.gamesLoss}
+              </div>
+            ))}
+          </div>
+          <div className={styles.row}>
+            {players.map((player) => (
+              <div className={styles.player} key={player._id}>
+                {((player.gamesWon /(player.gamesWon + player.gamesLoss)) *100 ).toFixed(2)}
               </div>
             ))}
           </div>
