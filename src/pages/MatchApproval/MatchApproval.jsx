@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import * as playerService from "../../services/playerService"
 import * as teamService from "../../services/teamService"
 import * as triMatchService from "../../services/triMatchService"
-import * as scheduleService from '../../services/scheduleService'
+// import * as scheduleService from '../../services/scheduleService'
 
 import EditMatchApprovals from "../../components/EditMatchApprovals/EditMatchApprovals"
 
@@ -246,13 +246,13 @@ const MatchApproval = () => {
     await triMatchService.update(data2)
   }
 
-  const handleCloseDate = async (date) => {
-    let dates = await scheduleService.index()
-    let dateToHide = dates.filter(el=> el.name === date[0].date )
-    console.log(dateToHide)
-    let data = {...dateToHide[0], completed: true}
-    scheduleService.update(data)
-  }
+  // const handleCloseDate = async (date) => {
+  //   let dates = await scheduleService.index()
+  //   let dateToHide = dates.filter(el=> el.name === date[0].date )
+  //   console.log(dateToHide)
+  //   let data = {...dateToHide[0], completed: true}
+  //   scheduleService.update(data)
+  // }
 
   return (
     <>

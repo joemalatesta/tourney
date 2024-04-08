@@ -199,11 +199,6 @@ const ViewTeam = (props) => {
               </div>
             )
         )}
-        {/* {props.user?.name === "Admin" && (
-          <button onClick={handleEdit} style={{ backgroundColor: "green" }}>
-            Edit Team
-          </button>
-        )} **this is a place holder until funtionality is set up ** */}
       </h3>
       {props?.profile?.accessLevel === 90 && (
         <button onClick={() => props.handleDeleteTeam(props.team._id)}>

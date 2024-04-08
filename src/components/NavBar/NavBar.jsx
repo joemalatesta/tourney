@@ -79,17 +79,3 @@ const NavBar = ({ user, handleLogout, profile }) => {
 }
 
 export default NavBar
-
-// ? (
-//   <div className={styles.navBar}>
-//     <NavLink to="/">Welcome {user.name}</NavLink>
-//     <NavLink to="/view-teams">View Teams</NavLink>
-//     <NavLink to="/view-schedule">Schedule</NavLink>
-//     <NavLink to="/auth/change-password">Change Password</NavLink>
-//     <NavLink to="" onClick={handleLogout}>
-//       LOG OUT
-//     </NavLink>
-//   </div>
-// ) : (
-
-// )}

@@ -22,18 +22,6 @@ async function index() {
   }
 }
 
-// async function update(match) {
-//   const res = await fetch(`${BASE_URL}/${match._id}`, {
-//     method: "PUT",
-//     headers: {
-//       Authorization: `Bearer ${tokenService.getToken()}`,
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(match),
-//   })
-//   return res.json()
-// }
-
 async function update(match) {
   try {
     const res = await fetch(`${BASE_URL}/${match._id}`, {
