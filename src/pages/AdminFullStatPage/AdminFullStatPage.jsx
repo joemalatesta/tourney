@@ -15,6 +15,9 @@ const AdminFullStatPage = ({ teams, players }) => {
     if (rank - startRank < 0) return rank - startRank
     if (rank - startRank === 0) return rank - startRank
   }
+  const calculateWinPercentage = (player) => {
+    return ((player.gamesWon /(player.gamesWon + player.gamesLoss)) *100 ).toFixed(2)
+  }
 
   const getRankDifference = (rank, startRank) => {
     if (rank - startRank > 0)
@@ -44,6 +47,7 @@ const AdminFullStatPage = ({ teams, players }) => {
         totalGames: calculateTotalGames(player),
         gamesWon: rest.gamesWon,
         gamesLoss: rest.gamesLoss,
+        winPercentage: calculateWinPercentage(player),
       }
     })
 
