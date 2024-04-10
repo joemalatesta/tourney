@@ -257,17 +257,13 @@ const MatchApproval = () => {
       {!matchPairs?.length && (
         <h1 className="bracket center">No Matches to Display</h1>
       )}
-          {matchPairs[0].completed === true && 
+          {matchPairs[0]?.completed === true && 
             <>No matches</>
           }
       {matchPairs?.length > 0 && (
         <div className="bracket">
           {matchPairs?.map((match, idx) => (
-            <>
-              
-              {/* {match[0]?.completed === true && (
-                <button onClick={()=>handleCloseDate(match)}>Close out {match[0].date}? </button>
-              )} */}
+            <div key={idx}>
               {match[0]?.completed === false && (
                 <div className="bracket" key={idx}>
                   {console.log(match)}
@@ -534,7 +530,7 @@ const MatchApproval = () => {
                   </div>
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
       )}
