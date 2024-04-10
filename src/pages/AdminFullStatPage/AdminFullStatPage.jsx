@@ -15,7 +15,7 @@ const AdminFullStatPage = ({ teams, players }) => {
     if (rank - startRank < 0) return rank - startRank
     if (rank - startRank === 0) return rank - startRank
   }
-  const calculateWinPercentage = (player) => {
+  const calculatePlayerWinPercentage = (player) => {
     return ((player.gamesWon /(player.gamesWon + player.gamesLoss)) *100 ).toFixed(2)
   }
 
@@ -47,10 +47,11 @@ const AdminFullStatPage = ({ teams, players }) => {
         totalGames: calculateTotalGames(player),
         gamesWon: rest.gamesWon,
         gamesLoss: rest.gamesLoss,
-        winPercentage: calculateWinPercentage(player),
+        winPercentage: calculatePlayerWinPercentage(player),
       }
     })
 
+    console.log(filteredData);
     const csv = Papa.unparse(filteredData)
     const blob = new Blob([csv], { type: "text/csv" })
     const url = window.URL.createObjectURL(blob)
