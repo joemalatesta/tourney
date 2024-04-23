@@ -1,8 +1,14 @@
-import * as styles from "./Landing.module.css"
+// import * as styles from "./Landing.module.css"
+import image from '../../../public/break.gif'
+
 const Landing = ({ profile }) => {
   return (
     <>
-      {profile?.accessLevel === 10 ? (
+    <h1 className='center bracket'>Looks like something broke and nothing fell. This site is under maintenance!!</h1>
+    <div className='center'>
+      <img  src={image} alt="broken" />
+    </div>
+      {/* {profile?.accessLevel === 10 ? (
         <h4
           className={`${styles.center} ${styles.bracket} ${styles.textColorYellow}`}
         >
@@ -133,9 +139,9 @@ const Landing = ({ profile }) => {
               113 & up 10:2
             </div>
           </div>
-          <br /> */}
+          <br /> 
         </main>
-      )}
+      )} */}
     </>
   )
 }
