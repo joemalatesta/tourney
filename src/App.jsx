@@ -15,7 +15,7 @@ import MatchApproval from "./pages/MatchApproval/MatchApproval"
 import MatchView from "./pages/MatchView/MatchView"
 import Profiles from "./pages/Profiles/Profiles"
 import Schedule from "./pages/Schedule/Schedule"
-import SeasonMatch from "./pages/SeasonMatch/SeasonMatch"
+import ViewMatchup from "./pages/ViewMatchup/ViewMatchup"
 import Signup from "./pages/Signup/Signup"
 import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams"
@@ -388,7 +388,7 @@ function App() {
           path="/season-match"
           element={
             <ProtectedRoute access="40" profile={profile} user={user}>
-              <SeasonMatch
+              <ViewMatchup
                 profile={profile}
                 setTwoPlayerMatch={setTwoPlayerMatch}
               />
