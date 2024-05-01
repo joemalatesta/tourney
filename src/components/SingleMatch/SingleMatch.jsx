@@ -17,14 +17,25 @@ const SingleMatch = (props) => {
   const [gameLoser, setGameLoser] = useState(null)
   const [winningTeam, setWinningTeam] = useState(null)
   const [losingTeam, setLosingTeam] = useState(null)
-  const [player1, setPlayer1] = useState({ player: match[0], gamesWon: 0 })
-  const [player2, setPlayer2] = useState({ player: match[1], gamesWon: 0 })
+  const [player1, setPlayer1] = useState()
+  const [player2, setPlayer2] = useState()
   const [loserGames, setLoserGames] = useState()
   const [winnerGames, setWinnerGames] = useState()
+  
   let order = gameService.getFirstPlayer(match)
+
+  console.log('this is props.match', props?.match);
 
   useEffect(() => {}, [match])
   useEffect(() => {}, [seeCheckboxes])
+
+  useEffect(() => {
+    const getPlayers = async () => {
+      await setPlayer1({ player: match[0], gamesWon: 0 })
+      await setPlayer2({ player: match[1], gamesWon: 0 })
+    }
+    getPlayers()
+  }, []);
 
   useEffect(() => {
     const getGameRace = async () => {

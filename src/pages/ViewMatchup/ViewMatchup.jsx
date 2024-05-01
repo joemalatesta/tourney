@@ -60,7 +60,6 @@ const ViewMatchup = () => {
   }
 
   const MatchRaceView = (props) => {
-    console.log(props.match)
     const [gamesNeeded, setGamesNeeded] = useState()
     const [
       updatedPlayerStateWithMatchCount,
@@ -179,27 +178,12 @@ const ViewMatchup = () => {
         </div>
 
         <div className={styles.bracket}>
-          <h1 style={{ color: "red" }}>
-            {team1 == null ? (
-              <div className={styles.redText}>Add a Team</div>
-            ) : (
-              <div className={styles.yellowText}>{team1.teamName}</div>
-            )}{" "}
-            vs.{" "}
-            {team2 == null ? (
-              <div className={styles.redText}>Add a Team</div>
-            ) : (
-              <div className={styles.yellowText}>{team2.teamName}</div>
-            )}
-          </h1>
-          {player1 !== null ? player1.name : "Awaiting Player"} vs:{" "}
-          {player2 !== null ? player2.name : "Awaiting Player"}
           <br />
           <h2>{message}</h2>
           {player1 !== null && player2 !== null && (
             <MatchRaceView match={match} />
           )}
-          <button onClick={handleClearTeam}>Clear Team</button>
+          <button onClick={handleClearTeam}>Change Team</button>
         </div>
         <div className={styles.bracket}>
           <Team

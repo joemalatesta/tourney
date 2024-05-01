@@ -6,6 +6,8 @@ import Brackets from "./pages/Brackets/Brackets"
 import ChangePassword from "./pages/ChangePassword/ChangePassword"
 import CreateMatch from "./pages/CreateMatch/CreateMatch"
 import CreateSchedule from "./pages/CreateSchedule/CreateSchedule"
+import CreateSession from "./pages/CreateSession/CreateSession"
+import CreateMatchForSession from "./pages/CreateSession/CreateMatchForSession"
 import CreateTeam from "./pages/CreateTeam/CreateTeam"
 import EditPlayer from "./pages/EditPlayers/EditPlayer"
 import Landing from "./pages/Landing/Landing"
@@ -15,8 +17,11 @@ import MatchApproval from "./pages/MatchApproval/MatchApproval"
 import MatchView from "./pages/MatchView/MatchView"
 import Profiles from "./pages/Profiles/Profiles"
 import Schedule from "./pages/Schedule/Schedule"
+import Session from "./pages/Session/Session"
 import ViewMatchup from "./pages/ViewMatchup/ViewMatchup"
+import ViewOneSession from './pages/ViewOneSession/ViewOneSession'
 import Signup from "./pages/Signup/Signup"
+import ViewSession from "./pages/ViewSession/ViewSession"
 import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
@@ -28,7 +33,6 @@ import * as authService from "./services/authService"
 import * as matchService from "./services/matchService"
 import * as playerService from "./services/playerService"
 import * as profileService from "./services/profileService"
-import * as scheduleService from "./services/scheduleService"
 import * as teamService from "./services/teamService"
 
 import "./App.css"
@@ -181,12 +185,6 @@ function App() {
     console.log(deletedTeam)
   }
 
-  const handleDeleteSchedule = async (id) => {
-    const deletedDate = await scheduleService.deleteOne(id)
-    setTeams(teams.filter((team) => team._id !== deletedDate._id))
-    navigate("view-schedule")
-    console.log(deletedDate)
-  }
 
   const handleDeleteMatch = async (id) => {
     const deletedMatch = await matchService.deleteOne(id)
@@ -240,7 +238,6 @@ function App() {
                 profiles={profiles}
                 user={user}
                 handleUpdateProfiles={handleUpdateProfiles}
-                handleDeleteSchedule={handleDeleteSchedule}
               />
             </ProtectedRoute>
           }
@@ -475,6 +472,71 @@ function App() {
           element={
             <ProtectedRoute access="50" profile={profile} user={user}>
               <AdminFullStatPage
+                profile={profile}
+                players={players}
+                teams={teams}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/session"
+          element={
+            <ProtectedRoute access="30" profile={profile} user={user}>
+              <Session
+                profile={profile}
+                players={players}
+                teams={teams}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/create-session"
+          element={
+            <ProtectedRoute access="90" profile={profile} user={user}>
+              <CreateSession
+                profile={profile}
+                players={players}
+                teams={teams}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/viewSession"
+          element={
+            <ProtectedRoute access="90" profile={profile} user={user}>
+              <ViewSession
+                profile={profile}
+                players={players}
+                teams={teams}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/viewOneSession"
+          element={
+            <ProtectedRoute access="90" profile={profile} user={user}>
+              <ViewOneSession
+                profile={profile}
+                players={players}
+                teams={teams}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/createSessionMatch"
+          element={
+            <ProtectedRoute access="90" profile={profile} user={user}>
+              <CreateMatchForSession
                 profile={profile}
                 players={players}
                 teams={teams}

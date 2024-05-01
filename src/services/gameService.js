@@ -81,6 +81,8 @@ export function SplitIntoMatches(players) {
 }
 
 export function getFirstPlayer(game) {
+  if(game === null) return
+  console.log(game);
   function compareByValue(a, b) {
     if (a === null || b === null) return
     return b.rank - a.rank

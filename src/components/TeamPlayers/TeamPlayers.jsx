@@ -52,7 +52,6 @@ const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer }) => {
                 </p>
               )}
             </span>
-
             {player?._id == team?.teamCaptain ? "** Captain **" : ""}
           </div>
         </div>

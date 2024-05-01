@@ -3,8 +3,6 @@ import { useState, useEffect } from "react"
 import MatchView from "../../pages/MatchView/MatchView"
 
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
-import MatchHandler from "../../components/MatchHandler/MatchHandler"
-
 import * as triMatchService from "../../services/triMatchService"
 
 const Match = (props) => {
@@ -19,9 +17,6 @@ const Match = (props) => {
   const [match3, setMatch3] = useState(null)
   const [showButton, setShowButton] = useState(false)
   const [completeMatch, setCompleteMatch] = useState({
-    date: props?.matchId?.name,
-    homeTeam: team1,
-    visitingTeam: team2,
     match1: "",
     match2: "",
     match3: "",
@@ -121,15 +116,6 @@ const Match = (props) => {
             />
           </div>
         </div>
-
-        <MatchHandler
-          completeMatch={completeMatch}
-          match1={match1}
-          match2={match2}
-          match3={match3}
-          handleSetPlayers={handleSetPlayers}
-          color={color}
-        />
         <div className="bracket">
           <h2>{team2?.teamName}</h2>
           <div className="w325">

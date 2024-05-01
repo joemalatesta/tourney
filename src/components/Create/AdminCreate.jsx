@@ -12,6 +12,9 @@ const AdminCreate = () => {
       <NavLink className="bracket" to="/add-players-to-match">
         Create Tournament
       </NavLink>
+      <NavLink className="bracket" to="/create-session">
+        Create Session
+      </NavLink>
     </>
   )
 }

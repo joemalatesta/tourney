@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import * as scheduleService from "../../services/scheduleService"
+import * as sessionService from "../../services/sessionService"
 
 const EditSchedule = ({ handleDeleteSchedule }) => {
   const [schedules, setSchedules] = useState()
@@ -9,7 +9,7 @@ const EditSchedule = ({ handleDeleteSchedule }) => {
 
   useEffect(() => {
     const fetchDates = async () => {
-      const data = await scheduleService.index()
+      const data = await sessionService.index()
       setSchedules(data)
     }
     fetchDates()
