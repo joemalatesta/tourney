@@ -88,7 +88,7 @@ const SingleMatchPlayerLine = ({
                     handleWinner={handleWinner}
                   />
                 )}
-                {isSubmitted === false && (
+                {isSubmitted === false && player?.games !== undefined && (
                   <>
                     <h2>({player.games})</h2>
                   </>

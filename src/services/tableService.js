@@ -14,9 +14,7 @@ async function create(table) {
 }
 
 async function update(table) {
-  console.log(table)
   const tableId = table._id || table.id
-  console.log(tableId)
   const res = await fetch(`${BASE_URL}/${tableId}`, {
     method: "PUT",
     headers: {

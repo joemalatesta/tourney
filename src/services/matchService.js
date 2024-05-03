@@ -46,7 +46,8 @@ async function deleteOne(id) {
 }
 
 async function findOne(id) {
-  if (id === null) return
+  console.log('*************************',id);
+  if (id === null || id === undefined) return
   try {
     const res = await fetch(BASE_URL + `/${id}`)
     return res.json()

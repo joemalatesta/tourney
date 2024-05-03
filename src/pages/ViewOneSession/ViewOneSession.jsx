@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import * as tableService from "../../services/tableService"
-
+import * as matchService from "../../services/matchService"
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
 import SingleMatch from "../../components/SingleMatch/SingleMatch"
 
@@ -25,12 +25,56 @@ const ViewOneSession = (props) => {
     getSession()
   }, [tableId])
 
-  useEffect(() => {}, [match1, match2, match3]);
+  useEffect(() => {
+    const getMatchesIfAvail = async () => {
+      if (currentMatch?.match1 == null) return
+      else {
+        setMatch1([
+          currentMatch?.match1?.player1,
+          currentMatch?.match1?.player2,
+        ])
+      }
+      if (currentMatch?.match2 == null) return
+      else {
+        setMatch2([
+          currentMatch?.match2?.player1,
+          currentMatch?.match2?.player2,
+        ])
+      }
+      if (currentMatch?.match3 == null) return
+      else {
+        setMatch3([
+          currentMatch?.match3?.player1,
+          currentMatch?.match3?.player2,
+        ])
+      }
+    }
+    getMatchesIfAvail()
+  }, [currentMatch])
 
-  const handleCancel = (mth) => {
-    if (mth === "1") setMatch1(null)
-    if (mth === "2") setMatch2(null)
-    if (mth === "3") setMatch3(null)
+  useEffect(() => {}, [match1, match2, match3])
+
+  const getSession = async () => {
+    const data = await tableService.findOne(tableId)
+    setCurrentMatch(data)
+  }
+
+  const handleCancel = async (mth) => {
+    if (mth === "1") {
+      setMatch1(null)
+      await tableService.update({ ...currentMatch, match1: null })
+      getSession()
+    }
+    if (mth === "2") {
+      setMatch2(null)
+      await tableService.update({ ...currentMatch, match2: null })
+      getSession()
+    }
+    if (mth === "3") {
+      setMatch3(null)
+      await tableService.update({ ...currentMatch, match3: null })
+      getSession()
+    }
   }
 
   const handleChoosePlayer = (player, title) => {
@@ -45,18 +89,39 @@ const ViewOneSession = (props) => {
     if (player1 !== null && player2 !== null) {
       if (match1 === null) {
         await setMatch1([player1, player2])
+        const createdMatch = await matchService.create({
+          player1: player1,
+          player2: player2,
+        })
+        await tableService.update({ ...currentMatch, match1: createdMatch._id })
+        getSession()
       }
-      if (match2 === null && match1 !== null) {
+      if (match2 === null && match1 !== null  ) {
         await setMatch2([player1, player2])
+        const createdMatch = await matchService.create({
+          player1: player1,
+          player2: player2,
+        })
+        await tableService.update({ ...currentMatch, match2: createdMatch._id })
+        getSession()
       }
       if (match3 === null && match1 !== null && match2 !== null) {
         await setMatch3([player1, player2])
+        const createdMatch = await matchService.create({
+          player1: player1,
+          player2: player2,
+        })
+        await tableService.update({ ...currentMatch, match3: createdMatch._id })
+        getSession()
       }
+      await handleSubmitMatch()
       await setPlayer1(null)
       await setPlayer2(null)
     }
   }
-  console.log(player1, player2);
+
+  const handleSubmitMatch = async () => {}
+
   return (
     <>
       <div className="row center space-around">
@@ -71,8 +136,11 @@ const ViewOneSession = (props) => {
             />
           </div>
         </div>
+        {(match1 === null || match2 === null || match3 === null) &&
+          <button onClick={() => handleSetPlayers()}>Set Match</button>
+        }
+   
 
-        <button onClick={() => handleSetPlayers()}>Set Match</button>
         <div className="bracket">
           <h2>{currentMatch?.awayTeam.teamName}</h2>
           <div className="w325">
@@ -86,228 +154,41 @@ const ViewOneSession = (props) => {
         </div>
       </div>
 
-      {match3 !== null &&
-      <>
-        Match 3
-        <SingleMatch profile={props.profile} handleCancel={handleCancel} match={match3} mth='3'/>
-      </>
-      }
-      {match2 !== null &&
-      <>
-        Match 2
-        <SingleMatch profile={props.profile} handleCancel={handleCancel} match={match2} mth='2'/>
-      </>
-      }
-      {match1 !== null &&
-      <>
-        Match 1
-        <SingleMatch profile={props.profile} handleCancel={handleCancel} match={match1} mth='1'/>
-      </>
-      }
+      {match3 !== null && (
+        <>
+          Match 3
+          <SingleMatch
+            profile={props.profile}
+            handleCancel={handleCancel}
+            match={match3}
+            mth="3"
+          />
+        </>
+      )}
+      {match2 !== null && (
+        <>
+          Match 2
+          <SingleMatch
+            profile={props.profile}
+            handleCancel={handleCancel}
+            match={match2}
+            mth="2"
+          />
+        </>
+      )}
+      {match1 !== null && (
+        <>
+          Match 1
+          <SingleMatch
+            profile={props.profile}
+            handleCancel={handleCancel}
+            match={match1}
+            mth="1"
+          />
+        </>
+      )}
     </>
   )
 }
 
 export default ViewOneSession
-
-// useEffect(() => {}, [match])
-// useEffect(() => {}, [seeCheckboxes])
-
-// useEffect(() => {
-//   const getGameRace = async () => {
-//     try {
-//       if (order !== undefined) {
-//         const data = await gameService.getGameRace(match[0], match[1])
-//         setGamesNeeded(data)
-//       }
-//     } catch (error) {
-//       console.error("Error fetching game race:", error)
-//     }
-//   }
-//   getGameRace()
-// }, [match, order])
-
-// useEffect(() => {
-//   const addGamesNeeded = async () => {
-//     try {
-//       if (match && gamesNeeded && gamesNeeded.length >= 2) {
-//         setUpdatedPlayerStateWithMatchCount((prevPlayerInfo) => {
-//           if (
-//             prevPlayerInfo &&
-//             prevPlayerInfo.length &&
-//             prevPlayerInfo[0].games !== gamesNeeded[0] &&
-//             prevPlayerInfo[1].games !== gamesNeeded[1]
-//           ) {
-//             return [
-//               { ...prevPlayerInfo[0], games: gamesNeeded[0] },
-//               { ...prevPlayerInfo[1], games: gamesNeeded[1] },
-//             ]
-//           }
-//         })
-//       }
-//     } catch (error) {
-//       console.error("Error updating player state:", error)
-//     }
-//   }
-//   addGamesNeeded()
-// }, [match, gamesNeeded])
-
-// const handleWonGame = (player, number) => {
-//   setPlayer1((prevPlayer1) => {
-//     if (player._id === prevPlayer1.player._id) {
-//       return { ...prevPlayer1, gamesWon: number }
-//     }
-//     return prevPlayer1
-//   })
-
-//   setPlayer2((prevPlayer2) => {
-//     if (player._id === prevPlayer2.player._id) {
-//       return { ...prevPlayer2, gamesWon: number }
-//     }
-//     return prevPlayer2
-//   })
-// }
-
-// const findWinningTeamByPlayerId = async (data, playerId) => {
-//   let team
-//   for (const match of data.matches) {
-//     if (match.homeTeam.teamPlayers.includes(playerId)) {
-//       team = match.homeTeam
-//       await setWinningTeam(team)
-//       return team
-//     }
-//     if (match.visitor.teamPlayers.includes(playerId)) {
-//       team = match.visitor
-//       await setWinningTeam(team)
-//       return team
-//     }
-//   }
-// }
-
-// const handleWinner = async (winner) => {
-//   await setGameWinner(winner)
-//   await findLoser(winner)
-//   findWinningTeamByPlayerId(props.matchId, winner._id)
-//   disableCheckboxes()
-// }
-
-// const findLosingTeamByPlayerId = async (data, playerId) => {
-//   let team
-//   for (const match of data.matches) {
-//     if (match.homeTeam.teamPlayers.includes(playerId)) {
-//       team = match.homeTeam
-//       await setLosingTeam(team)
-//     }
-//     if (match.visitor.teamPlayers.includes(playerId)) {
-//       team = match.visitor
-//       await setLosingTeam(team)
-//     }
-//   }
-// }
-
-// const findLoser = (winner) => {
-//   let loser
-//   if (player1.player._id === winner._id) loser = player2
-//   else loser = player1
-//   setGameLoser(loser.player)
-//   findLosingTeamByPlayerId(props.matchId, loser.player._id)
-// }
-
-// const disableCheckboxes = () => {
-//   setSeeCheckboxes(!seeCheckboxes)
-// }
-
-// let gameCompleted = gameWinner !== null ? true : false
-
-// const extractGamesInfo = () => {
-//   const winner = gameWinner !== null ? gameWinner : null
-//   const loser = gameLoser !== null ? gameLoser : null
-
-//   const winnerGamesWon = winner
-//     ? winner._id === player1.player._id
-//       ? player1.gamesWon
-//       : player2.gamesWon
-//     : null
-//   const loserGamesWon = loser
-//     ? loser._id === player1.player._id
-//       ? player1.gamesWon
-//       : player2.gamesWon
-//     : null
-//   setWinnerGames(winnerGamesWon)
-//   setLoserGames(loserGamesWon)
-
-//   return { winnerGamesWon, loserGamesWon }
-// }
-
-// const handleSaveMatch = async () => {
-//   setIsSubmitted(!isSubmitted)
-//   try {
-//     const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
-//     const gameData = {
-//       completed: gameCompleted,
-//       confirmed: false,
-//       winningTeam: winningTeam,
-//       losingTeam: losingTeam,
-//       winningPlayer: gameWinner,
-//       losingPlayer: gameLoser,
-//       winnerGamesPlayed: winnerGamesWon,
-//       loserGamesPlayed: loserGamesWon,
-//       matchDate: props.matchId.name,
-//     }
-
-//     if (props.number === 1) {
-//       props.setCompleteMatch((prevCompleteMatch) => ({
-//         ...prevCompleteMatch,
-//         match1: gameData,
-//       }))
-//     }
-//     if (props.number === 2) {
-//       props.setCompleteMatch((prevCompleteMatch) => ({
-//         ...prevCompleteMatch,
-//         match2: gameData,
-//       }))
-//     }
-//     if (props.number === 3) {
-//       props.setCompleteMatch((prevCompleteMatch) => ({
-//         ...prevCompleteMatch,
-//         match3: gameData,
-//       }))
-//     }
-//     if (
-//       props.match1 !== null &&
-//       props.match2 !== null &&
-//       props.match3 !== null
-//     )
-//     props.setShowButton(!props.showButton)
-
-//     console.log("Match saved successfully!")
-//   } catch (error) {
-//     console.error("Error saving match:", error)
-//   }
-// }
-
-// return (
-//   <>
-//     <div className={`${styles.greenFelt} ${styles.bracket}`}>
-//       {updatedPlayerStateWithMatchCount?.map((player, idx) => (
-//         <SingleMatchPlayerLine
-//           loserGames={loserGames}
-//           winnerGames={winnerGames}
-//           isSubmitted={isSubmitted}
-//           handleSaveMatch={handleSaveMatch}
-//           handleWonGame={handleWonGame}
-//           gameWinner={gameWinner}
-//           profile={props.profile}
-//           seeCheckboxes={seeCheckboxes}
-//           handleWinner={handleWinner}
-//           player={player}
-//           key={idx}
-//         />
-//       ))}
-//       <button onClick={() => props.handleCancel(props.mth)}>
-//         Cancel this match
-//       </button>
-//     </div>
-//   </>
-// )
-// }

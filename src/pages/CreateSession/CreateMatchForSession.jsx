@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 
 import * as sessionService from "../../services/sessionService"
-import * as tableService from '../../services/tableService'
+import * as tableService from "../../services/tableService"
 
 const CreateMatchForSession = (props) => {
   const navigate = useNavigate()
@@ -25,10 +25,10 @@ const CreateMatchForSession = (props) => {
     const updatedSession = {
       _id: sessionId,
       completed: false,
-      table1:table1, 
-      table2:table2, 
-      table3:table3, 
-      table4: table4
+      table1: table1,
+      table2: table2,
+      table3: table3,
+      table4: table4,
     }
     sessionService.update(updatedSession)
     // navigate("/session")
@@ -54,22 +54,37 @@ const CreateMatchForSession = (props) => {
   }
 
   const handleSubmitMatch = async () => {
-    console.log(typeof(usedTable))
     if (matches.length < 4) {
-      if (usedTable === '1'){
-        const createdTable = await tableService.create({ homeTeam: homeTeam, awayTeam: awayTeam, tableNumber: 1 })
+      if (usedTable === "1") {
+        const createdTable = await tableService.create({
+          homeTeam: homeTeam,
+          awayTeam: awayTeam,
+          tableNumber: 1,
+        })
         setTable1(createdTable)
       }
-      if (usedTable === '2'){
-        const createdTable = await tableService.create({ homeTeam: homeTeam, awayTeam: awayTeam, tableNumber: 2 })
+      if (usedTable === "2") {
+        const createdTable = await tableService.create({
+          homeTeam: homeTeam,
+          awayTeam: awayTeam,
+          tableNumber: 2,
+        })
         setTable2(createdTable)
       }
-      if (usedTable === '3'){
-        const createdTable = await tableService.create({ homeTeam: homeTeam, awayTeam: awayTeam, tableNumber: 3 })
+      if (usedTable === "3") {
+        const createdTable = await tableService.create({
+          homeTeam: homeTeam,
+          awayTeam: awayTeam,
+          tableNumber: 3,
+        })
         setTable3(createdTable)
       }
-      if (usedTable === '4'){
-        const createdTable = await tableService.create({ homeTeam: homeTeam, awayTeam: awayTeam, tableNumber: 4 })
+      if (usedTable === "4") {
+        const createdTable = await tableService.create({
+          homeTeam: homeTeam,
+          awayTeam: awayTeam,
+          tableNumber: 4,
+        })
         setTable4(createdTable)
       }
 
@@ -81,17 +96,11 @@ const CreateMatchForSession = (props) => {
     await setMatches([...matches])
   }
 
-  console.log(matches)
 
-  const completedForm = table1 !== null && table2 !== null && table3 !== null && table4 !== null
+  const completedForm =
+    table1 !== null && table2 !== null && table3 !== null && table4 !== null
   const completedMatch =
     homeTeam !== null && awayTeam !== null && usedTable !== null
-
-  
-  console.log(table1);
-  console.log(table2);
-  console.log(table3);
-  console.log(table4);
 
   return (
     <>
