@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import * as matchService from "../../services/matchService"
 
 const Checkboxes = ({
   player,
@@ -7,6 +8,8 @@ const Checkboxes = ({
   // handleWonGame,
   handleSaveMatch,
   playerWins,
+  match,
+  playerInfo,
 }) => {
   const [checkboxes, setCheckboxes] = useState([])
   const [checkedCheckboxes, setCheckedCheckboxes] = useState([])
@@ -14,11 +17,13 @@ const Checkboxes = ({
 
   useEffect(() => {
     let arr = []
-    for(let i = 0; i< player?.games; i++ ){
+    for (let i = 0; i < player?.games; i++) {
       arr.push(false)
     }
     setCheckedCheckboxes(arr)
   }, [playerWins, player.games])
+
+  console.log(checkedCheckboxes, player)
 
   useEffect(() => {
     if (checkedCheckboxes.every((value) => value === true)) {
@@ -29,20 +34,29 @@ const Checkboxes = ({
   }, [checkedCheckboxes])
 
   useEffect(() => {
+    if (playerInfo === "player1") {
+      let data = { ...match, player1Wins: checkedCheckboxes }
+      matchService.update(data)
+    }
+    if (playerInfo === "player2") {
+      let data = { ...match, player2Wins: checkedCheckboxes }
+      matchService.update(data)
+    }
+  }, [checkedCheckboxes])
+
+  useEffect(() => {
     if (playerWins?.length > 0) {
       setCheckedCheckboxes([...playerWins])
-    } 
-  }, [playerWins, player?.games]); 
+    }
+  }, [playerWins, player?.games])
 
-  const handleCheckboxChange = (index) => {
+  const handleCheckboxChange = async (index) => {
     setCheckedCheckboxes((prev) => {
       const newChecked = [...prev]
       newChecked[index] = !newChecked[index]
       return newChecked
     })
   }
-
-  console.log(checkedCheckboxes);
 
   useEffect(() => {
     const getCheckboxes = () => {
@@ -57,10 +71,11 @@ const Checkboxes = ({
             <div
               id={`${player._id}-checkbox-${i}`}
               style={{
-                display: 'flex',
+                display: "flex",
                 width: "50px",
                 height: "50px",
-                border: "5px solid white",
+                border: "1px solid white",
+                borderRadius: "50%",
                 padding: "5px",
                 backgroundColor: isChecked ? "black" : "",
                 backgroundImage: isChecked ? "url(/9ball.png)" : "",
@@ -71,10 +86,9 @@ const Checkboxes = ({
                 alignItems: "center",
                 justifyContent: "center",
                 justifyItems: "center",
-                backgroundPosition: 'center'
+                backgroundPosition: "center",
               }}
-            >
-            </div>
+            ></div>
           </div>
         )
       }

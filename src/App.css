@@ -79,6 +79,13 @@ a:visited {
 .flex {
   display: flex;
 }
+
+.end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
 /* .flex-justify {
   display: flex;
   align-items: center;
@@ -243,4 +250,17 @@ button {
   body {
     width: 800px;
   }
+}
+
+.flex {
+  display: flex;
+}
+
+.spaceBetween {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.end {
+  justify-content: flex-end;
 }
