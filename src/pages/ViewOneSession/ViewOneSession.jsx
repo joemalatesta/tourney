@@ -16,6 +16,7 @@ const ViewOneSession = (props) => {
   const [match3, setMatch3] = useState(null)
   const [player1, setPlayer1] = useState(null)
   const [player2, setPlayer2] = useState(null)
+  const [toggleSetMatch, setToggleSetMatch] = useState(true)
 
   useEffect(() => {
     const getSession = async () => {
@@ -26,10 +27,25 @@ const ViewOneSession = (props) => {
   }, [tableId])
 
   useEffect(() => {
+    const setToggle = () => {
+      if(currentMatch?.match1 !== null && currentMatch?.match1.completed === false) {
+        setToggleSetMatch(false)
+      }
+      else if(currentMatch?.match2 !== null && currentMatch?.match2.completed === false) {
+        setToggleSetMatch(false)
+      }
+      else if(currentMatch?.match3 !== null && currentMatch?.match3.completed === false) {
+        setToggleSetMatch(false)
+      }
+    }
+    setToggle()
+  }, [toggleSetMatch])
+
+  useEffect(() => {
     const getMatchesIfAvail = async () => {
       if (currentMatch?.match1 == null) return
       else {
-        setMatch1([
+        await setMatch1([
           currentMatch?.match1?.player1,
           currentMatch?.match1?.player2,
         ])
@@ -86,6 +102,7 @@ const ViewOneSession = (props) => {
     }
   }
   const handleSetPlayers = async () => {
+    setToggleSetMatch(!toggleSetMatch)
     if (player1 !== null && player2 !== null) {
       if (match1 === null) {
         await setMatch1([player1, player2])
@@ -96,7 +113,7 @@ const ViewOneSession = (props) => {
         await tableService.update({ ...currentMatch, match1: createdMatch._id })
         getSession()
       }
-      if (match2 === null && match1 !== null  ) {
+      if (match2 === null && match1 !== null) {
         await setMatch2([player1, player2])
         const createdMatch = await matchService.create({
           player1: player1,
@@ -115,8 +132,6 @@ const ViewOneSession = (props) => {
         getSession()
       }
       await handleSubmitMatch()
-      await setPlayer1(null)
-      await setPlayer2(null)
     }
   }
 
@@ -136,10 +151,9 @@ const ViewOneSession = (props) => {
             />
           </div>
         </div>
-        {(match1 === null || match2 === null || match3 === null) &&
+        {(match1 === null || match2 === null || match3 === null) && toggleSetMatch &&(
           <button onClick={() => handleSetPlayers()}>Set Match</button>
-        }
-   
+        )}
 
         <div className="bracket">
           <h2>{currentMatch?.awayTeam.teamName}</h2>
@@ -156,8 +170,11 @@ const ViewOneSession = (props) => {
 
       {match3 !== null && (
         <>
-          Match 3
+          <h2 className="center">Match 3</h2>
           <SingleMatch
+            player1Wins={currentMatch.player1Wins}
+            player2Wins={currentMatch.player2Wins}
+            currentMatch={currentMatch.match3}
             profile={props.profile}
             handleCancel={handleCancel}
             match={match3}
@@ -167,19 +184,25 @@ const ViewOneSession = (props) => {
       )}
       {match2 !== null && (
         <>
-          Match 2
+          <h2 className="center">Match 2</h2>
           <SingleMatch
-            profile={props.profile}
-            handleCancel={handleCancel}
-            match={match2}
-            mth="2"
+                    player1Wins={currentMatch.player1Wins}
+                    player2Wins={currentMatch.player2Wins}
+                    currentMatch={currentMatch.match2}
+                    profile={props.profile}
+                    handleCancel={handleCancel}
+                    match={match2}
+                    mth="2"
           />
         </>
       )}
       {match1 !== null && (
         <>
-          Match 1
+          <h2 className="center">Match 1</h2>
           <SingleMatch
+            player1Wins={currentMatch.player1Wins}
+            player2Wins={currentMatch.player2Wins}
+            currentMatch={currentMatch.match1}
             profile={props.profile}
             handleCancel={handleCancel}
             match={match1}

@@ -30,28 +30,40 @@ const ViewSession = () => {
 
   return (
     <>
-      <div className='bracket' onClick={() => handleShowMatch(currentMatches.table1)}>
+      <div className='bracket row center w300' onClick={() => handleShowMatch(currentMatches.table1)}>
+        <div className="bracket">
+          Table <br/>1
+        </div> 
         {currentMatches?.table1.homeTeam.teamName}
         <br /> VS
         <br /> {currentMatches?.table1.awayTeam.teamName}
         <br />
         <br />
       </div>
-      <div  className='bracket' onClick={() => handleShowMatch(currentMatches.table2)}>
+      <div  className='bracket row center w300' onClick={() => handleShowMatch(currentMatches.table2)}>
+      <div className="bracket">
+          Table <br/>2
+        </div> 
         {currentMatches?.table2.homeTeam.teamName}
         <br /> VS
         <br /> {currentMatches?.table2.awayTeam.teamName}
         <br />
         <br />
       </div>
-      <div  className='bracket' onClick={() => handleShowMatch(currentMatches.table3)}>
+      <div  className='bracket row center w300' onClick={() => handleShowMatch(currentMatches.table3)}>
+      <div className="bracket">
+          Table <br/>3
+        </div> 
         {currentMatches?.table3.homeTeam.teamName}
         <br /> VS
         <br /> {currentMatches?.table3.awayTeam.teamName}
         <br />
         <br />
       </div>
-      <div className='bracket' onClick={() => handleShowMatch(currentMatches.table4)}>
+      <div className='bracket row center w300' onClick={() => handleShowMatch(currentMatches.table4)}>
+      <div className="bracket">
+          Table<br/> 4
+        </div> 
         {currentMatches?.table4.homeTeam.teamName}
         <br /> VS
         <br /> {currentMatches?.table4.awayTeam.teamName}

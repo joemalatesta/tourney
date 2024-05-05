@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
-import SingleMatchPlayerLine from "./SingleMatchPlayerLine"
+import Checkboxes from "../checkboxes/Checkboxes"
 
 import * as gameService from "../../services/gameService"
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  // const [isSubmitted, setIsSubmitted] = useState(false)
   const [match] = useState(props.match)
   const [seeCheckboxes, setSeeCheckboxes] = useState(true)
   const [gamesNeeded, setGamesNeeded] = useState()
@@ -17,25 +17,12 @@ const SingleMatch = (props) => {
   const [gameLoser, setGameLoser] = useState(null)
   const [winningTeam, setWinningTeam] = useState(null)
   const [losingTeam, setLosingTeam] = useState(null)
-  const [player1, setPlayer1] = useState()
-  const [player2, setPlayer2] = useState()
+  const [player1, setPlayer1] = useState(props?.currentMatch?.player1)
+  const [player2, setPlayer2] = useState(props?.currentMatch?.player2)
   const [loserGames, setLoserGames] = useState()
   const [winnerGames, setWinnerGames] = useState()
-  
+
   let order = gameService.getFirstPlayer(match)
-
-  console.log('this is props.match', props?.match);
-
-  useEffect(() => {}, [match])
-  useEffect(() => {}, [seeCheckboxes])
-
-  useEffect(() => {
-    const getPlayers = async () => {
-      await setPlayer1({ player: match[0], gamesWon: 0 })
-      await setPlayer2({ player: match[1], gamesWon: 0 })
-    }
-    getPlayers()
-  }, []);
 
   useEffect(() => {
     const getGameRace = async () => {
@@ -76,70 +63,68 @@ const SingleMatch = (props) => {
     addGamesNeeded()
   }, [match, gamesNeeded])
 
-  const handleWonGame = (player, number) => {
-    setPlayer1((prevPlayer1) => {
-      if (player._id === prevPlayer1.player._id) {
-        return { ...prevPlayer1, gamesWon: number }
-      }
-      return prevPlayer1
-    })
-
-    setPlayer2((prevPlayer2) => {
-      if (player._id === prevPlayer2.player._id) {
-        return { ...prevPlayer2, gamesWon: number }
-      }
-      return prevPlayer2
-    })
+  const handleWonGame = (player, number) => { 
+    console.log(player, number);
   }
 
-  const findWinningTeamByPlayerId = async (data, playerId) => {
-    let team
-    for (const match of data.matches) {
-      if (match.homeTeam.teamPlayers.includes(playerId)) {
-        team = match.homeTeam
-        await setWinningTeam(team)
-        return team
-      }
-      if (match.visitor.teamPlayers.includes(playerId)) {
-        team = match.visitor
-        await setWinningTeam(team)
-        return team
-      }
-    }
+  const findWinningTeamByPlayerId = async (playerId) => {
+    console.log(playerId);
+    // let team
+    // for (const match of props.currentMatch.awayTeam.teamPlayers) {
+    //   if (match.includes(playerId)) {
+    //     team = props.currentMatch.awayTeam
+    //     await setWinningTeam(team)
+    //     return team
+    //   }
+    // }
+    // for (const match of props.currentMatch.homeTeam.teamPlayers) {
+    //   if (match.includes(playerId)) {
+    //     team = props.currentMatch.homeTeam
+    //     await setWinningTeam(team)
+    //     return team
+    //   }
+    // }
   }
 
   const handleWinner = async (winner) => {
-    await setGameWinner(winner)
-    await findLoser(winner)
-    findWinningTeamByPlayerId(props.matchId, winner._id)
-    disableCheckboxes()
+    console.log(winner);
+    // await setGameWinner(winner)
+    // await findLoser(winner)
+    // findWinningTeamByPlayerId(winner._id)
+    // disableCheckboxes()
   }
 
-  const findLosingTeamByPlayerId = async (data, playerId) => {
-    let team
-    for (const match of data.matches) {
-      if (match.homeTeam.teamPlayers.includes(playerId)) {
-        team = match.homeTeam
-        await setLosingTeam(team)
-      }
-      if (match.visitor.teamPlayers.includes(playerId)) {
-        team = match.visitor
-        await setLosingTeam(team)
-      }
-    }
+  const findLosingTeamByPlayerId = async (playerId) => {
+  console.log(playerId);
+    // let team
+    // for (const match of props.currentMatch.awayTeam.teamPlayers) {
+    //   if (match.includes(playerId)) {
+    //     team = props.currentMatch.awayTeam
+    //     await setLosingTeam(team)
+    //     return team
+    //   }
+    // }
+    // for (const match of props.currentMatch.homeTeam.teamPlayers) {
+    //   if (match.includes(playerId)) {
+    //     team = props.currentMatch.homeTeam
+    //     await setLosingTeam(team)
+    //     return team
+    //   }
+    // }
   }
 
   const findLoser = (winner) => {
-    let loser
-    if (player1.player._id === winner._id) loser = player2
-    else loser = player1
-    setGameLoser(loser.player)
-    findLosingTeamByPlayerId(props.matchId, loser.player._id)
+    console.log(winner);
+    // let loser
+    // if (player1.player._id === winner._id) loser = player2
+    // else loser = player1
+    // setGameLoser(loser.player)
+    // findLosingTeamByPlayerId(loser.player._id)
   }
 
-  const disableCheckboxes = () => {
-    setSeeCheckboxes(!seeCheckboxes)
-  }
+  // const disableCheckboxes = () => {
+  //   setSeeCheckboxes(!seeCheckboxes)
+  // }
 
   let gameCompleted = gameWinner !== null ? true : false
 
@@ -176,7 +161,6 @@ const SingleMatch = (props) => {
         losingPlayer: gameLoser,
         winnerGamesPlayed: winnerGamesWon,
         loserGamesPlayed: loserGamesWon,
-        matchDate: props.matchId.name,
       }
 
       if (props.number === 1) {
@@ -202,32 +186,66 @@ const SingleMatch = (props) => {
         props.match2 !== null &&
         props.match3 !== null
       )
-      props.setShowButton(!props.showButton)
-     
-      console.log("Match saved successfully!")
+        console.log("Match saved successfully!")
     } catch (error) {
       console.error("Error saving match:", error)
     }
   }
+  console.log(props?.currentMatch?.player1Wins,props?.currentMatch?.player2Wins);
 
   return (
     <>
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
-        {updatedPlayerStateWithMatchCount?.map((player, idx) => (
-          <SingleMatchPlayerLine
-            loserGames={loserGames}
-            winnerGames={winnerGames}
-            isSubmitted={isSubmitted}
-            handleSaveMatch={handleSaveMatch}
-            handleWonGame={handleWonGame}
-            gameWinner={gameWinner}
-            profile={props.profile}
-            seeCheckboxes={seeCheckboxes}
-            handleWinner={handleWinner}
-            player={player}
-            key={idx}
-          />
-        ))}
+        <div className="flex column" style={{ alignItems: "center" }}>
+          <div
+            className="flex start bracket match-width2 match-height2 green-felt"
+            style={{ width: "90%" }} //, WebkitTextStroke: '1px white', color:'black'
+          >
+            <div className="flex" style={{ width: "95%" }}>
+              <div className="start flex 1" style={{ width: "95%" }}>
+                <div className="flex 1" style={{ width: "95%" }}>
+                  <div className="flex" style={{ width: "95%" }}>
+                    <h1>
+                      {player1?.name} ({player1?.rank})
+                    </h1>
+                    <Checkboxes 
+                          //  handleSaveMatch={handleSaveMatch}
+                           handleWonGame={handleWonGame}
+                           player={updatedPlayerStateWithMatchCount[0]}
+                           profile={props.profile}
+                           playerWins={props.currentMatch?.player1Wins}
+                          //  handleWinner={handleWinner}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="flex start bracket match-width2 match-height2 green-felt"
+            style={{ width: "90%" }} //, WebkitTextStroke: '1px white', color:'black'
+          >
+            <div className="flex" style={{ width: "95%" }}>
+              <div className="start flex 1" style={{ width: "95%" }}>
+                <div className="flex 1" style={{ width: "95%" }}>
+                  <div className="flex" style={{ width: "95%" }}>
+                    <h1>
+                      {player2?.name} ({player2?.rank})
+                    </h1>
+                    <Checkboxes 
+                          //  handleSaveMatch={handleSaveMatch}
+                           handleWonGame={handleWonGame}
+                           player={updatedPlayerStateWithMatchCount[1]}
+                           playerWins={props.currentMatch?.player2Wins}
+                           profile={props.profile}
+                          //  handleWinner={handleWinner}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <button onClick={() => props.handleCancel(props.mth)}>
           Cancel this match
         </button>

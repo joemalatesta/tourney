@@ -45,40 +45,37 @@ const SingleMatchPlayerLine = ({
                 ) : (
                   <>Awaiting Player</>
                 )}
-                {gameWinner?._id === player?._id && isSubmitted === false && (
-                  <>
-                    <button onClick={handleSaveMatch}>Validate Match</button>
-                  </>
-                )}
+       
                 {gameWinner?._id === player?._id && isSubmitted === true && (
                   <>
-                    <h2 style={{ color: "red", margin: "15px" }}>WINNER</h2>
-                    <h2 style={{ color: "cornflowerblue" }} className="center">
-                      Games Won :{" "}
-                      <h1 style={{ color: "gold" }}>{winnerGames}</h1>
+                    <div style={{ color: "red", margin: "15px" }}>WINNER</div>
+                    <div style={{ color: "cornflowerblue" }} className="center">
+                      Games Won :
+                      <div style={{ color: "gold" }}>{winnerGames}</div>
                       <br />
-                    </h2>
+                    </div>
                   </>
                 )}
                 {gameWinner !== null &&
                   gameWinner?._id !== player?._id &&
                   isSubmitted === true && (
                     <>
-                      <h2
+                      <div
                         style={{ color: "cornflowerblue" }}
                         className="center"
                       >
                         Games Won :{" "}
-                        <h1 style={{ color: "gold", margin: "20px" }}>
+                        <div style={{ color: "gold", margin: "20px" }}>
                           {loserGames}
-                        </h1>
+                        </div>
                         <br />
-                      </h2>
+                      </div>
                     </>
                   )}
 
                 {seeCheckboxes && (
                   <Checkboxes
+                    handleSaveMatch={handleSaveMatch}
                     handleWonGame={handleWonGame}
                     setIsDisabled={setIsDisabled}
                     isDisabled={isDisabled}
