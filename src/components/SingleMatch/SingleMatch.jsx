@@ -97,13 +97,13 @@ const SingleMatch = (props) => {
   //   // }
   // }
 
-  // const handleWinner = async (winner) => {
-  //   console.log(winner)
-  //   // await setGameWinner(winner)
-  //   // await findLoser(winner)
-  //   // findWinningTeamByPlayerId(winner._id)
-  //   // disableCheckboxes()
-  // }
+  const handleWinner = async (winner) => {
+    console.log(winner)
+    // await setGameWinner(winner)
+    // await findLoser(winner)
+    // findWinningTeamByPlayerId(winner._id)
+    // disableCheckboxes()
+  }
 
   // const findLosingTeamByPlayerId = async (playerId) => {
   //   console.log(playerId)
@@ -224,7 +224,7 @@ const SingleMatch = (props) => {
                 match={props.currentMatch}
                 playerInfo="player1"
                 handleUpdateMatch={props.handleUpdateMatch}
-                //  handleWinner={handleWinner}
+                 handleWinner={handleWinner}
               />
             </div>
           </div>
@@ -243,7 +243,7 @@ const SingleMatch = (props) => {
                 player={updatedPlayerStateWithMatchCount[1]}
                 playerWins={props.currentMatch?.player2Wins}
                 profile={props.profile}
-                //  handleWinner={handleWinner}
+                 handleWinner={handleWinner}
                 match={props.currentMatch}
                 playerInfo="player2"
                 handleUpdateMatch={props.handleUpdateMatch}
