@@ -22,6 +22,8 @@ const SingleMatch = (props) => {
   // const [loserGames, setLoserGames] = useState()
   // const [winnerGames, setWinnerGames] = useState()
 
+  useEffect(() => {}, [player1, player2, props.currentMatch])
+
   useEffect(() => {
     const getPlayerInfo = async () => {
       await setPlayer1(props.currentMatch?.player1)
@@ -46,8 +48,6 @@ const SingleMatch = (props) => {
     }
     getGameRace()
   }, [match])
-
-  console.log(gamesNeeded)
 
   useEffect(() => {
     const addGamesNeeded = async () => {
@@ -97,13 +97,13 @@ const SingleMatch = (props) => {
   //   // }
   // }
 
-  const handleWinner = async (winner) => {
-    console.log(winner)
-    // await setGameWinner(winner)
-    // await findLoser(winner)
-    // findWinningTeamByPlayerId(winner._id)
-    // disableCheckboxes()
-  }
+  // const handleWinner = async (winner) => {
+  //   console.log(winner)
+  //   // await setGameWinner(winner)
+  //   // await findLoser(winner)
+  //   // findWinningTeamByPlayerId(winner._id)
+  //   // disableCheckboxes()
+  // }
 
   // const findLosingTeamByPlayerId = async (playerId) => {
   //   console.log(playerId)
@@ -208,16 +208,13 @@ const SingleMatch = (props) => {
       <div className={`${styles.greenFelt} ${styles.bracket}`}>
         <div className="flex column" style={{ alignItems: "center" }}>
           <div
-            className="flex bracket match-width2 match-height2 green-felt center space-between"
-            style={{ width: "90%" }}
+            className="flex start bracket match-width2 match-height2 green-felt start"
+            style={{ width: "90%" }} //, WebkitTextStroke: '1px white', color:'black'
           >
-            <div className="start">
-                <h1>
+            <h1>
               {player1?.name} ({player1?.rank})
             </h1>
-            </div>
-          
-            <div className=" end ">
+            <div className="end" style={{ width: "95%" }}>
               <Checkboxes
                 //  handleSaveMatch={handleSaveMatch}
                 handleWonGame={handleWonGame}
@@ -232,25 +229,24 @@ const SingleMatch = (props) => {
             </div>
           </div>
           <div
-            className="flex bracket match-width2 match-height2 green-felt center space-between"
-            style={{ width: "90%" }}
+            className="flex bracket match-width2 match-height2 green-felt space-around start"
+            style={{ width: "90%" }} //, WebkitTextStroke: '1px white', color:'black'
           >
-            <div className="start">
-                <h1>
+            <h1>
               {player2?.name} ({player2?.rank})
             </h1>
-            </div>
-            <div className=" end ">
+            <div className="end" style={{ width: "95%" }}>
               <Checkboxes
                 //  handleSaveMatch={handleSaveMatch}
+
                 handleWonGame={handleWonGame}
                 player={updatedPlayerStateWithMatchCount[1]}
-                profile={props.profile}
                 playerWins={props.currentMatch?.player2Wins}
+                profile={props.profile}
+                //  handleWinner={handleWinner}
                 match={props.currentMatch}
                 playerInfo="player2"
                 handleUpdateMatch={props.handleUpdateMatch}
-                //  handleWinner={handleWinner}
               />
             </div>
           </div>

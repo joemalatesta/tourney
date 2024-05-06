@@ -99,16 +99,19 @@ const ViewOneSession = (props) => {
     if (mth === "1") {
       setMatch1(null)
       await tableService.update({ ...currentMatch, match1: null })
+      await matchService.deleteOne(currentMatch?.match1?._id)
       getSession()
     }
     if (mth === "2") {
       setMatch2(null)
       await tableService.update({ ...currentMatch, match2: null })
+      await matchService.deleteOne(currentMatch?.match2?._id)
       getSession()
     }
     if (mth === "3") {
       setMatch3(null)
       await tableService.update({ ...currentMatch, match3: null })
+      await matchService.deleteOne(currentMatch?.match3?._id)
       getSession()
     }
   }

@@ -5,8 +5,6 @@ const Checkboxes = ({
   player,
   profile,
   handleWinner,
-  // handleWonGame,
-  handleSaveMatch,
   playerWins,
   match,
   playerInfo,
@@ -14,6 +12,8 @@ const Checkboxes = ({
   const [checkboxes, setCheckboxes] = useState([])
   const [checkedCheckboxes, setCheckedCheckboxes] = useState([])
   const [isDisabled, setIsDisabled] = useState(true)
+
+  useEffect(() => {}, [player, match]);
 
   useEffect(() => {
     let arr = []
@@ -23,7 +23,6 @@ const Checkboxes = ({
     setCheckedCheckboxes(arr)
   }, [playerWins, player.games])
 
-  console.log(checkedCheckboxes, player)
 
   useEffect(() => {
     if (checkedCheckboxes.every((value) => value === true)) {
@@ -105,7 +104,6 @@ const Checkboxes = ({
         <button
           onClick={() => {
             handleWinner(player)
-            handleSaveMatch()
           }}
         >
           Winner
