@@ -26,28 +26,29 @@ const SingleMatch = (props) => {
 
   useEffect(() => {
     const getPlayerInfo = async () => {
-      await setPlayer1(props.currentMatch?.player1)
-      await setPlayer2(props.currentMatch?.player2)
-    }
-    getPlayerInfo()
+      setPlayer1(props.currentMatch?.player1);
+      setPlayer2(props.currentMatch?.player2);
+    };
+    getPlayerInfo();
   }, [props.currentMatch])
 
   useEffect(() => {
     const getGameRace = async () => {
       try {
-        if (match !== undefined) {
+        if (props.currentMatch && props.currentMatch.player1 && props.currentMatch.player2) {
           const data = await gameService.getGameRace(
             props.currentMatch.player1,
             props.currentMatch.player2
-          )
-          setGamesNeeded(data)
+          );
+          setGamesNeeded(data);
         }
       } catch (error) {
-        console.error("Error fetching game race:", error)
+        console.error("Error fetching game race:", error);
       }
-    }
-    getGameRace()
-  }, [match])
+    };
+    getGameRace();
+  }, [props.currentMatch]);
+  
 
   useEffect(() => {
     const addGamesNeeded = async () => {
@@ -222,7 +223,6 @@ const SingleMatch = (props) => {
                 profile={props.profile}
                 playerWins={props.currentMatch?.player1Wins}
                 match={props.currentMatch}
-                playerInfo="player1"
                 handleUpdateMatch={props.handleUpdateMatch}
                  handleWinner={handleWinner}
               />
@@ -245,7 +245,6 @@ const SingleMatch = (props) => {
                 profile={props.profile}
                  handleWinner={handleWinner}
                 match={props.currentMatch}
-                playerInfo="player2"
                 handleUpdateMatch={props.handleUpdateMatch}
               />
             </div>

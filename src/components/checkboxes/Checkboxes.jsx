@@ -7,7 +7,6 @@ const Checkboxes = ({
   handleWinner,
   playerWins,
   match,
-  playerInfo,
 }) => {
   const [checkboxes, setCheckboxes] = useState([])
   const [checkedCheckboxes, setCheckedCheckboxes] = useState([])
@@ -23,22 +22,13 @@ const Checkboxes = ({
     setCheckedCheckboxes(arr)
   }, [playerWins, player.games])
 
-  useEffect(() => {
+  const checkForWin = () => {
     if (checkedCheckboxes.every((value) => value === true)) {
       setIsDisabled(true)
     } else {
       setIsDisabled(false)
     }
-  }, [checkedCheckboxes])
-
-  useEffect(() => {
-    let data = {
-      ...match,
-      player1Wins: checkedCheckboxes,
-      player2Wins: checkedCheckboxes,
-    }
-    matchService.update(data)
-  }, [checkedCheckboxes])
+  }
 
   useEffect(() => {
     if (playerWins?.length > 0) {
@@ -92,7 +82,18 @@ const Checkboxes = ({
     }
 
     getCheckboxes()
+    checkForWin()
+    // updateDB()
   }, [player, checkedCheckboxes])
+
+  const updateDB = () => {
+    let data = {
+      ...match,
+      player1Wins: checkedCheckboxes,
+      player2Wins: checkedCheckboxes,
+    }
+    matchService.update(data)
+  }
 
   return (
     <>
