@@ -5,14 +5,18 @@ const Checkboxes = ({
   player,
   profile,
   handleWinner,
-  playerWins,
+  player1Wins,
+  player2Wins,
   match,
+  playerInfo,
 }) => {
   const [checkboxes, setCheckboxes] = useState([])
   const [checkedCheckboxes, setCheckedCheckboxes] = useState([])
   const [isDisabled, setIsDisabled] = useState(true)
 
-  useEffect(() => {}, [player, match])
+  useEffect(() => {
+    updateDB()
+  }, [checkedCheckboxes])
 
   useEffect(() => {
     let arr = []
@@ -20,7 +24,10 @@ const Checkboxes = ({
       arr.push(false)
     }
     setCheckedCheckboxes(arr)
-  }, [playerWins, player.games])
+  }, [player1Wins, player.games, player2Wins])
+
+  console.log(checkboxes)
+  console.log(checkedCheckboxes)
 
   const checkForWin = () => {
     if (checkedCheckboxes.every((value) => value === true)) {
@@ -31,10 +38,17 @@ const Checkboxes = ({
   }
 
   useEffect(() => {
-    if (playerWins?.length > 0) {
-      setCheckedCheckboxes([...playerWins])
+    if(playerInfo === 'player1'){
+      if (player1Wins?.length > 0) {
+        setCheckedCheckboxes([...player1Wins])
+      }
     }
-  }, [playerWins, player?.games])
+    if(playerInfo === 'player2'){
+      if (player2Wins?.length > 0) {
+        setCheckedCheckboxes([...player2Wins])
+      }
+    }
+  }, [player1Wins, player?.games, player2Wins])
 
   const handleCheckboxChange = async (index) => {
     setCheckedCheckboxes((prev) => {
@@ -42,57 +56,52 @@ const Checkboxes = ({
       newChecked[index] = !newChecked[index]
       return newChecked
     })
+    await updateDB()
   }
 
   useEffect(() => {
-    const getCheckboxes = () => {
+    const getCheckboxes = async () => {
       const checkboxesArray = []
       for (let i = 0; i < (player?.games || 0); i++) {
-        const isChecked = checkedCheckboxes[i]
-        checkboxesArray.push(
+        const isChecked = await checkedCheckboxes[i]
+        await checkboxesArray.push(
           <div
             key={`${player._id}-checkbox-${i}`}
             onClick={() => handleCheckboxChange(i)}
           >
             <div
               id={`${player._id}-checkbox-${i}`}
+              className="poolballs"
               style={{
-                display: "flex",
-                width: "50px",
-                height: "50px",
-                border: "1px solid white",
-                borderRadius: "50%",
-                padding: "5px",
                 backgroundColor: isChecked ? "black" : "",
                 backgroundImage: isChecked ? "url(/9ball.png)" : "",
-                backgroundSize: "cover",
-                fontSize: "50px",
-                fontWeight: "bolder",
-                alignContent: "center",
-                alignItems: "center",
-                justifyContent: "center",
-                justifyItems: "center",
-                backgroundPosition: "center",
               }}
             ></div>
           </div>
         )
       }
-      setCheckboxes(checkboxesArray)
+      await setCheckboxes(checkboxesArray)
     }
 
     getCheckboxes()
     checkForWin()
-    // updateDB()
   }, [player, checkedCheckboxes])
 
-  const updateDB = () => {
-    let data = {
-      ...match,
-      player1Wins: checkedCheckboxes,
-      player2Wins: checkedCheckboxes,
+  const updateDB = async () => {
+    if (playerInfo === "player1") {
+      let data = await {
+        ...match,
+        player1Wins: checkedCheckboxes,
+      }
+      await matchService.update(data)
     }
-    matchService.update(data)
+    if (playerInfo === "player2") {
+      let data = {
+        ...match,
+        player2Wins: checkedCheckboxes,
+      }
+      matchService.update(data)
+    }
   }
 
   return (

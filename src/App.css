@@ -264,3 +264,20 @@ button {
 .end {
   justify-content: flex-end;
 }
+
+.poolballs {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border: 1px solid white;
+  border-radius: 50%;
+  padding: 5px;
+  background-size: cover;
+  font-size: 50px;
+  font-weight: bolder;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  background-position: center;
+}

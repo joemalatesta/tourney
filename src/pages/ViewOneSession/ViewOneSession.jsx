@@ -18,6 +18,8 @@ const ViewOneSession = (props) => {
   const [player2, setPlayer2] = useState(null)
   const [toggleSetMatch, setToggleSetMatch] = useState(true)
 
+  console.log(match1,match2,match3);
+
   useEffect(() => {
     const getSession = async () => {
       const data = await tableService.findOne(tableId)
@@ -175,9 +177,8 @@ const ViewOneSession = (props) => {
           </div>
         </div>
         {(match1 === null || match2 === null || match3 === null) &&
-          toggleSetMatch === true && (
-            <button onClick={() => handleSetPlayers()}>Set Match</button>
-          )}
+          <button onClick={() => handleSetPlayers()}>Set Match</button>
+         }
 
         <div className="bracket">
           <h2>{currentMatch?.awayTeam.teamName}</h2>
