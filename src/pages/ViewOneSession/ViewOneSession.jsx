@@ -164,7 +164,7 @@ const ViewOneSession = (props) => {
     console.log('the match was submitted here they are', currentMatch.match1, currentMatch.match2, currentMatch.match3);
   }
 
-  const allMatchesPlayed = (currentMatch?.match1.completed === true && currentMatch?.match2.completed === true && currentMatch?.match3.completed === true)
+  const allMatchesPlayed = (currentMatch?.match1?.completed === true && currentMatch?.match2?.completed === true && currentMatch?.match3?.completed === true)
 
   return (
     <>
@@ -185,7 +185,7 @@ const ViewOneSession = (props) => {
         )}
 
         {allMatchesPlayed && 
-          <button onClick={handleFinishMatch}>Hey the games are finished want to submit?</button>
+          <button onClick={handleFinishMatch}>SUBMIT MATCHES?</button>
         }
 
         <div className="bracket">
