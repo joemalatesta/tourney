@@ -226,10 +226,11 @@ const SingleMatch = (props) => {
           </div>
         </div>
       </div>
-
-      <button onClick={() => props.handleCancel(props.mth)}>
-        Cancel this match
-      </button>
+      {props.profile.accessLevel === 90 &&
+        <button onClick={() => props.handleCancel(props.mth)}>
+          Cancel this match
+        </button>
+      }
     </div>
   )
 }

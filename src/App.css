@@ -200,6 +200,10 @@ button {
   width: 225px;
 }
 
+.w700 {
+  width: 800px;
+}
+
 .margin {
   padding: 20px;
 }

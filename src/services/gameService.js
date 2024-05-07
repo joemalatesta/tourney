@@ -58,7 +58,7 @@ export function getGameRace(player1, player2) {
       if (difference >= 113) return ["10", "2"]
     }
   }
-  if(player2.rank > player1.rank){
+  if(player2.rank >= player1.rank){
     if (highest <= 39) {
       if (difference <= 10) return ["3","3"]
       else return ["2","3"]
@@ -111,6 +111,15 @@ export function getGameRace(player1, player2) {
     }
   }
 
+}
+
+
+export function getFirstPlayer(game) {
+  function compareByValue(a, b) {
+    if (a === null || b === null) return
+    return b.rank - a.rank
+  }
+  return game.sort(compareByValue)
 }
 
 // export function shufflePlayers(players) {

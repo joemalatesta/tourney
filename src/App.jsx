@@ -509,7 +509,7 @@ function App() {
           disable={isDisabled}
           path="/viewSession"
           element={
-            <ProtectedRoute access="90" profile={profile} user={user}>
+            <ProtectedRoute access="50" profile={profile} user={user}>
               <ViewSession
                 profile={profile}
                 players={players}
@@ -522,7 +522,7 @@ function App() {
           disable={isDisabled}
           path="/viewOneSession"
           element={
-            <ProtectedRoute access="90" profile={profile} user={user}>
+            <ProtectedRoute access="50" profile={profile} user={user}>
               <ViewOneSession
                 profile={profile}
                 players={players}

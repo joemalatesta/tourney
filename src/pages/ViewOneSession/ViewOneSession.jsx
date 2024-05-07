@@ -17,6 +17,7 @@ const ViewOneSession = (props) => {
   const [player1, setPlayer1] = useState(null)
   const [player2, setPlayer2] = useState(null)
   const [toggleSetMatch, setToggleSetMatch] = useState(true)
+  const [allMatchesPlayed, setAllMatchesPlayed] = useState(false)
 
   useEffect(() => {
     const getSession = async () => {
@@ -32,11 +33,13 @@ const ViewOneSession = (props) => {
       setCurrentMatch(data)
     }
     getUpdatedMatch
+
   }, [currentMatch])
 
   const handleUpdateMatch = async () => {
     const data = await matchService.findOne(currentMatch?._id)
     setCurrentMatch(data)
+
   }
 
   useEffect(() => {
@@ -164,7 +167,12 @@ const ViewOneSession = (props) => {
     console.log('the match was submitted here they are', currentMatch.match1, currentMatch.match2, currentMatch.match3);
   }
 
-  const allMatchesPlayed = (currentMatch?.match1?.completed === true && currentMatch?.match2?.completed === true && currentMatch?.match3?.completed === true)
+  useEffect(() => {
+    if(currentMatch?.match1?.completed === true && currentMatch?.match2?.completed === true && currentMatch?.match3?.completed === true){
+      setAllMatchesPlayed(true)
+    }
+  }, [currentMatch?.match1,currentMatch?.match2, currentMatch?.match3]);
+
 
   return (
     <>
