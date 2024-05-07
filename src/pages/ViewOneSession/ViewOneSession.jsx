@@ -18,8 +18,6 @@ const ViewOneSession = (props) => {
   const [player2, setPlayer2] = useState(null)
   const [toggleSetMatch, setToggleSetMatch] = useState(true)
 
-  console.log(match1,match2,match3);
-
   useEffect(() => {
     const getSession = async () => {
       const data = await tableService.findOne(tableId)
@@ -176,9 +174,9 @@ const ViewOneSession = (props) => {
             />
           </div>
         </div>
-        {(match1 === null || match2 === null || match3 === null) &&
+        {(match1 === null || match2 === null || match3 === null) && (
           <button onClick={() => handleSetPlayers()}>Set Match</button>
-         }
+        )}
 
         <div className="bracket">
           <h2>{currentMatch?.awayTeam.teamName}</h2>
@@ -197,6 +195,8 @@ const ViewOneSession = (props) => {
         <>
           <h2 className="center">Match 3</h2>
           <SingleMatch
+            player1={currentMatch?.match3?.player1}
+            player2={currentMatch?.match3?.player2}
             handleUpdateMatch={handleUpdateMatch}
             player1Wins={currentMatch.match3?.player1Wins}
             player2Wins={currentMatch.match3?.player2Wins}
@@ -212,14 +212,16 @@ const ViewOneSession = (props) => {
         <>
           <h2 className="center">Match 2</h2>
           <SingleMatch
-            handleUpdateMatch={handleUpdateMatch}
-            player1Wins={currentMatch.match2?.player1Wins}
-            player2Wins={currentMatch.match2?.player2Wins}
-            currentMatch={currentMatch.match2}
+            player1={currentMatch?.match2?.player1}
+            player2={currentMatch?.match2?.player2}
+            handleUpdateMatch={handleUpdateMatch}           
+            player1Wins={currentMatch.match2?.player1Wins}  
+            player2Wins={currentMatch.match2?.player2Wins}    p
+            currentMatch={currentMatch.match2} 
             profile={props.profile}
             handleCancel={handleCancel}
-            match={match2}
-            mth="2"
+            match={match2}   
+            mth="2" 
           />
         </>
       )}
