@@ -205,6 +205,7 @@ const ViewOneSession = (props) => {
             handleCancel={handleCancel}
             match={match3}
             mth="3"
+            key="3"
           />
         </>
       )}
@@ -214,14 +215,16 @@ const ViewOneSession = (props) => {
           <SingleMatch
             player1={currentMatch?.match2?.player1}
             player2={currentMatch?.match2?.player2}
-            handleUpdateMatch={handleUpdateMatch}           
-            player1Wins={currentMatch.match2?.player1Wins}  
-            player2Wins={currentMatch.match2?.player2Wins}    p
-            currentMatch={currentMatch.match2} 
+            handleUpdateMatch={handleUpdateMatch}
+            player1Wins={currentMatch.match2?.player1Wins}
+            player2Wins={currentMatch.match2?.player2Wins}
+            p
+            currentMatch={currentMatch.match2}
             profile={props.profile}
             handleCancel={handleCancel}
-            match={match2}   
-            mth="2" 
+            match={match2}
+            mth="2"
+            key="2"
           />
         </>
       )}
@@ -239,6 +242,7 @@ const ViewOneSession = (props) => {
             handleCancel={handleCancel}
             match={match1}
             mth="1"
+            Key="1"
           />
         </>
       )}

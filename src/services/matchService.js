@@ -24,7 +24,7 @@ async function index() {
 }
 
 async function update(match) {
-  if(match !== undefined ) {
+  if (match !== undefined) {
     const res = await fetch(`${BASE_URL}/${match._id}`, {
       method: "PUT",
       headers: {
@@ -48,7 +48,7 @@ async function deleteOne(id) {
 }
 
 async function findOne(id) {
-  console.log('*************************',id);
+  console.log("*************************", id)
   if (id === null || id === undefined) return
   try {
     const res = await fetch(BASE_URL + `/${id}`)

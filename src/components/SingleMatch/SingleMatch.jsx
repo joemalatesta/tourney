@@ -9,8 +9,11 @@ const SingleMatch = (props) => {
   const [checkedPlayer2Checkboxes, setCheckedPlayer2Checkboxes] = useState([])
   const [isPlayer1Winner, setIsPlayer1Winner] = useState(false)
   const [isPlayer2Winner, setIsPlayer2Winner] = useState(false)
-
-  console.log(props.currentMatch)
+  const [gameEnded, setGameEnded] = useState(props.currentMatch?.completed)
+  const [winningPlayer, setWinningPlayer] = useState(
+    props?.currentMatch?.winningPlayer
+  )
+  console.log(checkedPlayer1Checkboxes)
 
   useEffect(() => {
     if (
@@ -52,7 +55,12 @@ const SingleMatch = (props) => {
   }, [props.currentMatch])
 
   useEffect(() => {
-    if (gamesNeeded.length >= 2 && props.currentMatch.player1Wins.length < 1 && props.currentMatch.player2Wins.length < 1) {
+    if (
+      gamesNeeded.length >= 2 &&
+      props.currentMatch.player1Wins.length < 1 &&
+      props.currentMatch.player2Wins.length < 1 &&
+      !gameEnded
+    ) {
       setCheckedPlayer1Checkboxes(Array(parseInt(gamesNeeded[0])).fill(false))
       setCheckedPlayer2Checkboxes(Array(parseInt(gamesNeeded[1])).fill(false))
     }
@@ -97,10 +105,44 @@ const SingleMatch = (props) => {
     })
   }
 
-  const handleWinner = (winner) => {
-    console.log("Winner:", winner)
+  const handleWinner = async (player) => {
+    let data
+    if (player === 1) {
+      setWinningPlayer(props.currentMatch.player1)
+      data = {
+        ...props.currentMatch,
+        winningPlayer: props.currentMatch.player1,
+        losingPlayer: props.currentMatch.player2,
+        completed: true,
+        player1Wins: [
+          checkedPlayer1Checkboxes.filter((el) => el === true).length,
+        ],
+        player2Wins: [
+          checkedPlayer2Checkboxes.filter((el) => el === true).length,
+        ],
+      }
+    }
+    if (player === 2) {
+      setWinningPlayer(props.currentMatch.player2)
+      data = {
+        ...props.currentMatch,
+        winningPlayer: props.currentMatch.player2,
+        losingPlayer: props.currentMatch.player1,
+        completed: true,
+        player1Wins: [
+          checkedPlayer1Checkboxes.filter((el) => el === true).length,
+        ],
+        player2Wins: [
+          checkedPlayer2Checkboxes.filter((el) => el === true).length,
+        ],
+      }
+    }
+    console.log("we have hit the data in the update match function", data)
+    await matchService.update(data)
+    setGameEnded(true)
+    // await updateDB(checkedPlayer1Checkboxes, checkedPlayer2Checkboxes)
   }
-
+  
   return (
     <div className={styles.bracket}>
       <div className="flex column" style={{ alignItems: "center" }}>
@@ -112,31 +154,42 @@ const SingleMatch = (props) => {
             {props.currentMatch?.player1?.name} (
             {props.currentMatch?.player1?.rank})
           </h1>
-          <div className="end" style={{ width: "95%" }}>
-            {checkedPlayer1Checkboxes.map((isChecked, index) => (
-              <div
-                key={`checkbox-player1-${index}`}
-                onClick={() => handleCheckboxChangePlayer1(index)}
-              >
-                <div
-                  className="poolballs"
-                  style={{
-                    backgroundColor: isChecked ? "black" : "",
-                    backgroundImage: isChecked ? "url(/9ball.png)" : "",
-                  }}
-                />
-              </div>
-            ))}
-            {props.profile.accessLevel >= 40 && isPlayer1Winner && (
-              <button onClick={() => handleWinner(props.currentMatch.player1)}>
-                Winner
-              </button>
+          {!gameEnded && (
+            <div className="end" style={{ width: "95%" }}>
+              {checkedPlayer1Checkboxes.map(
+                (isChecked, index) =>
+                  !gameEnded && (
+                    <div
+                      key={`checkbox-player1-${index}`}
+                      onClick={() => handleCheckboxChangePlayer1(index)}
+                    >
+                      <div
+                        className="poolballs"
+                        style={{
+                          backgroundColor: isChecked ? "black" : "",
+                          backgroundImage: isChecked ? "url(/9ball.png)" : "",
+                        }}
+                      />
+                    </div>
+                  )
+              )}
+              {props.profile.accessLevel >= 40 &&
+                isPlayer1Winner &&
+                !gameEnded && (
+                  <button onClick={() => handleWinner(1)}>Winner</button>
+                )}
+            </div>
+          )}
+          { winningPlayer?._id === props.currentMatch?.player1._id &&
+            gameEnded && (
+              <h1 className="end" style={{ width: "95%" }}>
+                Winner <br />
+              </h1>
             )}
-          </div>
+          {gameEnded && <h2 className="end" style={{ width: "95%" }}>Games Won: {checkedPlayer1Checkboxes.filter((el) => el === true).length || props.currentMatch.player1Wins}</h2>}
         </div>
-
         <div
-          className="flex start bracket match-width2 match-height2 green-felt space-around start"
+          className="flex start bracket match-width2 match-height2 green-felt start"
           style={{ width: "90%" }}
         >
           <h1>
@@ -144,25 +197,34 @@ const SingleMatch = (props) => {
             {props.currentMatch?.player2?.rank})
           </h1>
           <div className="end" style={{ width: "95%" }}>
-            {checkedPlayer2Checkboxes.map((isChecked, index) => (
-              <div
-                key={`checkbox-player2-${index}`}
-                onClick={() => handleCheckboxChangePlayer2(index)}
-              >
-                <div
-                  className="poolballs"
-                  style={{
-                    backgroundColor: isChecked ? "black" : "",
-                    backgroundImage: isChecked ? "url(/9ball.png)" : "",
-                  }}
-                />
-              </div>
-            ))}
-            {props.profile.accessLevel >= 40 && isPlayer2Winner && (
-              <button onClick={() => handleWinner(props.currentMatch.player2)}>
-                Winner
-              </button>
+            {checkedPlayer2Checkboxes.map(
+              (isChecked, index) =>
+                !gameEnded && (
+                  <div
+                    key={`checkbox-player2-${index}`}
+                    onClick={() => handleCheckboxChangePlayer2(index)}
+                  >
+                    <div
+                      className="poolballs"
+                      style={{
+                        backgroundColor: isChecked ? "black" : "",
+                        backgroundImage: isChecked ? "url(/9ball.png)" : "",
+                      }}
+                    />
+                  </div>
+                )
             )}
+            {props.profile.accessLevel >= 40 &&
+              isPlayer2Winner &&
+              !gameEnded && (
+                <button onClick={() => handleWinner(2)}>Winner</button>
+              )}
+            {isPlayer2Winner && gameEnded && (
+                <h1 className="end" style={{ width: "95%" }}>
+                  Winner 
+                </h1>
+              )}
+            {gameEnded && <h2 className="end" style={{ width: "95%" }}>Games Won: {checkedPlayer2Checkboxes.filter((el) => el === true).length || props.currentMatch.player2Wins}</h2>}
           </div>
         </div>
       </div>
