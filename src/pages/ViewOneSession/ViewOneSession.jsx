@@ -160,6 +160,12 @@ const ViewOneSession = (props) => {
 
   const handleSubmitMatch = async () => {}
 
+  const handleFinishMatch = () => {
+    console.log('the match was submitted here they are', currentMatch.match1, currentMatch.match2, currentMatch.match3);
+  }
+
+  const allMatchesPlayed = (currentMatch?.match1.completed === true && currentMatch?.match2.completed === true && currentMatch?.match3.completed === true)
+
   return (
     <>
       <div className="row center space-around">
@@ -177,6 +183,10 @@ const ViewOneSession = (props) => {
         {(match1 === null || match2 === null || match3 === null) && (
           <button onClick={() => handleSetPlayers()}>Set Match</button>
         )}
+
+        {allMatchesPlayed && 
+          <button onClick={handleFinishMatch}>Hey the games are finished want to submit?</button>
+        }
 
         <div className="bracket">
           <h2>{currentMatch?.awayTeam.teamName}</h2>

@@ -13,7 +13,6 @@ const SingleMatch = (props) => {
   const [winningPlayer, setWinningPlayer] = useState(
     props?.currentMatch?.winningPlayer
   )
-  console.log(checkedPlayer1Checkboxes)
 
   useEffect(() => {
     if (
@@ -137,7 +136,6 @@ const SingleMatch = (props) => {
         ],
       }
     }
-    console.log("we have hit the data in the update match function", data)
     await matchService.update(data)
     setGameEnded(true)
     // await updateDB(checkedPlayer1Checkboxes, checkedPlayer2Checkboxes)
