@@ -4,24 +4,17 @@ import * as matchService from "../../services/matchService";
 import * as styles from "./SingleMatch.module.css";
 
 const SingleMatch = (props) => {
-  const [match, setMatch] = useState(props.match);
   const [gamesNeeded, setGamesNeeded] = useState([]);
-  const [player1, setPlayer1] = useState(null);
-  const [player2, setPlayer2] = useState(null);
-  const [player1Checkboxes, setPlayer1Checkboxes] = useState([]);
-  const [player2Checkboxes, setPlayer2Checkboxes] = useState([]);
   const [checkedPlayer1Checkboxes, setCheckedPlayer1Checkboxes] = useState([]);
   const [checkedPlayer2Checkboxes, setCheckedPlayer2Checkboxes] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isPlayer1Winner, setIsPlayer1Winner] = useState(false);
+  const [isPlayer2Winner, setIsPlayer2Winner] = useState(false);
 
   // Fetch game race and update games needed
   useEffect(() => {
     const getGameRace = async () => {
       try {
-        if (
-          props.currentMatch?.player1 &&
-          props.currentMatch?.player2
-        ) {
+        if (props.currentMatch?.player1 && props.currentMatch?.player2) {
           const data = await gameService.getGameRace(
             props.currentMatch.player1,
             props.currentMatch.player2
@@ -44,62 +37,36 @@ const SingleMatch = (props) => {
     }
   }, [gamesNeeded]);
 
-  // Update checkboxes based on changes in state
-  useEffect(() => {
-    const createCheckboxes = (checkedCheckboxes, handleChange) => {
-      return checkedCheckboxes.map((isChecked, index) => (
-        <div key={`checkbox-${index}`} onClick={() => handleChange(index)}>
-          <div
-            className="poolballs"
-            style={{
-              backgroundColor: isChecked ? "black" : "",
-              backgroundImage: isChecked ? "url(/9ball.png)" : "",
-            }}
-          />
-        </div>
-      ));
-    };
+  // Check for win immediately after updating checkbox state
+  const checkForWin = (checkedPlayer1, checkedPlayer2) => {
+    const player1Wins = checkedPlayer1.every((el) => el); // All checkboxes checked
+    const player2Wins = checkedPlayer2.every((el) => el); // All checkboxes checked
 
-    setPlayer1Checkboxes(createCheckboxes(checkedPlayer1Checkboxes, handleCheckboxChangePlayer1));
-    setPlayer2Checkboxes(createCheckboxes(checkedPlayer2Checkboxes, handleCheckboxChangePlayer2));
-  }, [checkedPlayer1Checkboxes, checkedPlayer2Checkboxes]);
+    setIsPlayer1Winner(player1Wins);
+    setIsPlayer2Winner(player2Wins);
+  };
 
-  // Handle checkbox changes
   const handleCheckboxChangePlayer1 = (index) => {
     setCheckedPlayer1Checkboxes((prev) => {
       const updated = [...prev];
       updated[index] = !updated[index];
+      checkForWin(updated, checkedPlayer2Checkboxes);
       return updated;
     });
-
-    checkForWin();
-    // updateDB();
   };
 
   const handleCheckboxChangePlayer2 = (index) => {
     setCheckedPlayer2Checkboxes((prev) => {
       const updated = [...prev];
       updated[index] = !updated[index];
+      checkForWin(checkedPlayer1Checkboxes, updated);
       return updated;
     });
-
-    checkForWin();
-    // updateDB();
   };
 
-  const checkForWin = () => {
-    const allCheckedPlayer1 = checkedPlayer1Checkboxes.every((isChecked) => isChecked);
-    const allCheckedPlayer2 = checkedPlayer2Checkboxes.every((isChecked) => isChecked);
-    setIsDisabled(!(allCheckedPlayer1 || allCheckedPlayer2)); // Winner if all checkboxes checked
-  };
-
-  const updateDB = () => {
-    matchService.update({
-      ...match,
-      player1Wins: checkedPlayer1Checkboxes,
-      player2Wins: checkedPlayer2Checkboxes,
-    });
-  };
+  const handleWinner = (winner) => {
+    console.log(winner);
+  }
 
   return (
     <div className={styles.bracket}>
@@ -108,29 +75,67 @@ const SingleMatch = (props) => {
           className="flex start bracket match-width2 match-height2 green-felt start"
           style={{ width: "90%" }}
         >
-          <h1>{props.currentMatch?.player1?.name} ({props.currentMatch?.player1?.rank})</h1>
+          <h1>
+            {props.currentMatch?.player1?.name} (
+            {props.currentMatch?.player1?.rank})
+          </h1>
           <div className="end" style={{ width: "95%" }}>
-            {player1Checkboxes}
-            {props.profile.accessLevel >= 40 && !isDisabled && (
-              <button onClick={() => props.handleWinner(player1)}>Winner</button>
+            {checkedPlayer1Checkboxes.map((isChecked, index) => (
+              <div
+                key={`checkbox-player1-${index}`}
+                onClick={() => handleCheckboxChangePlayer1(index)}
+              >
+                <div
+                  className="poolballs"
+                  style={{
+                    backgroundColor: isChecked ? "black" : "",
+                    backgroundImage: isChecked ? "url(/9ball.png)" : "",
+                  }}
+                />
+              </div>
+            ))}
+
+            {props.profile.accessLevel >= 40 && isPlayer1Winner && (
+              <button onClick={() => handleWinner(props.currentMatch.player1)}>
+                Winner
+              </button>
             )}
           </div>
         </div>
-        
+
         <div
           className="flex start bracket match-width2 match-height2 green-felt space-around start"
           style={{ width: "90%" }}
         >
-          <h1>{props.currentMatch?.player2?.name} ({props.currentMatch?.player2?.rank})</h1>
+          <h1>
+            {props.currentMatch?.player2?.name} (
+            {props.currentMatch?.player2?.rank})
+          </h1>
           <div className="end" style={{ width: "95%" }}>
-            {player2Checkboxes}
-            {props.profile.accessLevel >= 40 && !isDisabled && (
-              <button onClick={() => props.handleWinner(player2)}>Winner</button>
+            {checkedPlayer2Checkboxes.map((isChecked, index) => (
+              <div
+                key={`checkbox-player2-${index}`}
+                onClick={() => handleCheckboxChangePlayer2(index)}
+              >
+                <div
+                  className="poolballs"
+                  style={{
+                    backgroundColor: isChecked ? "black" : "",
+                    backgroundImage: isChecked ? "url(/9ball.png)" : "",
+                  }}
+                />
+              </div>
+            ))}
+
+            {props.profile.accessLevel >= 40 && isPlayer2Winner && (
+              <button onClick={() => handleWinner(props.currentMatch.player2)}>
+                Winner
+              </button>
             )}
           </div>
         </div>
       </div>
-      
+
       <button onClick={() => props.handleCancel(props.mth)}>Cancel this match</button>
     </div>
   );
@@ -139,15 +144,7 @@ const SingleMatch = (props) => {
 export default SingleMatch;
 
 
-
-
-
-
-
-
-
-
-
+//*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************** */
 
 // import { useState, useEffect } from "react"
 
@@ -190,7 +187,6 @@ export default SingleMatch;
 //     setCheckedPlayer1Checkboxes(arr1)
 //     setCheckedPlayer2Checkboxes(arr2)
 //   }, [props.currentMatch?.player1Wins, player1?.games, player2?.games, props.currentMatch?.player2Wins])
-
 
 //   const checkForWin = () => {
 //     if (checkedPlayer1Checkboxes.every((value) => value === true)) {
@@ -264,7 +260,6 @@ export default SingleMatch;
 //     }
 //     getPlayerInfo()
 //   }, [props.currentMatch])
-
 
 //   useEffect(() => {
 //     const getGameRace = async () => {
@@ -398,135 +393,135 @@ export default SingleMatch;
 
 // export default SingleMatch
 
-  // useEffect(() => {
-  //   if(playerInfo === 'player1'){
-  //     if (player1Wins?.length > 0) {
-  //       setCheckedCheckboxes([...player1Wins])
-  //     }
-  //   }
-  //   if(playerInfo === 'player2'){
-  //     if (player2Wins?.length > 0) {
-  //       setCheckedCheckboxes([...player2Wins])
-  //     }
-  //   }
-  // }, [player1Wins, player?.games, player2Wins])
+// useEffect(() => {
+//   if(playerInfo === 'player1'){
+//     if (player1Wins?.length > 0) {
+//       setCheckedCheckboxes([...player1Wins])
+//     }
+//   }
+//   if(playerInfo === 'player2'){
+//     if (player2Wins?.length > 0) {
+//       setCheckedCheckboxes([...player2Wins])
+//     }
+//   }
+// }, [player1Wins, player?.games, player2Wins])
 
-  // const findWinningTeamByPlayerId = async (playerId) => {
-  //   console.log(playerId)
-  //   // let team
-  //   // for (const match of props.currentMatch.awayTeam.teamPlayers) {
-  //   //   if (match.includes(playerId)) {
-  //   //     team = props.currentMatch.awayTeam
-  //   //     await setWinningTeam(team)
-  //   //     return team
-  //   //   }
-  //   // }
-  //   // for (const match of props.currentMatch.homeTeam.teamPlayers) {
-  //   //   if (match.includes(playerId)) {
-  //   //     team = props.currentMatch.homeTeam
-  //   //     await setWinningTeam(team)
-  //   //     return team
-  //   //   }
-  //   // }
-  // } 
-   // const findLosingTeamByPlayerId = async (playerId) => {
-  //   console.log(playerId)
-  //   // let team
-  //   // for (const match of props.currentMatch.awayTeam.teamPlayers) {
-  //   //   if (match.includes(playerId)) {
-  //   //     team = props.currentMatch.awayTeam
-  //   //     await setLosingTeam(team)
-  //   //     return team
-  //   //   }
-  //   // }
-  //   // for (const match of props.currentMatch.homeTeam.teamPlayers) {
-  //   //   if (match.includes(playerId)) {
-  //   //     team = props.currentMatch.homeTeam
-  //   //     await setLosingTeam(team)
-  //   //     return team
-  //   //   }
-  //   // }
-  // }
+// const findWinningTeamByPlayerId = async (playerId) => {
+//   console.log(playerId)
+//   // let team
+//   // for (const match of props.currentMatch.awayTeam.teamPlayers) {
+//   //   if (match.includes(playerId)) {
+//   //     team = props.currentMatch.awayTeam
+//   //     await setWinningTeam(team)
+//   //     return team
+//   //   }
+//   // }
+//   // for (const match of props.currentMatch.homeTeam.teamPlayers) {
+//   //   if (match.includes(playerId)) {
+//   //     team = props.currentMatch.homeTeam
+//   //     await setWinningTeam(team)
+//   //     return team
+//   //   }
+//   // }
+// }
+// const findLosingTeamByPlayerId = async (playerId) => {
+//   console.log(playerId)
+//   // let team
+//   // for (const match of props.currentMatch.awayTeam.teamPlayers) {
+//   //   if (match.includes(playerId)) {
+//   //     team = props.currentMatch.awayTeam
+//   //     await setLosingTeam(team)
+//   //     return team
+//   //   }
+//   // }
+//   // for (const match of props.currentMatch.homeTeam.teamPlayers) {
+//   //   if (match.includes(playerId)) {
+//   //     team = props.currentMatch.homeTeam
+//   //     await setLosingTeam(team)
+//   //     return team
+//   //   }
+//   // }
+// }
 
-  // const findLoser = (winner) => {
-  //   console.log(winner)
-  //   // let loser
-  //   // if (player1.player._id === winner._id) loser = player2
-  //   // else loser = player1
-  //   // setGameLoser(loser.player)
-  //   // findLosingTeamByPlayerId(loser.player._id)
-  // }
+// const findLoser = (winner) => {
+//   console.log(winner)
+//   // let loser
+//   // if (player1.player._id === winner._id) loser = player2
+//   // else loser = player1
+//   // setGameLoser(loser.player)
+//   // findLosingTeamByPlayerId(loser.player._id)
+// }
 
-  // const disableCheckboxes = () => {
-  //   setSeeCheckboxes(!seeCheckboxes)
-  // }
+// const disableCheckboxes = () => {
+//   setSeeCheckboxes(!seeCheckboxes)
+// }
 
-  // let gameCompleted = gameWinner !== null ? true : false
+// let gameCompleted = gameWinner !== null ? true : false
 
-  // const extractGamesInfo = () => {
-  //   const winner = gameWinner !== null ? gameWinner : null
-  //   const loser = gameLoser !== null ? gameLoser : null
+// const extractGamesInfo = () => {
+//   const winner = gameWinner !== null ? gameWinner : null
+//   const loser = gameLoser !== null ? gameLoser : null
 
-  //   const winnerGamesWon = winner
-  //     ? winner._id === player1.player._id
-  //       ? player1.gamesWon
-  //       : player2.gamesWon
-  //     : null
-  //   const loserGamesWon = loser
-  //     ? loser._id === player1.player._id
-  //       ? player1.gamesWon
-  //       : player2.gamesWon
-  //     : null
-  //   setWinnerGames(winnerGamesWon)
-  //   setLoserGames(loserGamesWon)
+//   const winnerGamesWon = winner
+//     ? winner._id === player1.player._id
+//       ? player1.gamesWon
+//       : player2.gamesWon
+//     : null
+//   const loserGamesWon = loser
+//     ? loser._id === player1.player._id
+//       ? player1.gamesWon
+//       : player2.gamesWon
+//     : null
+//   setWinnerGames(winnerGamesWon)
+//   setLoserGames(loserGamesWon)
 
-  //   return { winnerGamesWon, loserGamesWon }
-  // }
+//   return { winnerGamesWon, loserGamesWon }
+// }
 
-  // const handleSaveMatch = async () => {
-  //   setIsSubmitted(!isSubmitted)
-  //   try {
-  //     const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
-  //     const gameData = {
-  //       completed: gameCompleted,
-  //       confirmed: false,
-  //       winningTeam: winningTeam,
-  //       losingTeam: losingTeam,
-  //       winningPlayer: gameWinner,
-  //       losingPlayer: gameLoser,
-  //       winnerGamesPlayed: winnerGamesWon,
-  //       loserGamesPlayed: loserGamesWon,
-  //     }
+// const handleSaveMatch = async () => {
+//   setIsSubmitted(!isSubmitted)
+//   try {
+//     const { winnerGamesWon, loserGamesWon } = extractGamesInfo()
+//     const gameData = {
+//       completed: gameCompleted,
+//       confirmed: false,
+//       winningTeam: winningTeam,
+//       losingTeam: losingTeam,
+//       winningPlayer: gameWinner,
+//       losingPlayer: gameLoser,
+//       winnerGamesPlayed: winnerGamesWon,
+//       loserGamesPlayed: loserGamesWon,
+//     }
 
-  //     if (props.number === 1) {
-  //       props.setCompleteMatch((prevCompleteMatch) => ({
-  //         ...prevCompleteMatch,
-  //         match1: gameData,
-  //       }))
-  //     }
-  //     if (props.number === 2) {
-  //       props.setCompleteMatch((prevCompleteMatch) => ({
-  //         ...prevCompleteMatch,
-  //         match2: gameData,
-  //       }))
-  //     }
-  //     if (props.number === 3) {
-  //       props.setCompleteMatch((prevCompleteMatch) => ({
-  //         ...prevCompleteMatch,
-  //         match3: gameData,
-  //       }))
-  //     }
-  //     if (
-  //       props.match1 !== null &&
-  //       props.match2 !== null &&
-  //       props.match3 !== null
-  //     )
-  //       console.log("Match saved successfully!")
-  //   } catch (error) {
-  //     console.error("Error saving match:", error)
-  //   }
-  // }  
-  // const [gameWinner, setGameWinner] = useState(null)
-  // const [gameLoser, setGameLoser] = useState(null)
-  // const [winningTeam, setWinningTeam] = useState(null)
-  // const [losingTeam, setLosingTeam] = useState(null)
+//     if (props.number === 1) {
+//       props.setCompleteMatch((prevCompleteMatch) => ({
+//         ...prevCompleteMatch,
+//         match1: gameData,
+//       }))
+//     }
+//     if (props.number === 2) {
+//       props.setCompleteMatch((prevCompleteMatch) => ({
+//         ...prevCompleteMatch,
+//         match2: gameData,
+//       }))
+//     }
+//     if (props.number === 3) {
+//       props.setCompleteMatch((prevCompleteMatch) => ({
+//         ...prevCompleteMatch,
+//         match3: gameData,
+//       }))
+//     }
+//     if (
+//       props.match1 !== null &&
+//       props.match2 !== null &&
+//       props.match3 !== null
+//     )
+//       console.log("Match saved successfully!")
+//   } catch (error) {
+//     console.error("Error saving match:", error)
+//   }
+// }
+// const [gameWinner, setGameWinner] = useState(null)
+// const [gameLoser, setGameLoser] = useState(null)
+// const [winningTeam, setWinningTeam] = useState(null)
+// const [losingTeam, setLosingTeam] = useState(null)
