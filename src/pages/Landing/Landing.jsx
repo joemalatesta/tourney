@@ -1,5 +1,5 @@
 import * as styles from "./Landing.module.css"
-import * as chart from "../../../public/matchSkillLevels"
+import * as chart from "../../services/matchSkillLevels"
 
 const Landing = ({ profile }) => {
   return (
