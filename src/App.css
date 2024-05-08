@@ -160,7 +160,7 @@ a:visited {
 } */
 
 .green-felt2 {
-  background-image: url("../public/felt.jpg");
+  background-image: url("/felt.jpg");
   background-size: 200px;
   background-position: center;
   border-radius: 8px;
@@ -169,7 +169,7 @@ a:visited {
 }
 
 .blue-felt {
-  background-image: url("../public/blue-felt.jpeg");
+  background-image: url("/blue-felt.jpeg");
   background-size: 200px;
   background-position: center;
   border-radius: 8px;
