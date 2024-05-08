@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
-import { playerData } from "../../../public/playerData.js"
-
+import { playerData } from "../../services/playerData.js"
 import AdminAddProfileToPlayer from "../../components/AdminAddProfileToPlayer/AdminAddProfileToPlayer.jsx"
 import AdminCreate from "../../components/Create/AdminCreate"
 import Approvals from "../../components/Approvals/UserApprovals"
