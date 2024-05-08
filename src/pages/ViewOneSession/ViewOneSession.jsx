@@ -17,7 +17,8 @@ const ViewOneSession = (props) => {
   const [player1, setPlayer1] = useState(null)
   const [player2, setPlayer2] = useState(null)
   const [toggleSetMatch, setToggleSetMatch] = useState(true)
-  const [allMatchesPlayed, setAllMatchesPlayed] = useState(false)
+  const [homeTeamName, setHomeTeamName] = useState(currentMatch?.homeTeamApproval?.firstName)
+  const [awayteamName, setAwayTeamName] = useState(currentMatch?.awayTeamApproval?.firstName)
 
   useEffect(() => {
     const getSession = async () => {
@@ -33,14 +34,16 @@ const ViewOneSession = (props) => {
       setCurrentMatch(data)
     }
     getUpdatedMatch
-
+    setHomeTeamName(`${currentMatch?.homeTeamApproval?.firstName} ${currentMatch?.homeTeamApproval?.lastName}`);
+    setAwayTeamName(`${currentMatch?.awayTeamApproval?.firstName} ${currentMatch?.awayTeamApproval?.lastName}`);
   }, [currentMatch])
 
   const handleUpdateMatch = async () => {
     const data = await matchService.findOne(currentMatch?._id)
     setCurrentMatch(data)
-
   }
+
+  console.log(homeTeamName, awayteamName);
 
   useEffect(() => {
     const setToggle = () => {
@@ -163,16 +166,28 @@ const ViewOneSession = (props) => {
 
   const handleSubmitMatch = async () => {}
 
-  const handleFinishMatch = () => {
-    console.log('the match was submitted here they are', currentMatch.match1, currentMatch.match2, currentMatch.match3);
-  }
-
-  useEffect(() => {
-    if(currentMatch?.match1?.completed === true && currentMatch?.match2?.completed === true && currentMatch?.match3?.completed === true){
-      setAllMatchesPlayed(true)
+  const handleFinishMatch = async (team) => {
+    if (team === "home") {
+      let data = { ...currentMatch, homeTeamApproval: props?.profile }
+      await tableService.update(data)
+      await setHomeTeamName(`${props.profile.firstName} ${props.profile.lastName}`)
     }
-  }, [currentMatch?.match1,currentMatch?.match2, currentMatch?.match3]);
-
+    if (team === "away") {
+      let data = { ...currentMatch, awayTeamApproval: props?.profile }
+      await tableService.update(data)
+      await setAwayTeamName(`${props.profile.firstName} ${props.profile.lastName}`)
+    }
+    console.log(props.profile)
+    console.log(props.profile)
+    console.log(props.profile)
+    console.log(
+      "the match was submitted here they are",
+      currentMatch.match1,
+      currentMatch.match2,
+      currentMatch.match3
+    )
+   
+  }
 
   return (
     <>
@@ -187,14 +202,18 @@ const ViewOneSession = (props) => {
               handleChoosePlayer={handleChoosePlayer}
             />
           </div>
+          {currentMatch?.match1 !== null && currentMatch?.match2 !== null && currentMatch?.match3 !== null && currentMatch?.homeTeamApproval === null &&(
+            <button onClick={() => handleFinishMatch("home")}>
+              Home team approval
+            </button>
+          )}
+          { currentMatch?.homeTeamApproval !== null &&
+            <h1>Approved by <br/>{homeTeamName}</h1>
+          }
         </div>
         {(match1 === null || match2 === null || match3 === null) && (
           <button onClick={() => handleSetPlayers()}>Set Match</button>
         )}
-
-        {allMatchesPlayed && 
-          <button onClick={handleFinishMatch}>SUBMIT MATCHES?</button>
-        }
 
         <div className="bracket">
           <h2>{currentMatch?.awayTeam.teamName}</h2>
@@ -206,6 +225,14 @@ const ViewOneSession = (props) => {
               handleChoosePlayer={handleChoosePlayer}
             />
           </div>
+          {currentMatch?.match1 !== null && currentMatch?.match2 !== null && currentMatch?.match3 !== null && currentMatch?.awayTeamApproval === null &&(
+            <button onClick={() => handleFinishMatch("away")}>
+              Away team approval
+            </button>
+          )}
+                    { currentMatch?.awayTeamApproval !== null &&
+            <h1>Approved by <br/>{awayteamName}</h1>
+          }
         </div>
       </div>
 
