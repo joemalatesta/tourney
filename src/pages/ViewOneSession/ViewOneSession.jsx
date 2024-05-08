@@ -43,8 +43,6 @@ const ViewOneSession = (props) => {
     setCurrentMatch(data)
   }
 
-  console.log(homeTeamName, awayteamName);
-
   useEffect(() => {
     const setToggle = () => {
       if (
@@ -177,16 +175,6 @@ const ViewOneSession = (props) => {
       await tableService.update(data)
       await setAwayTeamName(`${props.profile.firstName} ${props.profile.lastName}`)
     }
-    console.log(props.profile)
-    console.log(props.profile)
-    console.log(props.profile)
-    console.log(
-      "the match was submitted here they are",
-      currentMatch.match1,
-      currentMatch.match2,
-      currentMatch.match3
-    )
-   
   }
 
   return (

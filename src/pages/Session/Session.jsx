@@ -25,7 +25,6 @@ const Session = () => {
   }, [])
 
   const handleShowMatch = (match) => {
-    console.log(match);
     const state = {
       tableId: match._id,
       sessionId: sessionId,
@@ -36,7 +35,7 @@ const Session = () => {
   }
 
   const handleShow = (sched) => {
-    console.log(sched)
+   
 
     setView(
       <>
