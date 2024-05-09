@@ -164,7 +164,6 @@ const CreateMatchForSession = (props) => {
       <br />
       <br />
       <button onClick={handleNavigateToSession}>To Sessions</button>
-      <button onClick={handleSubmitToSchedule}>submit session</button>
       {completedForm && (
         <button onClick={() => handleSubmitToSchedule()}>
           Submit to Schedule

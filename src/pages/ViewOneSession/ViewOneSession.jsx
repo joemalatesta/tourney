@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import * as tableService from "../../services/tableService"
+import * as teamService from "../../services/teamService"
 import * as matchService from "../../services/matchService"
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
 import SingleMatch from "../../components/SingleMatch/SingleMatch"
@@ -17,8 +18,54 @@ const ViewOneSession = (props) => {
   const [player1, setPlayer1] = useState(null)
   const [player2, setPlayer2] = useState(null)
   const [toggleSetMatch, setToggleSetMatch] = useState(true)
-  const [homeTeamName, setHomeTeamName] = useState(currentMatch?.homeTeamApproval?.firstName)
-  const [awayteamName, setAwayTeamName] = useState(currentMatch?.awayTeamApproval?.firstName)
+  const [homeTeamName, setHomeTeamName] = useState(
+    currentMatch?.homeTeamApproval?.firstName
+  )
+  const [awayteamName, setAwayTeamName] = useState(
+    currentMatch?.awayTeamApproval?.firstName
+  )
+  const [homeTeamPlayers, setHomeTeamPlayers] = useState([])
+  const [awayTeamPlayers, setAwayTeamPlayers] = useState([])
+  const [currentProfile, setCurrentProfile] = useState("")
+
+  console.log(currentProfile)
+
+  useEffect(() => {
+    const getPlayerInfo = async () => {
+      const homeData = await teamService.findOne(currentMatch?.homeTeam?._id)
+      const awayData = await teamService.findOne(currentMatch?.awayTeam?._id)
+      setHomeTeamPlayers(homeData)
+      setAwayTeamPlayers(awayData)
+    }
+    getPlayerInfo()
+  }, [currentMatch])
+
+  const isProfileInTeamPlayers = (team, profileId) => {
+    return team?.teamPlayers?.some((player) => player.profile === profileId)
+  }
+
+  useEffect(() => {
+    if (currentMatch) {
+      const isInHomeTeam = isProfileInTeamPlayers(
+        homeTeamPlayers,
+        props.profile?._id
+      )
+      const isInAwayTeam = isProfileInTeamPlayers(
+        awayTeamPlayers,
+        props.profile?._id
+      )
+
+      if (isInHomeTeam) {
+        setCurrentProfile("HOME")
+      } else if (isInAwayTeam) {
+        setCurrentProfile("AWAY")
+      } else if (props.profile?.accessLevel !== 90) {
+        setCurrentProfile("NONE")
+      } else {
+        setCurrentProfile("ADMIN")
+      }
+    }
+  }, [currentMatch, props.profile, homeTeamPlayers, awayTeamPlayers])
 
   useEffect(() => {
     const getSession = async () => {
@@ -34,8 +81,12 @@ const ViewOneSession = (props) => {
       setCurrentMatch(data)
     }
     getUpdatedMatch
-    setHomeTeamName(`${currentMatch?.homeTeamApproval?.firstName} ${currentMatch?.homeTeamApproval?.lastName}`);
-    setAwayTeamName(`${currentMatch?.awayTeamApproval?.firstName} ${currentMatch?.awayTeamApproval?.lastName}`);
+    setHomeTeamName(
+      `${currentMatch?.homeTeamApproval?.firstName} ${currentMatch?.homeTeamApproval?.lastName}`
+    )
+    setAwayTeamName(
+      `${currentMatch?.awayTeamApproval?.firstName} ${currentMatch?.awayTeamApproval?.lastName}`
+    )
   }, [currentMatch])
 
   const handleUpdateMatch = async () => {
@@ -168,12 +219,16 @@ const ViewOneSession = (props) => {
     if (team === "home") {
       let data = { ...currentMatch, homeTeamApproval: props?.profile }
       await tableService.update(data)
-      await setHomeTeamName(`${props.profile.firstName} ${props.profile.lastName}`)
+      await setHomeTeamName(
+        `${props.profile.firstName} ${props.profile.lastName}`
+      )
     }
     if (team === "away") {
       let data = { ...currentMatch, awayTeamApproval: props?.profile }
       await tableService.update(data)
-      await setAwayTeamName(`${props.profile.firstName} ${props.profile.lastName}`)
+      await setAwayTeamName(
+        `${props.profile.firstName} ${props.profile.lastName}`
+      )
     }
   }
 
@@ -181,7 +236,7 @@ const ViewOneSession = (props) => {
     <>
       <div className="row center space-around">
         <div className="bracket">
-          <h2>{currentMatch?.homeTeam.teamName}</h2>
+          <h2>{currentMatch?.homeTeam?.teamName}</h2>
           <div className="w325">
             <TeamPlayers
               team={currentMatch?.homeTeam}
@@ -190,21 +245,27 @@ const ViewOneSession = (props) => {
               handleChoosePlayer={handleChoosePlayer}
             />
           </div>
-          {currentMatch?.match1 !== null && currentMatch?.match2 !== null && currentMatch?.match3 !== null && currentMatch?.homeTeamApproval === null &&(
-            <button onClick={() => handleFinishMatch("home")}>
-              Home team approval
-            </button>
+          {currentMatch?.match1 !== null &&
+            currentMatch?.match2 !== null &&
+            currentMatch?.match3 !== null &&
+            currentMatch?.homeTeamApproval === null && (
+              <button onClick={() => handleFinishMatch("home")}>
+                Home team approval
+              </button>
+            )}
+          {currentMatch?.homeTeamApproval !== null && (
+            <h1>
+              Approved by <br />
+              {homeTeamName}
+            </h1>
           )}
-          { currentMatch?.homeTeamApproval !== null &&
-            <h1>Approved by <br/>{homeTeamName}</h1>
-          }
         </div>
         {(match1 === null || match2 === null || match3 === null) && (
           <button onClick={() => handleSetPlayers()}>Set Match</button>
         )}
 
         <div className="bracket">
-          <h2>{currentMatch?.awayTeam.teamName}</h2>
+          <h2>{currentMatch?.awayTeam?.teamName}</h2>
           <div className="w325">
             <TeamPlayers
               team={currentMatch?.awayTeam}
@@ -213,14 +274,20 @@ const ViewOneSession = (props) => {
               handleChoosePlayer={handleChoosePlayer}
             />
           </div>
-          {currentMatch?.match1 !== null && currentMatch?.match2 !== null && currentMatch?.match3 !== null && currentMatch?.awayTeamApproval === null &&(
-            <button onClick={() => handleFinishMatch("away")}>
-              Away team approval
-            </button>
+          {currentMatch?.match1 !== null &&
+            currentMatch?.match2 !== null &&
+            currentMatch?.match3 !== null &&
+            currentMatch?.awayTeamApproval === null && (
+              <button onClick={() => handleFinishMatch("away")}>
+                Away team approval
+              </button>
+            )}
+          {currentMatch?.awayTeamApproval !== null && (
+            <h1>
+              Approved by <br />
+              {awayteamName}
+            </h1>
           )}
-                    { currentMatch?.awayTeamApproval !== null &&
-            <h1>Approved by <br/>{awayteamName}</h1>
-          }
         </div>
       </div>
 
