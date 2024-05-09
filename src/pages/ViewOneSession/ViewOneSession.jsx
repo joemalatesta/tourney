@@ -232,6 +232,11 @@ const ViewOneSession = (props) => {
     }
   }
 
+  const handleSetAdmin = (el) => {
+    if (el === "home") setCurrentProfile("HOME")
+    if (el === "away") setCurrentProfile("AWAY")
+  }
+
   return (
     <>
       <div className="row center space-around">
@@ -244,21 +249,12 @@ const ViewOneSession = (props) => {
               title="Home"
               handleChoosePlayer={handleChoosePlayer}
             />
-          </div>
-          {currentMatch?.match1 !== null &&
-            currentMatch?.match2 !== null &&
-            currentMatch?.match3 !== null &&
-            currentMatch?.homeTeamApproval === null && (
-              <button onClick={() => handleFinishMatch("home")}>
-                Home team approval
+            {currentProfile === "ADMIN" && (
+              <button onClick={() => handleSetAdmin("home")}>
+                Admin for HOME Team
               </button>
             )}
-          {currentMatch?.homeTeamApproval !== null && (
-            <h1>
-              Approved by <br />
-              {homeTeamName}
-            </h1>
-          )}
+          </div>
         </div>
         {(match1 === null || match2 === null || match3 === null) && (
           <button onClick={() => handleSetPlayers()}>Set Match</button>
@@ -273,21 +269,12 @@ const ViewOneSession = (props) => {
               title="Away"
               handleChoosePlayer={handleChoosePlayer}
             />
-          </div>
-          {currentMatch?.match1 !== null &&
-            currentMatch?.match2 !== null &&
-            currentMatch?.match3 !== null &&
-            currentMatch?.awayTeamApproval === null && (
-              <button onClick={() => handleFinishMatch("away")}>
-                Away team approval
+            {currentProfile === "ADMIN" && (
+              <button onClick={() => handleSetAdmin("away")}>
+                Admin for AWAY Team
               </button>
             )}
-          {currentMatch?.awayTeamApproval !== null && (
-            <h1>
-              Approved by <br />
-              {awayteamName}
-            </h1>
-          )}
+          </div>
         </div>
       </div>
 
