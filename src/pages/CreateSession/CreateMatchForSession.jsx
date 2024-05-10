@@ -31,7 +31,7 @@ const CreateMatchForSession = (props) => {
       table4: table4,
     }
     sessionService.update(updatedSession)
-    // navigate("/session")
+    navigate("/session")
   }
 
   const handleSelectTeam = (team) => {
@@ -102,6 +102,8 @@ const CreateMatchForSession = (props) => {
   const completedMatch =
     homeTeam !== null && awayTeam !== null && usedTable !== null
 
+    console.log(table1);
+
   return (
     <>
       {matches?.length < 4 && (
@@ -118,12 +120,7 @@ const CreateMatchForSession = (props) => {
       )}
       {matches?.length < 4 && (
         <>
-          <button
-            disabled={!completedMatch}
-            onClick={() => handleSubmitMatch()}
-          >
-            submit match
-          </button>
+  
 
           <h2>
             Pick the{" "}
@@ -159,6 +156,12 @@ const CreateMatchForSession = (props) => {
               </option>
             ))}
           </select>
+          <button
+            disabled={!completedMatch}
+            onClick={() => handleSubmitMatch()}
+          >
+            submit match
+          </button>
         </div>
       </div>
       <br />
@@ -169,13 +172,19 @@ const CreateMatchForSession = (props) => {
           Submit to Schedule
         </button>
       )}
-      {/* {matches?.map((match, idx) => (
-        <div className="bracket" key={idx}>
-          <h2>Table : {match.usedTable}</h2>
-          <li>Home Team : {match.homeTeam.teamName}</li>
-          <li>Visitor : {match.visitor.teamName}</li>
-        </div>
-      ))} */}
+      <br/>
+      <div className="bracket">
+
+      <h1>Matches</h1> 
+      Table 1     <br/>
+      {table1?.homeTeam?.teamName} VS {table1?.awayTeam?.teamName}     <br/>
+      Table 2     <br/>
+      {table2?.homeTeam?.teamName} VS {table2?.awayTeam?.teamName}     <br/>
+      Table 3     <br/>
+      {table3?.homeTeam?.teamName} VS {table3?.awayTeam?.teamName}     <br/>
+      Table 4     <br/>
+      {table4?.homeTeam?.teamName} VS {table4?.awayTeam?.teamName}     <br/>
+      </div>
     </>
   )
 }
