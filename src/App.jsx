@@ -17,6 +17,7 @@ import MatchApproval from "./pages/MatchApproval/MatchApproval"
 import MatchView from "./pages/MatchView/MatchView"
 import Profiles from "./pages/Profiles/Profiles"
 import Schedule from "./pages/Schedule/Schedule"
+import ScrollWheel from "./pages/ScrollWheel/ScrollWheel"
 import Session from "./pages/Session/Session"
 import ViewMatchup from "./pages/ViewMatchup/ViewMatchup"
 import ViewOneSession from './pages/ViewOneSession/ViewOneSession'
@@ -540,6 +541,17 @@ function App() {
                 profile={profile}
                 players={players}
                 teams={teams}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/scroll-wheel"
+          element={
+            <ProtectedRoute access="30" profile={profile} user={user}>
+              <ScrollWheel
+                players={players}
               />
             </ProtectedRoute>
           }

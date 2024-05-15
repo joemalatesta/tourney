@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import * as gameService from "../../services/gameService"
 import * as matchService from "../../services/matchService"
+import * as tableService from "../../services/tableService"
+
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
@@ -13,6 +15,11 @@ const SingleMatch = (props) => {
   const [winningPlayer, setWinningPlayer] = useState(
     props?.currentMatch?.winningPlayer
   )
+  const [updatedMatchData, setUpdatedMatchData] = useState()
+  const [matchEquality, setMatchEquality] = useState(false)
+
+
+  console.log(updatedMatchData);
 
   useEffect(() => {
     if (
@@ -140,7 +147,36 @@ const SingleMatch = (props) => {
     setGameEnded(true)
     // await updateDB(checkedPlayer1Checkboxes, checkedPlayer2Checkboxes)
   }
+
+  let match1Equality = (updatedMatchData?.homeMatch1?.player1Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch1?.player1Wins.filter(el=>el === true).length && (updatedMatchData?.homeMatch1?.player2Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch1?.player2Wins.filter(el=>el === true).length))
+
+  let match2Equality = (updatedMatchData?.homeMatch2?.player1Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch2?.player1Wins.filter(el=>el === true).length && (updatedMatchData?.homeMatch2?.player2Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch2?.player2Wins.filter(el=>el === true).length))
+
+  let match3Equality = (updatedMatchData?.homeMatch3?.player1Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch3?.player1Wins.filter(el=>el === true).length && (updatedMatchData?.homeMatch3?.player2Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch3?.player2Wins.filter(el=>el === true).length))
+
   
+  console.log((updatedMatchData?.homeMatch2?.player1Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch2?.player1Wins.filter(el=>el === true).length && (updatedMatchData?.homeMatch2?.player2Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch2?.player2Wins.filter(el=>el === true).length)));
+  
+  const getUpdatedTableInfo = async () => {
+    let data = await tableService.findOne(props.currentMatchData._id)
+    setUpdatedMatchData(data)
+  }
+  
+
+  const checkForEquality = async (mth) => {
+    console.log(mth)
+    getUpdatedTableInfo()
+    if(mth == "1" && match1Equality === true) {
+      setMatchEquality(true)
+    }
+    if(mth == "2" && match2Equality === true) {
+      setMatchEquality(true)
+    }
+    if(mth == "3" && match3Equality === true) {
+      setMatchEquality(true)
+    }
+  }
+
   return (
     <div className={styles.bracket}>
       <div className="flex column" style={{ alignItems: "center" }}>
@@ -171,20 +207,31 @@ const SingleMatch = (props) => {
                     </div>
                   )
               )}
+              {isPlayer1Winner && matchEquality === !true && (
+                <button onClick={() => checkForEquality(props.mth)}>
+                  check for match equality
+                </button>
+              )}
               {props.profile.accessLevel >= 40 &&
                 isPlayer1Winner &&
-                !gameEnded && (
+                !gameEnded && matchEquality == true && (
                   <button onClick={() => handleWinner(1)}>Winner</button>
                 )}
             </div>
           )}
-          { winningPlayer?._id === props.currentMatch?.player1._id &&
+          {winningPlayer?._id === props.currentMatch?.player1._id &&
             gameEnded && (
               <h1 className="end" style={{ width: "95%" }}>
                 Winner <br />
               </h1>
             )}
-          {gameEnded && <h2 className="end" style={{ width: "95%" }}>Games Won: {checkedPlayer1Checkboxes.filter((el) => el === true).length || props.currentMatch.player1Wins}</h2>}
+          {gameEnded && (
+            <h2 className="end" style={{ width: "95%" }}>
+              Games Won:{" "}
+              {checkedPlayer1Checkboxes.filter((el) => el === true).length ||
+                props.currentMatch.player1Wins}
+            </h2>
+          )}
         </div>
         <div
           className="flex start bracket match-width2 match-height2 green-felt start"
@@ -212,25 +259,36 @@ const SingleMatch = (props) => {
                   </div>
                 )
             )}
+            {isPlayer2Winner && (
+              <button onClick={() => checkForEquality(props.mth)}>
+                check for match equality
+              </button>
+            )}
             {props.profile.accessLevel >= 40 &&
               isPlayer2Winner &&
               !gameEnded && (
                 <button onClick={() => handleWinner(2)}>Winner</button>
               )}
             {isPlayer2Winner && gameEnded && (
-                <h1 className="end" style={{ width: "95%" }}>
-                  Winner 
-                </h1>
-              )}
-            {gameEnded && <h2 className="end" style={{ width: "95%" }}>Games Won: {checkedPlayer2Checkboxes.filter((el) => el === true).length || props.currentMatch.player2Wins}</h2>}
+              <h1 className="end" style={{ width: "95%" }}>
+                Winner
+              </h1>
+            )}
+            {gameEnded && (
+              <h2 className="end" style={{ width: "95%" }}>
+                Games Won:{" "}
+                {checkedPlayer2Checkboxes.filter((el) => el === true).length ||
+                  props.currentMatch.player2Wins}
+              </h2>
+            )}
           </div>
         </div>
       </div>
-      {props.profile.accessLevel === 90 &&
+      {props.profile.accessLevel === 90 && (
         <button onClick={() => props.handleCancel(props.mth)}>
           Cancel this match
         </button>
-      }
+      )}
     </div>
   )
 }

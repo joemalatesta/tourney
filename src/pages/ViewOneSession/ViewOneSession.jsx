@@ -24,8 +24,7 @@ const ViewOneSession = (props) => {
   const [homeTeamPlayers, setHomeTeamPlayers] = useState([])
   const [awayTeamPlayers, setAwayTeamPlayers] = useState([])
   const [currentProfile, setCurrentProfile] = useState("")
-
-  console.log(currentMatch)
+  const [currentMatchData, setCurrentMatchData] = useState()
 
   useEffect(() => {
     const getPlayerInfo = async () => {
@@ -35,6 +34,7 @@ const ViewOneSession = (props) => {
       setAwayTeamPlayers(awayData)
     }
     getPlayerInfo()
+    setCurrentMatchData(currentMatch)
   }, [currentMatch])
 
   const isProfileInTeamPlayers = (team, profileId) => {
@@ -89,23 +89,23 @@ const ViewOneSession = (props) => {
     const setToggle = () => {
       if (
         currentMatch?.match1 !== null &&
-        currentMatch?.match1.completed === false
+        currentMatch?.match1?.completed === false
       ) {
         setToggleSetMatch(false)
       } else if (
         currentMatch?.match2 !== null &&
-        currentMatch?.match2.completed === false
+        currentMatch?.match2?.completed === false
       ) {
         setToggleSetMatch(false)
       } else if (
         currentMatch?.match3 !== null &&
-        currentMatch?.match3.completed === false
+        currentMatch?.match3?.completed === false
       ) {
         setToggleSetMatch(false)
       }
     }
     setToggle()
-  }, [toggleSetMatch])
+  }, [toggleSetMatch, currentMatch])
 
   useEffect(() => {
     if(currentProfile === "HOME"){
@@ -161,15 +161,6 @@ const ViewOneSession = (props) => {
       getMatchesIfAvail()
     }
   }, [currentMatch, currentProfile])
-
-  useEffect(() => {}, [
-    match1Away,
-    match2Away,
-    match3Away,
-    match1Home,
-    match2Home,
-    match3Home,
-  ])
 
   const getSession = async () => {
     const data = await tableService.findOne(tableId)
@@ -315,23 +306,6 @@ const ViewOneSession = (props) => {
 
   const handleSubmitMatch = async () => {}
 
-  // const handleFinishMatch = async (team) => {
-  //   if (team === "home") {
-  //     let data = { ...currentMatch, homeTeamApproval: props?.profile }
-  //     await tableService.update(data)
-  //     await setHomeTeamName(
-  //       `${props.profile.firstName} ${props.profile.lastName}`
-  //     )
-  //   }
-  //   if (team === "away") {
-  //     let data = { ...currentMatch, awayTeamApproval: props?.profile }
-  //     await tableService.update(data)
-  //     await setAwayTeamName(
-  //       `${props.profile.firstName} ${props.profile.lastName}`
-  //     )
-  //   }
-  // }
-
   const handleSetAdmin = (el) => {
     if (el === "home") setCurrentProfile("HOME")
     if (el === "away") setCurrentProfile("AWAY")
@@ -382,7 +356,7 @@ const ViewOneSession = (props) => {
 
       {match3Home !== null && (
         <>
-          <h2 className="center">Match 3</h2>
+          <h2 className="center">Home Team Match 3</h2>
           <SingleMatch
             player1={currentMatch?.homeMatch3?.player1}
             player2={currentMatch?.homeMatch3?.player2}
@@ -390,6 +364,7 @@ const ViewOneSession = (props) => {
             player1Wins={currentMatch.homeMatch3?.player1Wins}
             player2Wins={currentMatch.homeMatch3?.player2Wins}
             currentMatch={currentMatch.homeMatch3}
+            currentMatchData={currentMatchData}
             profile={props.profile}
             handleCancel={handleCancel}
             match={match3Home}
@@ -398,17 +373,18 @@ const ViewOneSession = (props) => {
           />
         </>
       )}
-            {match1Away !== null && currentProfile === 'AWAY' && (
+            {match3Away !== null && currentProfile === 'AWAY' && (
         <>
-          <h2 className="center">Match 3</h2>
+          <h2 className="center">Away Team Match 3</h2>
           {currentProfile === "AWAY" && (
             <SingleMatch
-              player1={currentMatch.awayMatch3.player1}
-              player2={currentMatch.awayMatch3.player2}
+              player1={currentMatch?.awayMatch3?.player1}
+              player2={currentMatch?.awayMatch3?.player2}
               handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch.awayMatch3.player1Wins}
-              player2Wins={currentMatch.awayMatch3.player2Wins}
-              currentMatch={currentMatch.awayMatch3}
+              player1Wins={currentMatch?.awayMatch3?.player1Wins}
+              player2Wins={currentMatch?.awayMatch3?.player2Wins}
+              currentMatch={currentMatch?.awayMatch3}
+              currentMatchData={currentMatchData}
               profile={props.profile}
               handleCancel={handleCancel}
               match={match3Away}
@@ -420,15 +396,15 @@ const ViewOneSession = (props) => {
       )}
       {match2Home !== null && (
         <>
-          <h2 className="center">Match 2</h2>
+          <h2 className="center">Home Team Match 2</h2>
           <SingleMatch
             player1={currentMatch?.homeMatch2?.player1}
             player2={currentMatch?.homeMatch2?.player2}
             handleUpdateMatch={handleUpdateMatch}
-            player1Wins={currentMatch.homeMatch2?.player1Wins}
-            player2Wins={currentMatch.homeMatch2?.player2Wins}
-            p
-            currentMatch={currentMatch.homeMatch2}
+            player1Wins={currentMatch?.homeMatch2?.player1Wins}
+            player2Wins={currentMatch?.homeMatch2?.player2Wins}
+            currentMatch={currentMatch?.homeMatch2}
+            currentMatchData={currentMatchData}
             profile={props.profile}
             handleCancel={handleCancel}
             match={match2Home}
@@ -439,15 +415,16 @@ const ViewOneSession = (props) => {
       )}
             {match2Away !== null && currentProfile === 'AWAY' && (
         <>
-          <h2 className="center">Match 2</h2>
+          <h2 className="center">Away Team Match 2</h2>
           {currentProfile === "AWAY" && (
             <SingleMatch
-              player1={currentMatch.awayMatch2.player1}
-              player2={currentMatch.awayMatch2.player2}
+              player1={currentMatch?.awayMatch2?.player1}
+              player2={currentMatch?.awayMatch2?.player2}
               handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch.awayMatch2.player1Wins}
-              player2Wins={currentMatch.awayMatch2.player2Wins}
-              currentMatch={currentMatch.awayMatch2}
+              player1Wins={currentMatch?.awayMatch2?.player1Wins}
+              player2Wins={currentMatch?.awayMatch2?.player2Wins}
+              currentMatch={currentMatch?.awayMatch2}
+              currentMatchData={currentMatchData}
               profile={props.profile}
               handleCancel={handleCancel}
               match={match2Away}
@@ -459,7 +436,7 @@ const ViewOneSession = (props) => {
       )}
       {match1Home !== null && (
         <>
-          <h2 className="center">Match 1</h2>
+          <h2 className="center">Home Team Match 1</h2>
           {currentProfile === "HOME" && (
             <SingleMatch
               player1={currentMatch?.homeMatch1?.player1}
@@ -468,6 +445,7 @@ const ViewOneSession = (props) => {
               player1Wins={currentMatch?.homeMatch1?.player1Wins}
               player2Wins={currentMatch?.homeMatch1?.player2Wins}
               currentMatch={currentMatch?.homeMatch1}
+              currentMatchData={currentMatchData}
               profile={props.profile}
               handleCancel={handleCancel}
               match={match1Home}
@@ -479,15 +457,16 @@ const ViewOneSession = (props) => {
       )}
       {match1Away !== null && currentProfile === 'AWAY' && (
         <>
-          <h2 className="center">Match 1</h2>
+          <h2 className="center">Away Team Match 1</h2>
           {currentProfile === "AWAY" && (
             <SingleMatch
-              player1={currentMatch.awayMatch1.player1}
-              player2={currentMatch.awayMatch1.player2}
+              player1={currentMatch?.awayMatch1?.player1}
+              player2={currentMatch?.awayMatch1?.player2}
               handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch.awayMatch1.player1Wins}
-              player2Wins={currentMatch.awayMatch1.player2Wins}
-              currentMatch={currentMatch.awayMatch1}
+              player1Wins={currentMatch?.awayMatch1?.player1Wins}
+              player2Wins={currentMatch?.awayMatch1?.player2Wins}
+              currentMatch={currentMatch?.awayMatch1}
+              currentMatchData={currentMatchData}
               profile={props.profile}
               handleCancel={handleCancel}
               match={match1Away}

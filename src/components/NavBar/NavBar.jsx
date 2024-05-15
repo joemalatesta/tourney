@@ -7,6 +7,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
       {profile?.accessLevel === 90 && (
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName}</NavLink>
+          <NavLink to="/scroll-wheel">Scroll Wheel</NavLink>
           <NavLink to="/season-match">View Matchup</NavLink>
           <NavLink to="/session">View Current Session</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
