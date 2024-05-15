@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import * as gameService from "../../services/gameService"
+import './ScrollWheel.css'
 
 const ScrollWheel = ({ players }) => {
   const [player1Rank, setPlayer1Rank] = useState(50)
