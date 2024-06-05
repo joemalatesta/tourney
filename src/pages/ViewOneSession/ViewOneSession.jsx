@@ -311,6 +311,10 @@ const ViewOneSession = (props) => {
     if (el === "away") setCurrentProfile("AWAY")
   }
 
+
+  console.log(currentProfile)
+  console.log(currentMatchData?.awayMatch1.completed);
+
   return (
     <>
       <div className="row center space-around">
@@ -476,6 +480,27 @@ const ViewOneSession = (props) => {
           )}
         </>
       )}
+      {currentProfile == 'NONE' && 
+        <>
+          everything here is for a visiting player
+        </>
+      }
+
+      { currentMatchData?.awayMatch1?.completed === true &&
+      currentProfile === 'NONE' &&
+      
+      <h1>this is match 1 from a team not playing</h1>
+      }
+      { currentMatchData?.awayMatch2?.completed === true &&
+      currentProfile === 'NONE' &&
+      
+      <h1>this is match 2 from a team not playing</h1>
+      }
+      { currentMatchData?.awayMatch3?.completed === true &&
+      currentProfile === 'NONE' &&
+      
+      <h1>this is match 3 from a team not playing</h1>
+      }
     </>
   )
 }

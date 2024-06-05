@@ -11,6 +11,10 @@ const EditPlayer = (props) => {
     name: "",
     rank: 0,
     matchesPlayed: 0,
+    matchWin: 0,
+    matchLoss: 0,
+    gamesWon: 0,
+    gamesLoss: 0,
   })
 
   const handleChange = (evt) => {
@@ -72,6 +76,56 @@ const EditPlayer = (props) => {
             className={styles.center}
             name="rank"
             value={formData.rank}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.center}>
+          <label className={styles.center}>Matches Played</label>
+          <input
+            type="number"
+            className={styles.center}
+            name="matchesPlayed"
+            value={formData.matchesPlayed}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.center}>
+          <label className={styles.center}>Players Match Wins</label>
+          <input
+            type="number"
+            className={styles.center}
+            name="matchWin"
+            value={formData.matchWin}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.center}>
+          <label className={styles.center}>Players Match Losses</label>
+          <input
+            type="number"
+            className={styles.center}
+            name="matchLoss"
+            value={formData.matchLoss}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.center}>
+          <label className={styles.center}>Players Games Won</label>
+          <input
+            type="number"
+            className={styles.center}
+            name="gamesWon"
+            value={formData.gamesWon}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.center}>
+          <label className={styles.center}>Players Games Loss</label>
+          <input
+            type="number"
+            className={styles.center}
+            name="gamesLoss"
+            value={formData.gamesLoss}
             onChange={handleChange}
           />
         </div>

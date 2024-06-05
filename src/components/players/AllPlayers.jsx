@@ -37,8 +37,8 @@ const AllPlayers = (props) => {
   }
 
   const sortedPlayers = props?.players
-    ?.slice()
-    .sort((a, b) => a.name.localeCompare(b.name))
+    // ?.slice()
+    // .sort((a, b) => a.name.localeCompare(b.name))
 
   const deleteDisplay = (
     <div className={styles.blueFelt} style={{ width: "700px" }}>
