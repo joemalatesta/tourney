@@ -1,10 +1,10 @@
 import { useState } from "react"
-
 import * as styles from "./AllPlayers.module.css"
 
 const AllPlayers = (props) => {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [playerToDelete, setPlayerToDelete] = useState(null)
+  const [playerToEdit, setPlayerToEdit] = useState(null)
 
   const handleChange = (player) => {
     props.changeTitle()
@@ -14,6 +14,7 @@ const AllPlayers = (props) => {
       rank: player.rank,
     }
     props.setFormData(updatedPlayer)
+    setPlayerToEdit(player._id) // Set the player being edited
   }
 
   const handleDelete = (player) => {
@@ -37,8 +38,8 @@ const AllPlayers = (props) => {
   }
 
   const sortedPlayers = props?.players
-    // ?.slice()
-    // .sort((a, b) => a.name.localeCompare(b.name))
+    ?.slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
 
   const deleteDisplay = (
     <div className={styles.blueFelt} style={{ width: "700px" }}>
@@ -63,8 +64,9 @@ const AllPlayers = (props) => {
               <button onClick={() => handleChange(player)}>Edit</button>
             </div>
             <div className={styles.w300}>
-              --{player.name} : {player.rank}
+              --{player.name} : {player.rank}<br/>
             </div>
+              {playerToEdit === player._id && props.form}
             {player?.name === playerToDelete?.name &&
               confirmDelete &&
               deleteDisplay}
