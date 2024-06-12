@@ -124,6 +124,9 @@ const AdminPage = ({
         <NavLink className="bracket" to="/player-management">
           Player Management
         </NavLink>
+        <NavLink className="bracket" to="/team-management">
+          Team Management
+        </NavLink>
         <NavLink className="bracket" to="/admin-stats-page">
           Player and Team Stats
         </NavLink>

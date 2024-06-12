@@ -20,12 +20,13 @@ import Schedule from "./pages/Schedule/Schedule"
 import ScrollWheel from "./pages/ScrollWheel/ScrollWheel"
 import Session from "./pages/Session/Session"
 import ViewMatchup from "./pages/ViewMatchup/ViewMatchup"
-import ViewOneSession from './pages/ViewOneSession/ViewOneSession'
+import ViewOneSession from "./pages/ViewOneSession/ViewOneSession"
 import Signup from "./pages/Signup/Signup"
 import ViewSession from "./pages/ViewSession/ViewSession"
 import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
+import EditTeam from "./pages/EditTeam/EditTeam"
 
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
@@ -185,7 +186,6 @@ function App() {
     navigate("view-teams")
     console.log(deletedTeam)
   }
-
 
   const handleDeleteMatch = async (id) => {
     const deletedMatch = await matchService.deleteOne(id)
@@ -485,11 +485,7 @@ function App() {
           path="/session"
           element={
             <ProtectedRoute access="30" profile={profile} user={user}>
-              <Session
-                profile={profile}
-                players={players}
-                teams={teams}
-              />
+              <Session profile={profile} players={players} teams={teams} />
             </ProtectedRoute>
           }
         />
@@ -511,11 +507,7 @@ function App() {
           path="/viewSession"
           element={
             <ProtectedRoute access="50" profile={profile} user={user}>
-              <ViewSession
-                profile={profile}
-                players={players}
-                teams={teams}
-              />
+              <ViewSession profile={profile} players={players} teams={teams} />
             </ProtectedRoute>
           }
         />
@@ -550,8 +542,19 @@ function App() {
           path="/scroll-wheel"
           element={
             <ProtectedRoute access="30" profile={profile} user={user}>
-              <ScrollWheel
-                players={players}
+              <ScrollWheel players={players} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
+          path="/team-management"
+          element={
+            <ProtectedRoute access="90" profile={profile} user={user}>
+              <EditTeam
+                profile={profile}
+                teams={teams}
+                isDisabled={isDisabled}
               />
             </ProtectedRoute>
           }
