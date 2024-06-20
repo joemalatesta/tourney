@@ -1,52 +1,67 @@
-import { useState } from "react";
-import * as teamService from '../../services/teamService'
+import { useState, useEffect } from "react"
+import * as teamService from "../../services/teamService"
 
 const EditTeam = (props) => {
-  const [editForm, setEditForm] = useState(false);
+  const [editForm, setEditForm] = useState(false)
   const [formData, setFormData] = useState({
     teamName: "",
     teamCaptain: "",
     wins: 0,
     loss: 0,
-  });
+  })
+  const [currentTeamId, setCurrentTeamId] = useState(null)
 
-  const [currentTeamId, setCurrentTeamId] = useState(null);
+  useEffect(() => {
+    if (currentTeamId) {
+      const team = props.teams.find((team) => team._id === currentTeamId)
+      if (team) {
+        setFormData({ ...team })
+      }
+    }
+  }, [currentTeamId, props.teams])
 
   const handleChange = (evt) => {
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-  };
+    const { name, value, type } = evt.target
+    const newValue = type === "number" ? parseInt(value, 10) : value
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: newValue,
+    }))
+  }
 
   const calculateWinPercentage = (team) => {
-    const totalMatches = team.wins + team.loss;
-    return totalMatches === 0 ? 0 : (team.wins / totalMatches) * 100;
-  };
+    const totalMatches = team.wins + team.loss
+    return totalMatches === 0 ? 0 : (team.wins / totalMatches) * 100
+  }
 
   const sortedTeams = [...props.teams].sort(
     (a, b) => calculateWinPercentage(b) - calculateWinPercentage(a)
-  );
+  )
 
   const teamEditInfo = (team) => {
-    setCurrentTeamId(team._id);
-    setFormData(team);
-    setEditForm(true);
-  };
+    setCurrentTeamId(team._id)
+    setEditForm(true)
+  }
 
-  const handleSave = (evt) => {
-    evt.preventDefault()
-    console.log('this is the updating team:')
-    console.log("Updated team:", formData);
-    setEditForm(false);
-    setCurrentTeamId(null); // Reset current team after saving
-  };
+  const handleSave = async () => {
+    try {
+      await teamService.update(formData)
+      console.log("Updated team:", formData)
+      setEditForm(false)
+      setCurrentTeamId(null)
+      if (props.onUpdate) props.onUpdate()
+    } catch (error) {
+      console.error("Failed to update team:", error)
+    }
+  }
 
   const handleClose = () => {
-    setEditForm(false);
-    setCurrentTeamId(null);
-  };
+    setEditForm(false)
+    setCurrentTeamId(null)
+  }
 
   return (
     <>
-      <h1>This is the teams edit page</h1>
       <h2>
         {sortedTeams.map((el) => (
           <div key={el._id} className="bracket" style={{ width: 350 }}>
@@ -98,7 +113,7 @@ const EditTeam = (props) => {
                       />
                     </label>
                     <br />
-                    <button type="button" onClick={()=>handleSave()}>
+                    <button type="button" onClick={handleSave}>
                       Save
                     </button>
                   </form>
@@ -122,7 +137,7 @@ const EditTeam = (props) => {
         ))}
       </h2>
     </>
-  );
-};
+  )
+}
 
-export default EditTeam;
+export default EditTeam
