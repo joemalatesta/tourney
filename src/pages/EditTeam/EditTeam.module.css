@@ -24,3 +24,23 @@
   transition: border-color 0.25s;
   margin: 10px;
 }
+.edit-form {
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #888;
+  margin-top: 10px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

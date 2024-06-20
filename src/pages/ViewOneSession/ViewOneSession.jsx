@@ -313,7 +313,7 @@ const ViewOneSession = (props) => {
 
 
   console.log(currentProfile)
-  console.log(currentMatchData?.awayMatch1.completed);
+  console.log(currentMatchData?.awayMatch1?.completed);
 
   return (
     <>
