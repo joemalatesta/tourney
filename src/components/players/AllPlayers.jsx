@@ -14,7 +14,7 @@ const AllPlayers = (props) => {
       rank: player.rank,
     }
     props.setFormData(updatedPlayer)
-    setPlayerToEdit(player._id) // Set the player being edited
+    setPlayerToEdit(player._id) 
   }
 
   const handleDelete = (player) => {
@@ -37,9 +37,9 @@ const AllPlayers = (props) => {
     setPlayerToDelete(null)
   }
 
-  const sortedPlayers = props?.players
-    ?.slice()
-    .sort((a, b) => a.name.localeCompare(b.name))
+  // const sortedPlayers = props?.players
+  //   ?.slice()
+  //   .sort((a, b) => a.name.localeCompare(b.name))
 
   const deleteDisplay = (
     <div className={styles.blueFelt} style={{ width: "700px" }}>
@@ -54,7 +54,7 @@ const AllPlayers = (props) => {
 
   return (
     <div className={styles.bracket}>
-      {sortedPlayers?.map((player) => (
+      {props.players?.map((player) => (
         <div key={player._id}>
           <div style={{ width: "800px", display: "flex" }}>
             <div>
