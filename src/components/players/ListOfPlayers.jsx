@@ -19,7 +19,7 @@ const ListOfPlayers = (props) => {
         </p>
       )}
       <ul>
-        {sortedPlayers?.map((player) => (
+        {props.players.map((player) => (
           <div key={player._id}>
             {props.handleAdd ? (
               <button onClick={() => props.handleAdd(player)}> + </button>

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react"
 import * as gameService from "../../services/gameService"
 import * as matchService from "../../services/matchService"
-import * as tableService from "../../services/tableService"
+import * as checks from "../../services/checkMatch"
+import * as playerStatsService from "../../services/playerStatsService"
+import * as teamStatsService from "../../services/teamStatsService"
 
 import * as styles from "./SingleMatch.module.css"
 
@@ -15,11 +17,12 @@ const SingleMatch = (props) => {
   const [winningPlayer, setWinningPlayer] = useState(
     props?.currentMatch?.winningPlayer
   )
-  const [updatedMatchData, setUpdatedMatchData] = useState()
-  const [matchEquality, setMatchEquality] = useState(false)
+  const [updatedMatchData] = useState()
+  const [matchEquality] = useState(false)
+  const [message, setMessage] = useState("")
 
-
-  console.log(updatedMatchData);
+  console.log(props)
+  console.log(updatedMatchData)
 
   useEffect(() => {
     if (
@@ -62,7 +65,7 @@ const SingleMatch = (props) => {
 
   useEffect(() => {
     if (
-      gamesNeeded.length >= 2 &&
+      gamesNeeded?.length >= 2 &&
       props.currentMatch.player1Wins.length < 1 &&
       props.currentMatch.player2Wins.length < 1 &&
       !gameEnded
@@ -115,18 +118,14 @@ const SingleMatch = (props) => {
     let data
     if (player === 1) {
       setWinningPlayer(props.currentMatch.player1)
-      data = {
+      data = await {
         ...props.currentMatch,
         winningPlayer: props.currentMatch.player1,
         losingPlayer: props.currentMatch.player2,
         completed: true,
-        player1Wins: [
-          checkedPlayer1Checkboxes.filter((el) => el === true).length,
-        ],
-        player2Wins: [
-          checkedPlayer2Checkboxes.filter((el) => el === true).length,
-        ],
       }
+      await playerStatsService.adjustPlayerStats(data)
+      await teamStatsService.adjustTeamStats(updatedMatchData)
     }
     if (player === 2) {
       setWinningPlayer(props.currentMatch.player2)
@@ -142,39 +141,25 @@ const SingleMatch = (props) => {
           checkedPlayer2Checkboxes.filter((el) => el === true).length,
         ],
       }
+      await playerStatsService.adjustPlayerStats(data)
+      await teamStatsService.adjustTeamStats(
+        data,
+        props.homeTeam,
+        props.awayTeam
+      )
     }
     await matchService.update(data)
     setGameEnded(true)
-    // await updateDB(checkedPlayer1Checkboxes, checkedPlayer2Checkboxes)
   }
 
-  let match1Equality = (updatedMatchData?.homeMatch1?.player1Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch1?.player1Wins.filter(el=>el === true).length && (updatedMatchData?.homeMatch1?.player2Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch1?.player2Wins.filter(el=>el === true).length))
 
-  let match2Equality = (updatedMatchData?.homeMatch2?.player1Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch2?.player1Wins.filter(el=>el === true).length && (updatedMatchData?.homeMatch2?.player2Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch2?.player2Wins.filter(el=>el === true).length))
-
-  let match3Equality = (updatedMatchData?.homeMatch3?.player1Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch3?.player1Wins.filter(el=>el === true).length && (updatedMatchData?.homeMatch3?.player2Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch3?.player2Wins.filter(el=>el === true).length))
-
-  
-  console.log((updatedMatchData?.homeMatch2?.player1Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch2?.player1Wins.filter(el=>el === true).length && (updatedMatchData?.homeMatch2?.player2Wins.filter(el=>el === true).length === updatedMatchData?.awayMatch2?.player2Wins.filter(el=>el === true).length)));
-  
-  const getUpdatedTableInfo = async () => {
-    let data = await tableService.findOne(props.currentMatchData._id)
-    setUpdatedMatchData(data)
-  }
-  
-
-  const checkForEquality = async (mth) => {
-    console.log(mth)
-    getUpdatedTableInfo()
-    if(mth == "1" && match1Equality === true) {
-      setMatchEquality(true)
-    }
-    if(mth == "2" && match2Equality === true) {
-      setMatchEquality(true)
-    }
-    if(mth == "3" && match3Equality === true) {
-      setMatchEquality(true)
-    }
+  const checkForEquality = async () => {
+    let check = await checks.checkMatch(props.mth, props.currentMatchData)
+    console.log(check);
+    if(check == true ) setMessage("This is the SUBMIT Button")
+    if(check == false) setMessage("Check the other teams, Games do not match")
+    
+    
   }
 
   return (
@@ -207,24 +192,10 @@ const SingleMatch = (props) => {
                     </div>
                   )
               )}
-              {isPlayer1Winner && matchEquality === !true && (
-                <button onClick={() => checkForEquality(props.mth)}>
-                  check for match equality
-                </button>
-              )}
-              {props.profile.accessLevel >= 40 &&
-                isPlayer1Winner &&
-                !gameEnded && matchEquality == true && (
-                  <button onClick={() => handleWinner(1)}>Winner</button>
-                )}
+
+         
             </div>
           )}
-          {winningPlayer?._id === props.currentMatch?.player1._id &&
-            gameEnded && (
-              <h1 className="end" style={{ width: "95%" }}>
-                Winner <br />
-              </h1>
-            )}
           {gameEnded && (
             <h2 className="end" style={{ width: "95%" }}>
               Games Won:{" "}
@@ -233,6 +204,18 @@ const SingleMatch = (props) => {
             </h2>
           )}
         </div>
+  
+        {isPlayer1Winner && matchEquality === !true && (
+            <button onClick={() => checkForEquality(props.mth)}>
+              check for match equality
+            </button>
+          )}
+          {isPlayer2Winner && matchEquality === !true && (
+            <button onClick={() => checkForEquality(props.mth)}>
+              check for match equality
+            </button>
+          )}
+          {message}
         <div
           className="flex start bracket match-width2 match-height2 green-felt start"
           style={{ width: "90%" }}
@@ -259,21 +242,7 @@ const SingleMatch = (props) => {
                   </div>
                 )
             )}
-            {isPlayer2Winner && (
-              <button onClick={() => checkForEquality(props.mth)}>
-                check for match equality
-              </button>
-            )}
-            {props.profile.accessLevel >= 40 &&
-              isPlayer2Winner &&
-              !gameEnded && (
-                <button onClick={() => handleWinner(2)}>Winner</button>
-              )}
-            {isPlayer2Winner && gameEnded && (
-              <h1 className="end" style={{ width: "95%" }}>
-                Winner
-              </h1>
-            )}
+
             {gameEnded && (
               <h2 className="end" style={{ width: "95%" }}>
                 Games Won:{" "}
@@ -284,10 +253,13 @@ const SingleMatch = (props) => {
           </div>
         </div>
       </div>
-      {props.profile.accessLevel === 90 && (
-        <button onClick={() => props.handleCancel(props.mth)}>
-          Cancel this match
-        </button>
+      {props.profile.accessLevel > 40 && (
+        <>
+          <button onClick={() => props.handleCancel(props.mth)}>
+            Cancel this match
+          </button>
+
+        </>
       )}
     </div>
   )

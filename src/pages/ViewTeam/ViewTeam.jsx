@@ -24,6 +24,11 @@ const ViewTeam = (props) => {
     }
     getPlayerStats()
   }, [props.team.teamPlayers])
+   
+  const handleEditTeam = (teamId) => {
+    console.log(teamId);
+
+  }
 
   return (
     <div className={`${styles.greenFelt} ${styles.bracket} ${styles.center}`}>
@@ -201,10 +206,14 @@ const ViewTeam = (props) => {
         )}
       </h3>
       {props?.profile?.accessLevel === 90 && (
+        <>
+        <button onClick={() => handleEditTeam(props.team._id)}>Edit Team</button>
         <button onClick={() => props.handleDeleteTeam(props.team._id)}>
           Delete
         </button>
+        </>
       )}
+
     </div>
   )
 }

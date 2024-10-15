@@ -51,35 +51,18 @@ const Match = (props) => {
     }
   }
 
-  const handleSetPlayers = async () => {
-    if (player1 !== null && player2 !== null) {
-      if (match1 === null) {
-        await setMatch1([player1, player2])
-      }
-      if (match2 === null && match1 !== null) {
-        await setMatch2([player1, player2])
-      }
-      if (match3 === null && match1 !== null && match2 !== null) {
-        await setMatch3([player1, player2])
-      }
-      setMatch([player1, player2])
-      setPlayer1(null)
-      setPlayer2(null)
-    }
-  }
-
   const finalSubmitForApprovalButton = async () => {
     console.log(completeMatch)
     await triMatchService.create(completeMatch)
     setFinalSubmit(!finalSubmit)
   }
 
-  let color = player1 == null || player2 == null ? "red" : "green"
-
   const handleCancel = (mth) => {
-    if (mth === "m1") setMatch1(null)
-    if (mth === "m2") setMatch2(null)
-    if (mth === "m3") setMatch3(null)
+    console.log(mth,"************************");
+    
+    // if (mth === "1") setMatch1(null)
+    // if (mth === "2") setMatch2(null)
+    // if (mth === "3") setMatch3(null)
   }
 
   return (
@@ -149,7 +132,7 @@ const Match = (props) => {
         <>
           <h1 className="center">Match 3</h1>
           <MatchView
-            mth="m3"
+            mth="3"
             handleCancel={handleCancel}
             setShowButton={setShowButton}
             match1={match1}
@@ -169,7 +152,7 @@ const Match = (props) => {
         <>
           <h1 className="center">Match 2</h1>
           <MatchView
-            mth="m2"
+            mth="2"
             handleCancel={handleCancel}
             match1={match1}
             match2={match2}
@@ -188,7 +171,7 @@ const Match = (props) => {
         <>
           <h1 className="center">Match 1</h1>
           <MatchView
-            mth="m1"
+            mth="1"
             handleCancel={handleCancel}
             match1={match1}
             match2={match2}

@@ -153,7 +153,7 @@ const AdminPage = ({
         handleUpdateProfiles={handleUpdateProfiles}
       />
       <br />
-      {profile.firstName === 'Joe' && profile.lastName === 'Malatesta' && (
+      {profile.firstName === 'Joe' && (
         <>
           <AdminAddProfileToPlayer players={players} profiles={profiles} />
           <div className="bracket center column">

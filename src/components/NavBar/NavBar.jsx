@@ -8,8 +8,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName}</NavLink>
           <NavLink to="/scroll-wheel">Race Finder</NavLink>
-          <NavLink to="/season-match">View Matchup</NavLink>
-          <NavLink to="/session">View Current Session</NavLink>
+          <NavLink to="/session">Schedule</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/admin">Admin Page</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
@@ -22,13 +21,11 @@ const NavBar = ({ user, handleLogout, profile }) => {
       {profile?.accessLevel === 70 && (
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName}</NavLink>
-          <NavLink to="/season-match">View Matchup</NavLink>
           <NavLink to="/scroll-wheel">Race Finder</NavLink>
-
+          <NavLink to="/session">Schedule</NavLink>
           <NavLink to="/player-management">Player Management</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/scroll-wheel">Race Finder</NavLink>
-
           <NavLink to="/match-approval">Match Approval</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
           <NavLink to="" onClick={handleLogout}>
@@ -40,10 +37,8 @@ const NavBar = ({ user, handleLogout, profile }) => {
       {profile?.accessLevel >=50 && profile.accessLevel < 70 &&
              <div className={styles.navBar}>
              <NavLink to="/">Welcome {profile.firstName} </NavLink>
-             <NavLink to="/season-match">View Matchup</NavLink>
-             <NavLink to="/session">View Session</NavLink>
+             <NavLink to="/session">Schedule</NavLink>
              <NavLink to="/scroll-wheel">Race Finder</NavLink>
-
              <NavLink to="/view-teams">View Teams</NavLink>
              <NavLink to="/admin-stats-page">Player and Team Stats</NavLink>
              <NavLink to="/auth/change-password">Change Password</NavLink>
@@ -58,8 +53,6 @@ const NavBar = ({ user, handleLogout, profile }) => {
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName} </NavLink>
           <NavLink to="/scroll-wheel">Race Finder</NavLink>
-
-          <NavLink to="/season-match">View Matchup</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
           <NavLink to="" onClick={handleLogout}>

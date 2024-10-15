@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import  { useState } from "react"
 import * as gameService from "../../services/gameService"
-import './ScrollWheel.css'
+import * as styles from './ScrollWheel.module.css'
 
 const ScrollWheel = ({ players }) => {
   const [player1Rank, setPlayer1Rank] = useState(50)
@@ -40,12 +40,13 @@ const ScrollWheel = ({ players }) => {
         <div className="column">
           Player 1
           <select
+            className={styles.scrollSelect}
             name="player1Rank"
             value={player1Rank}
             onChange={handleChangePlayer1}
             >
             {Array.from({ length: highestRank - lowestRank + 11 }, (_, i) => (
-              <option key={lowestRank + i} value={lowestRank + i}>
+              <option className={styles.scrollSelect} key={lowestRank + i} value={lowestRank + i}>
                 {lowestRank + i}
               </option>
             ))}
@@ -55,12 +56,13 @@ const ScrollWheel = ({ players }) => {
         <div className="column">
           Player 2
           <select
+            className={styles.scrollSelect}
             name="player2Rank"
             value={player2Rank}
             onChange={handleChangePlayer2}
             >
             {Array.from({ length: highestRank - lowestRank + 11 }, (_, i) => (
-              <option key={lowestRank + i} value={lowestRank + i}>
+              <option className={styles.scrollSelect} key={lowestRank + i} value={lowestRank + i}>
                 {lowestRank + i}
               </option>
             ))}

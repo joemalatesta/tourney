@@ -4,7 +4,8 @@ import * as chart from "../../services/matchSkillLevels"
 const Landing = ({ profile }) => {
   return (
     <>
-      {profile?.accessLevel === 10 ? (
+    
+      {profile?.accessLevel === 10 || profile?.accessLevel === null? (
         <h4
           className={`${styles.center} ${styles.bracket} ${styles.textColorYellow}`}
         >
