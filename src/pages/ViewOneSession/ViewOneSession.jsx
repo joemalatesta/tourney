@@ -27,18 +27,16 @@ const ViewOneSession = (props) => {
   const [currentProfile, setCurrentProfile] = useState("")
   const [currentMatchData, setCurrentMatchData] = useState()
 
-
   useEffect(() => {
     const getPlayerInfo = async () => {
       const homeData = await teamService.findOne(currentMatch?.homeTeam?._id)
       const awayData = await teamService.findOne(currentMatch?.awayTeam?._id)
       setHomeTeamPlayers(homeData)
       setAwayTeamPlayers(awayData)
-      console.log(homeData, awayData);
+      console.log(homeData, awayData)
     }
     getPlayerInfo()
     setCurrentMatchData(currentMatch)
-    
   }, [currentMatch])
 
   const isProfileInTeamPlayers = (team, profileId) => {
@@ -172,7 +170,7 @@ const ViewOneSession = (props) => {
   }
 
   const handleCancel = async (mth) => {
-    console.log(mth);
+    console.log(mth)
     if (currentProfile === "HOME") {
       if (mth === "1") {
         setMatch1Home(null)
@@ -214,11 +212,11 @@ const ViewOneSession = (props) => {
       }
     }
   }
-    
+
   const handleChoosePlayer = async (player, title) => {
     let chosenPlayer = await playerService.findOne(player)
-    console.log(chosenPlayer);
-    
+    console.log(chosenPlayer)
+
     if (title === "Home") {
       setPlayer1(chosenPlayer)
     }
@@ -368,6 +366,7 @@ const ViewOneSession = (props) => {
         <>
           <h2 className="center bracket w300">Home Team Match 3</h2>
           <SingleMatch
+            currentProfile={currentProfile}
             homeTeam={currentMatch?.homeTeam}
             awayTeam={currentMatch?.awayTeam}
             player1={player1}
@@ -390,6 +389,7 @@ const ViewOneSession = (props) => {
           <h2 className="center bracket w300">Away Team Match 3</h2>
           {currentProfile === "AWAY" && (
             <SingleMatch
+              currentProfile={currentProfile}
               homeTeam={currentMatch?.homeTeam}
               awayTeam={currentMatch?.awayTeam}
               player1={currentMatch?.awayMatch3?.player1}
@@ -412,6 +412,7 @@ const ViewOneSession = (props) => {
         <>
           <h2 className="center bracket w300 ">Home Team Match 2</h2>
           <SingleMatch
+            currentProfile={currentProfile}
             homeTeam={currentMatch?.homeTeam}
             awayTeam={currentMatch?.awayTeam}
             player1={currentMatch?.homeMatch2?.player1}
@@ -434,6 +435,7 @@ const ViewOneSession = (props) => {
           <h2 className="center bracket w300 ">Away Team Match 2</h2>
           {currentProfile === "AWAY" && (
             <SingleMatch
+              currentProfile={currentProfile}
               homeTeam={currentMatch?.homeTeam}
               awayTeam={currentMatch?.awayTeam}
               player1={currentMatch?.awayMatch2?.player1}
@@ -457,6 +459,7 @@ const ViewOneSession = (props) => {
           <h2 className="center bracket w300 ">Home Team Match 1</h2>
           {currentProfile === "HOME" && (
             <SingleMatch
+              currentProfile={currentProfile}
               homeTeam={currentMatch?.homeTeam}
               awayTeam={currentMatch?.awayTeam}
               player1={currentMatch?.homeMatch1?.player1}
@@ -480,6 +483,7 @@ const ViewOneSession = (props) => {
           <h2 className="center bracket w300 ">Away Team Match 1</h2>
           {currentProfile === "AWAY" && (
             <SingleMatch
+              currentProfile={currentProfile}
               homeTeam={currentMatch?.homeTeam}
               awayTeam={currentMatch?.awayTeam}
               player1={currentMatch?.awayMatch1?.player1}

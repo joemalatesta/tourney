@@ -18,7 +18,7 @@ const SingleMatch = (props) => {
     props?.currentMatch?.winningPlayer
   )
   const [updatedMatchData] = useState()
-  const [matchEquality] = useState(false)
+  const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
 
   console.log(props)
@@ -156,7 +156,10 @@ const SingleMatch = (props) => {
   const checkForEquality = async () => {
     let check = await checks.checkMatch(props.mth, props.currentMatchData)
     console.log(check);
-    if(check == true ) setMessage("This is the SUBMIT Button")
+    if(check == true ) {
+      setMessage(true)
+      setMatchEquality(true)
+    }
     if(check == false) setMessage("Check the other teams, Games do not match")
     
     
@@ -215,7 +218,12 @@ const SingleMatch = (props) => {
               check for match equality
             </button>
           )}
-          {message}
+          {isPlayer1Winner && message == true && props.currentProfile == "HOME" &&
+            <button onClick={()=>handleWinner(props.player1)}>Submit</button>
+          }
+          {isPlayer2Winner && message == true && props.currentProfile == "HOME" &&
+            <button onClick={()=>handleWinner(props.player2)}>Submit</button>
+          }
         <div
           className="flex start bracket match-width2 match-height2 green-felt start"
           style={{ width: "90%" }}
