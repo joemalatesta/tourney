@@ -20,7 +20,8 @@ const SingleMatch = (props) => {
   const [updatedMatchData] = useState()
   const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
-
+  console.log(winningPlayer);
+  
   console.log(props)
   console.log(updatedMatchData)
 
@@ -208,16 +209,12 @@ const SingleMatch = (props) => {
           )}
         </div>
   
-        {isPlayer1Winner && matchEquality === !true && (
+        {(isPlayer1Winner || isPlayer2Winner ) && matchEquality === !true && (
             <button onClick={() => checkForEquality(props.mth)}>
               check for match equality
             </button>
           )}
-          {isPlayer2Winner && matchEquality === !true && (
-            <button onClick={() => checkForEquality(props.mth)}>
-              check for match equality
-            </button>
-          )}
+          
           {isPlayer1Winner && message == true && props.currentProfile == "HOME" &&
             <button onClick={()=>handleWinner(props.player1)}>Submit</button>
           }
@@ -261,14 +258,14 @@ const SingleMatch = (props) => {
           </div>
         </div>
       </div>
-      {props.profile.accessLevel > 40 && (
+      {/* {props.profile.accessLevel > 40 && (
         <>
           <button onClick={() => props.handleCancel(props.mth)}>
             Cancel this match
           </button>
 
         </>
-      )}
+      )} */}
     </div>
   )
 }

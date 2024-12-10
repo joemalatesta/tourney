@@ -29,7 +29,8 @@ export async function checkMatch(mth, matchData) {
     let updatedData = await getUpdatedData(matchData._id)
     console.log(updatedData)
     let test1, test2
-    if(updatedData.awayMatch1.player1Wins == null || updatedData.homeMatch1.player1Wins == null) return false
+    if(updatedData.awayMatch1 == null || updatedData.homeMatch1 == null) return false
+    if(updatedData.awayMatch1.player2Wins == null || updatedData.homeMatch1.player2Wins == null) return false
      test1 = compareBooleanArrays(
         updatedData.awayMatch1.player1Wins,
        updatedData.homeMatch1.player1Wins
