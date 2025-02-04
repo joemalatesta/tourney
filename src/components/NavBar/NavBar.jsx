@@ -8,6 +8,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName}</NavLink>
           <NavLink to="/session">Schedule</NavLink>
+          <NavLink to="/session2">Start Match</NavLink>
           <NavLink to="/scroll-wheel">Race Finder</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/admin">Admin Page</NavLink>
@@ -38,6 +39,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
              <div className={styles.navBar}>
              <NavLink to="/">Welcome {profile.firstName} </NavLink>
              <NavLink to="/session">Schedule</NavLink>
+             <NavLink to="/session2">Start Match</NavLink>
              <NavLink to="/scroll-wheel">Race Finder</NavLink>
              <NavLink to="/view-teams">View Teams</NavLink>
              <NavLink to="/admin-stats-page">Player and Team Stats</NavLink>

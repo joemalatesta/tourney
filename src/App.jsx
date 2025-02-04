@@ -19,6 +19,7 @@ import Profiles from "./pages/Profiles/Profiles"
 import Schedule from "./pages/Schedule/Schedule"
 import ScrollWheel from "./pages/ScrollWheel/ScrollWheel"
 import Session from "./pages/Session/Session"
+import Session2 from "./pages/Session2/Session2"
 import ViewMatchup from "./pages/ViewMatchup/ViewMatchup"
 import ViewOneSession from "./pages/ViewOneSession/ViewOneSession"
 import Signup from "./pages/Signup/Signup"
@@ -27,6 +28,7 @@ import ViewTeam from "./pages/ViewTeam/ViewTeam"
 import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
 import EditTeam from "./pages/EditTeam/EditTeam"
+import StartMatch from "./pages/StartMatch/StartMatch"
 
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
@@ -491,6 +493,15 @@ function App() {
         />
         <Route
           disable={isDisabled}
+          path="/session2"
+          element={
+            <ProtectedRoute access="30" profile={profile} user={user}>
+              <Session2 profile={profile} players={players} teams={teams} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          disable={isDisabled}
           path="/create-session"
           element={
             <ProtectedRoute access="90" profile={profile} user={user}>
@@ -517,6 +528,20 @@ function App() {
           element={
             <ProtectedRoute access="50" profile={profile} user={user}>
               <ViewOneSession
+                profile={profile}
+                players={players}
+                teams={teams}
+              />
+            </ProtectedRoute>
+          }
+        />
+                <Route
+          disable={isDisabled}
+          path="/startMatch"
+          element={
+            <ProtectedRoute access="50" profile={profile} user={user}>
+              <StartMatch
+                fetchPlayers={fetchPlayers}
                 profile={profile}
                 players={players}
                 teams={teams}

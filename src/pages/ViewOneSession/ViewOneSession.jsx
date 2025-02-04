@@ -33,7 +33,6 @@ const ViewOneSession = (props) => {
       const awayData = await teamService.findOne(currentMatch?.awayTeam?._id)
       setHomeTeamPlayers(homeData)
       setAwayTeamPlayers(awayData)
-      console.log(homeData, awayData)
     }
     getPlayerInfo()
     setCurrentMatchData(currentMatch)
@@ -366,21 +365,21 @@ const ViewOneSession = (props) => {
         <>
           <h2 className="center bracket w300">Home Team Match 3</h2>
           <SingleMatch
-            currentProfile={currentProfile}
-            homeTeam={currentMatch?.homeTeam}
-            awayTeam={currentMatch?.awayTeam}
-            player1={player1}
-            player2={player2}
-            handleUpdateMatch={handleUpdateMatch}
-            player1Wins={currentMatch.homeMatch3?.player1Wins}
-            player2Wins={currentMatch.homeMatch3?.player2Wins}
-            currentMatch={currentMatch.homeMatch3}
-            currentMatchData={currentMatchData}
-            profile={props.profile}
-            handleCancel={handleCancel}
-            match={match3Home}
-            mth="3"
-            key="3"
+              currentProfile={currentProfile}
+              homeTeam={currentMatch?.homeTeam}
+              awayTeam={currentMatch?.awayTeam}
+              player1={currentMatch?.homeMatch3?.player1}
+              player2={currentMatch?.homeMatch3?.player2}
+              handleUpdateMatch={handleUpdateMatch}
+              player1Wins={currentMatch?.homeMatch3?.player1Wins}
+              player2Wins={currentMatch?.homeMatch3?.player2Wins}
+              currentMatch={currentMatch?.homeMatch3}
+              currentMatchData={currentMatchData}
+              profile={props.profile}
+              handleCancel={handleCancel}
+              match={match3Home}
+              mth="3"
+              Key="3"
           />
         </>
       )}
@@ -412,21 +411,21 @@ const ViewOneSession = (props) => {
         <>
           <h2 className="center bracket w300 ">Home Team Match 2</h2>
           <SingleMatch
-            currentProfile={currentProfile}
-            homeTeam={currentMatch?.homeTeam}
-            awayTeam={currentMatch?.awayTeam}
-            player1={currentMatch?.homeMatch2?.player1}
-            player2={currentMatch?.homeMatch2?.player2}
-            handleUpdateMatch={handleUpdateMatch}
-            player1Wins={currentMatch?.homeMatch2?.player1Wins}
-            player2Wins={currentMatch?.homeMatch2?.player2Wins}
-            currentMatch={currentMatch?.homeMatch2}
-            currentMatchData={currentMatchData}
-            profile={props.profile}
-            handleCancel={handleCancel}
-            match={match2Home}
-            mth="2"
-            key="2"
+              currentProfile={currentProfile}
+              homeTeam={currentMatch?.homeTeam}
+              awayTeam={currentMatch?.awayTeam}
+              player1={currentMatch?.homeMatch2?.player1}
+              player2={currentMatch?.homeMatch2?.player2}
+              handleUpdateMatch={handleUpdateMatch}
+              player1Wins={currentMatch?.homeMatch2?.player1Wins}
+              player2Wins={currentMatch?.homeMatch2?.player2Wins}
+              currentMatch={currentMatch?.homeMatch2}
+              currentMatchData={currentMatchData}
+              profile={props.profile}
+              handleCancel={handleCancel}
+              match={match2Home}
+              mth="2"
+              Key="2"
           />
         </>
       )}

@@ -177,6 +177,11 @@ a:visited {
   font-size: 1em;
 }
 
+.align {
+  display: flex;
+
+}
+
 button {
   border-radius: 5px;
   background-color: firebrick;
@@ -198,6 +203,10 @@ button {
 
 .w325 {
   width: 225px;
+}
+.w350 {
+  width: 225px;
+  justify-content: space-between;
 }
 
 .w700 {

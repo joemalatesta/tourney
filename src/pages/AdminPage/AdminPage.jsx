@@ -33,6 +33,7 @@ const AdminPage = ({
             matchesPlayed: 0,
             gamesWon: 0,
             gamesLoss: 0,
+            rank: player.rank,
             seasonRankStart: player.rank
           }
           await playerService.update(data)
