@@ -314,46 +314,27 @@ const ViewOneSession = (props) => {
   }
 
   const handleUpdateMatch = async () => {
-    if (!currentMatch?._id) return // Ensure match ID exists
+    if (!currentMatch?._id) return
 
     try {
       const data = await matchService.findOne(currentMatch._id)
       setCurrentMatch(data)
 
-      // Refresh only if a match is still incomplete
       if (
         data?.match1Completed !== true ||
         data?.match2Completed !== true ||
         data?.match3Completed !== true
       ) {
-        setTimeout(handleUpdateMatch, 5000) // Polling every 5 seconds
+        setTimeout(handleUpdateMatch, 5000) 
       }
     } catch (error) {
       console.error("Error updating match:", error)
     }
   }
-  // useEffect(() => {
-  //   fetchMatchData().then((data) => setCurrentMatch(data))
-  // }, [])
 
-  // const fetchMatchData = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:3001"); // Replace with actual API URL
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch match data");
-  //     }
-  //     const data = await response.json();
-  //     setCurrentMatch(data); // Assuming `setCurrentMatch` is a state setter
-  //     localStorage.setItem("currentMatch", JSON.stringify(data)); // Persist data
-  //   } catch (error) {
-  //     console.error("Error fetching match data:", error);
-  //   }
-  // };
-  
-  // // Call this inside useEffect when the component mounts
-  // useEffect(() => {
-  //   fetchMatchData();
-  // }, []);
+  let passedMatch1 = currentMatch?.awayMatch1 == null ? currentMatch?.homeMatch1 : currentMatch?.awayMatch1
+  let passedMatch2 = currentMatch?.awayMatch2 == null ? currentMatch?.homeMatch2 : currentMatch?.awayMatch2
+  let passedMatch3 = currentMatch?.awayMatch3 == null ? currentMatch?.homeMatch3 : currentMatch?.awayMatch3
 
   return (
     <>
@@ -460,7 +441,7 @@ const ViewOneSession = (props) => {
             )}
           </>
         )}
-      {match2Home !== null && currentMatch?.match2Completed !== true && (
+      {match2Home !== null && currentMatch?.match2Completed != true && (
         <>
           <h2 className="center bracket w300 ">Home Team Match 2</h2>
           <SingleMatch
@@ -485,7 +466,7 @@ const ViewOneSession = (props) => {
       )}
       {match2Away !== null &&
         currentProfile === "AWAY" &&
-        currentMatch?.match2Completed !== true && (
+        currentMatch?.match2Completed != true && (
           <>
             <h2 className="center bracket w300 ">Away Team Match 2</h2>
             {currentProfile === "AWAY" && (
@@ -591,7 +572,7 @@ const ViewOneSession = (props) => {
         <>
           <div className="bracket">
             MATCH 1
-            <CompletedMatch currentMatch={currentMatch?.awayMatch1} />
+            <CompletedMatch currentMatch={passedMatch1} />
           </div>
         </>
       )}
@@ -599,7 +580,7 @@ const ViewOneSession = (props) => {
         <>
           <div className="bracket">
             MATCH 2
-            <CompletedMatch currentMatch={currentMatch?.awayMatch2} />
+            <CompletedMatch currentMatch={passedMatch2} />
           </div>
         </>
       )}
@@ -607,7 +588,7 @@ const ViewOneSession = (props) => {
         <>
           <div className="bracket">
             MATCH 3
-            <CompletedMatch currentMatch={currentMatch?.awayMatch3} />
+            <CompletedMatch currentMatch={passedMatch3} />
           </div>
         </>
       )}

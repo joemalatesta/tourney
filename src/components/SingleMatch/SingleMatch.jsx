@@ -24,8 +24,6 @@ const SingleMatch = (props) => {
   const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
 
-  console.log("this is the winning player",winningPlayer)
-
   useEffect(() => {
     if (
       checkedPlayer1Checkboxes.length >= 2 &&
@@ -149,11 +147,7 @@ const SingleMatch = (props) => {
     
 
     if (props.mth == 1){
-      let tableData = props?.tableId?.awayMatch1
-
-
-      console.log(tableData);
-      
+      let tableData = props?.tableId?.awayMatch1 == null ? props?.tableId?.homeMatch1 : props?.tableId?.awayMatch1
       await tableService.update({
         ...props.tableId,
         match1Completed: true,
@@ -165,25 +159,69 @@ const SingleMatch = (props) => {
       })
     }
     if (props.mth == 2){
-      let data = props.tableId.awayMatch2
+      let tableData = props?.tableId?.awayMatch2 == null ? props?.tableId?.homeMatch2 : props?.tableId?.awayMatch2
       await tableService.update({
         ...props.tableId,
-        match2Completed: true,
+        match1Completed: true,
       })
       await matchService.update({
-        ...data,
+        ...tableData,
         winningPlayer: winPlayer,
         losingPlayer: losePlayer
       })
     }
     if (props.mth == 3){
-      let data = props.tableId.awayMatch3
+      let tableData = props?.tableId?.awayMatch3 == null ? props?.tableId?.homeMatch3 : props?.tableId?.awayMatch3
+      await tableService.update({
+        ...props.tableId,
+        match1Completed: true,
+      })
+      await matchService.update({
+        ...tableData,
+        winningPlayer: winPlayer,
+        losingPlayer: losePlayer
+      })
+    }
+
+    setGameEnded(true)
+  }
+  const handleWinner2 = async (winPlayer, losePlayer, num) => {
+
+    if (num== 1){
+      let tableData = props?.tableId?.awayMatch1 == null ? props?.tableId?.homeMatch1 : props?.tableId?.awayMatch1
+      console.log(tableData);
+      await tableService.update({
+        ...props.tableId,
+        match1Completed: true,
+      })
+      await matchService.update({
+        ...tableData,
+        winningPlayer: winPlayer,
+        losingPlayer: losePlayer
+      })
+    }
+    if (num == 2){
+      let tableData = props?.tableId?.awayMatch2 == null ? props?.tableId?.homeMatch2 : props?.tableId?.awayMatch2
+      console.log(tableData);
+      await tableService.update({
+        ...props.tableId,
+        match2Completed: true,
+      })
+      await matchService.update({
+        ...tableData,
+        winningPlayer: winPlayer,
+        losingPlayer: losePlayer
+      })
+    }
+    if (num == 3){
+      let tableData = props?.tableId?.awayMatch3 == null ? props?.tableId?.homeMatch3 : props?.tableId?.awayMatch3
+      console.log(tableData);
       await tableService.update({
         ...props.tableId,
         match3Completed: true,
       })
       await matchService.update({
-        ...data,
+        ...tableData,
         winningPlayer: winPlayer,
         losingPlayer: losePlayer
       })
@@ -250,10 +288,24 @@ const SingleMatch = (props) => {
                 Submit
               </button>
             )}
+          {isPlayer1Winner &&
+            message == true &&
+            props.currentProfile == "AWAY" && (
+              <button onClick={() => handleWinner2(props.player1, props.player2, 1)}>
+                Submit
+              </button>
+            )}
           {isPlayer2Winner &&
             message == true &&
             props.currentProfile == "HOME" && (
               <button onClick={() => handleWinner(props.player2, props.player1, 2)}>
+                Submit
+              </button>
+            )}
+          {isPlayer2Winner &&
+            message == true &&
+            props.currentProfile == "AWAY" && (
+              <button onClick={() => handleWinner2(props.player2, props.player1, 2)}>
                 Submit
               </button>
             )}
