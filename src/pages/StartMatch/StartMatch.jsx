@@ -1,22 +1,24 @@
 import { useLocation } from "react-router-dom"
 import * as tableService from "../../services/tableService"
 import * as playerService from "../../services/playerService"
+import * as matchService from "../../services/matchService"
 import { useState, useEffect } from "react"
 import HomeAndAwayPlayerList from "../../components/HomeAndAwayPlayerList/HomeAndPlayerList"
+import SingleMatch from "../../components/SingleMatch/SingleMatch"
 
 const StartMatch = (props) => {
+
   const location = useLocation()
   const queryString = location.search
   const params = new URLSearchParams(queryString)
   const tableId = params.get("tableId")
-
   const home = "home"
   const away = "away"
 
   useEffect(() => {
-    console.log("hit tableId useEffect")
   }, [tableId])
 
+  const [currentMatch, setCurrentMatch] = useState()
   const [table, setTable] = useState(null)
   const [homePlayers, setHomePlayers] = useState([])
   const [awayPlayers, setAwayPlayers] = useState([])
@@ -33,13 +35,11 @@ const StartMatch = (props) => {
   useEffect(() => {
     const determineTeam = () => {
       if (homePlayers.some((player) => player.profile === props.profile._id)) {
-        if (props.profile.accessLevel === 90) setAwayOrHome("ADMIN")
-        else setAwayOrHome("HOME")
+        setAwayOrHome("HOME")
       } else if (
         awayPlayers.some((player) => player.profile === props.profile._id)
       ) {
-        if (props.profile.accessLevel === 90) setAwayOrHome("ADMIN")
-        else setAwayOrHome("AWAY")
+        setAwayOrHome("AWAY")
       } else {
         if (props.profile.accessLevel === 90) setAwayOrHome("ADMIN")
         else setAwayOrHome("NONE")
@@ -86,73 +86,100 @@ const StartMatch = (props) => {
     }
   }, [tableId])
 
+  console.log(currentMatch);
+  
+
   const setPlayerForMatch = (playerObj, teamid, match) => {
-    console.log(playerObj, match, teamid)
-    if (match == 1)
-      if (teamid == "home")
-        setMatchPlayers({...matchPlayers, match1Home : playerObj})
-      else setMatchPlayers({...matchPlayers, match1Away :playerObj})
-    if (match == 2)
-      if (teamid == "home")
-        setMatchPlayers({...matchPlayers, match2Home : playerObj})
-      else setMatchPlayers({...matchPlayers, match2Away :playerObj})
-    if (match == 3)
-      if (teamid == "home")
-        setMatchPlayers({...matchPlayers, match3Home : playerObj})
-      else setMatchPlayers({...matchPlayers, match3Away :playerObj})
-      console.log(matchPlayers)
+    setMatchPlayers((prevMatchPlayers) => {
+      const updatedMatchPlayers = { ...prevMatchPlayers }
+
+      if (match === 1) {
+        updatedMatchPlayers[teamid === "home" ? "match1Home" : "match1Away"] =
+          playerObj
+      } else if (match === 2) {
+        updatedMatchPlayers[teamid === "home" ? "match2Home" : "match2Away"] =
+          playerObj
+      } else if (match === 3) {
+        updatedMatchPlayers[teamid === "home" ? "match3Home" : "match3Away"] =
+          playerObj
+      }
+
+      console.log("Updated matchPlayers:", updatedMatchPlayers)
+      return updatedMatchPlayers
+    })
   }
 
+  const submitPlayersToMatch = async (match) => {
+    const updatedMatch = await matchService.create({
+      ...match,
+      player1: matchPlayers.match1Home,
+      player2: matchPlayers.match1Away,
+      submitted: true,
+    })
+
+    setCurrentMatch(updatedMatch)
+
+    if (match === 1 && table.homeMatch1 !== "null") {
+      if (awayOrHome === "HOME") {
+        await tableService.update({
+          ...table,
+          homeMatch1: updatedMatch._id,
+        })
+      }
+      if (awayOrHome === "AWAY") {
+        await tableService.update({
+          ...table,
+          awayMatch1: updatedMatch._id,
+        })
+      }
+    }
+  }
+
+        // await playerStatsService.adjustPlayerStats(data)
+        // await teamStatsService.adjustTeamStats(
+        //   data,
+        //   props.homeTeam,
+        //   props.awayTeam
+        // )
 
   return (
     <>
       {awayOrHome}
       <div className="">
-        <div className="bracket">
-          <HomeAndAwayPlayerList
-            homePlayer={matchPlayers.match1Home}
-            awayPlayer={matchPlayers.match1Away}
-            awayOrHome={awayOrHome}
-            setPlayerForMatch={setPlayerForMatch}
-            home={home}
-            away={away}
-            homePlayers={homePlayers}
-            awayPlayers={awayPlayers}
+        {currentMatch?.submitted !== "null" && (
+          <SingleMatch
+            currentProfile={props.profile}
+            homeTeam={currentMatch?.homeTeam}
+            awayTeam={currentMatch?.awayTeam}
+            player1={currentMatch?.homeMatch3?.player1}
+            player2={currentMatch?.homeMatch3?.player2}
+            player1Wins={currentMatch?.homeMatch1?.player1Wins}
+            player2Wins={currentMatch?.homeMatch1?.player2Wins}
+            currentMatch={currentMatch?.homeMatch3}
             profile={props.profile}
-            table={table}
-            match={1}
+            mth="1"
+            Key="1"
           />
-        </div>
-        <div className="bracket">
-          <HomeAndAwayPlayerList
-            homePlayer={matchPlayers.match2Home}
-            awayPlayer={matchPlayers.match2Away}
-            awayOrHome={awayOrHome}
-            setPlayerForMatch={setPlayerForMatch}
-            home={home}
-            away={away}
-            homePlayers={homePlayers}
-            awayPlayers={awayPlayers}
-            profile={props.profile}
-            table={table}
-            match={2}
-          />
-        </div>
-        <div className="bracket">
-          <HomeAndAwayPlayerList
-            homePlayer={matchPlayers.match3Home}
-            awayPlayer={matchPlayers.match3Away}
-            awayOrHome={awayOrHome}
-            setPlayerForMatch={setPlayerForMatch}
-            home={home}
-            away={away}
-            homePlayers={homePlayers}
-            awayPlayers={awayPlayers}
-            profile={props.profile}
-            table={table}
-            match={3}
-          />
-        </div>
+        )}
+        {currentMatch?.submitted == "null" && (
+          <div className="bracket">
+            <HomeAndAwayPlayerList
+              submitPlayersToMatch={submitPlayersToMatch}
+              homePlayer={matchPlayers.match1Home}
+              awayPlayer={matchPlayers.match1Away}
+              awayOrHome={awayOrHome}
+              setPlayerForMatch={setPlayerForMatch}
+              home={home}
+              away={away}
+              homePlayers={homePlayers}
+              awayPlayers={awayPlayers}
+              profile={props.profile}
+              table={table}
+              match={1}
+              submitted={currentMatch?.submitted}
+            />
+          </div>
+        )}
       </div>
     </>
   )

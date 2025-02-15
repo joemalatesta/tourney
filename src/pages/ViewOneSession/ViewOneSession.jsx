@@ -6,6 +6,7 @@ import * as matchService from "../../services/matchService"
 import * as playerService from "../../services/playerService"
 import TeamPlayers from "../../components/TeamPlayers/TeamPlayers"
 import SingleMatch from "../../components/SingleMatch/SingleMatch"
+import CompletedMatch from "../../components/CompletedMatch/CompletedMatch"
 
 const ViewOneSession = (props) => {
   const [currentMatch, setCurrentMatch] = useState()
@@ -73,18 +74,15 @@ const ViewOneSession = (props) => {
     getSession()
   }, [tableId])
 
-  useEffect(() => {
-    const getUpdatedMatch = async () => {
-      const data = await matchService.findOne(currentMatch?._id)
-      setCurrentMatch(data)
-    }
-    getUpdatedMatch
-  }, [currentMatch])
-
-  const handleUpdateMatch = async () => {
-    const data = await matchService.findOne(currentMatch?._id)
-    setCurrentMatch(data)
-  }
+  // useEffect(() => {
+  //   const getUpdatedMatch = async () => {
+  //     if (currentMatch?._id) {
+  //       const data = await matchService.findOne(currentMatch?._id)
+  //       setCurrentMatch(data)
+  //     }
+  //   }
+  //   getUpdatedMatch()
+  // }, [currentMatch])
 
   useEffect(() => {
     const setToggle = () => {
@@ -169,7 +167,6 @@ const ViewOneSession = (props) => {
   }
 
   const handleCancel = async (mth) => {
-    console.log(mth)
     if (currentProfile === "HOME") {
       if (mth === "1") {
         setMatch1Home(null)
@@ -214,7 +211,6 @@ const ViewOneSession = (props) => {
 
   const handleChoosePlayer = async (player, title) => {
     let chosenPlayer = await playerService.findOne(player)
-    console.log(chosenPlayer)
 
     if (title === "Home") {
       setPlayer1(chosenPlayer)
@@ -314,7 +310,50 @@ const ViewOneSession = (props) => {
   const handleSetAdmin = (el) => {
     if (el === "home") setCurrentProfile("HOME")
     if (el === "away") setCurrentProfile("AWAY")
+    if (el === "none") setCurrentProfile("NONE")  
   }
+
+  const handleUpdateMatch = async () => {
+    if (!currentMatch?._id) return // Ensure match ID exists
+
+    try {
+      const data = await matchService.findOne(currentMatch._id)
+      setCurrentMatch(data)
+
+      // Refresh only if a match is still incomplete
+      if (
+        data?.match1Completed !== true ||
+        data?.match2Completed !== true ||
+        data?.match3Completed !== true
+      ) {
+        setTimeout(handleUpdateMatch, 5000) // Polling every 5 seconds
+      }
+    } catch (error) {
+      console.error("Error updating match:", error)
+    }
+  }
+  // useEffect(() => {
+  //   fetchMatchData().then((data) => setCurrentMatch(data))
+  // }, [])
+
+  // const fetchMatchData = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:3001"); // Replace with actual API URL
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch match data");
+  //     }
+  //     const data = await response.json();
+  //     setCurrentMatch(data); // Assuming `setCurrentMatch` is a state setter
+  //     localStorage.setItem("currentMatch", JSON.stringify(data)); // Persist data
+  //   } catch (error) {
+  //     console.error("Error fetching match data:", error);
+  //   }
+  // };
+  
+  // // Call this inside useEffect when the component mounts
+  // useEffect(() => {
+  //   fetchMatchData();
+  // }, []);
 
   return (
     <>
@@ -332,6 +371,11 @@ const ViewOneSession = (props) => {
             {currentProfile === "ADMIN" && (
               <button onClick={() => handleSetAdmin("home")}>
                 Admin for HOME Team
+              </button>
+            )}
+                    {currentProfile === "ADMIN" && (
+              <button onClick={() => handleSetAdmin("none")}>
+                None
               </button>
             )}
           </div>
@@ -357,166 +401,216 @@ const ViewOneSession = (props) => {
                 Admin for AWAY Team
               </button>
             )}
+            {currentProfile === "ADMIN" && (
+              <button onClick={() => handleSetAdmin("none")}>
+                None
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {match3Home !== null && (
+      {match3Home !== null && currentMatch?.match3Completed !== true && (
         <>
           <h2 className="center bracket w300">Home Team Match 3</h2>
           <SingleMatch
-              currentProfile={currentProfile}
-              homeTeam={currentMatch?.homeTeam}
-              awayTeam={currentMatch?.awayTeam}
-              player1={currentMatch?.homeMatch3?.player1}
-              player2={currentMatch?.homeMatch3?.player2}
-              handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch?.homeMatch3?.player1Wins}
-              player2Wins={currentMatch?.homeMatch3?.player2Wins}
-              currentMatch={currentMatch?.homeMatch3}
-              currentMatchData={currentMatchData}
-              profile={props.profile}
-              handleCancel={handleCancel}
-              match={match3Home}
-              mth="3"
-              Key="3"
+            tableId={currentMatch}
+            currentProfile={currentProfile}
+            homeTeam={currentMatch?.homeTeam}
+            awayTeam={currentMatch?.awayTeam}
+            player1={currentMatch?.homeMatch3?.player1}
+            player2={currentMatch?.homeMatch3?.player2}
+            handleUpdateMatch={handleUpdateMatch}
+            player1Wins={currentMatch?.homeMatch3?.player1Wins}
+            player2Wins={currentMatch?.homeMatch3?.player2Wins}
+            currentMatch={currentMatch?.homeMatch3}
+            currentMatchData={currentMatchData}
+            profile={props.profile}
+            handleCancel={handleCancel}
+            match={match3Home}
+            mth="3"
+            Key="3"
           />
         </>
       )}
-      {match3Away !== null && currentProfile === "AWAY" && (
-        <>
-          <h2 className="center bracket w300">Away Team Match 3</h2>
-          {currentProfile === "AWAY" && (
-            <SingleMatch
-              currentProfile={currentProfile}
-              homeTeam={currentMatch?.homeTeam}
-              awayTeam={currentMatch?.awayTeam}
-              player1={currentMatch?.awayMatch3?.player1}
-              player2={currentMatch?.awayMatch3?.player2}
-              handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch?.awayMatch3?.player1Wins}
-              player2Wins={currentMatch?.awayMatch3?.player2Wins}
-              currentMatch={currentMatch?.awayMatch3}
-              currentMatchData={currentMatchData}
-              profile={props.profile}
-              handleCancel={handleCancel}
-              match={match3Away}
-              mth="3"
-              Key="3"
-            />
-          )}
-        </>
-      )}
-      {match2Home !== null && (
+      {match3Away !== null &&
+        currentProfile === "AWAY" &&
+        currentMatch?.match3Completed !== true && (
+          <>
+            <h2 className="center bracket w300">Away Team Match 3</h2>
+            {currentProfile === "AWAY" && (
+              <SingleMatch
+                tableId={currentMatch}
+                currentProfile={currentProfile}
+                homeTeam={currentMatch?.homeTeam}
+                awayTeam={currentMatch?.awayTeam}
+                player1={currentMatch?.awayMatch3?.player1}
+                player2={currentMatch?.awayMatch3?.player2}
+                handleUpdateMatch={handleUpdateMatch}
+                player1Wins={currentMatch?.awayMatch3?.player1Wins}
+                player2Wins={currentMatch?.awayMatch3?.player2Wins}
+                currentMatch={currentMatch?.awayMatch3}
+                currentMatchData={currentMatchData}
+                profile={props.profile}
+                handleCancel={handleCancel}
+                match={match3Away}
+                mth="3"
+                Key="3"
+              />
+            )}
+          </>
+        )}
+      {match2Home !== null && currentMatch?.match2Completed !== true && (
         <>
           <h2 className="center bracket w300 ">Home Team Match 2</h2>
           <SingleMatch
-              currentProfile={currentProfile}
-              homeTeam={currentMatch?.homeTeam}
-              awayTeam={currentMatch?.awayTeam}
-              player1={currentMatch?.homeMatch2?.player1}
-              player2={currentMatch?.homeMatch2?.player2}
-              handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch?.homeMatch2?.player1Wins}
-              player2Wins={currentMatch?.homeMatch2?.player2Wins}
-              currentMatch={currentMatch?.homeMatch2}
-              currentMatchData={currentMatchData}
-              profile={props.profile}
-              handleCancel={handleCancel}
-              match={match2Home}
-              mth="2"
-              Key="2"
+            tableId={currentMatch}
+            currentProfile={currentProfile}
+            homeTeam={currentMatch?.homeTeam}
+            awayTeam={currentMatch?.awayTeam}
+            player1={currentMatch?.homeMatch2?.player1}
+            player2={currentMatch?.homeMatch2?.player2}
+            handleUpdateMatch={handleUpdateMatch}
+            player1Wins={currentMatch?.homeMatch2?.player1Wins}
+            player2Wins={currentMatch?.homeMatch2?.player2Wins}
+            currentMatch={currentMatch?.homeMatch2}
+            currentMatchData={currentMatchData}
+            profile={props.profile}
+            handleCancel={handleCancel}
+            match={match2Home}
+            mth="2"
+            Key="2"
           />
         </>
       )}
-      {match2Away !== null && currentProfile === "AWAY" && (
-        <>
-          <h2 className="center bracket w300 ">Away Team Match 2</h2>
-          {currentProfile === "AWAY" && (
-            <SingleMatch
-              currentProfile={currentProfile}
-              homeTeam={currentMatch?.homeTeam}
-              awayTeam={currentMatch?.awayTeam}
-              player1={currentMatch?.awayMatch2?.player1}
-              player2={currentMatch?.awayMatch2?.player2}
-              handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch?.awayMatch2?.player1Wins}
-              player2Wins={currentMatch?.awayMatch2?.player2Wins}
-              currentMatch={currentMatch?.awayMatch2}
-              currentMatchData={currentMatchData}
-              profile={props.profile}
-              handleCancel={handleCancel}
-              match={match2Away}
-              mth="2"
-              Key="2"
-            />
-          )}
-        </>
-      )}
-      {match1Home !== null && (
-        <>
-          <h2 className="center bracket w300 ">Home Team Match 1</h2>
-          {currentProfile === "HOME" && (
-            <SingleMatch
-              currentProfile={currentProfile}
-              homeTeam={currentMatch?.homeTeam}
-              awayTeam={currentMatch?.awayTeam}
-              player1={currentMatch?.homeMatch1?.player1}
-              player2={currentMatch?.homeMatch1?.player2}
-              handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch?.homeMatch1?.player1Wins}
-              player2Wins={currentMatch?.homeMatch1?.player2Wins}
-              currentMatch={currentMatch?.homeMatch1}
-              currentMatchData={currentMatchData}
-              profile={props.profile}
-              handleCancel={handleCancel}
-              match={match1Home}
-              mth="1"
-              Key="1"
-            />
-          )}
-        </>
-      )}
-      {match1Away !== null && currentProfile === "AWAY" && (
-        <>
-          <h2 className="center bracket w300 ">Away Team Match 1</h2>
-          {currentProfile === "AWAY" && (
-            <SingleMatch
-              currentProfile={currentProfile}
-              homeTeam={currentMatch?.homeTeam}
-              awayTeam={currentMatch?.awayTeam}
-              player1={currentMatch?.awayMatch1?.player1}
-              player2={currentMatch?.awayMatch1?.player2}
-              handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch?.awayMatch1?.player1Wins}
-              player2Wins={currentMatch?.awayMatch1?.player2Wins}
-              currentMatch={currentMatch?.awayMatch1}
-              currentMatchData={currentMatchData}
-              profile={props.profile}
-              handleCancel={handleCancel}
-              match={match1Away}
-              mth="1"
-              Key="1"
-            />
-          )}
-        </>
-      )}
-      {currentProfile == "NONE" && (
-        <>everything here is for a visiting player</>
-      )}
+      {match2Away !== null &&
+        currentProfile === "AWAY" &&
+        currentMatch?.match2Completed !== true && (
+          <>
+            <h2 className="center bracket w300 ">Away Team Match 2</h2>
+            {currentProfile === "AWAY" && (
+              <SingleMatch
+                tableId={currentMatch}
+                currentProfile={currentProfile}
+                homeTeam={currentMatch?.homeTeam}
+                awayTeam={currentMatch?.awayTeam}
+                player1={currentMatch?.awayMatch2?.player1}
+                player2={currentMatch?.awayMatch2?.player2}
+                handleUpdateMatch={handleUpdateMatch}
+                player1Wins={currentMatch?.awayMatch2?.player1Wins}
+                player2Wins={currentMatch?.awayMatch2?.player2Wins}
+                currentMatch={currentMatch?.awayMatch2}
+                currentMatchData={currentMatchData}
+                profile={props.profile}
+                handleCancel={handleCancel}
+                match={match2Away}
+                mth="2"
+                Key="2"
+              />
+            )}
+          </>
+        )}
+      {match1Home !== null &&
+        currentMatch?.match1 !== true &&
+        currentMatch?.match1Completed !== true && (
+          <>
+            <h2 className="center bracket w300 ">Home Team Match 1</h2>
+            {currentProfile === "HOME" && (
+              <SingleMatch
+                tableId={currentMatch}
+                currentProfile={currentProfile}
+                homeTeam={currentMatch?.homeTeam}
+                awayTeam={currentMatch?.awayTeam}
+                player1={currentMatch?.homeMatch1?.player1}
+                player2={currentMatch?.homeMatch1?.player2}
+                handleUpdateMatch={handleUpdateMatch}
+                player1Wins={currentMatch?.homeMatch1?.player1Wins}
+                player2Wins={currentMatch?.homeMatch1?.player2Wins}
+                currentMatch={currentMatch?.homeMatch1}
+                currentMatchData={currentMatchData}
+                profile={props.profile}
+                handleCancel={handleCancel}
+                match={match1Home}
+                mth="1"
+                Key="1"
+              />
+            )}
+          </>
+        )}
+      {match1Away !== null &&
+        currentProfile === "AWAY" &&
+        currentMatch?.match1Completed !== true && (
+          <>
+            <h2 className="center bracket w300 ">Away Team Match 1</h2>
+            {currentProfile === "AWAY" && (
+              <SingleMatch
+                tableId={currentMatch}
+                currentProfile={currentProfile}
+                homeTeam={currentMatch?.homeTeam}
+                awayTeam={currentMatch?.awayTeam}
+                player1={currentMatch?.awayMatch1?.player1}
+                player2={currentMatch?.awayMatch1?.player2}
+                handleUpdateMatch={handleUpdateMatch}
+                player1Wins={currentMatch?.awayMatch1?.player1Wins}
+                player2Wins={currentMatch?.awayMatch1?.player2Wins}
+                currentMatch={currentMatch?.awayMatch1}
+                currentMatchData={currentMatchData}
+                profile={props.profile}
+                handleCancel={handleCancel}
+                match={match1Away}
+                mth="1"
+                Key="1"
+              />
+            )}
+          </>
+        )}
 
-      {currentMatchData?.awayMatch1?.completed === true &&
-        currentProfile === "NONE" && (
-          <h1>this is match 1 from a team not playing</h1>
-        )}
-      {currentMatchData?.awayMatch2?.completed === true &&
-        currentProfile === "NONE" && (
-          <h1>this is match 2 from a team not playing</h1>
-        )}
-      {currentMatchData?.awayMatch3?.completed === true &&
-        currentProfile === "NONE" && (
-          <h1>this is match 3 from a team not playing</h1>
-        )}
+      {!currentMatch?.match1Completed && currentProfile === "NONE" &&
+      <>
+        <div className="bracket">
+          Match 1 has not been completed.
+        </div>
+      </>
+      }  
+      {!currentMatch?.match2Completed && currentProfile === "NONE" &&
+      <>
+        <div className="bracket">
+          Match 2 has not been completed.
+        </div>
+      </>
+      }  
+      {!currentMatch?.match3Completed && currentProfile === "NONE" &&
+      <>
+        <div className="bracket">
+          Match 3 has not been completed.
+        </div>
+      </>
+      }  
+
+      {currentMatch?.match1Completed && (
+        <>
+          <div className="bracket">
+            MATCH 1
+            <CompletedMatch currentMatch={currentMatch?.awayMatch1} />
+          </div>
+        </>
+      )}
+      {currentMatch?.match2Completed && (
+        <>
+          <div className="bracket">
+            MATCH 2
+            <CompletedMatch currentMatch={currentMatch?.awayMatch2} />
+          </div>
+        </>
+      )}
+      {currentMatch?.match3Completed && (
+        <>
+          <div className="bracket">
+            MATCH 3
+            <CompletedMatch currentMatch={currentMatch?.awayMatch3} />
+          </div>
+        </>
+      )}
     </>
   )
 }
