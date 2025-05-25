@@ -30,7 +30,6 @@ const Session = () => {
       sessionId: sessionId,
     }
     const queryString = new URLSearchParams(state).toString()
-    // navigate(`/viewOneSession?${queryString}`)
     navigate(`/viewOneSession?${queryString}`)
 
   }

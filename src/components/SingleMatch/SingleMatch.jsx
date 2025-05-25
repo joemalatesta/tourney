@@ -3,7 +3,7 @@ import * as gameService from "../../services/gameService"
 import * as matchService from "../../services/matchService"
 import * as checks from "../../services/checkMatch"
 import * as playerStatsService from "../../services/playerStatsService"
-// import * as teamStatsService from "../../services/teamStatsService"
+import * as teamStatsService from "../../services/teamStatsService"
 import * as tableService from '../../services/tableService'
 
 import * as styles from "./SingleMatch.module.css"
@@ -17,10 +17,10 @@ const SingleMatch = (props) => {
   const [isPlayer1Winner, setIsPlayer1Winner] = useState(false)
   const [isPlayer2Winner, setIsPlayer2Winner] = useState(false)
   const [gameEnded, setGameEnded] = useState(props.currentMatch?.completed)
-  const [winningPlayer, setWinningPlayer] = useState(
-    props?.currentMatch?.winningPlayer
-  )
-  // const [updatedMatchData] = useState()
+  // const [winningPlayer, setWinningPlayer] = useState(
+  //   props?.currentMatch?.winningPlayer
+  // )
+  const [updatedMatchData] = useState()
   const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
 
@@ -114,36 +114,15 @@ const SingleMatch = (props) => {
     })
   }
 
-  const handleWinner = async (winPlayer, losePlayer, num) => {
-    console.log( num ,"this is the player in handle winner")
-  
-    let data
-    if (num === 1) {
-      data = await {
-        ...props.currentMatch,
-        winningPlayer: winPlayer,
-        losingPlayer: losePlayer,
-      }
-      console.log(data.player1Wins)
-
-      await playerStatsService.adjustPlayerStats(data)
-      // await teamStatsService.adjustTeamStats(updatedMatchData)
-    }
-    if (num === 2) {
-      data = {
+  const handleWinner = async (winPlayer, losePlayer) => {
+    console.log("this is the player in handle winner")
+    let data = await {
         ...props.currentMatch,
         winningPlayer: winPlayer,
         losingPlayer: losePlayer,
       }
 
-
-
-      await playerStatsService.adjustPlayerStats(data)
- 
       // await teamStatsService.adjustTeamStats(updatedMatchData)
-      await props.handleUpdateMatch()
-    }
-    console.log(props.mth);
     
 
     if (props.mth == 1){
@@ -162,7 +141,7 @@ const SingleMatch = (props) => {
       let tableData = props?.tableId?.awayMatch2 == null ? props?.tableId?.homeMatch2 : props?.tableId?.awayMatch2
       await tableService.update({
         ...props.tableId,
-        match1Completed: true,
+        match2Completed: true,
       })
       await matchService.update({
         ...tableData,
@@ -174,50 +153,6 @@ const SingleMatch = (props) => {
       let tableData = props?.tableId?.awayMatch3 == null ? props?.tableId?.homeMatch3 : props?.tableId?.awayMatch3
       await tableService.update({
         ...props.tableId,
-        match1Completed: true,
-      })
-      await matchService.update({
-        ...tableData,
-        winningPlayer: winPlayer,
-        losingPlayer: losePlayer
-      })
-    }
-
-    setGameEnded(true)
-  }
-  const handleWinner2 = async (winPlayer, losePlayer, num) => {
-
-    if (num== 1){
-      let tableData = props?.tableId?.awayMatch1 == null ? props?.tableId?.homeMatch1 : props?.tableId?.awayMatch1
-      console.log(tableData);
-      await tableService.update({
-        ...props.tableId,
-        match1Completed: true,
-      })
-      await matchService.update({
-        ...tableData,
-        winningPlayer: winPlayer,
-        losingPlayer: losePlayer
-      })
-    }
-    if (num == 2){
-      let tableData = props?.tableId?.awayMatch2 == null ? props?.tableId?.homeMatch2 : props?.tableId?.awayMatch2
-      console.log(tableData);
-      await tableService.update({
-        ...props.tableId,
-        match2Completed: true,
-      })
-      await matchService.update({
-        ...tableData,
-        winningPlayer: winPlayer,
-        losingPlayer: losePlayer
-      })
-    }
-    if (num == 3){
-      let tableData = props?.tableId?.awayMatch3 == null ? props?.tableId?.homeMatch3 : props?.tableId?.awayMatch3
-      console.log(tableData);
-      await tableService.update({
-        ...props.tableId,
         match3Completed: true,
       })
       await matchService.update({
@@ -226,6 +161,7 @@ const SingleMatch = (props) => {
         losingPlayer: losePlayer
       })
     }
+    await playerStatsService.adjustPlayerStats(data)
     setGameEnded(true)
   }
 
@@ -284,28 +220,14 @@ const SingleMatch = (props) => {
           {isPlayer1Winner &&
             message == true &&
             props.currentProfile == "HOME" && (
-              <button onClick={() => handleWinner(props.player1, props.player2, 1)}>
-                Submit
-              </button>
-            )}
-          {isPlayer1Winner &&
-            message == true &&
-            props.currentProfile == "AWAY" && (
-              <button onClick={() => handleWinner2(props.player1, props.player2, 1)}>
+              <button onClick={() => handleWinner(props.player1, props.player2)}>
                 Submit
               </button>
             )}
           {isPlayer2Winner &&
             message == true &&
             props.currentProfile == "HOME" && (
-              <button onClick={() => handleWinner(props.player2, props.player1, 2)}>
-                Submit
-              </button>
-            )}
-          {isPlayer2Winner &&
-            message == true &&
-            props.currentProfile == "AWAY" && (
-              <button onClick={() => handleWinner2(props.player2, props.player1, 2)}>
+              <button onClick={() => handleWinner(props.player2, props.player1)}>
                 Submit
               </button>
             )}

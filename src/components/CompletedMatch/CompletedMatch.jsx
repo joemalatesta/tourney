@@ -1,5 +1,7 @@
-const CompletedMatch = (currentMatch) => {
-  let match = currentMatch.currentMatch
+const CompletedMatch = (matchData) => {
+  let match = matchData.currentMatch
+
+  console.log(match)
 
   return (
     <>

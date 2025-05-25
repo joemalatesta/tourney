@@ -200,13 +200,21 @@ button {
   display: flex;
   flex-wrap: nowrap;
 }
-
+.w500 {
+  width: 500px;
+}
 .w325 {
   width: 225px;
 }
 .w350 {
-  width: 225px;
+  width: 300px;
   justify-content: space-between;
+}
+.h250 {
+  height: 250px;
+}
+.h350 {
+  height: 350px
 }
 
 .w700 {
