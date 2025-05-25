@@ -1,12 +1,14 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react"
 
 const EditPlayer = (props) => {
-  const formElement = useRef();
-  const playerNameInput = useRef();
+  const formElement = useRef()
+  const playerNameInput = useRef()
 
-  const [validForm, setValidForm] = useState(false);
-  const [title, setTitle] = useState("Add Player");
-  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [validForm, setValidForm] = useState(false)
+  const [title, setTitle] = useState("Add Player")
+
+  // Store which player is currently being edited (null = none)
+  const [editingPlayerId, setEditingPlayerId] = useState(null)
 
   const emptyPlayer = {
     nameFirst: "",
@@ -18,202 +20,198 @@ const EditPlayer = (props) => {
     gamesWon: 0,
     gamesLoss: 0,
     active: false,
-  };
+  }
 
-  const [formData, setFormData] = useState(emptyPlayer);
+  // formData will hold current player data for editing
+  const [formData, setFormData] = useState(emptyPlayer)
 
-  // Validate form whenever formData changes
+  // Update form validation on formData change
   useEffect(() => {
-    if (!formElement.current) return;
-    setValidForm(formElement.current.checkValidity());
-  }, [formData]);
+    if (!formElement.current) return
+    setValidForm(formElement.current.checkValidity())
+  }, [formData])
 
-  // Handle form input changes (including checkbox)
+  // Handle form input changes
   const handleChange = (evt) => {
-    const { name, type, checked, value } = evt.target;
+    const { name, type, checked, value } = evt.target
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
-    });
-  };
+    })
+  }
 
-  // Submit handler for add/edit
+  // When user clicks Edit on a player
+  const startEditing = (player) => {
+    setFormData(player)
+    setTitle("Edit Player")
+    setEditingPlayerId(player._id || player.nameFirst + player.nameLast)
+    // Focus after form shows
+    setTimeout(() => playerNameInput.current?.focus(), 0)
+  }
+
+  // When submitting the form
   const handleSubmit = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
 
     if (title === "Add Player") {
-      props.handleAddPlayer(formData);
+      props.handleAddPlayer(formData)
     } else if (title === "Edit Player") {
-      props.handleEditPlayer(formData);
+      props.handleEditPlayer(formData)
     }
 
-    // Clear form, hide after submit
-    setFormData(emptyPlayer);
-    setTitle("Add Player");
-    setIsFormVisible(false);
-  };
+    // Clear form & close editing form
+    setFormData(emptyPlayer)
+    setTitle("Add Player")
+    setEditingPlayerId(null)
+  }
 
-  // Called when edit button is clicked — shows form with selected player data
-  const startEditing = (player) => {
-    setFormData(player);
-    setTitle("Edit Player");
-    setIsFormVisible(true);
-    playerNameInput.current?.focus();
-  };
+  // Cancel editing
+  const cancelEdit = () => {
+    setFormData(emptyPlayer)
+    setTitle("Add Player")
+    setEditingPlayerId(null)
+  }
 
   return (
-    <div style={{ display: "flex", gap: "2rem" }}>
-      
-      <div className="bracket green-felt">
-        <h2>Players</h2>
-        <ul>
-          {props.players.map((player) => (
-            <li key={player._id || player.nameFirst + player.nameLast}>
-              {player.nameFirst} {player.name} (Rank: {player.rank}){" "}
+    <div className="bracket green-felt">
+      <h2>Players</h2>
+      <ul>
+        {props.players.map((player) => {
+          const playerId = player._id || player.nameFirst + player.nameLast
+          return (
+            <li key={playerId} style={{ marginBottom: "1rem" }}>
+              <strong>
+                {player.nameFirst} {player.nameLast} (Rank: {player.rank})
+              </strong>{" "}
               <button onClick={() => startEditing(player)}>Edit</button>
+              {/* Show form only under the player being edited */}
+              {editingPlayerId === playerId && (
+                <form
+                  className="bracket h350 red-felt"
+                  ref={formElement}
+                  onSubmit={handleSubmit}
+                  noValidate
+                  style={{
+                    marginTop: "1rem",
+                    border: "1px solid #ccc",
+                    padding: "1rem",
+                  }}
+                >
+                  <h3>{title}</h3>
+                  <label>
+                    First Name:
+                    <input
+                      type="text"
+                      name="nameFirst"
+                      value={formData.nameFirst}
+                      onChange={handleChange}
+                      required
+                      ref={playerNameInput}
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Last Name:
+                    <input
+                      type="text"
+                      name="nameLast"
+                      value={formData.nameLast}
+                      onChange={handleChange}
+                      required
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Rank:
+                    <input
+                      type="number"
+                      name="rank"
+                      min={1}
+                      value={formData.rank}
+                      onChange={handleChange}
+                      required
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Matches Played:
+                    <input
+                      type="number"
+                      name="matchesPlayed"
+                      min={0}
+                      value={formData.matchesPlayed}
+                      onChange={handleChange}
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Match Wins:
+                    <input
+                      type="number"
+                      name="matchWin"
+                      min={0}
+                      value={formData.matchWin}
+                      onChange={handleChange}
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Match Losses:
+                    <input
+                      type="number"
+                      name="matchLoss"
+                      min={0}
+                      value={formData.matchLoss}
+                      onChange={handleChange}
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Games Won:
+                    <input
+                      type="number"
+                      name="gamesWon"
+                      min={0}
+                      value={formData.gamesWon}
+                      onChange={handleChange}
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Games Lost:
+                    <input
+                      type="number"
+                      name="gamesLoss"
+                      min={0}
+                      value={formData.gamesLoss}
+                      onChange={handleChange}
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Active:
+                    <input
+                      type="checkbox"
+                      name="active"
+                      checked={formData.active}
+                      onChange={handleChange}
+                    />
+                  </label>
+                  <br />
+                  <button type="submit" disabled={!validForm}>
+                    Save
+                  </button>{" "}
+                  <button type="button" onClick={cancelEdit}>
+                    Cancel
+                  </button>
+                </form>
+              )}
             </li>
-          ))}
-        </ul>
-      </div>
-      {isFormVisible && (
-        <form className="bracket h350 red-felt" ref={formElement} onSubmit={handleSubmit} noValidate>
-          <h2>{title}</h2>
-
-          <label>
-            First Name:
-            <input
-              type="text"
-              name="nameFirst"
-              value={formData.nameFirst}
-              onChange={handleChange}
-              required
-              ref={playerNameInput}
-            />
-          </label>
-
-          <br />
-
-          <label>
-            Last Name:
-            <input
-              type="text"
-              name="nameLast"
-              value={formData.nameLast}
-              onChange={handleChange}
-              required
-            />
-          </label>
-
-          <br />
-
-          <label>
-            Rank:
-            <input
-              type="number"
-              name="rank"
-              min={1}
-              value={formData.rank}
-              onChange={handleChange}
-              required
-            />
-          </label>
-
-          <br />
-
-          <label>
-            Matches Played:
-            <input
-              type="number"
-              name="matchesPlayed"
-              min={0}
-              value={formData.matchesPlayed}
-              onChange={handleChange}
-            />
-          </label>
-
-          <br />
-
-          <label>
-            Match Wins:
-            <input
-              type="number"
-              name="matchWin"
-              min={0}
-              value={formData.matchWin}
-              onChange={handleChange}
-            />
-          </label>
-
-          <br />
-
-          <label>
-            Match Losses:
-            <input
-              type="number"
-              name="matchLoss"
-              min={0}
-              value={formData.matchLoss}
-              onChange={handleChange}
-            />
-          </label>
-
-          <br />
-
-          <label>
-            Games Won:
-            <input
-              type="number"
-              name="gamesWon"
-              min={0}
-              value={formData.gamesWon}
-              onChange={handleChange}
-            />
-          </label>
-
-          <br />
-
-          <label>
-            Games Lost:
-            <input
-              type="number"
-              name="gamesLoss"
-              min={0}
-              value={formData.gamesLoss}
-              onChange={handleChange}
-            />
-          </label>
-
-          <br />
-
-          <label>
-            Active:
-            <input
-              type="checkbox"
-              name="active"
-              checked={formData.active}
-              onChange={handleChange}
-            />
-          </label>
-
-          <br />
-
-          <button type="submit" disabled={!validForm}>
-            {title}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setIsFormVisible(false);
-              setFormData(emptyPlayer);
-              setTitle("Add Player");
-            }}
-          >
-            Cancel
-          </button>
-        </form>
-      )}
+          )
+        })}
+      </ul>
     </div>
-  );
-};
+  )
+}
 
-export default EditPlayer;
+export default EditPlayer
