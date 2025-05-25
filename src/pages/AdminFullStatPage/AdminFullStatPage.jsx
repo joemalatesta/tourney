@@ -34,7 +34,8 @@ const AdminFullStatPage = ({ teams, players }) => {
       const { _id, createdAt, updatedAt, __v, profile, ...rest } = player
       console.log(_id,createdAt, updatedAt, __v,profile);
       return {
-        name: rest.name,
+        name: rest.nameFirst + " " + rest.nameLast,
+        active: rest.active ,
         seasonRankStart: rest.seasonRankStart,
         rank: rest.rank,
         rankUpDown: calculateRankDifference(
@@ -149,7 +150,7 @@ const AdminFullStatPage = ({ teams, players }) => {
           <div className={`${styles.row}`}>
             {players.map((player) => (
               <div className={styles.player} key={player._id}>
-                {player.name}
+                {player.nameFirst} {player.nameLast}
               </div>
             ))}
           </div>

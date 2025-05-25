@@ -1,14 +1,12 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect } from "react";
 
 const EditPlayer = (props) => {
-  const formElement = useRef()
-  const playerNameInput = useRef()
+  const formElement = useRef();
+  const playerNameInput = useRef();
 
-  const [validForm, setValidForm] = useState(false)
-  const [title, setTitle] = useState("Add Player")
-
-  // Store which player is currently being edited (null = none)
-  const [editingPlayerId, setEditingPlayerId] = useState(null)
+  const [validForm, setValidForm] = useState(false);
+  const [title, setTitle] = useState("Add Player");
+  const [editingPlayerId, setEditingPlayerId] = useState(null);
 
   const emptyPlayer = {
     nameFirst: "",
@@ -20,84 +18,75 @@ const EditPlayer = (props) => {
     gamesWon: 0,
     gamesLoss: 0,
     active: false,
-  }
+  };
 
-  // formData will hold current player data for editing
-  const [formData, setFormData] = useState(emptyPlayer)
+  console.log(props)
 
-  // Update form validation on formData change
+  const [formData, setFormData] = useState(emptyPlayer);
+
   useEffect(() => {
-    if (!formElement.current) return
-    setValidForm(formElement.current.checkValidity())
-  }, [formData])
+    if (!formElement.current) return;
+    setValidForm(formElement.current.checkValidity());
+  }, [formData]);
 
-  // Handle form input changes
   const handleChange = (evt) => {
-    const { name, type, checked, value } = evt.target
+    const { name, type, checked, value } = evt.target;
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
-    })
-  }
+    });
+  };
 
-  // When user clicks Edit on a player
   const startEditing = (player) => {
-    setFormData(player)
-    setTitle("Edit Player")
-    setEditingPlayerId(player._id || player.nameFirst + player.nameLast)
-    // Focus after form shows
-    setTimeout(() => playerNameInput.current?.focus(), 0)
-  }
+    setFormData(player);
+    setTitle("Edit Player");
+    setEditingPlayerId(player._id);
+    setTimeout(() => playerNameInput.current?.focus(), 0);
+  };
 
-  // When submitting the form
   const handleSubmit = (evt) => {
-    evt.preventDefault()
-
+    evt.preventDefault();
     if (title === "Add Player") {
-      props.handleAddPlayer(formData)
+      props.handleAddPlayer(formData);
     } else if (title === "Edit Player") {
-      props.handleEditPlayer(formData)
+      props.handleEditPlayer(formData);
     }
 
-    // Clear form & close editing form
-    setFormData(emptyPlayer)
-    setTitle("Add Player")
-    setEditingPlayerId(null)
-  }
+    setFormData(emptyPlayer);
+    setTitle("Add Player");
+    setEditingPlayerId(null);
+  };
 
-  // Cancel editing
   const cancelEdit = () => {
-    setFormData(emptyPlayer)
-    setTitle("Add Player")
-    setEditingPlayerId(null)
-  }
+    setFormData(emptyPlayer);
+    setTitle("Add Player");
+    setEditingPlayerId(null);
+  };
 
   return (
-    <div className="bracket green-felt2">
+    <div className="bracket green-felt">
       <h2>Players</h2>
       <ul>
         {props.players.map((player) => {
-          const playerId = player._id || player.nameFirst + player.nameLast
+          const playerId = player._id || player.nameFirst + player.nameLast;
           return (
             <li key={playerId} style={{ marginBottom: "1rem" }}>
               <strong>
-                {player.nameFirst} {player.name} (Rank: {player.rank})
+                {player.nameFirst} {player.nameLast} (Rank: {player.rank})
               </strong>{" "}
-              <button onClick={() => startEditing(player)}>Edit</button>
-              {/* Show form only under the player being edited */}
+              <button onClick={() => startEditing(player)}>Edit</button>{" "}
+           
+
               {editingPlayerId === playerId && (
                 <form
                   className="bracket h350 red-felt"
                   ref={formElement}
                   onSubmit={handleSubmit}
                   noValidate
-                  style={{
-                    marginTop: "1rem",
-                    border: "1px solid #ccc",
-                    padding: "1rem",
-                  }}
+                  style={{ marginTop: "1rem", border: "1px solid #ccc", padding: "1rem" }}
                 >
                   <h3>{title}</h3>
+
                   <label>
                     First Name:
                     <input
@@ -109,7 +98,9 @@ const EditPlayer = (props) => {
                       ref={playerNameInput}
                     />
                   </label>
+
                   <br />
+
                   <label>
                     Last Name:
                     <input
@@ -120,7 +111,9 @@ const EditPlayer = (props) => {
                       required
                     />
                   </label>
+
                   <br />
+
                   <label>
                     Rank:
                     <input
@@ -132,7 +125,9 @@ const EditPlayer = (props) => {
                       required
                     />
                   </label>
+
                   <br />
+
                   <label>
                     Matches Played:
                     <input
@@ -143,7 +138,9 @@ const EditPlayer = (props) => {
                       onChange={handleChange}
                     />
                   </label>
+
                   <br />
+
                   <label>
                     Match Wins:
                     <input
@@ -154,7 +151,9 @@ const EditPlayer = (props) => {
                       onChange={handleChange}
                     />
                   </label>
+
                   <br />
+
                   <label>
                     Match Losses:
                     <input
@@ -165,7 +164,9 @@ const EditPlayer = (props) => {
                       onChange={handleChange}
                     />
                   </label>
+
                   <br />
+
                   <label>
                     Games Won:
                     <input
@@ -176,7 +177,9 @@ const EditPlayer = (props) => {
                       onChange={handleChange}
                     />
                   </label>
+
                   <br />
+
                   <label>
                     Games Lost:
                     <input
@@ -187,7 +190,9 @@ const EditPlayer = (props) => {
                       onChange={handleChange}
                     />
                   </label>
+
                   <br />
+
                   <label>
                     Active:
                     <input
@@ -197,21 +202,26 @@ const EditPlayer = (props) => {
                       onChange={handleChange}
                     />
                   </label>
+
                   <br />
+
                   <button type="submit" disabled={!validForm}>
                     Save
                   </button>{" "}
                   <button type="button" onClick={cancelEdit}>
                     Cancel
                   </button>
+                     <button onClick={() => props.handleDeletePlayer(player._id)}>
+                Delete
+              </button>
                 </form>
               )}
             </li>
-          )
+          );
         })}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default EditPlayer
+export default EditPlayer;

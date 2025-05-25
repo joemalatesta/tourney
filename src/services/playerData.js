@@ -1,13 +1,15 @@
 export const playerData = [
   { 
-    name :'Yvonne Barrasso',
+    nameFirst :'Yvonne',
+    nameLast:'Barrasso',
     rank : 36,
     seasonRankStart: 34,
     matchesPlayed : 2,
     matchWin: 2,
     matchLoss: 0,
     gamesWon: 6,
-    gamesLoss: 2 
+    gamesLoss: 2,
+    active: true, 
   },
   { 
     name : 'Chuck Beavers',
