@@ -73,7 +73,7 @@ const EditPlayer = (props) => {
   }
 
   return (
-    <div className="bracket green-felt">
+    <div className="bracket green-felt2">
       <h2>Players</h2>
       <ul>
         {props.players.map((player) => {
@@ -81,7 +81,7 @@ const EditPlayer = (props) => {
           return (
             <li key={playerId} style={{ marginBottom: "1rem" }}>
               <strong>
-                {player.nameFirst} {player.nameLast} (Rank: {player.rank})
+                {player.nameFirst} {player.name} (Rank: {player.rank})
               </strong>{" "}
               <button onClick={() => startEditing(player)}>Edit</button>
               {/* Show form only under the player being edited */}
