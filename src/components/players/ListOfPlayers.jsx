@@ -1,13 +1,13 @@
 import * as styles from "./Player.module.css"
 
 const ListOfPlayers = (props) => {
-  let sortedPlayers
+  // let sortedPlayers
 
-  if (props.players.length > 0) {
-    sortedPlayers = props?.players
-      ?.slice()
-      .sort((a, b) => a?.nameLast.localeCompare(b?.nameLast))
-  }
+  // if (props.players.length > 0) {
+  //   sortedPlayers = props?.players
+  //     ?.slice()
+  //     .sort((a, b) => a?.namefirst.localeCompare(b?.nameFirst))
+  // }
 
 
   return (

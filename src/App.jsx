@@ -357,6 +357,7 @@ function App() {
           element={
             <ProtectedRoute access="30" profile={profile} user={user}>
               <ViewTeams
+                players={players}
                 profile={profile}
                 user={user}
                 teams={teams}
@@ -372,6 +373,7 @@ function App() {
           element={
             <ProtectedRoute access="30" profile={profile} user={user}>
               <ViewTeam
+                players={players}
                 profile={profile}
                 team={team}
                 user={user}
@@ -535,7 +537,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-                <Route
+        <Route
           disable={isDisabled}
           path="/startMatch"
           element={
