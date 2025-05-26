@@ -38,7 +38,7 @@ const CreateTeam = (props) => {
 
   const handleChange = (evt) => {
     if (evt.target.name === "teamCaptain")
-      setFormData({ ...formData, teamCaptain: captain.name })
+      setFormData({ ...formData, teamCaptain: evt.target._id})
     else setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
 

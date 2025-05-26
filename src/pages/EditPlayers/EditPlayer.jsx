@@ -1,13 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react"
 
 const EditPlayer = (props) => {
-  const formElement = useRef();
-  const playerNameInput = useRef();
+  const formElement = useRef()
+  const playerNameInput = useRef()
 
-  const [validForm, setValidForm] = useState(false);
-  const [title, setTitle] = useState("Add Player");
-  const [editingPlayerId, setEditingPlayerId] = useState(null);
-  const [showOnlyActive, setShowOnlyActive] = useState(false); // ✅ New state
+  const [validForm, setValidForm] = useState(false)
+  const [title, setTitle] = useState("Add Player")
+  const [editingPlayerId, setEditingPlayerId] = useState(null)
+  const [showOnlyActive, setShowOnlyActive] = useState(false)
 
   const emptyPlayer = {
     nameFirst: "",
@@ -19,70 +19,70 @@ const EditPlayer = (props) => {
     gamesWon: 0,
     gamesLoss: 0,
     active: false,
-  };
+  }
 
-  const [formData, setFormData] = useState(emptyPlayer);
+  const [formData, setFormData] = useState(emptyPlayer)
 
   useEffect(() => {
-    if (!formElement.current) return;
-    setValidForm(formElement.current.checkValidity());
-  }, [formData]);
+    if (!formElement.current) return
+    setValidForm(formElement.current.checkValidity())
+  }, [formData])
 
   const handleChange = (evt) => {
-    const { name, type, checked, value } = evt.target;
+    const { name, type, checked, value } = evt.target
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
-    });
-  };
+    })
+  }
 
   const startEditing = (player) => {
-    setFormData(player);
-    setTitle("Edit Player");
-    setEditingPlayerId(player._id);
-    setTimeout(() => playerNameInput.current?.focus(), 0);
-  };
+    setFormData(player)
+    setTitle("Edit Player")
+    setEditingPlayerId(player._id)
+    setTimeout(() => playerNameInput.current?.focus(), 0)
+  }
 
   const handleSubmit = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
     if (title === "Add Player") {
-      props.handleAddPlayer(formData);
+      props.handleAddPlayer(formData)
     } else if (title === "Edit Player") {
-      props.handleEditPlayer(formData);
+      props.handleEditPlayer(formData)
     }
 
-    setFormData(emptyPlayer);
-    setTitle("Add Player");
-    setEditingPlayerId(null);
-  };
+    setFormData(emptyPlayer)
+    setTitle("Add Player")
+    setEditingPlayerId(null)
+  }
 
   const cancelEdit = () => {
-    setFormData(emptyPlayer);
-    setTitle("Add Player");
-    setEditingPlayerId(null);
-  };
+    setFormData(emptyPlayer)
+    setTitle("Add Player")
+    setEditingPlayerId(null)
+  }
   const makePlayernull = () => {
     setEditingPlayerId(null)
   }
 
-    const filteredPlayers = [...(showOnlyActive
-  ? props.players.filter((p) => p.active)
-  : props.players)].sort((a, b) =>
+  const filteredPlayers = [
+    ...(showOnlyActive ? props.players.filter((p) => p.active) : props.players),
+  ].sort((a, b) =>
     a.nameLast.toLowerCase().localeCompare(b.nameLast.toLowerCase())
-  );
+  )
 
   return (
     <div className="bracket green-felt2">
       <h2>Players</h2>
 
-      {/* ✅ Toggle button */}
+     
       <button onClick={() => setShowOnlyActive(!showOnlyActive)}>
         {showOnlyActive ? "Show All Players" : "Show Active Players Only"}
       </button>
 
       <ul>
         {filteredPlayers.map((player) => {
-          const playerId = player._id || player.nameFirst + player.nameLast;
+          const playerId = player._id || player.nameFirst + player.nameLast
           return (
             <li key={playerId} style={{ marginBottom: "1rem" }}>
               <strong>
@@ -102,7 +102,6 @@ const EditPlayer = (props) => {
                   }}
                 >
                   <h3>{title}</h3>
-
                   <label>
                     First Name:
                     <input
@@ -115,7 +114,6 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <label>
                     Last Name:
                     <input
@@ -127,7 +125,6 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <label>
                     Rank:
                     <input
@@ -140,7 +137,6 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <label>
                     Matches Played:
                     <input
@@ -151,7 +147,6 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <label>
                     Match Wins:
                     <input
@@ -162,7 +157,6 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <label>
                     Match Losses:
                     <input
@@ -173,7 +167,6 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <label>
                     Games Won:
                     <input
@@ -184,7 +177,6 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <label>
                     Games Lost:
                     <input
@@ -195,7 +187,6 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <label>
                     Active:
                     <input
@@ -206,28 +197,28 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
-
                   <button type="submit" disabled={!validForm}>
                     Save
                   </button>{" "}
                   <button type="button" onClick={cancelEdit}>
                     Cancel
                   </button>
-                                <button onClick={() => {
-                                   props.handleDeletePlayer(player._id) 
-                                  makePlayernull()
-                                }
-                                 }>
-                Delete
-              </button>
+                  <button
+                    onClick={() => {
+                      props.handleDeletePlayer(player._id)
+                      makePlayernull()
+                    }}
+                  >
+                    Delete
+                  </button>
                 </form>
               )}
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default EditPlayer;
+export default EditPlayer

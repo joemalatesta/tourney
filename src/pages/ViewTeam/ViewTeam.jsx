@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react"
 import ListOfPlayers from "../../components/players/ListOfPlayers"
 import * as playerService from "../../services/playerService"
 import * as styles from "./ViewTeam.module.css"
+import * as teamService from '../../services/teamService'
 
 const ViewTeam = (props) => {
   const [playerInfo, setPlayerInfo] = useState()
@@ -11,13 +12,14 @@ const ViewTeam = (props) => {
   const [players, setPlayers] = useState(props.players)
   const formElement = useRef()
   const [formData, setFormData] = useState({
+    ...props.team,
     teamName: props?.team.teamName,
     teamPlayers: props?.team.teamPlayers,
     teamCaptain: props?.team.teamCaptain,
   })
-  console.log(team)
+
   
-  console.log(formData);
+  console.log("8***************************",props?.team);
   useEffect(() => {
   if (formData.teamPlayers && props.players) {
     const teamPlayerIds = formData.teamPlayers.map((player) =>
@@ -69,13 +71,13 @@ const ViewTeam = (props) => {
 
   const handleChange = (evt) => {
     if (evt.target.name === "teamCaptain")
-      setFormData({ ...formData, teamCaptain: captain.name })
+      setFormData({ ...formData, teamCaptain: captain })
     else setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
 
   const addCaptain = (player) => {
     findPlayer(player)
-    setCaptain(player.nameFirst + " " + player.nameLast)
+    setCaptain(player._id)
     setFormData({ ...formData, teamCaptain: player._id })
   }
 
@@ -91,7 +93,9 @@ const ViewTeam = (props) => {
         ...formData,
         teamPlayers: team,
       }
-      await props.handleAddTeam(updatedFormData)
+        console.log("8***************************",formData);
+
+      await teamService.update(updatedFormData)
     } else return <h1>select all players and captain</h1>
   }
 
