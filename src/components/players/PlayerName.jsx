@@ -30,13 +30,13 @@ const PlayerName = ({ team }) => {
         <span style={{ color: "antiquewhite" }}>Captain - </span>{" "}
         {sortedPlayers?.map(
           (player) => 
-            player._id === team.teamCaptain && (
+            player?._id === team?.teamCaptain && (
               <div key={player?._id}>{player.nameFirst} {player.nameLast}</div>
             )
         )}
         {sortedPlayers?.map(
           (player) =>
-            player._id !== team.teamCaptain && (
+            player?._id !== team?.teamCaptain && (
               <li key={player?._id}>{player?.nameFirst} {player?.nameLast}</li>
             )
         )}
