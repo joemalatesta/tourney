@@ -5,40 +5,44 @@ import * as playerService from "../../services/playerService"
 const PlayerName = ({ team }) => {
   const [playerInfo, setPlayerInfo] = useState()
 
-
   useEffect(() => {
-  if (team?.teamPlayers?.length) {
-    const getPlayerStats = async () => {
-      try {
-        const data = await Promise.all(
-          team.teamPlayers.map((player) =>
-            player === undefined ? player : playerService.findOne(player)
+    if (team?.teamPlayers?.length) {
+      const getPlayerStats = async () => {
+        try {
+          const data = await Promise.all(
+            team.teamPlayers.map((player) =>
+              player === undefined ? player : playerService.findOne(player)
+            )
           )
-        )
-        setPlayerInfo(data)
-      } catch (error) {
-        console.error("Error fetching player stats:", error)
+          setPlayerInfo(data)
+        } catch (error) {
+          console.error("Error fetching player stats:", error)
+        }
       }
+      getPlayerStats()
     }
-    getPlayerStats()
-  }
-}, [team.teamPlayers])
+  }, [team.teamPlayers])
 
-
+  console.log("Team on live site:", team)
+  
   return (
     <>
       <div>
         <span style={{ color: "antiquewhite" }}>Captain - </span>{" "}
         {playerInfo?.map(
-          (player) => 
+          (player) =>
             player?._id === team?.teamCaptain && (
-              <div key={player?._id}>{player.nameFirst} {player.nameLast}</div>
+              <div key={player?._id}>
+                {player.nameFirst} {player.nameLast}
+              </div>
             )
         )}
         {playerInfo?.map(
           (player) =>
             player?._id !== team?.teamCaptain && (
-              <li key={player?._id}>{player?.nameFirst} {player?.nameLast}</li>
+              <li key={player?._id}>
+                {player?.nameFirst} {player?.nameLast}
+              </li>
             )
         )}
       </div>
