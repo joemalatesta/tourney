@@ -7,6 +7,7 @@ const EditPlayer = (props) => {
   const [validForm, setValidForm] = useState(false);
   const [title, setTitle] = useState("Add Player");
   const [editingPlayerId, setEditingPlayerId] = useState(null);
+  const [showOnlyActive, setShowOnlyActive] = useState(false); // ✅ New state
 
   const emptyPlayer = {
     nameFirst: "",
@@ -19,8 +20,6 @@ const EditPlayer = (props) => {
     gamesLoss: 0,
     active: false,
   };
-
-  console.log(props)
 
   const [formData, setFormData] = useState(emptyPlayer);
 
@@ -63,11 +62,28 @@ const EditPlayer = (props) => {
     setEditingPlayerId(null);
   };
 
+  // ✅ Filtered list of players
+  // const filteredPlayers = showOnlyActive
+  //   ? props.players.filter((p) => p.active)
+  //   : props.players;
+
+    const filteredPlayers = [...(showOnlyActive
+  ? props.players.filter((p) => p.active)
+  : props.players)].sort((a, b) =>
+    a.nameLast.toLowerCase().localeCompare(b.nameLast.toLowerCase())
+  );
+
   return (
-    <div className="bracket green-felt">
+    <div className="bracket green-felt2">
       <h2>Players</h2>
+
+      {/* ✅ Toggle button */}
+      <button onClick={() => setShowOnlyActive(!showOnlyActive)}>
+        {showOnlyActive ? "Show All Players" : "Show Active Players Only"}
+      </button>
+
       <ul>
-        {props.players.map((player) => {
+        {filteredPlayers.map((player) => {
           const playerId = player._id || player.nameFirst + player.nameLast;
           return (
             <li key={playerId} style={{ marginBottom: "1rem" }}>
@@ -75,7 +91,9 @@ const EditPlayer = (props) => {
                 {player.nameFirst} {player.nameLast} (Rank: {player.rank})
               </strong>{" "}
               <button onClick={() => startEditing(player)}>Edit</button>{" "}
-           
+              <button onClick={() => props.handleDeletePlayer(player._id)}>
+                Delete
+              </button>
 
               {editingPlayerId === playerId && (
                 <form
@@ -83,7 +101,11 @@ const EditPlayer = (props) => {
                   ref={formElement}
                   onSubmit={handleSubmit}
                   noValidate
-                  style={{ marginTop: "1rem", border: "1px solid #ccc", padding: "1rem" }}
+                  style={{
+                    marginTop: "1rem",
+                    border: "1px solid #ccc",
+                    padding: "1rem",
+                  }}
                 >
                   <h3>{title}</h3>
 
@@ -98,7 +120,6 @@ const EditPlayer = (props) => {
                       ref={playerNameInput}
                     />
                   </label>
-
                   <br />
 
                   <label>
@@ -111,7 +132,6 @@ const EditPlayer = (props) => {
                       required
                     />
                   </label>
-
                   <br />
 
                   <label>
@@ -125,7 +145,6 @@ const EditPlayer = (props) => {
                       required
                     />
                   </label>
-
                   <br />
 
                   <label>
@@ -133,12 +152,10 @@ const EditPlayer = (props) => {
                     <input
                       type="number"
                       name="matchesPlayed"
-                      min={0}
                       value={formData.matchesPlayed}
                       onChange={handleChange}
                     />
                   </label>
-
                   <br />
 
                   <label>
@@ -146,12 +163,10 @@ const EditPlayer = (props) => {
                     <input
                       type="number"
                       name="matchWin"
-                      min={0}
                       value={formData.matchWin}
                       onChange={handleChange}
                     />
                   </label>
-
                   <br />
 
                   <label>
@@ -159,12 +174,10 @@ const EditPlayer = (props) => {
                     <input
                       type="number"
                       name="matchLoss"
-                      min={0}
                       value={formData.matchLoss}
                       onChange={handleChange}
                     />
                   </label>
-
                   <br />
 
                   <label>
@@ -172,12 +185,10 @@ const EditPlayer = (props) => {
                     <input
                       type="number"
                       name="gamesWon"
-                      min={0}
                       value={formData.gamesWon}
                       onChange={handleChange}
                     />
                   </label>
-
                   <br />
 
                   <label>
@@ -185,12 +196,10 @@ const EditPlayer = (props) => {
                     <input
                       type="number"
                       name="gamesLoss"
-                      min={0}
                       value={formData.gamesLoss}
                       onChange={handleChange}
                     />
                   </label>
-
                   <br />
 
                   <label>
@@ -202,7 +211,6 @@ const EditPlayer = (props) => {
                       onChange={handleChange}
                     />
                   </label>
-
                   <br />
 
                   <button type="submit" disabled={!validForm}>
@@ -211,9 +219,6 @@ const EditPlayer = (props) => {
                   <button type="button" onClick={cancelEdit}>
                     Cancel
                   </button>
-                     <button onClick={() => props.handleDeletePlayer(player._id)}>
-                Delete
-              </button>
                 </form>
               )}
             </li>
