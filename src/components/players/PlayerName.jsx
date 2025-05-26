@@ -7,10 +7,11 @@ const PlayerName = ({ team }) => {
 
 
   useEffect(() => {
+  if (team?.teamPlayers?.length) {
     const getPlayerStats = async () => {
       try {
         const data = await Promise.all(
-          team.teamPlayers?.map((player) =>
+          team.teamPlayers.map((player) =>
             player === undefined ? player : playerService.findOne(player)
           )
         )
@@ -20,7 +21,9 @@ const PlayerName = ({ team }) => {
       }
     }
     getPlayerStats()
-  }, [team.teamPlayers])
+  }
+}, [team.teamPlayers])
+
 
   return (
     <>
@@ -28,13 +31,13 @@ const PlayerName = ({ team }) => {
         <span style={{ color: "antiquewhite" }}>Captain - </span>{" "}
         {playerInfo?.map(
           (player) => 
-            player?._id == team?.teamCaptain && (
+            player?._id === team?.teamCaptain && (
               <div key={player?._id}>{player.nameFirst} {player.nameLast}</div>
             )
         )}
         {playerInfo?.map(
           (player) =>
-            player?._id != team?.teamCaptain && (
+            player?._id !== team?.teamCaptain && (
               <li key={player?._id}>{player?.nameFirst} {player?.nameLast}</li>
             )
         )}
