@@ -18,6 +18,7 @@ const ViewTeams = ({ setTeam, teams, setTeams }) => {
   }, [])
 
   const handleGetTeam = async (team) => {
+    
     await setTeam(team)
     navigate("/view-team")
   }

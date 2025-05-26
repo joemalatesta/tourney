@@ -43,8 +43,14 @@ const CreateTeam = (props) => {
   }
 
   const addCaptain = (player) => {
-    setCaptain(player)
-    setFormData({ ...formData, teamCaptain: player.name })
+    findPlayer(player)
+    setCaptain(player.nameFirst+" "+player.nameLast)
+    setFormData({ ...formData, teamCaptain: player._id})
+  }
+
+  const findPlayer = (id) => {
+    console.log(id);
+    
   }
 
   const handleSubmit = async (evt) => {

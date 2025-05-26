@@ -5,9 +5,7 @@ import * as styles from "./ViewTeam.module.css"
 
 const ViewTeam = (props) => {
   const [playerInfo, setPlayerInfo] = useState()
-  const sortedPlayers = playerInfo
-    ?.slice()
-    .sort((a, b) => a?.name.localeCompare(b.name))
+
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -55,12 +53,12 @@ const ViewTeam = (props) => {
             %
           </span>
         </div>
-        {sortedPlayers?.map(
+        {playerInfo?.map(
           (player) =>
-            player?.name === props.team.teamCaptain && (
+            player?._id === props?.team?.teamCaptain && (
               <div className="bracket" key={player?._id}>
                 <h2>Team Captain</h2>
-                <h2>Name : {player?.name}</h2>
+                <h2>Name : {player?.nameFirst} {player?.nameLast}</h2>
                 Rank :{" "}
                 <span style={{ color: "gold", fontWeight: "bolder" }}>
                   {player?.rank}
@@ -130,11 +128,11 @@ const ViewTeam = (props) => {
               </div>
             )
         )}
-        {sortedPlayers?.map(
+        {playerInfo?.map(
           (player) =>
-            player?.name !== props.team.teamCaptain && (
+            player?._id !== props.team.teamCaptain && (
               <div className="bracket" key={player?._id}>
-                <h2>Name : {player?.name}</h2>
+                <h2>Name : {player?.nameFirst} {player?.nameLast}</h2>
                 Rank :{" "}
                 <span style={{ color: "gold", fontWeight: "bolder" }}>
                   {player?.rank}

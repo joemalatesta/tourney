@@ -6,8 +6,9 @@ const ListOfPlayers = (props) => {
   if (props.players.length > 0) {
     sortedPlayers = props?.players
       ?.slice()
-      .sort((a, b) => a?.name.localeCompare(b?.name))
+      .sort((a, b) => a?.nameLast.localeCompare(b?.nameLast))
   }
+
 
   return (
     <div>
@@ -15,7 +16,7 @@ const ListOfPlayers = (props) => {
       {props.title === "Assigned to Team" && (
         <p>
           Team Captain :{" "}
-          {props.captain === null ? "Add Captain" : props.captain.name}
+          {props.captain === null ? "Add Captain" : props.captain}
         </p>
       )}
       <ul>
@@ -26,7 +27,7 @@ const ListOfPlayers = (props) => {
             ) : (
               <button onClick={() => props.handleRemove(player)}> X </button>
             )}
-            {player.name} - {player.rank}{" "}
+            {player.nameFirst} {player.nameLast} - {player.rank}{" "}
             {props.title === "Assigned to Team" && (
               <button onClick={() => props.addCaptain(player)}>Captain</button>
             )}

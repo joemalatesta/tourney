@@ -61,11 +61,9 @@ const EditPlayer = (props) => {
     setTitle("Add Player");
     setEditingPlayerId(null);
   };
-
-  // ✅ Filtered list of players
-  // const filteredPlayers = showOnlyActive
-  //   ? props.players.filter((p) => p.active)
-  //   : props.players;
+  const makePlayernull = () => {
+    setEditingPlayerId(null)
+  }
 
     const filteredPlayers = [...(showOnlyActive
   ? props.players.filter((p) => p.active)
@@ -91,10 +89,6 @@ const EditPlayer = (props) => {
                 {player.nameFirst} {player.nameLast} (Rank: {player.rank})
               </strong>{" "}
               <button onClick={() => startEditing(player)}>Edit</button>{" "}
-              <button onClick={() => props.handleDeletePlayer(player._id)}>
-                Delete
-              </button>
-
               {editingPlayerId === playerId && (
                 <form
                   className="bracket h350 red-felt"
@@ -219,6 +213,13 @@ const EditPlayer = (props) => {
                   <button type="button" onClick={cancelEdit}>
                     Cancel
                   </button>
+                                <button onClick={() => {
+                                   props.handleDeletePlayer(player._id) 
+                                  makePlayernull()
+                                }
+                                 }>
+                Delete
+              </button>
                 </form>
               )}
             </li>

@@ -6,7 +6,7 @@ const PlayerName = ({ team }) => {
   const [playerInfo, setPlayerInfo] = useState()
   const sortedPlayers = playerInfo
     ?.slice()
-    .sort((a, b) => a?.name.localeCompare(b.name))
+    .sort((a, b) => a?.nameFirst.localeCompare(b.name))
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -28,11 +28,16 @@ const PlayerName = ({ team }) => {
     <>
       <div>
         <span style={{ color: "antiquewhite" }}>Captain - </span>{" "}
-        {team.teamCaptain}
+        {sortedPlayers?.map(
+          (player) => 
+            player._id === team.teamCaptain && (
+              <div key={player?._id}>{player.nameFirst} {player.nameLast}</div>
+            )
+        )}
         {sortedPlayers?.map(
           (player) =>
-            player?.name !== team.teamCaptain && (
-              <li key={player?._id}>{player?.name}</li>
+            player._id !== team.teamCaptain && (
+              <li key={player?._id}>{player?.nameFirst} {player?.nameLast}</li>
             )
         )}
       </div>

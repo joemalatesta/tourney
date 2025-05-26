@@ -42,10 +42,8 @@ const ViewOneSession = (props) => {
 
   const addPlayer =(player)=>{
     console.log("player added", player);
-    
   }
 
-  console.log(sessionInfo, props)
 
   return (
     <>
@@ -55,8 +53,11 @@ const ViewOneSession = (props) => {
           <h3 className="center">{sessionInfo?.homeTeam?.teamName}</h3>
           <div className="w325 green-felt margin">
             {homePlayersFound.map((player) => (
-              <div onClick={()=>addPlayer(player)} key={player._id}>
-                {player.name} ({player.rank})
+              <div onClick={()=>{
+                console.log(player)
+                addPlayer(player)
+                }} key={player._id}>
+                {player.nameFirst} {player.nameLast} ({player.rank})
               </div>
             ))}
           </div>
@@ -72,7 +73,7 @@ const ViewOneSession = (props) => {
             <div className="w325 green-felt margin">
               {awayPlayersFound.map((player) => (
                 <div onClick={()=>addPlayer(player)} key={player._id}>
-                  {player.name} ({player.rank})
+                  {player.nameFirst} {player.nameLast} ({player.rank})
                 </div>
               ))}
             </div>
