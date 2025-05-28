@@ -38,12 +38,12 @@ const Checkboxes = ({
   }
 
   useEffect(() => {
-    if(playerInfo === 'player1'){
+    if (playerInfo === "player1") {
       if (player1Wins?.length > 0) {
         setCheckedCheckboxes([...player1Wins])
       }
     }
-    if(playerInfo === 'player2'){
+    if (playerInfo === "player2") {
       if (player2Wins?.length > 0) {
         setCheckedCheckboxes([...player2Wins])
       }

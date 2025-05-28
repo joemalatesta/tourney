@@ -55,8 +55,8 @@
   border-bottom: 1px solid white;
 }
 .player:nth-child(even) {
-  background-color:dimgrey;
-  color:black
+  background-color: dimgrey;
+  color: black;
 }
 
 .team {

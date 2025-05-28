@@ -85,7 +85,6 @@ a:visited {
   justify-content: flex-end;
 }
 
-
 /* .flex-justify {
   display: flex;
   align-items: center;
@@ -179,7 +178,6 @@ a:visited {
 
 .align {
   display: flex;
-
 }
 
 button {
@@ -214,7 +212,7 @@ button {
   height: 250px;
 }
 .h350 {
-  height: 350px
+  height: 350px;
 }
 
 .w700 {

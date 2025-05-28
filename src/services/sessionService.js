@@ -59,19 +59,18 @@ async function findOneMatch(sessionId, matchId) {
   try {
     const response = await fetch(
       `/api/matches?sessionId=${sessionId}&matchId=${matchId}`
-    );
+    )
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+      throw new Error(`Error: ${response.statusText}`)
     }
 
-    const data = await response.json(); 
-    return data; 
+    const data = await response.json()
+    return data
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
 }
-
 
 async function deleteOne(id) {
   const res = await fetch(`${BASE_URL}/${id}`, {
@@ -83,4 +82,12 @@ async function deleteOne(id) {
   return res.json()
 }
 
-export { index, create, findOne, deleteOne, update, findOneMatch, createMatches }
+export {
+  index,
+  create,
+  findOne,
+  deleteOne,
+  update,
+  findOneMatch,
+  createMatches,
+}

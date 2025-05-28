@@ -8,7 +8,6 @@ const CreateSession = () => {
   const [dates, setDates] = useState()
   const [date, setDate] = useState("")
 
-
   useEffect(() => {
     const getDates = async () => {
       const data = await sessionService.index()
@@ -17,7 +16,7 @@ const CreateSession = () => {
     getDates()
   }, [])
 
-  useEffect(() => {}, [dates]);
+  useEffect(() => {}, [dates])
 
   const handleSubmitToSchedule = async () => {
     await sessionService.create({
@@ -53,7 +52,9 @@ const CreateSession = () => {
       <button onClick={handleSubmitToSchedule}>Submit Date to Session</button>
       <br />
       {dates?.map((singleDate) => (
-        <li onClick={()=>handleShowDate(singleDate)} key={singleDate._id}>{singleDate.date}</li>
+        <li onClick={() => handleShowDate(singleDate)} key={singleDate._id}>
+          {singleDate.date}
+        </li>
       ))}
       <br />
     </>

@@ -57,11 +57,11 @@ const HomeAndAwayPlayerList = (props) => {
         )}
         {props.homePlayer !== null && props.awayPlayer !== null && (
           <>
-            {props.table.homeMatch1 == undefined &&
-            <button onClick={() => props.submitPlayersToMatch(props.match)}>
-              Submit Match
-            </button>
-            }
+            {props.table.homeMatch1 == undefined && (
+              <button onClick={() => props.submitPlayersToMatch(props.match)}>
+                Submit Match
+              </button>
+            )}
           </>
         )}
       </div>

@@ -6,11 +6,12 @@ async function adjustTeamStats(data, homeTeam, awayTeam) {
 }
 
 function winningTeam(data, homeTeam, awayTeam) {
-  console.log(data.winningPlayer);
+  console.log(awayTeam)
+  console.log(data.winningPlayer)
   console.log(homeTeam)
-  console.log(teamService )
-  if(homeTeam.teamPlayer.includes(data.winningPlayer._id)) {
-    console.log('this is a true statement')
+  console.log(teamService)
+  if (homeTeam.teamPlayer.includes(data.winningPlayer._id)) {
+    console.log("this is a true statement")
   }
   // Need to find the players id in the home or away object then adjust the winners team information to reflect the needed changes then do the same for the losers team
 }

@@ -1,16 +1,21 @@
 import { useState, useEffect } from "react"
 import * as playerService from "../../services/playerService"
 
-const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer, adjustedTeam }) => {
+const TeamPlayers = ({
+  team,
+  handleChoosePlayer,
+  title,
+  matchPlayer,
+  adjustedTeam,
+}) => {
   const [playerInfo, setPlayerInfo] = useState()
 
-  //! sorted by name
-  // const sortedPlayers = playerInfo
-  // ?.slice()
-  // .sort((a, b) => a.name.localeCompare(b.name))
+  const sortedPlayers = adjustedTeam?.teamPlayers?.sort(
+    (a, b) => b.rank - a.rank
+  )
 
-  // sorted by rank
-  const sortedPlayers = adjustedTeam?.teamPlayers?.sort((a, b) => b.rank - a.rank)
+  console.log(playerInfo);
+  
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -37,11 +42,7 @@ const TeamPlayers = ({ team, handleChoosePlayer, title, matchPlayer, adjustedTea
           key={player?._id}
         >
           <div>
-            <span
-              style={
-                matchPlayer === player?._id ? { color: "black" } : {}
-              }
-            >
+            <span style={matchPlayer === player?._id ? { color: "black" } : {}}>
               {matchPlayer?._id === player?._id ? (
                 <h2>
                   {player?.name} ({player?.rank})

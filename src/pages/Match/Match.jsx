@@ -11,7 +11,7 @@ const Match = (props) => {
   const [team2, setTeam2] = useState(null)
   const [player1, setPlayer1] = useState(null)
   const [player2, setPlayer2] = useState(null)
-  const [match, setMatch] = useState([])
+  const [match] = useState([])
   const [match1, setMatch1] = useState(null)
   const [match2, setMatch2] = useState(null)
   const [match3, setMatch3] = useState(null)
@@ -58,11 +58,11 @@ const Match = (props) => {
   }
 
   const handleCancel = (mth) => {
-    console.log(mth,"************************");
-    
-    // if (mth === "1") setMatch1(null)
-    // if (mth === "2") setMatch2(null)
-    // if (mth === "3") setMatch3(null)
+    console.log(mth, "************************")
+
+    if (mth === "1") setMatch1(null)
+    if (mth === "2") setMatch2(null)
+    if (mth === "3") setMatch3(null)
   }
 
   return (

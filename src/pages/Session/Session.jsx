@@ -13,8 +13,6 @@ const Session = () => {
   const queryString = location.search
   const params = new URLSearchParams(queryString)
   const sessionId = params.get("sessionId")
-  
-  
 
   useEffect(() => {
     const getSessions = async () => {
@@ -31,16 +29,16 @@ const Session = () => {
     }
     const queryString = new URLSearchParams(state).toString()
     navigate(`/viewOneSession?${queryString}`)
-
   }
 
   const handleShow = (sched) => {
-   
-
     setView(
       <>
         <div className="center w700 fWrap ">
-          <div className="bracket center column" onClick={() => handleShowMatch(sched.table1)}>
+          <div
+            className="bracket center column"
+            onClick={() => handleShowMatch(sched.table1)}
+          >
             <div className="center bracket ">Table 1</div>
             <div className="center bracket w300 ">
               {sched.table1.homeTeam.teamName} <br />
@@ -49,7 +47,10 @@ const Session = () => {
             </div>
             <br />
           </div>
-          <div className="bracket center column" onClick={() => handleShowMatch(sched.table2)}>
+          <div
+            className="bracket center column"
+            onClick={() => handleShowMatch(sched.table2)}
+          >
             <div className="center bracket ">Table 2</div>
             <div className="center bracket w300 ">
               {sched.table2.homeTeam.teamName} <br />
@@ -58,17 +59,26 @@ const Session = () => {
             </div>
             <br />
           </div>
-          <div className="flex bracket center column" onClick={() => handleShowMatch(sched.table3)}>
+          <div
+            className="flex bracket center column"
+            onClick={() => handleShowMatch(sched.table3)}
+          >
             <div className="flex center bracket ">Table 3</div>
             <div className="center bracket w300">
-              {sched.table3.homeTeam.teamName}<br/>
-              vs<br/>
-              {sched.table3.awayTeam.teamName}<br/>
+              {sched.table3.homeTeam.teamName}
+              <br />
+              vs
+              <br />
+              {sched.table3.awayTeam.teamName}
+              <br />
             </div>
-            
+
             <br />
           </div>
-          <div className="bracket center column" onClick={() => handleShowMatch(sched.table4)}>
+          <div
+            className="bracket center column"
+            onClick={() => handleShowMatch(sched.table4)}
+          >
             <div className="center bracket ">Table 4</div>
             <div className="center bracket w300 ">
               {sched.table4.homeTeam.teamName} <br />

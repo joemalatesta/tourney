@@ -1,6 +1,6 @@
-import  { useState } from "react"
+import { useState } from "react"
 import * as gameService from "../../services/gameService"
-import * as styles from './ScrollWheel.module.css'
+import * as styles from "./ScrollWheel.module.css"
 
 const ScrollWheel = ({ players }) => {
   const [player1Rank, setPlayer1Rank] = useState(50)
@@ -35,42 +35,50 @@ const ScrollWheel = ({ players }) => {
 
   return (
     <>
-    <div className="bracket center">
-      <div className="row">
-        <div className="column">
-          Player 1
-          <select
-            className={styles.scrollSelect}
-            name="player1Rank"
-            value={player1Rank}
-            onChange={handleChangePlayer1}
+      <div className="bracket center">
+        <div className="row">
+          <div className="column">
+            Player 1
+            <select
+              className={styles.scrollSelect}
+              name="player1Rank"
+              value={player1Rank}
+              onChange={handleChangePlayer1}
             >
-            {Array.from({ length: highestRank - lowestRank + 11 }, (_, i) => (
-              <option className={styles.scrollSelect} key={lowestRank + i} value={lowestRank + i}>
-                {lowestRank + i}
-              </option>
-            ))}
-          </select>
-          <h1>{race[0]}</h1>
-        </div>
-        <div className="column">
-          Player 2
-          <select
-            className={styles.scrollSelect}
-            name="player2Rank"
-            value={player2Rank}
-            onChange={handleChangePlayer2}
+              {Array.from({ length: highestRank - lowestRank + 11 }, (_, i) => (
+                <option
+                  className={styles.scrollSelect}
+                  key={lowestRank + i}
+                  value={lowestRank + i}
+                >
+                  {lowestRank + i}
+                </option>
+              ))}
+            </select>
+            <h1>{race[0]}</h1>
+          </div>
+          <div className="column">
+            Player 2
+            <select
+              className={styles.scrollSelect}
+              name="player2Rank"
+              value={player2Rank}
+              onChange={handleChangePlayer2}
             >
-            {Array.from({ length: highestRank - lowestRank + 11 }, (_, i) => (
-              <option className={styles.scrollSelect} key={lowestRank + i} value={lowestRank + i}>
-                {lowestRank + i}
-              </option>
-            ))}
-          </select>
-          <h1>{race[1]}</h1>
+              {Array.from({ length: highestRank - lowestRank + 11 }, (_, i) => (
+                <option
+                  className={styles.scrollSelect}
+                  key={lowestRank + i}
+                  value={lowestRank + i}
+                >
+                  {lowestRank + i}
+                </option>
+              ))}
+            </select>
+            <h1>{race[1]}</h1>
+          </div>
         </div>
       </div>
-            </div>
     </>
   )
 }

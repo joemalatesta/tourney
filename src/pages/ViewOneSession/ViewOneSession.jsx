@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom"
 import * as tableService from "../../services/tableService"
 
 const ViewOneSession = (props) => {
-  const [currentMatch, setCurrentMatch] = useState(null)
+  // const [currentMatch, setCurrentMatch] = useState(null)
   const [sessionInfo, setSessionInfo] = useState()
   const location = useLocation()
   const queryString = location.search
@@ -40,10 +40,9 @@ const ViewOneSession = (props) => {
   const homePlayersFound = getPlayersForTeam(sessionInfo?.homeTeam?._id)
   const awayPlayersFound = getPlayersForTeam(sessionInfo?.awayTeam?._id)
 
-  const addPlayer =(player)=>{
-    console.log("player added", player);
+  const addPlayer = (player) => {
+    console.log("player added", player)
   }
-
 
   return (
     <>
@@ -53,10 +52,13 @@ const ViewOneSession = (props) => {
           <h3 className="center">{sessionInfo?.homeTeam?.teamName}</h3>
           <div className="w325 green-felt margin">
             {homePlayersFound.map((player) => (
-              <div onClick={()=>{
-                console.log(player)
-                addPlayer(player)
-                }} key={player._id}>
+              <div
+                onClick={() => {
+                  console.log(player)
+                  addPlayer(player)
+                }}
+                key={player._id}
+              >
                 {player.nameFirst} {player.nameLast} ({player.rank})
               </div>
             ))}
@@ -72,7 +74,7 @@ const ViewOneSession = (props) => {
             <h3 className="center">{sessionInfo?.awayTeam?.teamName}</h3>
             <div className="w325 green-felt margin">
               {awayPlayersFound.map((player) => (
-                <div onClick={()=>addPlayer(player)} key={player._id}>
+                <div onClick={() => addPlayer(player)} key={player._id}>
                   {player.nameFirst} {player.nameLast} ({player.rank})
                 </div>
               ))}

@@ -7,7 +7,6 @@ import HomeAndAwayPlayerList from "../../components/HomeAndAwayPlayerList/HomeAn
 import SingleMatch from "../../components/SingleMatch/SingleMatch"
 
 const StartMatch = (props) => {
-
   const location = useLocation()
   const queryString = location.search
   const params = new URLSearchParams(queryString)
@@ -15,8 +14,7 @@ const StartMatch = (props) => {
   const home = "home"
   const away = "away"
 
-  useEffect(() => {
-  }, [tableId])
+  useEffect(() => {}, [tableId])
 
   const [currentMatch, setCurrentMatch] = useState()
   const [table, setTable] = useState(null)
@@ -86,8 +84,7 @@ const StartMatch = (props) => {
     }
   }, [tableId])
 
-  console.log(currentMatch);
-  
+  console.log(currentMatch)
 
   const setPlayerForMatch = (playerObj, teamid, match) => {
     setMatchPlayers((prevMatchPlayers) => {
@@ -135,12 +132,12 @@ const StartMatch = (props) => {
     }
   }
 
-        // await playerStatsService.adjustPlayerStats(data)
-        // await teamStatsService.adjustTeamStats(
-        //   data,
-        //   props.homeTeam,
-        //   props.awayTeam
-        // )
+  // await playerStatsService.adjustPlayerStats(data)
+  // await teamStatsService.adjustTeamStats(
+  //   data,
+  //   props.homeTeam,
+  //   props.awayTeam
+  // )
 
   return (
     <>

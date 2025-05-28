@@ -96,13 +96,12 @@ const CreateMatchForSession = (props) => {
     await setMatches([...matches])
   }
 
-
   const completedForm =
     table1 !== null && table2 !== null && table3 !== null && table4 !== null
   const completedMatch =
     homeTeam !== null && awayTeam !== null && usedTable !== null
 
-    console.log(table1);
+  console.log(table1)
 
   return (
     <>
@@ -120,8 +119,6 @@ const CreateMatchForSession = (props) => {
       )}
       {matches?.length < 4 && (
         <>
-  
-
           <h2>
             Pick the{" "}
             {awayTeam === null && homeTeam !== null ? " Away" : " Home"} Team:
@@ -172,18 +169,17 @@ const CreateMatchForSession = (props) => {
           Submit to Schedule
         </button>
       )}
-      <br/>
+      <br />
       <div className="bracket">
-
-      <h1>Matches</h1> 
-      Table 1     <br/>
-      {table1?.homeTeam?.teamName} VS {table1?.awayTeam?.teamName}     <br/>
-      Table 2     <br/>
-      {table2?.homeTeam?.teamName} VS {table2?.awayTeam?.teamName}     <br/>
-      Table 3     <br/>
-      {table3?.homeTeam?.teamName} VS {table3?.awayTeam?.teamName}     <br/>
-      Table 4     <br/>
-      {table4?.homeTeam?.teamName} VS {table4?.awayTeam?.teamName}     <br/>
+        <h1>Matches</h1>
+        Table 1 <br />
+        {table1?.homeTeam?.teamName} VS {table1?.awayTeam?.teamName} <br />
+        Table 2 <br />
+        {table2?.homeTeam?.teamName} VS {table2?.awayTeam?.teamName} <br />
+        Table 3 <br />
+        {table3?.homeTeam?.teamName} VS {table3?.awayTeam?.teamName} <br />
+        Table 4 <br />
+        {table4?.homeTeam?.teamName} VS {table4?.awayTeam?.teamName} <br />
       </div>
     </>
   )

@@ -3,14 +3,14 @@ import * as gameService from "../../services/gameService"
 import * as matchService from "../../services/matchService"
 import * as checks from "../../services/checkMatch"
 import * as playerStatsService from "../../services/playerStatsService"
-import * as teamStatsService from "../../services/teamStatsService"
-import * as tableService from '../../services/tableService'
+// import * as teamStatsService from "../../services/teamStatsService"
+import * as tableService from "../../services/tableService"
 
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
-  console.log(props.tableId);
-  
+  console.log(props.tableId)
+
   const [gamesNeeded, setGamesNeeded] = useState([])
   const [checkedPlayer1Checkboxes, setCheckedPlayer1Checkboxes] = useState([])
   const [checkedPlayer2Checkboxes, setCheckedPlayer2Checkboxes] = useState([])
@@ -20,7 +20,7 @@ const SingleMatch = (props) => {
   // const [winningPlayer, setWinningPlayer] = useState(
   //   props?.currentMatch?.winningPlayer
   // )
-  const [updatedMatchData] = useState()
+  // const [updatedMatchData] = useState()
   const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
 
@@ -117,16 +117,18 @@ const SingleMatch = (props) => {
   const handleWinner = async (winPlayer, losePlayer) => {
     console.log("this is the player in handle winner")
     let data = await {
-        ...props.currentMatch,
-        winningPlayer: winPlayer,
-        losingPlayer: losePlayer,
-      }
+      ...props.currentMatch,
+      winningPlayer: winPlayer,
+      losingPlayer: losePlayer,
+    }
 
-      // await teamStatsService.adjustTeamStats(updatedMatchData)
-    
+    // await teamStatsService.adjustTeamStats(updatedMatchData)
 
-    if (props.mth == 1){
-      let tableData = props?.tableId?.awayMatch1 == null ? props?.tableId?.homeMatch1 : props?.tableId?.awayMatch1
+    if (props.mth == 1) {
+      let tableData =
+        props?.tableId?.awayMatch1 == null
+          ? props?.tableId?.homeMatch1
+          : props?.tableId?.awayMatch1
       await tableService.update({
         ...props.tableId,
         match1Completed: true,
@@ -134,11 +136,14 @@ const SingleMatch = (props) => {
       await matchService.update({
         ...tableData,
         winningPlayer: winPlayer,
-        losingPlayer: losePlayer
+        losingPlayer: losePlayer,
       })
     }
-    if (props.mth == 2){
-      let tableData = props?.tableId?.awayMatch2 == null ? props?.tableId?.homeMatch2 : props?.tableId?.awayMatch2
+    if (props.mth == 2) {
+      let tableData =
+        props?.tableId?.awayMatch2 == null
+          ? props?.tableId?.homeMatch2
+          : props?.tableId?.awayMatch2
       await tableService.update({
         ...props.tableId,
         match2Completed: true,
@@ -146,11 +151,14 @@ const SingleMatch = (props) => {
       await matchService.update({
         ...tableData,
         winningPlayer: winPlayer,
-        losingPlayer: losePlayer
+        losingPlayer: losePlayer,
       })
     }
-    if (props.mth == 3){
-      let tableData = props?.tableId?.awayMatch3 == null ? props?.tableId?.homeMatch3 : props?.tableId?.awayMatch3
+    if (props.mth == 3) {
+      let tableData =
+        props?.tableId?.awayMatch3 == null
+          ? props?.tableId?.homeMatch3
+          : props?.tableId?.awayMatch3
       await tableService.update({
         ...props.tableId,
         match3Completed: true,
@@ -158,7 +166,7 @@ const SingleMatch = (props) => {
       await matchService.update({
         ...tableData,
         winningPlayer: winPlayer,
-        losingPlayer: losePlayer
+        losingPlayer: losePlayer,
       })
     }
     await playerStatsService.adjustPlayerStats(data)
@@ -220,14 +228,18 @@ const SingleMatch = (props) => {
           {isPlayer1Winner &&
             message == true &&
             props.currentProfile == "HOME" && (
-              <button onClick={() => handleWinner(props.player1, props.player2)}>
+              <button
+                onClick={() => handleWinner(props.player1, props.player2)}
+              >
                 Submit
               </button>
             )}
           {isPlayer2Winner &&
             message == true &&
             props.currentProfile == "HOME" && (
-              <button onClick={() => handleWinner(props.player2, props.player1)}>
+              <button
+                onClick={() => handleWinner(props.player2, props.player1)}
+              >
                 Submit
               </button>
             )}

@@ -75,7 +75,6 @@ const EditPlayer = (props) => {
     <div className="bracket green-felt2">
       <h2>Players</h2>
 
-     
       <button onClick={() => setShowOnlyActive(!showOnlyActive)}>
         {showOnlyActive ? "Show All Players" : "Show Active Players Only"}
       </button>

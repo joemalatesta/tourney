@@ -23,8 +23,6 @@ const PlayerName = ({ team }) => {
     }
   }, [team.teamPlayers])
 
-  console.log("Team on live site:", team)
-  
   return (
     <>
       <div>

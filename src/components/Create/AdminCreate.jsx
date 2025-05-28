@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom"
 const AdminCreate = () => {
   return (
     <>
-
       <NavLink className="bracket" to="/create-team">
         Create Team
       </NavLink>

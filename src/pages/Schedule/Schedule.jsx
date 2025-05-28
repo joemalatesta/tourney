@@ -39,8 +39,7 @@ const Schedule = (props) => {
     <>
       <div className="bracket flex fWrap padding">
         {schedule.length === 0 && <h1>Nothing scheduled yet</h1>}
-        {schedule.map(
-          (sched) =>
+        {schedule.map((sched) => (
           <div key={sched._id}>
             {sched.completed !== true && (
               <div
@@ -52,13 +51,12 @@ const Schedule = (props) => {
                   selected === sched._id ? "selected" : ""
                 } ${flippingItemId === sched._id ? "flip" : ""}`}
                 key={sched._id}
-                >
+              >
                 <div className="center flex">{sched.name}</div>
               </div>
             )}
-                </div>
-              
-        )}
+          </div>
+        ))}
       </div>
 
       <div className="fWrap">{view}</div>

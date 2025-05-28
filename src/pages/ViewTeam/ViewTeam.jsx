@@ -2,9 +2,11 @@ import { useEffect, useState, useRef } from "react"
 import ListOfPlayers from "../../components/players/ListOfPlayers"
 import * as playerService from "../../services/playerService"
 import * as styles from "./ViewTeam.module.css"
-import * as teamService from '../../services/teamService'
+import * as teamService from "../../services/teamService"
+import { useNavigate } from "react-router-dom"
 
 const ViewTeam = (props) => {
+  const navigate = useNavigate()
   const [playerInfo, setPlayerInfo] = useState()
   const [viewEditTeamPage, setViewEditTeamPage] = useState(false)
   const [team, setTeam] = useState([])
@@ -18,23 +20,20 @@ const ViewTeam = (props) => {
     teamCaptain: props?.team.teamCaptain,
   })
 
-  
-  console.log("8***************************",props?.team);
   useEffect(() => {
-  if (formData.teamPlayers && props.players) {
-    const teamPlayerIds = formData.teamPlayers.map((player) =>
-      typeof player === "object" ? player._id : player
-    )
+    if (formData.teamPlayers && props.players) {
+      const teamPlayerIds = formData.teamPlayers.map((player) =>
+        typeof player === "object" ? player._id : player
+      )
 
-    const fullTeam = props.players.filter((p) =>
-      teamPlayerIds.includes(p._id)
-    )
+      const fullTeam = props.players.filter((p) =>
+        teamPlayerIds.includes(p._id)
+      )
 
-    setTeam(fullTeam)
-    setPlayers(props.players.filter((p) => !teamPlayerIds.includes(p._id)))
-  }
-}, [formData.teamPlayers, props.players])
-
+      setTeam(fullTeam)
+      setPlayers(props.players.filter((p) => !teamPlayerIds.includes(p._id)))
+    }
+  }, [formData.teamPlayers, props.players])
 
   useEffect(() => {
     const getPlayerStats = async () => {
@@ -52,12 +51,9 @@ const ViewTeam = (props) => {
     getPlayerStats()
   }, [props.team.teamPlayers])
 
-  const handleEditTeam = (teamId) => {
+  const handleEditTeam = () => {
     setViewEditTeamPage(true)
-    console.log(teamId)
   }
-
-
 
   const handleAddPlayer = (player) => {
     setTeam([player, ...team])
@@ -67,12 +63,6 @@ const ViewTeam = (props) => {
   const handleRemovePlayer = (player) => {
     setTeam(team.filter((el) => el._id !== player._id))
     setPlayers([...players, player])
-  }
-
-  const handleChange = (evt) => {
-    if (evt.target.name === "teamCaptain")
-      setFormData({ ...formData, teamCaptain: captain })
-    else setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
 
   const addCaptain = (player) => {
@@ -93,9 +83,8 @@ const ViewTeam = (props) => {
         ...formData,
         teamPlayers: team,
       }
-        console.log("8***************************",formData);
-
       await teamService.update(updatedFormData)
+      navigate("/view-teams")
     } else return <h1>select all players and captain</h1>
   }
 
@@ -103,10 +92,10 @@ const ViewTeam = (props) => {
     <>
       {viewEditTeamPage && (
         <>
-          <button onClick={() => setViewEditTeamPage(false)}>cancel</button>
           <main className={`${styles.bracket}`}>
             <form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
-    
+              <button onClick={() => setViewEditTeamPage(false)}>cancel</button>
+
               <button type="submit">Edit Team</button>
             </form>
 

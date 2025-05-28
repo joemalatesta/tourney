@@ -3,7 +3,7 @@ import Papa from "papaparse"
 import { useState } from "react"
 
 const AdminFullStatPage = ({ teams, players }) => {
-  const [showActiveOnly, setShowActiveOnly] = useState(false)
+  const [showActiveOnly, setShowActiveOnly] = useState(true)
 
   const toggleShowActive = () => {
     setShowActiveOnly(!showActiveOnly)
@@ -173,8 +173,7 @@ const AdminFullStatPage = ({ teams, players }) => {
             (p) => p.gamesWon,
             (p) => p.gamesLoss,
             (p) => p.gamesWon + p.gamesLoss,
-            (p) =>
-              ((p.gamesWon / (p.gamesWon + p.gamesLoss)) * 100).toFixed(2),
+            (p) => ((p.gamesWon / (p.gamesWon + p.gamesLoss)) * 100).toFixed(2),
           ].map((getter, i) => (
             <div key={i} className={styles.row}>
               {sortedPlayers.map((player) => (

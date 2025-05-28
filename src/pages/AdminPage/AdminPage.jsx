@@ -22,7 +22,7 @@ const AdminPage = ({
   const handleShowCreate = () => {
     setViewCreate(!viewCreate)
   }
-  const adjustRankForEOS = async() => {
+  const adjustRankForEOS = async () => {
     for (const player of players) {
       if (player && player._id) {
         try {
@@ -34,7 +34,7 @@ const AdminPage = ({
             gamesWon: 0,
             gamesLoss: 0,
             rank: player.rank,
-            seasonRankStart: player.rank
+            seasonRankStart: player.rank,
           }
           await playerService.update(data)
           console.log(`Player ${player.id} updated successfully.`)
@@ -154,7 +154,7 @@ const AdminPage = ({
         handleUpdateProfiles={handleUpdateProfiles}
       />
       <br />
-      {profile.firstName === 'Joe' && (
+      {profile.firstName === "Joe" && (
         <>
           <AdminAddProfileToPlayer players={players} profiles={profiles} />
           <div className="bracket center column">
@@ -185,8 +185,12 @@ const AdminPage = ({
                 <button onClick={() => seedPeopleStats()}>Seed People</button>
               </p>
               <p className="bracket">
-                End Of Season<br/> 
-                <button onClick={handleEOS}>Set all stats to 0 and carry over player rank</button></p>
+                End Of Season
+                <br />
+                <button onClick={handleEOS}>
+                  Set all stats to 0 and carry over player rank
+                </button>
+              </p>
             </div>
           </div>
         </>

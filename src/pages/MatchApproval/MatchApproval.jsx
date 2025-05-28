@@ -16,6 +16,8 @@ const MatchApproval = () => {
   const [submitMatch2Visible, setSubmitMatch2Visible] = useState(true)
   const [submitMatch3Visible, setSubmitMatch3Visible] = useState(true)
 
+  console.log(playedData)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -257,9 +259,7 @@ const MatchApproval = () => {
       {!matchPairs?.length && (
         <h1 className="bracket center">No Matches to Display</h1>
       )}
-          {matchPairs[0]?.completed === true && 
-            <>No matches</>
-          }
+      {matchPairs[0]?.completed === true && <>No matches</>}
       {matchPairs?.length > 0 && (
         <div className="bracket">
           {matchPairs?.map((match, idx) => (

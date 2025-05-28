@@ -14,7 +14,7 @@ const AllPlayers = (props) => {
       rank: player.rank,
     }
     props.setFormData(updatedPlayer)
-    setPlayerToEdit(player._id) 
+    setPlayerToEdit(player._id)
   }
 
   const handleDelete = (player) => {
@@ -64,9 +64,10 @@ const AllPlayers = (props) => {
               <button onClick={() => handleChange(player)}>Edit</button>
             </div>
             <div className={styles.w300}>
-              --{player.name} : {player.rank}<br/>
+              --{player.name} : {player.rank}
+              <br />
             </div>
-              {playerToEdit === player._id && props.form}
+            {playerToEdit === player._id && props.form}
             {player?.name === playerToDelete?.name &&
               confirmDelete &&
               deleteDisplay}

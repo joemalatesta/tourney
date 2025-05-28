@@ -45,11 +45,11 @@ const SingleMatchPlayerLine = ({
                 ) : (
                   <>Awaiting Player</>
                 )}
-       
+
                 {gameWinner?._id === player?._id && isSubmitted === true && (
                   <>
                     <div style={{ color: "red", margin: "15px" }}>WINNER</div>
-                    <div style={{ color: "cornflowerblue" }} className="center">
+                    <div style={{ color: "cornflowerblue" }} className="center">
                       Games Won :
                       <div style={{ color: "gold" }}>{winnerGames}</div>
                       <br />

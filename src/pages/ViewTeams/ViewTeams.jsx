@@ -42,7 +42,12 @@ const ViewTeams = ({ setTeam, teams, setTeams }) => {
                 Team Stats: Wins: {team.wins} <br />
                 Loss: {team.loss} <br />
                 Win Percentage:{" "}
-                {isNaN(((team.wins / (team.wins + team.loss)) * 100).toFixed(2)) ? "0.00" : ((team.wins / (team.wins + team.loss)) * 100).toFixed(2)} %
+                {isNaN(((team.wins / (team.wins + team.loss)) * 100).toFixed(2))
+                  ? "0.00"
+                  : ((team.wins / (team.wins + team.loss)) * 100).toFixed(
+                      2
+                    )}{" "}
+                %
               </div>
               <PlayerName team={team} />
             </div>

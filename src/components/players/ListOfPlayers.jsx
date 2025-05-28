@@ -1,23 +1,21 @@
 import * as styles from "./Player.module.css"
 
 const ListOfPlayers = (props) => {
-  // let sortedPlayers
+  let captainId = props.captain
 
-  // if (props.players.length > 0) {
-  //   sortedPlayers = props?.players
-  //     ?.slice()
-  //     .sort((a, b) => a?.namefirst.localeCompare(b?.nameFirst))
-  // }
+  function getPlayerNameById(players, id) {
+    const player = players.find((p) => p._id === id)
+    if (!player) return null
+    return `${player.nameFirst} ${player.nameLast}`
+  }
 
+  let captain = getPlayerNameById(props.players, captainId)
 
   return (
     <div>
       <h2 className={styles.bracket}>{props.title}</h2>
       {props.title === "Assigned to Team" && (
-        <p>
-          Team Captain :{" "}
-          {props.captain === null ? "Add Captain" : props.captain}
-        </p>
+        <p>Team Captain : {props.captain === null ? "Add Captain" : captain}</p>
       )}
       <ul>
         {props.players.map((player) => (
