@@ -7,7 +7,7 @@ const EditPlayer = (props) => {
   const [validForm, setValidForm] = useState(false)
   const [title, setTitle] = useState("Add Player")
   const [editingPlayerId, setEditingPlayerId] = useState(null)
-  const [showOnlyActive, setShowOnlyActive] = useState(false)
+  const [showOnlyActive, setShowOnlyActive] = useState(true)
 
   const emptyPlayer = {
     nameFirst: "",

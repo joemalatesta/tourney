@@ -1,47 +1,55 @@
 import * as styles from "./AdminFullStatPage.module.css"
 import Papa from "papaparse"
+import { useState } from "react"
+
 const AdminFullStatPage = ({ teams, players }) => {
+  const [showActiveOnly, setShowActiveOnly] = useState(false)
+
+  const toggleShowActive = () => {
+    setShowActiveOnly(!showActiveOnly)
+  }
+
   const calculateWinPercentage = (team) => {
     const totalMatches = team.wins + team.loss
     return totalMatches === 0 ? 0 : (team.wins / totalMatches) * 100
   }
 
+  const sortedPlayers = [...players]
+    .filter((player) => (showActiveOnly ? player.active : true))
+    .sort((a, b) => {
+      if (a.nameLast < b.nameLast) return -1
+      if (a.nameLast > b.nameLast) return 1
+      return 0
+    })
+
   const sortedTeams = [...teams].sort(
     (a, b) => calculateWinPercentage(b) - calculateWinPercentage(a)
   )
+
   const calculateTotalGames = (player) => player.gamesWon + player.gamesLoss
-  const calculateRankDifference = (rank, startRank) => {
-    if (rank - startRank > 0) return rank - startRank
-    if (rank - startRank < 0) return rank - startRank
-    if (rank - startRank === 0) return rank - startRank
-  }
+
   const calculatePlayerWinPercentage = (player) => {
-    return ((player.gamesWon /(player.gamesWon + player.gamesLoss)) *100 ).toFixed(2)
+    return (
+      (player.gamesWon / (player.gamesWon + player.gamesLoss)) *
+      100
+    ).toFixed(2)
   }
 
   const getRankDifference = (rank, startRank) => {
-    if (rank - startRank > 0)
-      return <p style={{ color: "green" }}>{rank - startRank}</p>
-    if (rank - startRank < 0)
-      return <p style={{ color: "red" }}>{rank - startRank}</p>
-    if (rank - startRank === 0)
-      return <p style={{ color: "white" }}>{rank - startRank}</p>
+    const diff = rank - startRank
+    const color = diff > 0 ? "green" : diff < 0 ? "red" : "white"
+    return <p style={{ color }}>{diff}</p>
   }
 
   const downloadPlayerCSV = () => {
-    console.log("Downloading Player CSV...")
     const filteredData = players.map((player) => {
       const { _id, createdAt, updatedAt, __v, profile, ...rest } = player
-      console.log(_id,createdAt, updatedAt, __v,profile);
       return {
         name: rest.nameFirst + " " + rest.nameLast,
-        active: rest.active ,
+        active: rest.active,
         seasonRankStart: rest.seasonRankStart,
         rank: rest.rank,
-        rankUpDown: calculateRankDifference(
-          player.rank,
-          player.seasonRankStart
-        ),
+        rankUpDown: rest.rank - rest.seasonRankStart,
         matchesPlayed: rest.matchesPlayed,
         matchWin: rest.matchWin,
         matchLoss: rest.matchLoss,
@@ -52,7 +60,6 @@ const AdminFullStatPage = ({ teams, players }) => {
       }
     })
 
-    console.log(filteredData);
     const csv = Papa.unparse(filteredData)
     const blob = new Blob([csv], { type: "text/csv" })
     const url = window.URL.createObjectURL(blob)
@@ -62,15 +69,14 @@ const AdminFullStatPage = ({ teams, players }) => {
     a.click()
     window.URL.revokeObjectURL(url)
   }
+
   const downloadTeamCSV = () => {
-    console.log("Downloading Team CSV...")
     const teamsWithWinPercentage = sortedTeams.map((team) => ({
       ...team,
       winPercentage: calculateWinPercentage(team).toFixed(2),
     }))
     const filteredData = teamsWithWinPercentage.map((item) => {
       const { _id, createdAt, updatedAt, __v, teamPlayers, ...rest } = item
-      console.log(_id, createdAt, updatedAt, __v,teamPlayers);
       return rest
     })
     const csv = Papa.unparse(filteredData)
@@ -88,7 +94,7 @@ const AdminFullStatPage = ({ teams, players }) => {
       <div className="bracket">
         <h1 className="center">Team Stats</h1>
         <div className="border center">
-          <div className={`${styles.teamContainer} `}>
+          <div className={styles.teamContainer}>
             <div className={styles.title}>Team</div>
             <div className={styles.title}>Match Wins</div>
             <div className={styles.title}>Match Loss</div>
@@ -118,113 +124,66 @@ const AdminFullStatPage = ({ teams, players }) => {
             <div className={`${styles.teamRow} border`}>
               {sortedTeams.map((team) => (
                 <div className={styles.team} key={team._id}>
-                  {((team?.wins / (team?.wins + team?.loss)) * 100).toFixed(2)}
+                  {((team.wins / (team.wins + team.loss)) * 100).toFixed(2)}
                 </div>
               ))}
             </div>
           </div>
         </div>
-                <br/>
-        <div className="center">
-          <button onClick={downloadTeamCSV}>Download Team CSV</button><br/>
-        </div>
 
+        {/* CSV and Toggle Buttons */}
         <div className="center">
+          <button onClick={downloadTeamCSV}>Download Team CSV</button>
+          <br />
           <button onClick={downloadPlayerCSV}>Download Player CSV</button>
+          <br />
+          <button onClick={toggleShowActive}>
+            {showActiveOnly ? "Show All Players" : "Show Only Active Players"}
+          </button>
         </div>
-          
+
         <h1 className="center">Player Stats</h1>
-        <div className={`${styles.container}`}>
-          <div className={styles.title}>Player</div>
-          <div className={styles.title}>Rank</div>
-          <div className={styles.title}>Season Start Rank</div>
-          <div className={styles.title}>Rank up/down</div>
-          <div className={styles.title}>Match Wins</div>
-          <div className={styles.title}>Match Loss</div>
-          <div className={styles.title}>Matches Played</div>
-          <div className={styles.title}>Games Won</div>
-          <div className={styles.title}>Games Loss</div>
-          <div className={styles.title}>Total Games</div>
-          <div className={styles.title}>Win %</div>
+        <div className={styles.container}>
+          {[
+            "Player",
+            "Rank",
+            "Season Start Rank",
+            "Rank up/down",
+            "Match Wins",
+            "Match Loss",
+            "Matches Played",
+            "Games Won",
+            "Games Loss",
+            "Total Games",
+            "Win %",
+          ].map((title, i) => (
+            <div key={i} className={styles.title}>
+              {title}
+            </div>
+          ))}
 
-          <div className={`${styles.row}`}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.nameFirst} {player.nameLast}
-              </div>
-            ))}
-          </div>
-          <div className={`${styles.row}`}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.rank}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.seasonRankStart}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {getRankDifference(player.rank, player.seasonRankStart)}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.matchWin}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.matchLoss}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.matchesPlayed}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.gamesWon}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.gamesLoss}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {player.gamesWon + player.gamesLoss}
-              </div>
-            ))}
-          </div>
-          <div className={styles.row}>
-            {players.map((player) => (
-              <div className={styles.player} key={player._id}>
-                {((player.gamesWon /(player.gamesWon + player.gamesLoss)) *100 ).toFixed(2)}
-              </div>
-            ))}
-          </div>
-
+          {[
+            (p) => `${p.nameFirst} ${p.nameLast}`,
+            (p) => p.rank,
+            (p) => p.seasonRankStart,
+            (p) => getRankDifference(p.rank, p.seasonRankStart),
+            (p) => p.matchWin,
+            (p) => p.matchLoss,
+            (p) => p.matchesPlayed,
+            (p) => p.gamesWon,
+            (p) => p.gamesLoss,
+            (p) => p.gamesWon + p.gamesLoss,
+            (p) =>
+              ((p.gamesWon / (p.gamesWon + p.gamesLoss)) * 100).toFixed(2),
+          ].map((getter, i) => (
+            <div key={i} className={styles.row}>
+              {sortedPlayers.map((player) => (
+                <div key={player._id} className={styles.player}>
+                  {getter(player)}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </>
