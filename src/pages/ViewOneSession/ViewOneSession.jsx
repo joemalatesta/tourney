@@ -5,6 +5,8 @@ import * as tableService from "../../services/tableService"
 const ViewOneSession = (props) => {
   // const [currentMatch, setCurrentMatch] = useState(null)
   const [sessionInfo, setSessionInfo] = useState()
+  const [chosenHomePlayer, setChosenHomePlayer] = useState()
+  const [chosenAwayPlayer, setChosenAwayPlayer] = useState()
   const location = useLocation()
   const queryString = location.search
   const params = new URLSearchParams(queryString)
@@ -40,8 +42,16 @@ const ViewOneSession = (props) => {
   const homePlayersFound = getPlayersForTeam(sessionInfo?.homeTeam?._id)
   const awayPlayersFound = getPlayersForTeam(sessionInfo?.awayTeam?._id)
 
-  const addPlayer = (player) => {
-    console.log("player added", player)
+  const addPlayer = (player, position) => {
+    if (position == "home") setChosenHomePlayer(player)
+    if (position == "away") setChosenAwayPlayer(player)
+  }
+
+  const startMatch = () => {
+    if(chosenAwayPlayer !== null && chosenHomePlayer !== null){
+      console.log(`Starting with ${chosenHomePlayer.nameFirst} and ${chosenAwayPlayer.nameFirst}`);
+      
+    }
   }
 
   return (
@@ -54,10 +64,14 @@ const ViewOneSession = (props) => {
             {homePlayersFound.map((player) => (
               <div
                 onClick={() => {
-                  console.log(player)
-                  addPlayer(player)
+                  addPlayer(player, "home")
                 }}
                 key={player._id}
+                style={
+                  chosenHomePlayer?._id === player._id
+                    ? { fontSize: "150%", color: "gold" }
+                    : {}
+                }
               >
                 {player.nameFirst} {player.nameLast} ({player.rank})
               </div>
@@ -66,7 +80,7 @@ const ViewOneSession = (props) => {
         </div>
 
         <div>
-          <button>Add Players</button>
+          <button onClick={() => startMatch() }>Add Players</button>
         </div>
 
         <div className="row center space-around">
@@ -74,7 +88,15 @@ const ViewOneSession = (props) => {
             <h3 className="center">{sessionInfo?.awayTeam?.teamName}</h3>
             <div className="w325 green-felt margin">
               {awayPlayersFound.map((player) => (
-                <div onClick={() => addPlayer(player)} key={player._id}>
+                <div
+                  onClick={() => addPlayer(player, "away")}
+                  key={player._id}
+                  style={
+                    chosenAwayPlayer?._id === player._id
+                      ? { fontSize: "150%", color: "gold" }
+                      : {}
+                  }
+                >
                   {player.nameFirst} {player.nameLast} ({player.rank})
                 </div>
               ))}
