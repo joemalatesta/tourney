@@ -51,7 +51,7 @@ function AdminConnectProfileToPlayer(props) {
             <option value="">Select Player</option>
             {props.players.map((player) => (
               <option key={player._id} value={player._id}>
-                {player.name}
+                {player.nameFirst} {player.nameLast}
               </option>
             ))}
           </select>
