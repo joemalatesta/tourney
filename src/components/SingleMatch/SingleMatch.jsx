@@ -3,40 +3,78 @@ import * as gameService from "../../services/gameService"
 import * as matchService from "../../services/matchService"
 import * as checks from "../../services/checkMatch"
 import * as playerStatsService from "../../services/playerStatsService"
-// import * as teamStatsService from "../../services/teamStatsService"
 import * as tableService from "../../services/tableService"
 
 import * as styles from "./SingleMatch.module.css"
 
-const SingleMatch = (props) => {
-  console.log(props)
-  const [matchInfo, setMatchtInfo] = useState()
-
-  useEffect(() => {
-    const getMatchInfo = () => {
-      if (props.mth === '1') setMatchtInfo(props?.tableId?.match1)
-      if (props.mth === '2') setMatchtInfo(props?.tableId?.match2)
-      if (props.mth === '3') setMatchtInfo(props?.tableId?.match3)
-    }
-    getMatchInfo()
-  }, [])
-
-  console.log(matchInfo);
-  
-
+const SingleMatch = ({
+  mth,
+  tableId,
+  currentMatch,
+  currentMatchData,
+  currentProfile,
+  player1,
+  player2,
+}) => {
+  const [matchInfo, setMatchInfo] = useState(null)
   const [gamesNeeded, setGamesNeeded] = useState([])
   const [checkedPlayer1Checkboxes, setCheckedPlayer1Checkboxes] = useState([])
   const [checkedPlayer2Checkboxes, setCheckedPlayer2Checkboxes] = useState([])
   const [isPlayer1Winner, setIsPlayer1Winner] = useState(false)
   const [isPlayer2Winner, setIsPlayer2Winner] = useState(false)
-  const [gameEnded, setGameEnded] = useState(props.currentMatch?.completed)
-  // const [winningPlayer, setWinningPlayer] = useState(
-  //   props?.currentMatch?.winningPlayer
-  // )
-  // const [updatedMatchData] = useState()
+  const [gameEnded, setGameEnded] = useState(currentMatch?.completed || false)
   const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
 
+  // Set matchInfo based on mth
+  useEffect(() => {
+    if (!tableId) return
+    const matchKey = `match${mth}`
+    setMatchInfo(tableId[matchKey])
+  }, [mth, tableId])
+
+  // Fetch gamesNeeded based on currentMatch players
+  useEffect(() => {
+    const fetchGameRace = async () => {
+      if (currentMatch?.player1 && currentMatch?.player2) {
+        try {
+          const data = await gameService.getGameRace(
+            currentMatch.player1,
+            currentMatch.player2
+          )
+          setGamesNeeded(data)
+        } catch (error) {
+          console.error("Error fetching game race:", error)
+        }
+      }
+    }
+    fetchGameRace()
+  }, [currentMatch])
+
+  // Initialize checkboxes if gamesNeeded loaded and no previous wins & game not ended
+  useEffect(() => {
+    if (
+      gamesNeeded?.length >= 2 &&
+      matchInfo &&
+      (!matchInfo.player1Wins?.length || !matchInfo.player2Wins?.length) &&
+      !gameEnded
+    ) {
+      setCheckedPlayer1Checkboxes(Array(parseInt(gamesNeeded[0])).fill(false))
+      setCheckedPlayer2Checkboxes(Array(parseInt(gamesNeeded[1])).fill(false))
+    }
+  }, [gamesNeeded, matchInfo, gameEnded])
+
+  // Sync checkboxes from currentMatch on change
+  useEffect(() => {
+    if (!currentMatch) return
+
+    const { player1Wins = [], player2Wins = [] } = currentMatch
+    setCheckedPlayer1Checkboxes(player1Wins)
+    setCheckedPlayer2Checkboxes(player2Wins)
+    checkForWin(player1Wins, player2Wins)
+  }, [currentMatch])
+
+  // Update DB if both checkboxes length >= 2
   useEffect(() => {
     if (
       checkedPlayer1Checkboxes.length >= 2 &&
@@ -46,256 +84,172 @@ const SingleMatch = (props) => {
     }
   }, [checkedPlayer1Checkboxes, checkedPlayer2Checkboxes])
 
-  let foo 
-
-  useEffect(() => {
-    if (foo == true) {
-      const initialPlayer1Wins = props.matchInfo.player1Wins
-      const initialPlayer2Wins = props.currentMatch
-      setCheckedPlayer1Checkboxes(initialPlayer1Wins)
-      setCheckedPlayer2Checkboxes(initialPlayer2Wins)
-      checkForWin(initialPlayer1Wins, initialPlayer2Wins)
-    }
-  }, [props.currentMatch])
-
-  useEffect(() => {
-    const fetchGameRace = async () => {
-      if (props.currentMatch?.player1 && props.currentMatch?.player2) {
-        try {
-          const data = await gameService.getGameRace(
-            props.currentMatch.player1,
-            props.currentMatch.player2
-          )
-          setGamesNeeded(data)
-        } catch (error) {
-          console.error("Error fetching game race:", error)
-        }
-      }
-    }
-    fetchGameRace()
-  }, [props.currentMatch])
-
-  useEffect(() => {
-    if (
-      gamesNeeded?.length >= 2 &&
-      matchInfo?.player1Wins?.length < 1 &&
-      matchInfo?.player2Wins?.length < 1 &&
-      !gameEnded
-    ) {
-      setCheckedPlayer1Checkboxes(Array(parseInt(gamesNeeded[0])).fill(false))
-      setCheckedPlayer2Checkboxes(Array(parseInt(gamesNeeded[1])).fill(false))
-    }
-  }, [gamesNeeded])
-
-  const checkForWin = (checkedPlayer1, checkedPlayer2) => {
-    const P1Wins = checkedPlayer1.every((el) => el)
-    const P2Wins = checkedPlayer2.every((el) => el)
-
-    setIsPlayer1Winner(P1Wins)
-    setIsPlayer2Winner(P2Wins)
+  const checkForWin = (player1Checks, player2Checks) => {
+    const p1Won = player1Checks.every(Boolean)
+    const p2Won = player2Checks.every(Boolean)
+    setIsPlayer1Winner(p1Won)
+    setIsPlayer2Winner(p2Won)
   }
 
   const updateDB = async (player1Checkboxes, player2Checkboxes) => {
-    const data = {
-      ...props.currentMatch,
-      player1Wins: player1Checkboxes,
-      player2Wins: player2Checkboxes,
-    }
     try {
-      await matchService.update(data)
+      await matchService.update({
+        ...currentMatch,
+        player1Wins: player1Checkboxes,
+        player2Wins: player2Checkboxes,
+      })
     } catch (error) {
       console.error("Error updating match information:", error)
     }
   }
 
-  const handleCheckboxChangePlayer1 = async (index) => {
-    setCheckedPlayer1Checkboxes((prev) => {
-      const updated = [...prev]
-      updated[index] = !updated[index]
-      checkForWin(updated, checkedPlayer2Checkboxes)
-      return updated
-    })
+  const toggleCheckbox = (player, index) => {
+    if (gameEnded) return
+    if (player === 1) {
+      setCheckedPlayer1Checkboxes((prev) => {
+        const updated = [...prev]
+        updated[index] = !updated[index]
+        checkForWin(updated, checkedPlayer2Checkboxes)
+        return updated
+      })
+    } else {
+      setCheckedPlayer2Checkboxes((prev) => {
+        const updated = [...prev]
+        updated[index] = !updated[index]
+        checkForWin(checkedPlayer1Checkboxes, updated)
+        return updated
+      })
+    }
   }
 
-  const handleCheckboxChangePlayer2 = async (index) => {
-    setCheckedPlayer2Checkboxes((prev) => {
-      const updated = [...prev]
-      updated[index] = !updated[index]
-      checkForWin(checkedPlayer1Checkboxes, updated)
-      return updated
-    })
-  }
+  const updateMatchCompletion = async (winPlayer, losePlayer) => {
+    if (!tableId) return
 
-  const handleWinner = async (winPlayer, losePlayer) => {
-    console.log("this is the player in handle winner")
-    let data = await {
-      ...props.currentMatch,
-      winningPlayer: winPlayer,
-      losingPlayer: losePlayer,
-    }
+    try {
+      const updatedMatchData = {
+        ...currentMatch,
+        winningPlayer: winPlayer,
+        losingPlayer: losePlayer,
+      }
 
-    // await teamStatsService.adjustTeamStats(updatedMatchData)
-
-    if (props.mth == 1) {
-      let tableData =
-        props?.tableId?.awayMatch1 == null
-          ? props?.tableId?.homeMatch1
-          : props?.tableId?.awayMatch1
+      const updateTableField = `match${mth}Completed`
       await tableService.update({
-        ...props.tableId,
-        match1Completed: true,
+        ...tableId,
+        [updateTableField]: true,
       })
+
+      // Determine which match data to update on table
+      const matchFieldAway = `awayMatch${mth}`
+      const matchFieldHome = `homeMatch${mth}`
+      const tableMatchData =
+        tableId[matchFieldAway] ?? tableId[matchFieldHome] ?? {}
+
       await matchService.update({
-        ...tableData,
+        ...tableMatchData,
         winningPlayer: winPlayer,
         losingPlayer: losePlayer,
       })
+
+      await playerStatsService.adjustPlayerStats(updatedMatchData)
+      setGameEnded(true)
+    } catch (error) {
+      console.error("Error completing match:", error)
     }
-    if (props.mth == 2) {
-      let tableData =
-        props?.tableId?.awayMatch2 == null
-          ? props?.tableId?.homeMatch2
-          : props?.tableId?.awayMatch2
-      await tableService.update({
-        ...props.tableId,
-        match2Completed: true,
-      })
-      await matchService.update({
-        ...tableData,
-        winningPlayer: winPlayer,
-        losingPlayer: losePlayer,
-      })
-    }
-    if (props.mth == 3) {
-      let tableData =
-        props?.tableId?.awayMatch3 == null
-          ? props?.tableId?.homeMatch3
-          : props?.tableId?.awayMatch3
-      await tableService.update({
-        ...props.tableId,
-        match3Completed: true,
-      })
-      await matchService.update({
-        ...tableData,
-        winningPlayer: winPlayer,
-        losingPlayer: losePlayer,
-      })
-    }
-    await playerStatsService.adjustPlayerStats(data)
-    setGameEnded(true)
   }
 
   const checkForEquality = async () => {
-    let check = await checks.checkMatch(props.mth, props.currentMatchData)
-    console.log(check)
-    if (check == true) {
-      setMessage(true)
-      setMatchEquality(true)
+    try {
+      const check = await checks.checkMatch(mth, currentMatchData)
+      if (check === true) {
+        setMessage(true)
+        setMatchEquality(true)
+      } else {
+        setMessage("Check with the other team, Games do not match")
+      }
+    } catch (error) {
+      console.error("Error checking match equality:", error)
     }
-    if (check == false)
-      setMessage("Check with the other team, Games do not match")
   }
 
   return (
-    <>
-      <div className={styles.bracket}>
-        <div className="flex column" style={{ alignItems: "center" }}>
-          <div
-            className="flex start bracket match-width2 match-height2 green-felt start"
-            style={{ width: "90%" }}
-          >
-            <h1>
-              {props.currentMatch?.player1?.nameFirst} {props.currentMatch?.player1?.nameLast} (
-              {props.currentMatch?.player1?.rank})
-            </h1>
-            {!gameEnded && (
-              <div className="end" style={{ width: "95%" }}>
-                {checkedPlayer1Checkboxes.map(
-                  (isChecked, index) =>
-                    !gameEnded && (
-                      <div
-                        key={`checkbox-player1-${index}`}
-                        onClick={() => handleCheckboxChangePlayer1(index)}
-                      >
-                        <div
-                          className="poolballs"
-                          style={{
-                            backgroundColor: isChecked ? "black" : "",
-                            backgroundImage: isChecked ? "url(/9ball.png)" : "",
-                          }}
-                        />
-                      </div>
-                    )
-                )}
-              </div>
-            )}
-          </div>
-
-          {(isPlayer1Winner || isPlayer2Winner) && matchEquality === !true && (
-            <button onClick={() => checkForEquality(props.mth)}>
-              check for match equality
-            </button>
-          )}
-          {message}
-          {isPlayer1Winner &&
-            message == true &&
-            props.currentProfile == "HOME" && (
-              <button
-                onClick={() => handleWinner(props.player1, props.player2)}
-              >
-                Submit
-              </button>
-            )}
-          {isPlayer2Winner &&
-            message == true &&
-            props.currentProfile == "HOME" && (
-              <button
-                onClick={() => handleWinner(props.player2, props.player1)}
-              >
-                Submit
-              </button>
-            )}
-          <div
-            className="flex start bracket match-width2 match-height2 green-felt start"
-            style={{ width: "90%" }}
-          >
-            <h1>
-              {props.currentMatch?.player2?.nameFirst} {props.currentMatch?.player2.nameLast} (
-              {props.currentMatch?.player2?.rank})
-            </h1>
+    <div className={styles.bracket}>
+      <div className="flex column" style={{ alignItems: "center" }}>
+        {/* Player 1 */}
+        <div
+          className="flex start bracket match-width2 match-height2 green-felt start"
+          style={{ width: "90%" }}
+        >
+          <h1>
+            {currentMatch?.player1?.nameFirst} {currentMatch?.player1?.nameLast} (
+            {currentMatch?.player1?.rank})
+          </h1>
+          {!gameEnded && (
             <div className="end" style={{ width: "95%" }}>
-              {checkedPlayer2Checkboxes.map(
-                (isChecked, index) =>
-                  !gameEnded && (
-                    <div
-                      key={`checkbox-player2-${index}`}
-                      onClick={() => handleCheckboxChangePlayer2(index)}
-                    >
-                      <div
-                        className="poolballs"
-                        style={{
-                          backgroundColor: isChecked ? "black" : "",
-                          backgroundImage: isChecked ? "url(/9ball.png)" : "",
-                        }}
-                      />
-                    </div>
-                  )
-              )}
+              {checkedPlayer1Checkboxes.map((checked, idx) => (
+                <div
+                  key={`checkbox-player1-${idx}`}
+                  onClick={() => toggleCheckbox(1, idx)}
+                >
+                  <div
+                    className="poolballs"
+                    style={{
+                      backgroundColor: checked ? "black" : "",
+                      backgroundImage: checked ? "url(/9ball.png)" : "",
+                    }}
+                  />
+                </div>
+              ))}
             </div>
-          </div>
+          )}
         </div>
-        {/* {props.profile.accessLevel > 40 && (
-        <>
-        <button onClick={() => props.handleCancel(props.mth)}>
-        Cancel this match
-        </button>
-        
-        </>
-        )} */}
-      </div>
-    </>
-  )
 
+        {/* Conditional buttons */}
+        {(isPlayer1Winner || isPlayer2Winner) && !matchEquality && (
+          <button onClick={checkForEquality}>Check for match equality</button>
+        )}
+        {message}
+        {isPlayer1Winner && message === true && currentProfile === "HOME" && (
+          <button onClick={() => updateMatchCompletion(player1, player2)}>
+            Submit
+          </button>
+        )}
+        {isPlayer2Winner && message === true && currentProfile === "HOME" && (
+          <button onClick={() => updateMatchCompletion(player2, player1)}>
+            Submit
+          </button>
+        )}
+
+        {/* Player 2 */}
+        <div
+          className="flex start bracket match-width2 match-height2 green-felt start"
+          style={{ width: "90%" }}
+        >
+          <h1>
+            {currentMatch?.player2?.nameFirst} {currentMatch?.player2?.nameLast} (
+            {currentMatch?.player2?.rank})
+          </h1>
+          {!gameEnded && (
+            <div className="end" style={{ width: "95%" }}>
+              {checkedPlayer2Checkboxes.map((checked, idx) => (
+                <div
+                  key={`checkbox-player2-${idx}`}
+                  onClick={() => toggleCheckbox(2, idx)}
+                >
+                  <div
+                    className="poolballs"
+                    style={{
+                      backgroundColor: checked ? "black" : "",
+                      backgroundImage: checked ? "url(/9ball.png)" : "",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default SingleMatch
