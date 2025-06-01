@@ -1,30 +1,29 @@
 import SingleMatch from "../SingleMatch/SingleMatch"
-import CompletedMatch from '../../components/CompletedMatch/CompletedMatch'
+import CompletedMatch from "../../components/CompletedMatch/CompletedMatch"
 import { useState } from "react"
 
-
 const MatchLayout = (props) => {
-
   const [currentMatch1, setCurrentMatch1] = useState(props.sessionInfo?.match1)
   const [currentMatch2, setCurrentMatch2] = useState(props.sessionInfo?.match2)
   const [currentMatch3, setCurrentMatch3] = useState(props.sessionInfo?.match3)
   const currentProfile = ""
   const currentMatchData = ""
   const handleCancel = () => {}
-  
+
   const handleUpdateMatch = () => {
     console.log("yup")
   }
 
+  console.log(props);
   
-    
+
   return (
     <>
-      {props.match3 != null && (
+      {props?.sessionInfo?.match3  != null && (
         <>
           <h2 className="center bracket w300">Match 3</h2>
           <SingleMatch
-            tableId={currentMatch3}
+            tableId={props.sessionInfo}
             currentProfile={currentProfile}
             homeTeam={currentMatch3?.homeTeam}
             awayTeam={currentMatch3?.awayTeam}
@@ -44,7 +43,7 @@ const MatchLayout = (props) => {
         </>
       )}
 
-      {props.match2 != null && (
+      {props?.sessionInfo?.match2  != null && (
         <>
           <h2 className="center bracket w300 ">Match 2</h2>
           <SingleMatch
@@ -68,21 +67,21 @@ const MatchLayout = (props) => {
         </>
       )}
 
-      {props.match1 != null && (
+      {props?.sessionInfo?.match1 !== null && (
         <>
           <h2 className="center bracket w300 ">Match 1</h2>
-          {currentProfile === "HOME" && (
+          {
             <SingleMatch
-              tableId={currentMatch1}
+              tableId={props.sessionInfo}
               currentProfile={currentProfile}
-              homeTeam={currentMatch1?.homeTeam}
-              awayTeam={currentMatch1?.awayTeam}
-              player1={currentMatch1?.homeMatch1?.player1}
-              player2={currentMatch1?.homeMatch1?.player2}
+              homeTeam={props.match1?.homeTeam}
+              awayTeam={props.match1?.awayTeam}
+              player1={props.match1?.homeMatch1?.player1}
+              player2={props.match1?.homeMatch1?.player2}
               handleUpdateMatch={handleUpdateMatch}
-              player1Wins={currentMatch1?.homeMatch1?.player1Wins}
-              player2Wins={currentMatch1?.homeMatch1?.player2Wins}
-              currentMatch={currentMatch1?.homeMatch1}
+              player1Wins={props.match1?.homeMatch1?.player1Wins}
+              player2Wins={props.match1?.homeMatch1?.player2Wins}
+              currentMatch={props.match1?.homeMatch1}
               currentMatchData={currentMatchData}
               profile={props.profile}
               handleCancel={handleCancel}
@@ -90,7 +89,7 @@ const MatchLayout = (props) => {
               mth="1"
               Key="1"
             />
-          )}
+          }
         </>
       )}
 

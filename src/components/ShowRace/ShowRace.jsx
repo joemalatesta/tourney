@@ -7,8 +7,8 @@ const ShowRace = ({ player1, player2 }) => {
     <>
       <div className="center red-felt">
         {games !== undefined && (
-          <div style={{ fontSize: "48px", fontWeight: "bold", lineHeight: 1.2 }}>
-            {games[0]} <span style={{ margin: "0 12px" }}>to</span> {games[1]}
+          <div style={{ fontSize: "26px", fontWeight: "bold", lineHeight: 1.2 }}>
+            {games[0]} to {games[1]}
           </div>
         )}
       </div>

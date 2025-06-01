@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useLocation } from "react-router-dom"
 
 import MatchLayout from "../../components/MatchLayout/MatchLayout"
@@ -7,90 +7,43 @@ import ShowRace from "../../components/ShowRace/ShowRace"
 import * as tableService from "../../services/tableService"
 import * as teamService from "../../services/teamService"
 import * as matchService from "../../services/matchService"
-import * as playerService from "../../services/playerService"
 
 const ViewOneSession = ({ profile, players, teams }) => {
-  const [currentMatch, setCurrentMatch] = useState()
-  const [sessionInfo, setSessionInfo] = useState()
-  const [chosenHomePlayer, setChosenHomePlayer] = useState()
-  const [chosenAwayPlayer, setChosenAwayPlayer] = useState()
-  const [match1, setMatch1] = useState()
-  const [match2, setMatch2] = useState()
-  const [match3, setMatch3] = useState()
-  const [homeTeamPlayers, setHomeTeamPlayers] = useState([])
-  const [awayTeamPlayers, setAwayTeamPlayers] = useState([])
+  const [sessionInfo, setSessionInfo] = useState(null)
+  const [chosenHomePlayer, setChosenHomePlayer] = useState(null)
+  const [chosenAwayPlayer, setChosenAwayPlayer] = useState(null)
+  const [homeTeamData, setHomeTeamData] = useState(null)
+  const [awayTeamData, setAwayTeamData] = useState(null)
   const [currentProfile, setCurrentProfile] = useState("")
-  const [toggleSetMatch, setToggleSetMatch] = useState(true)
 
   const { search } = useLocation()
   const tableId = new URLSearchParams(search).get("tableId")
 
   useEffect(() => {
-    const fetchSessionInfo = async () => {
-      const data = await tableService.findOne(tableId)
-      setCurrentMatch(data)
-      setSessionInfo(data)
+    const fetchData = async () => {
+      const session = await tableService.findOne(tableId)
+      setSessionInfo(session)
+
+      const [homeTeam, awayTeam] = await Promise.all([
+        teamService.findOne(session.homeTeam._id),
+        teamService.findOne(session.awayTeam._id),
+      ])
+      setHomeTeamData(homeTeam)
+      setAwayTeamData(awayTeam)
     }
-    fetchSessionInfo()
+    fetchData()
   }, [tableId])
 
   useEffect(() => {
-    if (!currentMatch) return
+    if (!profile || !homeTeamData || !awayTeamData) return
 
-    const fetchTeamPlayers = async () => {
-      const [homeData, awayData] = await Promise.all([
-        teamService.findOne(currentMatch.homeTeam?._id),
-        teamService.findOne(currentMatch.awayTeam?._id),
-      ])
-      setHomeTeamPlayers(homeData)
-      setAwayTeamPlayers(awayData)
-    }
+    const isPlayerInTeam = (team) =>
+      team?.teamPlayers?.some((p) => p.profile === profile._id)
 
-    fetchTeamPlayers()
-  }, [currentMatch])
-
-  useEffect(() => {
-    if (!currentMatch || !profile) return
-
-    const isInTeam = (team, profileId) =>
-      team?.teamPlayers?.some((player) => player.profile === profileId)
-
-    if (isInTeam(homeTeamPlayers, profile._id)) {
-      setCurrentProfile("HOME")
-    } else if (isInTeam(awayTeamPlayers, profile._id)) {
-      setCurrentProfile("AWAY")
-    } else {
-      setCurrentProfile(profile.accessLevel === 90 ? "ADMIN" : "NONE")
-    }
-  }, [currentMatch, profile, homeTeamPlayers, awayTeamPlayers])
-
-  useEffect(() => {
-    if (!currentMatch) return
-
-    const checkIncompleteMatch = () => {
-      const { match1, match2, match3 } = currentMatch
-      if ([match1, match2, match3].some((m) => m && !m.completed)) {
-        setToggleSetMatch(false)
-      }
-    }
-
-    checkIncompleteMatch()
-  }, [currentMatch])
-
-  useEffect(() => {
-    if (currentProfile !== "HOME" || !currentMatch) return
-
-    const updateMatches = () => {
-      if (currentMatch.Match1)
-        setMatch1([currentMatch.Match1.player1, currentMatch.Match1.player2])
-      if (currentMatch.Match2)
-        setMatch2([currentMatch.Match2.player1, currentMatch.Match2.player2])
-      if (currentMatch.Match3)
-        setMatch3([currentMatch.Match3.player1, currentMatch.Match3.player2])
-    }
-
-    updateMatches()
-  }, [currentMatch, currentProfile])
+    if (isPlayerInTeam(homeTeamData)) setCurrentProfile("HOME")
+    else if (isPlayerInTeam(awayTeamData)) setCurrentProfile("AWAY")
+    else setCurrentProfile(profile.accessLevel === 90 ? "ADMIN" : "NONE")
+  }, [profile, homeTeamData, awayTeamData])
 
   const getPlayersForTeam = (teamId) => {
     const team =
@@ -104,48 +57,33 @@ const ViewOneSession = ({ profile, players, teams }) => {
     return players.filter((player) => team.teamPlayers.includes(player._id))
   }
 
-  const addPlayer = (player, position) => {
-    if (position === "home") setChosenHomePlayer(player)
-    if (position === "away") setChosenAwayPlayer(player)
-  }
+  const matches = useMemo(() => {
+    if (!sessionInfo) return []
+    return [sessionInfo.match1, sessionInfo.match2, sessionInfo.match3]
+  }, [sessionInfo])
+
+  const allMatchesFilled = matches.every(Boolean)
 
   const handleSetPlayers = async () => {
-    if (currentProfile !== "HOME" || !chosenHomePlayer || !chosenAwayPlayer)
-      return
+    if (!chosenHomePlayer || !chosenAwayPlayer || allMatchesFilled) return
 
-    setToggleSetMatch(!toggleSetMatch)
+    const availableIndex = matches.findIndex((m) => !m)
+    if (availableIndex === -1) return
 
-    const matches = [match1, match2, match3]
-    const matchSetters = [setMatch1, setMatch2, setMatch3]
-    const matchKeys = ["match1", "match2", "match3"]
-
-    for (let i = 0; i < matches.length; i++) {
-      if (!matches[i]) {
-        const newMatch = await matchService.create({
-          player1: chosenHomePlayer,
-          player2: chosenAwayPlayer,
-        })
-
-        await tableService.update({
-          ...currentMatch,
-          [matchKeys[i]]: newMatch._id,
-        })
-
-        matchSetters[i]([chosenHomePlayer, chosenAwayPlayer])
-        break
-      }
-    }
-  }
-
-  const startMatch = async () => {
-    await matchService.create({
+    const newMatch = await matchService.create({
       player1: chosenHomePlayer,
       player2: chosenAwayPlayer,
     })
-    console.log(
-      `${chosenHomePlayer.nameFirst} is playing ${chosenAwayPlayer.nameFirst}`
-    )
-    handleSetPlayers()
+
+    const updatedSession = {
+      ...sessionInfo,
+      [`match${availableIndex + 1}`]: newMatch._id,
+    }
+
+    await tableService.update(updatedSession)
+    setSessionInfo(updatedSession)
+    setChosenHomePlayer(null)
+    setChosenAwayPlayer(null)
   }
 
   return (
@@ -154,13 +92,14 @@ const ViewOneSession = ({ profile, players, teams }) => {
 
       {sessionInfo && (
         <div className="row center space-around">
+          {/* Home Team */}
           <div className="bracket">
             <h3 className="center">{sessionInfo.homeTeam.teamName}</h3>
             <div className="w325 green-felt margin">
               {getPlayersForTeam(sessionInfo.homeTeam._id).map((player) => (
                 <div
                   key={player._id}
-                  onClick={() => addPlayer(player, "home")}
+                  onClick={() => setChosenHomePlayer(player)}
                   style={
                     chosenHomePlayer?._id === player._id
                       ? { fontSize: "150%", color: "gold" }
@@ -172,27 +111,48 @@ const ViewOneSession = ({ profile, players, teams }) => {
               ))}
             </div>
           </div>
+
+          {/* Middle Panel */}
           <div>
             {currentProfile === "HOME" ? (
-              <button onClick={startMatch}>Add Players</button>
+              <>
+                {!chosenHomePlayer || !chosenAwayPlayer ? (
+                  <div className="bracket" style={{ color: "red" }}>
+                    Choose players for match
+                  </div>
+                ) : allMatchesFilled ? (
+                  <div className="bracket" style={{ color: "red" }}>
+                    All 3 matches are already set
+                  </div>
+                ) : (
+                  <button
+                    className="bracket"
+                    style={{ color: "green" }}
+                    onClick={handleSetPlayers}
+                  >
+                    SUBMIT PLAYERS TO MATCH
+                  </button>
+                )}
+              </>
             ) : (
               <div className="bracket">Home Team will create match</div>
             )}
-
-            <ShowRace 
-              info = {sessionInfo}
-              player1 = {chosenHomePlayer}
-              player2 = {chosenAwayPlayer}
+            <br />
+            <ShowRace
+              info={sessionInfo}
+              player1={chosenHomePlayer}
+              player2={chosenAwayPlayer}
             />
           </div>
 
+          {/* Away Team */}
           <div className="bracket">
             <h3 className="center">{sessionInfo.awayTeam.teamName}</h3>
             <div className="w325 green-felt margin">
               {getPlayersForTeam(sessionInfo.awayTeam._id).map((player) => (
                 <div
                   key={player._id}
-                  onClick={() => addPlayer(player, "away")}
+                  onClick={() => setChosenAwayPlayer(player)}
                   style={
                     chosenAwayPlayer?._id === player._id
                       ? { fontSize: "150%", color: "gold" }
@@ -214,9 +174,6 @@ const ViewOneSession = ({ profile, players, teams }) => {
         homePlayer={chosenHomePlayer}
         awayPlayer={chosenAwayPlayer}
         sessionInfo={sessionInfo}
-        match1={match1}
-        match2={match2}
-        match3={match3}
       />
     </>
   )
