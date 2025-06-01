@@ -176,7 +176,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
             {currentProfile === "HOME" ? (
               <button onClick={startMatch}>Add Players</button>
             ) : (
-              <div>Home Team will create match</div>
+              <div className="bracket">Home Team will create match</div>
             )}
 
             <ShowRace 
