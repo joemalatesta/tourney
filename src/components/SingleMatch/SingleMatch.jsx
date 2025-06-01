@@ -9,7 +9,20 @@ import * as tableService from "../../services/tableService"
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = (props) => {
-  console.log(props.tableId)
+  console.log(props)
+  const [matchInfo, setMatchtInfo] = useState()
+
+  useEffect(() => {
+    const getMatchInfo = () => {
+      if (props.mth === '1') setMatchtInfo(props?.tableId?.match1)
+      if (props.mth === '2') setMatchtInfo(props?.tableId?.match2)
+      if (props.mth === '3') setMatchtInfo(props?.tableId?.match3)
+    }
+    getMatchInfo()
+  }, [])
+
+  console.log(matchInfo);
+  
 
   const [gamesNeeded, setGamesNeeded] = useState([])
   const [checkedPlayer1Checkboxes, setCheckedPlayer1Checkboxes] = useState([])
@@ -33,13 +46,12 @@ const SingleMatch = (props) => {
     }
   }, [checkedPlayer1Checkboxes, checkedPlayer2Checkboxes])
 
+  let foo 
+
   useEffect(() => {
-    if (
-      props.currentMatch?.player1Wins.length > 0 &&
-      props.currentMatch?.player2Wins.length > 0
-    ) {
-      const initialPlayer1Wins = props.currentMatch.player1Wins
-      const initialPlayer2Wins = props.currentMatch.player2Wins
+    if (foo == true) {
+      const initialPlayer1Wins = props.matchInfo.player1Wins
+      const initialPlayer2Wins = props.currentMatch
       setCheckedPlayer1Checkboxes(initialPlayer1Wins)
       setCheckedPlayer2Checkboxes(initialPlayer2Wins)
       checkForWin(initialPlayer1Wins, initialPlayer2Wins)
@@ -66,8 +78,8 @@ const SingleMatch = (props) => {
   useEffect(() => {
     if (
       gamesNeeded?.length >= 2 &&
-      props.currentMatch.player1Wins.length < 1 &&
-      props.currentMatch.player2Wins.length < 1 &&
+      matchInfo?.player1Wins?.length < 1 &&
+      matchInfo?.player2Wins?.length < 1 &&
       !gameEnded
     ) {
       setCheckedPlayer1Checkboxes(Array(parseInt(gamesNeeded[0])).fill(false))
@@ -193,7 +205,7 @@ const SingleMatch = (props) => {
             style={{ width: "90%" }}
           >
             <h1>
-              {props.currentMatch?.player1?.name} (
+              {props.currentMatch?.player1?.nameFirst} {props.currentMatch?.player1?.nameLast} (
               {props.currentMatch?.player1?.rank})
             </h1>
             {!gameEnded && (
@@ -248,7 +260,7 @@ const SingleMatch = (props) => {
             style={{ width: "90%" }}
           >
             <h1>
-              {props.currentMatch?.player2?.name} (
+              {props.currentMatch?.player2?.nameFirst} {props.currentMatch?.player2.nameLast} (
               {props.currentMatch?.player2?.rank})
             </h1>
             <div className="end" style={{ width: "95%" }}>
@@ -283,6 +295,7 @@ const SingleMatch = (props) => {
       </div>
     </>
   )
+
 }
 
 export default SingleMatch
