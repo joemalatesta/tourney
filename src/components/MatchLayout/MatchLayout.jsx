@@ -6,7 +6,6 @@ const MatchLayout = (props) => {
   const [currentMatch1] = useState(props.sessionInfo?.match1)
   const [currentMatch2] = useState(props.sessionInfo?.match2)
   const [currentMatch3] = useState(props.sessionInfo?.match3)
-  const currentProfile = ""
   const currentMatchData = ""
   const handleCancel = () => {}
 
@@ -23,7 +22,7 @@ const MatchLayout = (props) => {
           <h2 className="center bracket w300">Match 3</h2>
           <SingleMatch
             tableId={props?.sessionInfo}
-            currentProfile={currentProfile}
+            currentProfile={props?.currentProfile}
             homeTeam={props?.sessionInfo?.homeTeam}
             awayTeam={props?.sessionInfo?.awayTeam}
             handleUpdateMatch={handleUpdateMatch}
@@ -42,7 +41,7 @@ const MatchLayout = (props) => {
           <h2 className="center bracket w300 ">Match 2</h2>
           <SingleMatch
             tableId={props?.sessionInfo}
-            currentProfile={currentProfile}
+            currentProfile={props?.currentProfile}
             homeTeam={props?.sessionInfo?.homeTeam}
             awayTeam={props?.sessionInfo?.awayTeam}
             handleUpdateMatch={handleUpdateMatch}
@@ -62,7 +61,7 @@ const MatchLayout = (props) => {
           {
             <SingleMatch
               tableId={props?.sessionInfo}
-              currentProfile={currentProfile}
+              currentProfile={props?.currentProfile}
               homeTeam={props?.sessionInfo?.homeTeam}
               awayTeam={props?.sessionInfo?.awayTeam}
               handleUpdateMatch={handleUpdateMatch}
@@ -77,17 +76,17 @@ const MatchLayout = (props) => {
         </>
       )}
 
-      {!currentMatch1?.match1Completed && currentProfile === "NONE" && (
+      {!currentMatch1?.match1Completed && props.currentProfile === "NONE" && (
         <>
           <div className="bracket">Match 1 has not been completed.</div>
         </>
       )}
-      {!currentMatch2?.match2Completed && currentProfile === "NONE" && (
+      {!currentMatch2?.match2Completed && props.currentProfile === "NONE" && (
         <>
           <div className="bracket">Match 2 has not been completed.</div>
         </>
       )}
-      {!currentMatch3?.match3Completed && currentProfile === "NONE" && (
+      {!currentMatch3?.match3Completed && props.currentProfile === "NONE" && (
         <>
           <div className="bracket">Match 3 has not been completed.</div>
         </>

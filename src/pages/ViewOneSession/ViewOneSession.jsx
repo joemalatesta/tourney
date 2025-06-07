@@ -16,6 +16,10 @@ const ViewOneSession = ({ profile, players, teams }) => {
   const [awayTeamData, setAwayTeamData] = useState(null)
   const [currentProfile, setCurrentProfile] = useState("")
 
+
+  console.log(currentProfile);
+  
+
   const { search } = useLocation()
   const tableId = new URLSearchParams(search).get("tableId")
 
@@ -174,6 +178,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
         homePlayer={chosenHomePlayer}
         awayPlayer={chosenAwayPlayer}
         sessionInfo={sessionInfo}
+        currentProfile={currentProfile}
       />
     </>
   )

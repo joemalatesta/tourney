@@ -9,11 +9,14 @@ const Checkboxes = ({
   player2Wins,
   match,
   playerInfo,
+  currentProfile
 }) => {
   const [checkboxes, setCheckboxes] = useState([])
   const [checkedCheckboxes, setCheckedCheckboxes] = useState([])
   const [isDisabled, setIsDisabled] = useState(true)
 
+  console.log(currentProfile);
+  
   useEffect(() => {
     updateDB()
   }, [checkedCheckboxes])

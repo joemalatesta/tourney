@@ -4,6 +4,7 @@ import * as matchService from "../../services/matchService"
 import * as checks from "../../services/checkMatch"
 import * as playerStatsService from "../../services/playerStatsService"
 import * as tableService from "../../services/tableService"
+import * as playerService from "../../services/playerService"
 
 import * as styles from "./SingleMatch.module.css"
 
@@ -13,8 +14,6 @@ const SingleMatch = ({
   currentMatch,
   currentMatchData,
   currentProfile,
-  player1,
-  player2,
 }) => {
   const [matchInfo, setMatchInfo] = useState(null)
   const [gamesNeeded, setGamesNeeded] = useState([])
@@ -25,15 +24,33 @@ const SingleMatch = ({
   const [gameEnded, setGameEnded] = useState(currentMatch?.completed || false)
   const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
+  const [player1Info, setPlayer1Info] = useState(null)
+  const [player2Info, setPlayer2Info] = useState(null)
 
-  // Set matchInfo based on mth
   useEffect(() => {
     if (!tableId) return
     const matchKey = `match${mth}`
     setMatchInfo(tableId[matchKey])
   }, [mth, tableId])
 
-  // Fetch gamesNeeded based on currentMatch players
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        if (currentMatch?.player1) {
+          const p1 = await playerService.findOne(currentMatch.player1._id)
+          setPlayer1Info(p1)
+        }
+        if (currentMatch?.player2) {
+          const p2 = await playerService.findOne(currentMatch.player2._id)
+          setPlayer2Info(p2)
+        }
+      } catch (err) {
+        console.error("Error loading player info:", err)
+      }
+    }
+    fetchPlayers()
+  }, [currentMatch])
+
   useEffect(() => {
     const fetchGameRace = async () => {
       if (currentMatch?.player1 && currentMatch?.player2) {
@@ -51,7 +68,6 @@ const SingleMatch = ({
     fetchGameRace()
   }, [currentMatch])
 
-  // Initialize checkboxes if gamesNeeded loaded and no previous wins & game not ended
   useEffect(() => {
     if (
       gamesNeeded?.length >= 2 &&
@@ -64,17 +80,25 @@ const SingleMatch = ({
     }
   }, [gamesNeeded, matchInfo, gameEnded])
 
-  // Sync checkboxes from currentMatch on change
   useEffect(() => {
     if (!currentMatch) return
 
-    const { player1Wins = [], player2Wins = [] } = currentMatch
-    setCheckedPlayer1Checkboxes(player1Wins)
-    setCheckedPlayer2Checkboxes(player2Wins)
-    checkForWin(player1Wins, player2Wins)
-  }, [currentMatch])
+    const p1Wins =
+      currentProfile === "HOME"
+        ? currentMatch.player1WinsHome
+        : currentMatch.player1WinsAway
 
-  // Update DB if both checkboxes length >= 2
+    const p2Wins =
+      currentProfile === "HOME"
+        ? currentMatch.player2WinsHome
+        : currentMatch.player2WinsAway
+
+    setCheckedPlayer1Checkboxes(p1Wins || [])
+    setCheckedPlayer2Checkboxes(p2Wins || [])
+
+    checkForWin(p1Wins || [], p2Wins || [])
+  }, [currentMatch, currentProfile])
+
   useEffect(() => {
     if (
       checkedPlayer1Checkboxes.length >= 2 &&
@@ -93,11 +117,19 @@ const SingleMatch = ({
 
   const updateDB = async (player1Checkboxes, player2Checkboxes) => {
     try {
-      await matchService.update({
+      const updatedMatch = {
         ...currentMatch,
-        player1Wins: player1Checkboxes,
-        player2Wins: player2Checkboxes,
-      })
+      }
+
+      if (currentProfile === "HOME") {
+        updatedMatch.player1WinsHome = player1Checkboxes
+        updatedMatch.player2WinsHome = player2Checkboxes
+      } else if (currentProfile === "AWAY") {
+        updatedMatch.player1WinsAway = player1Checkboxes
+        updatedMatch.player2WinsAway = player2Checkboxes
+      }
+
+      await matchService.update(updatedMatch)
     } catch (error) {
       console.error("Error updating match information:", error)
     }
@@ -138,7 +170,6 @@ const SingleMatch = ({
         [updateTableField]: true,
       })
 
-      // Determine which match data to update on table
       const matchFieldAway = `awayMatch${mth}`
       const matchFieldHome = `homeMatch${mth}`
       const tableMatchData =
@@ -174,14 +205,14 @@ const SingleMatch = ({
   return (
     <div className={styles.bracket}>
       <div className="flex column" style={{ alignItems: "center" }}>
-        {/* Player 1 */}
         <div
           className="flex start bracket match-width2 match-height2 green-felt start"
           style={{ width: "90%" }}
         >
           <h1>
-            {currentMatch?.player1?.nameFirst} {currentMatch?.player1?.nameLast} (
-            {currentMatch?.player1?.rank})
+            {player1Info
+              ? `${player1Info.nameFirst} ${player1Info.nameLast} (${player1Info.rank})`
+              : "Loading Player 1..."}
           </h1>
           {!gameEnded && (
             <div className="end" style={{ width: "95%" }}>
@@ -203,30 +234,29 @@ const SingleMatch = ({
           )}
         </div>
 
-        {/* Conditional buttons */}
         {(isPlayer1Winner || isPlayer2Winner) && !matchEquality && (
           <button onClick={checkForEquality}>Check for match equality</button>
         )}
-        {message}
+        {message && typeof message === "string" && <p>{message}</p>}
         {isPlayer1Winner && message === true && currentProfile === "HOME" && (
-          <button onClick={() => updateMatchCompletion(player1, player2)}>
+          <button onClick={() => updateMatchCompletion(player1Info._id, player2Info._id)}>
             Submit
           </button>
         )}
         {isPlayer2Winner && message === true && currentProfile === "HOME" && (
-          <button onClick={() => updateMatchCompletion(player2, player1)}>
+          <button onClick={() => updateMatchCompletion(player2Info._id, player1Info._id)}>
             Submit
           </button>
         )}
 
-        {/* Player 2 */}
         <div
           className="flex start bracket match-width2 match-height2 green-felt start"
           style={{ width: "90%" }}
         >
           <h1>
-            {currentMatch?.player2?.nameFirst} {currentMatch?.player2?.nameLast} (
-            {currentMatch?.player2?.rank})
+            {player2Info
+              ? `${player2Info.nameFirst} ${player2Info.nameLast} (${player2Info.rank})`
+              : "Loading Player 2..."}
           </h1>
           {!gameEnded && (
             <div className="end" style={{ width: "95%" }}>
