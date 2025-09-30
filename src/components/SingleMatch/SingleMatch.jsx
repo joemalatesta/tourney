@@ -5,15 +5,14 @@ import * as checks from "../../services/checkMatch"
 import * as playerStatsService from "../../services/playerStatsService"
 import * as tableService from "../../services/tableService"
 import * as playerService from "../../services/playerService"
-
 import * as styles from "./SingleMatch.module.css"
 
 const SingleMatch = ({
   mth,
   tableId,
   currentMatch,
-  currentMatchData,
   currentProfile,
+  profile,
 }) => {
   const [matchInfo, setMatchInfo] = useState(null)
   const [gamesNeeded, setGamesNeeded] = useState([])
@@ -25,7 +24,7 @@ const SingleMatch = ({
   const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
   const [player1Info, setPlayer1Info] = useState(null)
-  const [player2Info, setPlayer2Info] = useState(null)
+  const [player2Info, setPlayer2Info] = useState(null)  
 
   useEffect(() => {
     if (!tableId) return
@@ -72,7 +71,20 @@ const SingleMatch = ({
     if (
       gamesNeeded?.length >= 2 &&
       matchInfo &&
-      (!matchInfo.player1Wins?.length || !matchInfo.player2Wins?.length) &&
+      currentProfile === "HOME" &&
+      (!matchInfo.player1WinsHome?.length ||
+        !matchInfo.player2WinsHome?.length) &&
+      !gameEnded
+    ) {
+      setCheckedPlayer1Checkboxes(Array(parseInt(gamesNeeded[0])).fill(false))
+      setCheckedPlayer2Checkboxes(Array(parseInt(gamesNeeded[1])).fill(false))
+    }
+    if (
+      gamesNeeded?.length >= 2 &&
+      matchInfo &&
+      currentProfile === "AWAY" &&
+      (!matchInfo.player1WinsAway?.length ||
+        !matchInfo.player2WinsAway?.length) &&
       !gameEnded
     ) {
       setCheckedPlayer1Checkboxes(Array(parseInt(gamesNeeded[0])).fill(false))
@@ -124,7 +136,8 @@ const SingleMatch = ({
       if (currentProfile === "HOME") {
         updatedMatch.player1WinsHome = player1Checkboxes
         updatedMatch.player2WinsHome = player2Checkboxes
-      } else if (currentProfile === "AWAY") {
+      } 
+      if (currentProfile === "AWAY") {
         updatedMatch.player1WinsAway = player1Checkboxes
         updatedMatch.player2WinsAway = player2Checkboxes
       }
@@ -136,6 +149,8 @@ const SingleMatch = ({
   }
 
   const toggleCheckbox = (player, index) => {
+    console.log(player, index);
+    
     if (gameEnded) return
     if (player === 1) {
       setCheckedPlayer1Checkboxes((prev) => {
@@ -153,6 +168,8 @@ const SingleMatch = ({
       })
     }
   }
+
+
 
   const updateMatchCompletion = async (winPlayer, losePlayer) => {
     if (!tableId) return
@@ -189,11 +206,17 @@ const SingleMatch = ({
   }
 
   const checkForEquality = async () => {
+    console.log(currentMatch._id)
+
     try {
-      const check = await checks.checkMatch(mth, currentMatchData)
+      const check = await checks.checkMatch(currentMatch._id)
+      console.log(check);
+      
       if (check === true) {
-        setMessage(true)
+        setMessage("The Match is over")
         setMatchEquality(true)
+        updateMatchCompletion()
+
       } else {
         setMessage("Check with the other team, Games do not match")
       }
@@ -205,6 +228,7 @@ const SingleMatch = ({
   return (
     <div className={styles.bracket}>
       <div className="flex column" style={{ alignItems: "center" }}>
+        {/* Home Player */}
         <div
           className="flex start bracket match-width2 match-height2 green-felt start"
           style={{ width: "90%" }}
@@ -214,7 +238,7 @@ const SingleMatch = ({
               ? `${player1Info.nameFirst} ${player1Info.nameLast} (${player1Info.rank})`
               : "Loading Player 1..."}
           </h1>
-          {!gameEnded && (
+          {!gameEnded && profile.accessLevel > 49 && (
             <div className="end" style={{ width: "95%" }}>
               {checkedPlayer1Checkboxes.map((checked, idx) => (
                 <div
@@ -224,8 +248,15 @@ const SingleMatch = ({
                   <div
                     className="poolballs"
                     style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      border: "1px solid white",
                       backgroundColor: checked ? "black" : "",
-                      backgroundImage: checked ? "url(/9ball.png)" : "",
+                      backgroundImage: checked ? `url(/9Ball.png)` : "",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
                     }}
                   />
                 </div>
@@ -234,21 +265,31 @@ const SingleMatch = ({
           )}
         </div>
 
+        {/* Winner Check */}
         {(isPlayer1Winner || isPlayer2Winner) && !matchEquality && (
           <button onClick={checkForEquality}>Check for match equality</button>
         )}
         {message && typeof message === "string" && <p>{message}</p>}
         {isPlayer1Winner && message === true && currentProfile === "HOME" && (
-          <button onClick={() => updateMatchCompletion(player1Info._id, player2Info._id)}>
+          <button
+            onClick={() =>
+              updateMatchCompletion(player1Info._id, player2Info._id)
+            }
+          >
             Submit
           </button>
         )}
         {isPlayer2Winner && message === true && currentProfile === "HOME" && (
-          <button onClick={() => updateMatchCompletion(player2Info._id, player1Info._id)}>
+          <button
+            onClick={() =>
+              updateMatchCompletion(player2Info._id, player1Info._id)
+            }
+          >
             Submit
           </button>
         )}
 
+        {/* Away Player */}
         <div
           className="flex start bracket match-width2 match-height2 green-felt start"
           style={{ width: "90%" }}
@@ -258,7 +299,7 @@ const SingleMatch = ({
               ? `${player2Info.nameFirst} ${player2Info.nameLast} (${player2Info.rank})`
               : "Loading Player 2..."}
           </h1>
-          {!gameEnded && (
+          {!gameEnded && profile.accessLevel > 49 && (
             <div className="end" style={{ width: "95%" }}>
               {checkedPlayer2Checkboxes.map((checked, idx) => (
                 <div
@@ -268,8 +309,15 @@ const SingleMatch = ({
                   <div
                     className="poolballs"
                     style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      border: "1px solid white",
                       backgroundColor: checked ? "black" : "",
-                      backgroundImage: checked ? "url(/9ball.png)" : "",
+                      backgroundImage: checked ? `url(/9Ball.png)` : "",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
                     }}
                   />
                 </div>
