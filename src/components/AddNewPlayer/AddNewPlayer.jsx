@@ -58,6 +58,7 @@ const handleSubmit = async (evt) => {
       ...formData,
       nameFirst: formData.nameFirst.trim(),
       nameLast: formData.nameLast.trim(),
+      name: formData.nameFirst + formData.nameLast
     }
 
     const savedPlayer = await playerService.create(newPlayer)
@@ -77,7 +78,7 @@ const handleSubmit = async (evt) => {
 
 
   return (
-    <div className="bracket green-felt2">
+    <div className="bracket green-felt2 center">
       <h2>Add New Player</h2>
 
       <form
