@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-
+import AddNewPlayer from "../../components/AddNewPlayer/AddNewPlayer"
 const EditPlayer = (props) => {
   const formElement = useRef()
   const playerNameInput = useRef()
@@ -71,6 +71,8 @@ const EditPlayer = (props) => {
     a.nameLast.toLowerCase().localeCompare(b.nameLast.toLowerCase())
   )
 
+  
+
   return (
     <div className="bracket green-felt2">
       <h2>Players</h2>
@@ -78,6 +80,7 @@ const EditPlayer = (props) => {
       <button onClick={() => setShowOnlyActive(!showOnlyActive)}>
         {showOnlyActive ? "Show All Players" : "Show Active Players Only"}
       </button>
+      <AddNewPlayer/>
 
       <ul>
         {filteredPlayers.map((player) => {

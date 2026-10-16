@@ -1,7 +1,6 @@
 import * as matchService from "../services/matchService"
 
 export async function checkMatch(matchId) {
-
   const getMatchData = async (matchId) => {
     return await matchService.findOne(matchId)
   }
@@ -21,16 +20,13 @@ export async function checkMatch(matchId) {
     const count1 = countBooleans(arr1)
     const count2 = countBooleans(arr2)
 
-    
-    
-
     return count1.true === count2.true && count1.false === count2.false
   }
 
   let updatedData = await getMatchData(matchId)
 
-  console.log(updatedData);
-  
+  console.log(updatedData)
+
   let test1, test2
   if (
     updatedData.player2WinsAway == null ||
@@ -47,7 +43,6 @@ export async function checkMatch(matchId) {
     updatedData.player2WinsHome
   )
 
-  
   if (test1 == true && test2 == true) return true
   if (test1 == false || test2 == false) return false
 }
