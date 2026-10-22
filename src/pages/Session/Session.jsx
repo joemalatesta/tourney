@@ -14,6 +14,7 @@ const Session = () => {
   const params = new URLSearchParams(queryString)
   const sessionId = params.get("sessionId")
 
+
   useEffect(() => {
     const getSessions = async () => {
       const data = await sessionService.index()
@@ -30,6 +31,8 @@ const Session = () => {
     const queryString = new URLSearchParams(state).toString()
     navigate(`/viewOneSession?${queryString}`)
   }
+  
+  
 
   const handleShow = (sched) => {
     setView(

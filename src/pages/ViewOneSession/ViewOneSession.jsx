@@ -9,6 +9,7 @@ import * as matchService from "../../services/matchService"
 import * as playerStatService from "../../services/playerStatsService"
 import * as teamStatService from "../../services/teamStatsService"
 
+
 const ViewOneSession = ({ profile, players, teams }) => {
   const [sessionInfo, setSessionInfo] = useState(null)
   const [chosenHomePlayer, setChosenHomePlayer] = useState(null)
@@ -17,7 +18,9 @@ const ViewOneSession = ({ profile, players, teams }) => {
   const [savingMatch, setSavingMatch] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const [submittingStats, setSubmittingStats] = useState(false)
-
+  
+  console.log(profile);
+   
   const { search } = useLocation()
   const tableId = new URLSearchParams(search).get("tableId")
 

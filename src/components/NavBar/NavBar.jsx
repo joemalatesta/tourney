@@ -34,7 +34,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
         </div>
       )}
 
-      {profile?.accessLevel >= 50 && profile.accessLevel < 70 && (
+      {profile?.accessLevel >= 40 && profile.accessLevel < 70 && (
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName} </NavLink>
           <NavLink to="/session">Schedule</NavLink>
@@ -48,7 +48,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
         </div>
       )}
 
-      {profile?.accessLevel > 10 && profile?.accessLevel < 50 && (
+      {profile?.accessLevel > 10 && profile?.accessLevel < 40 && (
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName} </NavLink>
           <NavLink to="/scroll-wheel">Race Finder</NavLink>

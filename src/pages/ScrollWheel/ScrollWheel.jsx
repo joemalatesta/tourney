@@ -31,8 +31,6 @@ const ScrollWheel = ({ players }) => {
 
   let race = gameService.getGameRace(player1, player2)
 
-  console.log(race)
-
   return (
     <>
       <div className="bracket center">

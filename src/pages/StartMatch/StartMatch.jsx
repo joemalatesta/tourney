@@ -132,12 +132,6 @@ const StartMatch = (props) => {
     }
   }
 
-  // await playerStatsService.adjustPlayerStats(data)
-  // await teamStatsService.adjustTeamStats(
-  //   data,
-  //   props.homeTeam,
-  //   props.awayTeam
-  // )
 
   return (
     <>
