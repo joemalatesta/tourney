@@ -1,15 +1,57 @@
-const CompletedMatch = (matchData) => {
-  let match = matchData
+import { useEffect, useState } from "react"
+import * as playerService from "../../services/playerService.js"
+
+const CompletedMatch = ({ currentMatch }) => {
+  const [winnerData, setWinnerData] = useState(null)
+  const [loserData, setLoserData] = useState(null)
+
+  useEffect(() => {
+    const getPlayerData = async () => {
+      try {
+        if (!currentMatch?.winningPlayer || !currentMatch?.losingPlayer) {
+          setWinnerData(null)
+          setLoserData(null)
+          return
+        }
+
+        const winnerId =
+          typeof currentMatch.winningPlayer === "object"
+            ? currentMatch.winningPlayer._id
+            : currentMatch.winningPlayer
+
+        const loserId =
+          typeof currentMatch.losingPlayer === "object"
+            ? currentMatch.losingPlayer._id
+            : currentMatch.losingPlayer
+
+        const [winner, loser] = await Promise.all([
+          playerService.findOne(winnerId),
+          playerService.findOne(loserId),
+        ])
+
+        setWinnerData(winner)
+        setLoserData(loser)
+      } catch (error) {
+        console.error("Error loading completed match players:", error)
+      }
+    }
+
+    getPlayerData()
+  }, [currentMatch?.winningPlayer, currentMatch?.losingPlayer])
+
+  const getPlayerName = (player) => {
+    if (!player) return "Unknown player"
+    return `${player.nameFirst || ""} ${player.nameLast || ""}`.trim()
+  }
 
   return (
     <>
       <div>
-        {match?.player1?.name}{" "}
-        {match?.player1?._id == match?.winningPlayer?._id ? " -- WINNER" : ""}
+        {getPlayerName(winnerData)} -- WINNER
       </div>
+
       <div>
-        {match?.player2?.name}{" "}
-        {match?.player2?._id == match?.winningPlayer?._id ? " -- WINNER" : ""}
+        {getPlayerName(loserData)} -- LOSER
       </div>
     </>
   )

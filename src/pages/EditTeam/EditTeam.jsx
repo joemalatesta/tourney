@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import * as teamService from "../../services/teamService"
+import CreateTeam from "../../pages/CreateTeam/CreateTeam"
 
 const EditTeam = (props) => {
   const [editForm, setEditForm] = useState(false)
@@ -60,8 +61,12 @@ const EditTeam = (props) => {
     setCurrentTeamId(null)
   }
 
+  console.log(props)
   return (
     <>
+      <CreateTeam
+        props=  "props"
+      />
       <h2>
         {sortedTeams.map((el) => (
           <div key={el._id} className="bracket" style={{ width: 350 }}>

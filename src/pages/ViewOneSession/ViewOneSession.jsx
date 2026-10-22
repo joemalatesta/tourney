@@ -1,171 +1,311 @@
-import { useState, useEffect, useMemo } from "react"
+
+import { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
 
 import MatchLayout from "../../components/MatchLayout/MatchLayout"
 import ShowRace from "../../components/ShowRace/ShowRace"
 
 import * as tableService from "../../services/tableService"
-import * as teamService from "../../services/teamService"
 import * as matchService from "../../services/matchService"
+
 
 const ViewOneSession = ({ profile, players, teams }) => {
   const [sessionInfo, setSessionInfo] = useState(null)
   const [chosenHomePlayer, setChosenHomePlayer] = useState(null)
   const [chosenAwayPlayer, setChosenAwayPlayer] = useState(null)
-  const [homeTeamData, setHomeTeamData] = useState(null)
-  const [awayTeamData, setAwayTeamData] = useState(null)
   const [currentProfile, setCurrentProfile] = useState("")
+  const [savingMatch, setSavingMatch] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
 
   const { search } = useLocation()
   const tableId = new URLSearchParams(search).get("tableId")
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const session = await tableService.findOne(tableId)
-      setSessionInfo(session)
+  const refreshTable = async () => {
+    if (!tableId) return
 
-      const [homeTeam, awayTeam] = await Promise.all([
-        teamService.findOne(session.homeTeam._id),
-        teamService.findOne(session.awayTeam._id),
-      ])
-      setHomeTeamData(homeTeam)
-      setAwayTeamData(awayTeam)
+    const latestTable = await tableService.findOne(tableId)
+
+    if (latestTable && !latestTable.message) {
+      setSessionInfo(latestTable)
     }
-    fetchData()
+
+    return latestTable
+  }
+
+  useEffect(() => {
+    let cancelled = false
+
+    const fetchTable = async () => {
+      if (!tableId) return
+
+      try {
+        const table = await tableService.findOne(tableId)
+
+        if (!cancelled) {
+          setSessionInfo(table)
+        }
+      } catch (error) {
+        console.error("Error fetching table:", error)
+      }
+    }
+
+    fetchTable()
+
+    return () => {
+      cancelled = true
+    }
   }, [tableId])
 
   useEffect(() => {
-    if (!profile || !homeTeamData || !awayTeamData) return
+    if (!profile || !sessionInfo?.homeTeam || !sessionInfo?.awayTeam) {
+      setCurrentProfile("")
+      return
+    }
 
-    const isPlayerInTeam = (team) =>
-      team?.teamPlayers?.some((p) => p.profile === profile._id)
+    const isPlayerInTeam = (team) => {
+      const teamPlayerIds = (team.teamPlayers || []).map((player) =>
+        String(
+          typeof player === "object" && player !== null
+            ? player._id
+            : player
+        )
+      )
 
-    if (isPlayerInTeam(homeTeamData)) setCurrentProfile("HOME")
-    else if (isPlayerInTeam(awayTeamData)) setCurrentProfile("AWAY")
-    else setCurrentProfile(profile.accessLevel === 90 ? "ADMIN" : "NONE")
-  }, [profile, homeTeamData, awayTeamData])
+      return (players || []).some((player) => {
+        const playerProfileId = player.profile?._id ?? player.profile
+
+        return (
+          teamPlayerIds.includes(String(player._id)) &&
+          playerProfileId != null &&
+          String(playerProfileId) === String(profile._id)
+        )
+      })
+    }
+
+    if (isPlayerInTeam(sessionInfo.homeTeam)) {
+      setCurrentProfile("HOME")
+    } else if (isPlayerInTeam(sessionInfo.awayTeam)) {
+      setCurrentProfile("AWAY")
+    } else {
+      setCurrentProfile(
+        Number(profile.accessLevel) === 90 ? "ADMIN" : "NONE"
+      )
+    }
+  }, [profile, sessionInfo, players])
 
   const getPlayersForTeam = (teamId) => {
+    const homeTeam = sessionInfo?.homeTeam
+    const awayTeam = sessionInfo?.awayTeam
+
     const team =
-      teamId === sessionInfo?.homeTeam?._id
-        ? sessionInfo.homeTeam
-        : teamId === sessionInfo?.awayTeam?._id
-        ? sessionInfo.awayTeam
-        : null
+      String(teamId) === String(homeTeam?._id)
+        ? homeTeam
+        : String(teamId) === String(awayTeam?._id)
+          ? awayTeam
+          : null
 
     if (!team) return []
-    return players.filter((player) => team.teamPlayers.includes(player._id))
+
+    const teamPlayerIds = (team.teamPlayers || []).map((player) =>
+      String(
+        typeof player === "object" && player !== null
+          ? player._id
+          : player
+      )
+    )
+
+    return (players || []).filter((player) =>
+      teamPlayerIds.includes(String(player._id))
+    )
   }
 
-  const matches = useMemo(() => {
-    if (!sessionInfo) return []
-    return [sessionInfo.match1, sessionInfo.match2, sessionInfo.match3]
-  }, [sessionInfo])
+  const matches = [
+    sessionInfo?.match1,
+    sessionInfo?.match2,
+    sessionInfo?.match3,
+  ]
 
   const allMatchesFilled = matches.every(Boolean)
 
   const handleSetPlayers = async () => {
-    if (!chosenHomePlayer || !chosenAwayPlayer || allMatchesFilled) return
-
-    const availableIndex = matches.findIndex((m) => !m)
-    if (availableIndex === -1) return
-
-    const newMatch = await matchService.create({
-      player1: chosenHomePlayer,
-      player2: chosenAwayPlayer,
-    })
-
-    const updatedSession = {
-      ...sessionInfo,
-      [`match${availableIndex + 1}`]: newMatch._id,
+    if (
+      !chosenHomePlayer ||
+      !chosenAwayPlayer ||
+      savingMatch ||
+      allMatchesFilled
+    ) {
+      return
     }
 
-    await tableService.update(updatedSession)
-    setSessionInfo(updatedSession)
-    setChosenHomePlayer(null)
-    setChosenAwayPlayer(null)
+    if (currentProfile !== "HOME" && currentProfile !== "AWAY") {
+      setErrorMessage("Only a member of either team can create a match.")
+      return
+    }
+
+    const availableIndex = matches.findIndex((match) => !match)
+
+    if (availableIndex === -1) {
+      setErrorMessage("All 3 matches are already set.")
+      return
+    }
+
+    const matchField = `match${availableIndex + 1}`
+
+    setSavingMatch(true)
+    setErrorMessage("")
+
+    try {
+      // Refresh first so we don't knowingly overwrite an occupied slot.
+      const latestTable = await tableService.findOne(tableId)
+
+      if (!latestTable) {
+        throw new Error("Could not reload the table.")
+      }
+
+      if (latestTable[matchField]) {
+        setSessionInfo(latestTable)
+        setErrorMessage(
+          `Match ${availableIndex + 1} has already been created. The table has been refreshed.`
+        )
+        return
+      }
+
+      const newMatch = await matchService.create({
+        player1: chosenHomePlayer,
+        player2: chosenAwayPlayer,
+      })
+
+      if (!newMatch?._id) {
+        throw new Error(
+          newMatch?.error || newMatch?.err || "Match creation failed."
+        )
+      }
+
+      const updatedTable = await tableService.update({
+        ...latestTable,
+        [matchField]: newMatch._id,
+      })
+
+      if (!updatedTable || updatedTable.err || updatedTable.error) {
+        throw new Error(
+          updatedTable?.err ||
+            updatedTable?.error ||
+            "The table could not be updated."
+        )
+      }
+
+      // Reload so match1/match2/match3 are populated match objects.
+      await refreshTable()
+
+      setChosenHomePlayer(null)
+      setChosenAwayPlayer(null)
+    } catch (error) {
+      console.error("Error creating match:", error)
+      setErrorMessage(error.message || "Could not create the match.")
+      await refreshTable()
+    } finally {
+      setSavingMatch(false)
+    }
   }
+
+  if (!sessionInfo) {
+    return <div>Loading table...</div>
+  }
+
+
 
   return (
     <>
-      <h2 className="center">Table number {sessionInfo?.tableNumber}</h2>
+      <h2 className="center">
+        Table number {sessionInfo.tableNumber}
+      </h2>
 
-      {sessionInfo && (
-        <div className="row center space-around">
-          {/* Home Team */}
-          <div className="bracket">
-            <h3 className="center">{sessionInfo.homeTeam.teamName}</h3>
-            <div className="w325 green-felt margin">
-              {getPlayersForTeam(sessionInfo.homeTeam._id).map((player) => (
-                <div
-                  key={player._id}
-                  onClick={() => setChosenHomePlayer(player)}
-                  style={
-                    chosenHomePlayer?._id === player._id
-                      ? { fontSize: "150%", color: "gold" }
-                      : {}
-                  }
-                >
-                  {player.nameFirst} {player.nameLast} ({player.rank})
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="row center space-around">
+        {/* Home team */}
+        <div className="bracket">
+          <h3 className="center">{sessionInfo.homeTeam?.teamName}</h3>
 
-          {/* Middle Panel */}
-          <div>
-            {currentProfile === "HOME" ? (
-              <>
-                {!chosenHomePlayer || !chosenAwayPlayer ? (
-                  <div className="bracket" style={{ color: "red" }}>
-                    Choose players for match
-                  </div>
-                ) : allMatchesFilled ? (
-                  <div className="bracket" style={{ color: "red" }}>
-                    All 3 matches are already set
-                  </div>
-                ) : (
-                  <button
-                    className="bracket"
-                    style={{ color: "green" }}
-                    onClick={handleSetPlayers}
-                  >
-                    SUBMIT PLAYERS TO MATCH
-                  </button>
-                )}
-              </>
-            ) : (
-              <div className="bracket">Home Team will create match</div>
-            )}
-            <br />
-            <ShowRace
-              info={sessionInfo}
-              player1={chosenHomePlayer}
-              player2={chosenAwayPlayer}
-            />
-          </div>
-
-          {/* Away Team */}
-          <div className="bracket">
-            <h3 className="center">{sessionInfo.awayTeam.teamName}</h3>
-            <div className="w325 green-felt margin">
-              {getPlayersForTeam(sessionInfo.awayTeam._id).map((player) => (
-                <div
-                  key={player._id}
-                  onClick={() => setChosenAwayPlayer(player)}
-                  style={
-                    chosenAwayPlayer?._id === player._id
-                      ? { fontSize: "150%", color: "gold" }
-                      : {}
-                  }
-                >
-                  {player.nameFirst} {player.nameLast} ({player.rank})
-                </div>
-              ))}
-            </div>
+          <div className="w325 green-felt margin">
+            {getPlayersForTeam(sessionInfo.homeTeam?._id).map((player) => (
+              <div
+                key={player._id}
+                onClick={() => setChosenHomePlayer(player)}
+                style={
+                  chosenHomePlayer?._id === player._id
+                    ? { fontSize: "150%", color: "gold" }
+                    : {}
+                }
+              >
+                {player.nameFirst} {player.nameLast} ({player.rank})
+              </div>
+            ))}
           </div>
         </div>
-      )}
+
+        {/* Match creation controls */}
+        <div>
+          {currentProfile === "HOME" || currentProfile === "AWAY" ? (
+            <>
+            {
+
+            }
+              {!chosenHomePlayer || !chosenAwayPlayer ? (
+                <div className="bracket">
+                  Choose one player from each team
+                </div>
+              ) : allMatchesFilled ? (
+                <div className="bracket" style={{ color: "red" }}>
+                  All 3 matches are already set
+                </div>
+              ) : (
+                <button
+                  className="bracket"
+                  style={{ color: "green" }}
+                  onClick={handleSetPlayers}
+                  disabled={savingMatch}
+                >
+                  {savingMatch ? "CREATING MATCH..." : "CREATE MATCH"}
+                </button>
+              )}
+            </>
+          ) : (
+            <div className="bracket">
+              Sign in as a member of either team to create a match.
+            </div>
+          )}
+
+          {errorMessage && (
+            <p style={{ color: "red" }}>{errorMessage}</p>
+          )}
+
+          <ShowRace
+            info={sessionInfo}
+            player1={chosenHomePlayer}
+            player2={chosenAwayPlayer}
+          />
+        </div>
+
+        {/* Away team */}
+        <div className="bracket">
+          <h3 className="center">{sessionInfo.awayTeam?.teamName}</h3>
+
+          <div className="w325 green-felt margin">
+            {getPlayersForTeam(sessionInfo.awayTeam?._id).map((player) => (
+              <div
+                key={player._id}
+                onClick={() => setChosenAwayPlayer(player)}
+                style={
+                  chosenAwayPlayer?._id === player._id
+                    ? { fontSize: "150%", color: "gold" }
+                    : {}
+                }
+              >
+                {player.nameFirst} {player.nameLast} ({player.rank})
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       <MatchLayout
         players={players}
@@ -175,7 +315,10 @@ const ViewOneSession = ({ profile, players, teams }) => {
         awayPlayer={chosenAwayPlayer}
         sessionInfo={sessionInfo}
         currentProfile={currentProfile}
+        handleUpdateMatch={refreshTable}
       />
+
+     
     </>
   )
 }

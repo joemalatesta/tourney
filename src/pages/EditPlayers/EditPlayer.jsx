@@ -68,19 +68,16 @@ const EditPlayer = (props) => {
   const filteredPlayers = [
     ...(showOnlyActive ? props.players.filter((p) => p.active) : props.players),
   ].sort((a, b) =>
-    a.nameLast.toLowerCase().localeCompare(b.nameLast.toLowerCase())
+    a.nameLast.toLowerCase().localeCompare(b.nameLast.toLowerCase()),
   )
-
-  
 
   return (
     <div className="bracket green-felt2">
       <h2>Players</h2>
-
+      <AddNewPlayer />
       <button onClick={() => setShowOnlyActive(!showOnlyActive)}>
         {showOnlyActive ? "Show All Players" : "Show Active Players Only"}
       </button>
-      <AddNewPlayer/>
 
       <ul>
         {filteredPlayers.map((player) => {
