@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
 
@@ -7,7 +6,8 @@ import ShowRace from "../../components/ShowRace/ShowRace"
 
 import * as tableService from "../../services/tableService"
 import * as matchService from "../../services/matchService"
-
+import * as playerStatService from "../../services/playerStatsService"
+import * as teamStatService from "../../services/teamStatsService"
 
 const ViewOneSession = ({ profile, players, teams }) => {
   const [sessionInfo, setSessionInfo] = useState(null)
@@ -16,6 +16,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
   const [currentProfile, setCurrentProfile] = useState("")
   const [savingMatch, setSavingMatch] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
+  const [submittingStats, setSubmittingStats] = useState(false)
 
   const { search } = useLocation()
   const tableId = new URLSearchParams(search).get("tableId")
@@ -65,10 +66,8 @@ const ViewOneSession = ({ profile, players, teams }) => {
     const isPlayerInTeam = (team) => {
       const teamPlayerIds = (team.teamPlayers || []).map((player) =>
         String(
-          typeof player === "object" && player !== null
-            ? player._id
-            : player
-        )
+          typeof player === "object" && player !== null ? player._id : player,
+        ),
       )
 
       return (players || []).some((player) => {
@@ -87,9 +86,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
     } else if (isPlayerInTeam(sessionInfo.awayTeam)) {
       setCurrentProfile("AWAY")
     } else {
-      setCurrentProfile(
-        Number(profile.accessLevel) === 90 ? "ADMIN" : "NONE"
-      )
+      setCurrentProfile(Number(profile.accessLevel) === 90 ? "ADMIN" : "NONE")
     }
   }, [profile, sessionInfo, players])
 
@@ -108,14 +105,12 @@ const ViewOneSession = ({ profile, players, teams }) => {
 
     const teamPlayerIds = (team.teamPlayers || []).map((player) =>
       String(
-        typeof player === "object" && player !== null
-          ? player._id
-          : player
-      )
+        typeof player === "object" && player !== null ? player._id : player,
+      ),
     )
 
     return (players || []).filter((player) =>
-      teamPlayerIds.includes(String(player._id))
+      teamPlayerIds.includes(String(player._id)),
     )
   }
 
@@ -165,7 +160,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
       if (latestTable[matchField]) {
         setSessionInfo(latestTable)
         setErrorMessage(
-          `Match ${availableIndex + 1} has already been created. The table has been refreshed.`
+          `Match ${availableIndex + 1} has already been created. The table has been refreshed.`,
         )
         return
       }
@@ -177,7 +172,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
 
       if (!newMatch?._id) {
         throw new Error(
-          newMatch?.error || newMatch?.err || "Match creation failed."
+          newMatch?.error || newMatch?.err || "Match creation failed.",
         )
       }
 
@@ -190,7 +185,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
         throw new Error(
           updatedTable?.err ||
             updatedTable?.error ||
-            "The table could not be updated."
+            "The table could not be updated.",
         )
       }
 
@@ -211,14 +206,69 @@ const ViewOneSession = ({ profile, players, teams }) => {
   if (!sessionInfo) {
     return <div>Loading table...</div>
   }
+  const handleStatsUpdate = async () => {
+    // Prevent another submission from this page.
+    if (submittingStats || sessionInfo.approval === true) {
+      return
+    }
 
+    setSubmittingStats(true)
+    setErrorMessage("")
 
+    try {
+      // Reload the latest database record before submitting.
+      const latestTable = await tableService.findOne(tableId)
+
+      if (!latestTable || latestTable.message) {
+        throw new Error("Could not reload the table.")
+      }
+
+      // Prevent submitting matches that another admin has approved.
+      if (latestTable.approval === true) {
+        setSessionInfo(latestTable)
+        setErrorMessage("These matches have already been submitted.")
+        return
+      }
+
+      // Claim approval in the database first to prevent duplicate submissions.
+      const approvedTable = await tableService.update({
+        ...latestTable,
+        approval: true,
+      })
+
+      if (!approvedTable || approvedTable.err || approvedTable.error) {
+        throw new Error(
+          approvedTable?.err ||
+            approvedTable?.error ||
+            "Could not approve these matches.",
+        )
+      }
+
+      setSessionInfo((previous) => ({
+        ...previous,
+        approval: true,
+      }))
+
+      // Update player and team statistics.
+      await playerStatService.adjustPlayerStats(latestTable)
+      await teamStatService.adjustTeamStats(latestTable)
+
+      // Refresh the table from the database.
+      await refreshTable()
+    } catch (error) {
+      console.error("Error submitting matches:", error)
+
+      setErrorMessage(error.message || "Could not submit the matches.")
+
+      await refreshTable()
+    } finally {
+      setSubmittingStats(false)
+    }
+  }
 
   return (
     <>
-      <h2 className="center">
-        Table number {sessionInfo.tableNumber}
-      </h2>
+      <h2 className="center">Table number {sessionInfo.tableNumber}</h2>
 
       <div className="row center space-around">
         {/* Home team */}
@@ -246,13 +296,9 @@ const ViewOneSession = ({ profile, players, teams }) => {
         <div>
           {currentProfile === "HOME" || currentProfile === "AWAY" ? (
             <>
-            {
-
-            }
+              {}
               {!chosenHomePlayer || !chosenAwayPlayer ? (
-                <div className="bracket">
-                  Choose one player from each team
-                </div>
+                <div className="bracket">Choose one player from each team</div>
               ) : allMatchesFilled ? (
                 <div className="bracket" style={{ color: "red" }}>
                   All 3 matches are already set
@@ -274,9 +320,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
             </div>
           )}
 
-          {errorMessage && (
-            <p style={{ color: "red" }}>{errorMessage}</p>
-          )}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
           <ShowRace
             info={sessionInfo}
@@ -317,8 +361,17 @@ const ViewOneSession = ({ profile, players, teams }) => {
         currentProfile={currentProfile}
         handleUpdateMatch={refreshTable}
       />
+      {Number(profile?.accessLevel) === 90 &&
+        sessionInfo.match1Completed === true &&
+        sessionInfo.match2Completed === true &&
+        sessionInfo.match3Completed === true &&
+        sessionInfo.approval !== true && (
+          <button onClick={handleStatsUpdate} disabled={submittingStats}>
+            {submittingStats ? "SUBMITTING MATCHES..." : "SUBMIT MATCHES"}
+          </button>
+        )}
 
-     
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
     </>
   )
 }

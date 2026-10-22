@@ -15,6 +15,12 @@ async function create(team) {
 
 async function update(team) {
   try {
+    console.log("Updating team:", team.teamName, team._id)
+    console.log("New stats:", {
+      wins: team.wins,
+      loss: team.loss,
+    })
+
     const res = await fetch(`${BASE_URL}/${team._id}`, {
       method: "PUT",
       headers: {
@@ -23,12 +29,27 @@ async function update(team) {
       },
       body: JSON.stringify(team),
     })
-    return res.json()
+
+    const result = await res.json()
+
+    console.log("Update HTTP status:", res.status)
+    console.log("Update response:", result)
+
+    if (!res.ok) {
+      throw new Error(
+        `Team update failed (${res.status}): ${
+          result.message || JSON.stringify(result)
+        }`
+      )
+    }
+
+    return result
   } catch (error) {
     console.error("Error updating team:", error)
     throw error
   }
 }
+
 
 async function index() {
   try {

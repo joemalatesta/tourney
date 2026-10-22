@@ -1,6 +1,5 @@
 import SingleMatch from "../SingleMatch/SingleMatch"
 import CompletedMatch from "../../components/CompletedMatch/CompletedMatch"
-// import * as playerStatService from "../../services/playerStatsService"
 
 const MatchLayout = (props) => {
   const info = props.sessionInfo
@@ -53,17 +52,7 @@ const MatchLayout = (props) => {
   }
 
   if (!info) return null
-  const handlePlayerStatsUpdate = () => {
-    console.log("hit button");
-    
-  }
-  //   const handlePlayerStatsUpdate = async () => {
-  //   await playerStatService.winningPlayer()
-  //   await playerStatService.losingPlayer()
-  // }
 
-  console.log(props);
-  
 
   return (
     <>
@@ -85,16 +74,7 @@ const MatchLayout = (props) => {
                 ) : (
                   <p>Loading completed match...</p>
                 )}
-              {Number(props?.profile?.accessLevel) == 90 &&
-                props.sessionInfo.match1Completed === true &&
-                props.sessionInfo.match2Completed === true &&
-               props.sessionInfo.match3Completed === true && (
-                  <button
-                    onClick={handlePlayerStatsUpdate}
-                  >
-                    Submit Matches
-                  </button>
-                )}
+
               </div>
          
           )
