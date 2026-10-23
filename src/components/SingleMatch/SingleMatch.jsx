@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react"
 import * as gameService from "../../services/gameService"
 import * as matchService from "../../services/matchService"
@@ -22,9 +21,7 @@ const SingleMatch = ({
   const [checkedPlayer2Checkboxes, setCheckedPlayer2Checkboxes] = useState([])
   const [isPlayer1Winner, setIsPlayer1Winner] = useState(false)
   const [isPlayer2Winner, setIsPlayer2Winner] = useState(false)
-  const [gameEnded, setGameEnded] = useState(
-    currentMatch?.completed || false
-  )
+  const [gameEnded, setGameEnded] = useState(currentMatch?.completed || false)
   const [matchEquality, setMatchEquality] = useState(false)
   const [message, setMessage] = useState("")
   const [player1Info, setPlayer1Info] = useState(null)
@@ -47,10 +44,8 @@ const SingleMatch = ({
       if (!currentMatch) return
 
       try {
-        const p1Id =
-          currentMatch.player1?._id ?? currentMatch.player1
-        const p2Id =
-          currentMatch.player2?._id ?? currentMatch.player2
+        const p1Id = currentMatch.player1?._id ?? currentMatch.player1
+        const p2Id = currentMatch.player2?._id ?? currentMatch.player2
 
         if (!p1Id || !p2Id) return
 
@@ -87,7 +82,7 @@ const SingleMatch = ({
       try {
         const data = await gameService.getGameRace(
           currentMatch.player1,
-          currentMatch.player2
+          currentMatch.player2,
         )
 
         if (!cancelled) {
@@ -122,13 +117,15 @@ const SingleMatch = ({
       ? matchInfo.player2WinsHome
       : matchInfo.player2WinsAway
 
-    const p1 = Array.isArray(p1Saved) && p1Saved.length
-      ? p1Saved
-      : Array(Number(gamesNeeded[0])).fill(false)
+    const p1 =
+      Array.isArray(p1Saved) && p1Saved.length
+        ? p1Saved
+        : Array(Number(gamesNeeded[0])).fill(false)
 
-    const p2 = Array.isArray(p2Saved) && p2Saved.length
-      ? p2Saved
-      : Array(Number(gamesNeeded[1])).fill(false)
+    const p2 =
+      Array.isArray(p2Saved) && p2Saved.length
+        ? p2Saved
+        : Array(Number(gamesNeeded[1])).fill(false)
 
     setCheckedPlayer1Checkboxes(p1)
     setCheckedPlayer2Checkboxes(p2)
@@ -139,46 +136,45 @@ const SingleMatch = ({
 
   // Save both result arrays for the team making the change.
 
-const saveTeamResults = async (p1Results, p2Results) => {
-  if (!matchInfo?._id) {
-    throw new Error("No saved match was found.")
-  }
-
-  let resultFields
-
-  if (currentProfile === "HOME") {
-    resultFields = {
-      player1WinsHome: p1Results,
-      player2WinsHome: p2Results,
+  const saveTeamResults = async (p1Results, p2Results) => {
+    if (!matchInfo?._id) {
+      throw new Error("No saved match was found.")
     }
-  } else if (currentProfile === "AWAY") {
-    resultFields = {
-      player1WinsAway: p1Results,
-      player2WinsAway: p2Results,
+
+    let resultFields
+
+    if (currentProfile === "HOME") {
+      resultFields = {
+        player1WinsHome: p1Results,
+        player2WinsHome: p2Results,
+      }
+    } else if (currentProfile === "AWAY") {
+      resultFields = {
+        player1WinsAway: p1Results,
+        player2WinsAway: p2Results,
+      }
+    } else {
+      throw new Error("You must belong to a team to enter results.")
     }
-  } else {
-    throw new Error("You must belong to a team to enter results.")
+
+    // Send ONLY this team's result arrays.
+    // Do not spread matchInfo here, because it may contain stale arrays.
+    const savedMatch = await matchService.update({
+      _id: matchInfo._id,
+      ...resultFields,
+    })
+
+    if (!savedMatch?._id) {
+      throw new Error(
+        savedMatch?.error ||
+          savedMatch?.err ||
+          "Could not save the match results.",
+      )
+    }
+
+    setMatchInfo(savedMatch)
+    return savedMatch
   }
-
-  // Send ONLY this team's result arrays.
-  // Do not spread matchInfo here, because it may contain stale arrays.
-  const savedMatch = await matchService.update({
-    _id: matchInfo._id,
-    ...resultFields,
-  })
-
-  if (!savedMatch?._id) {
-    throw new Error(
-      savedMatch?.error ||
-        savedMatch?.err ||
-        "Could not save the match results."
-    )
-  }
-
-  setMatchInfo(savedMatch)
-  return savedMatch
-}
-
 
   const toggleCheckbox = async (playerNumber, index) => {
     if (
@@ -224,9 +220,7 @@ const saveTeamResults = async (p1Results, p2Results) => {
         setMessage(true)
         setMatchEquality(true)
       } else {
-        setMessage(
-          "The results do not match yet. Check with the other team."
-        )
+        setMessage("The results do not match yet. Check with the other team.")
       }
     } catch (error) {
       console.error("Error checking match equality:", error)
@@ -287,6 +281,32 @@ const saveTeamResults = async (p1Results, p2Results) => {
     (currentProfile === "HOME" || currentProfile === "AWAY") &&
     Number(profile?.accessLevel) >= 20
 
+const handleDeleteMatch = async () => {
+  if (!matchInfo?._id) {
+    console.error("Cannot delete match: missing match ID")
+    return
+  }
+
+  const confirmed = window.confirm(
+    "Permanently delete this match from the database? This cannot be undone."
+  )
+
+  if (!confirmed) return
+
+  try {
+    await matchService.deleteOne(matchInfo._id)
+
+    setMatchInfo(null)
+
+    if (handleUpdateMatch) {
+      await handleUpdateMatch()
+    }
+  } catch (error) {
+    console.error("Error deleting match:", error)
+    window.alert("Could not delete the match. Check the console for details.")
+  }
+}
+
   return (
     <div className={styles.bracket}>
       <div className="flex column" style={{ alignItems: "center" }}>
@@ -296,8 +316,7 @@ const saveTeamResults = async (p1Results, p2Results) => {
           style={{ width: "90%" }}
         >
           <h1>
-            {player1Info.nameFirst} {player1Info.nameLast} (
-            {player1Info.rank})
+            {player1Info.nameFirst} {player1Info.nameLast} ({player1Info.rank})
           </h1>
 
           {canEnterResults && (
@@ -330,39 +349,32 @@ const saveTeamResults = async (p1Results, p2Results) => {
           !matchEquality &&
           (checkedPlayer1Checkboxes.some(Boolean) ||
             checkedPlayer2Checkboxes.some(Boolean)) && (
-            <button
-              onClick={checkForEquality}
-              disabled={savingResults}
-            >
+            <button onClick={checkForEquality} disabled={savingResults}>
               Check for match equality
             </button>
           )}
 
         {message && typeof message === "string" && <p>{message}</p>}
 
-        {isPlayer1Winner &&
-          message === true &&
-          currentProfile === "HOME" && (
-            <button
-              onClick={() =>
-                updateMatchCompletion(player1Info._id, player2Info._id)
-              }
-            >
-              Submit Player 1 Win
-            </button>
-          )}
+        {isPlayer1Winner && message === true && currentProfile === "HOME" && (
+          <button
+            onClick={() =>
+              updateMatchCompletion(player1Info._id, player2Info._id)
+            }
+          >
+            Submit Player 1 Win
+          </button>
+        )}
 
-        {isPlayer2Winner &&
-          message === true &&
-          currentProfile === "HOME" && (
-            <button
-              onClick={() =>
-                updateMatchCompletion(player2Info._id, player1Info._id)
-              }
-            >
-              Submit Player 2 Win
-            </button>
-          )}
+        {isPlayer2Winner && message === true && currentProfile === "HOME" && (
+          <button
+            onClick={() =>
+              updateMatchCompletion(player2Info._id, player1Info._id)
+            }
+          >
+            Submit Player 2 Win
+          </button>
+        )}
 
         {/* Player 2 */}
         <div
@@ -370,8 +382,7 @@ const saveTeamResults = async (p1Results, p2Results) => {
           style={{ width: "90%" }}
         >
           <h1>
-            {player2Info.nameFirst} {player2Info.nameLast} (
-            {player2Info.rank})
+            {player2Info.nameFirst} {player2Info.nameLast} ({player2Info.rank})
           </h1>
 
           {canEnterResults && (
@@ -400,6 +411,9 @@ const saveTeamResults = async (p1Results, p2Results) => {
           )}
         </div>
       </div>
+      {profile.accessLevel === 90 && (
+        <button onClick={()=>handleDeleteMatch(currentMatch)}>This is the delete match button for admin</button>
+      )}
     </div>
   )
 }

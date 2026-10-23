@@ -19,7 +19,6 @@ const ViewOneSession = ({ profile, players, teams }) => {
   const [errorMessage, setErrorMessage] = useState("")
   const [submittingStats, setSubmittingStats] = useState(false)
   
-  console.log(profile);
    
   const { search } = useLocation()
   const tableId = new URLSearchParams(search).get("tableId")
