@@ -29,6 +29,7 @@ import ViewTeams from "./pages/ViewTeams/ViewTeams"
 import ViewTournaments from "./pages/ViewTournaments/ViewTournaments"
 import EditTeam from "./pages/EditTeam/EditTeam"
 import StartMatch from "./pages/StartMatch/StartMatch"
+import AdjustUserProfile from "./components/AdjustUserProfile/AdjustUserProfile"
 
 import NavBar from "./components/NavBar/NavBar"
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
@@ -583,6 +584,15 @@ function App() {
                 teams={teams}
                 isDisabled={isDisabled}
               />
+            </ProtectedRoute>
+          }
+        />
+                <Route
+          disable={isDisabled}
+          path="/adjust-profile"
+          element={
+            <ProtectedRoute access="30" profile={profile} user={user}>
+              <AdjustUserProfile profile={profile} />
             </ProtectedRoute>
           }
         />

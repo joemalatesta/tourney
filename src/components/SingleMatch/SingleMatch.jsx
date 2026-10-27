@@ -350,7 +350,7 @@ const handleDeleteMatch = async () => {
           (checkedPlayer1Checkboxes.some(Boolean) ||
             checkedPlayer2Checkboxes.some(Boolean)) && (
             <button onClick={checkForEquality} disabled={savingResults}>
-              Check for match equality
+              CHECK MATCH
             </button>
           )}
 
@@ -412,7 +412,7 @@ const handleDeleteMatch = async () => {
         </div>
       </div>
       {profile.accessLevel === 90 && (
-        <button onClick={()=>handleDeleteMatch(currentMatch)}>This is the delete match button for admin</button>
+        <button className="red-felt" onClick={()=>handleDeleteMatch(currentMatch)}>DELETE MATCH</button>
       )}
     </div>
   )

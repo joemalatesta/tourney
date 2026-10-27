@@ -23,9 +23,17 @@ export async function checkMatch(matchId) {
       return false
     }
 
-    const arraysMatch = (home, away) =>
-      home.length === away.length &&
-      home.every((value, index) => value === away[index])
+    // Compare arrays without considering the order of values.
+    const arraysMatch = (home, away) => {
+      if (home.length !== away.length) return false
+
+      const sortedHome = [...home].sort((a, b) => a - b)
+      const sortedAway = [...away].sort((a, b) => a - b)
+
+      return sortedHome.every(
+        (value, index) => value === sortedAway[index]
+      )
+    }
 
     return (
       arraysMatch(

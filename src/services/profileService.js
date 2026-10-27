@@ -23,6 +23,7 @@ async function findOne(id) {
   }
 }
 
+
 async function update(profile) {
   const res = await fetch(`${BASE_URL}/${profile._id}`, {
     method: "PUT",
@@ -32,7 +33,15 @@ async function update(profile) {
     },
     body: JSON.stringify(profile),
   })
-  return res.json()
+
+  const data = await res.json()
+
+  if (!res.ok) {
+    console.error("Profile update failed:", data)
+  }
+
+  return data
 }
+
 
 export { getAllProfiles, findOne, update }
