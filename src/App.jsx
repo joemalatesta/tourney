@@ -583,6 +583,7 @@ function App() {
                 profile={profile}
                 teams={teams}
                 isDisabled={isDisabled}
+                handleDeleteTeam={handleDeleteTeam}
               />
             </ProtectedRoute>
           }

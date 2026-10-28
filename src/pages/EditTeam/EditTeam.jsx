@@ -12,6 +12,9 @@ const EditTeam = (props) => {
   })
   const [currentTeamId, setCurrentTeamId] = useState(null)
   const [captainName, setCaptainName] = useState("")
+
+  console.log(props);
+  
   
   useEffect(() => {
   const fetchCaptain = async () => {
@@ -144,6 +147,9 @@ const EditTeam = (props) => {
                       Save
                     </button>
                   </form>
+                             <button onClick={() => props.handleDeleteTeam(el._id)}>
+                Delete
+              </button>
                 </div>
               ) : (
                 <>

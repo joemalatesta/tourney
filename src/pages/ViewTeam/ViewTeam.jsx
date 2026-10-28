@@ -310,9 +310,6 @@ const ViewTeam = (props) => {
               <button onClick={() => handleEditTeam(props.team._id)}>
                 Edit Team
               </button>
-              <button onClick={() => props.handleDeleteTeam(props.team._id)}>
-                Delete
-              </button>
             </>
           )}
         </div>
