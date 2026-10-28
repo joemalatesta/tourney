@@ -29,13 +29,24 @@ const EditPlayer = (props) => {
     setValidForm(formElement.current.checkValidity())
   }, [formData])
 
-  const handleChange = (evt) => {
-    const { name, type, checked, value } = evt.target
-    setFormData({
-      ...formData,
+ 
+const handleChange = (evt) => {
+  const { name, type, checked, value } = evt.target
+
+  setFormData((prevData) => {
+    const updatedData = {
+      ...prevData,
       [name]: type === "checkbox" ? checked : value,
-    })
-  }
+    }
+
+    updatedData.matchesPlayed =
+      Number(updatedData.matchWin || 0) +
+      Number(updatedData.matchLoss || 0)
+
+    return updatedData
+  })
+}
+
 
   const startEditing = (player) => {
     setFormData(player)
@@ -150,12 +161,7 @@ const EditPlayer = (props) => {
                   <br />
                   <label>
                     Matches Played:
-                    <input
-                      type="number"
-                      name="matchesPlayed"
-                      value={formData.matchesPlayed}
-                      onChange={handleChange}
-                    />
+                    {formData.matchesPlayed}
                   </label>
                   <br />
                   <label>

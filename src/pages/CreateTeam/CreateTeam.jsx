@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react"
+
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 import ListOfPlayers from "../../components/players/ListOfPlayers"
@@ -8,68 +9,106 @@ import * as styles from "./CreateTeam.module.css"
 
 const CreateTeam = (props) => {
   const navigate = useNavigate()
+
   const [team, setTeam] = useState([])
   const [captain, setCaptain] = useState(null)
-  const [players, setPlayers] = useState(props.players)
-  const formElement = useRef()
+
+  const [players, setPlayers] = useState(
+    Array.isArray(props.players) ? props.players : []
+  )
+
   const [formData, setFormData] = useState({
     teamName: "",
     teamPlayers: [],
-    teamCaptain: captain,
+    teamCaptain: "",
   })
 
   useEffect(() => {
     const fetchPlayers = async () => {
-      const data = await playerService.index()
-      setPlayers(data)
+      try {
+        const data = await playerService.index()
+
+        if (Array.isArray(data)) {
+          setPlayers(data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch players:", error)
+      }
     }
+
     fetchPlayers()
   }, [])
 
   const handleAddPlayer = (player) => {
-    setTeam([player, ...team])
-    setPlayers(players.filter((el) => el._id !== player._id))
+    setTeam((prevTeam) => [...prevTeam, player])
+
+    setPlayers((prevPlayers) =>
+      prevPlayers.filter((el) => el._id !== player._id)
+    )
   }
 
   const handleRemovePlayer = (player) => {
-    setTeam(team.filter((el) => el._id !== player._id))
-    setPlayers([...players, player])
+    setTeam((prevTeam) =>
+      prevTeam.filter((el) => el._id !== player._id)
+    )
+
+    setPlayers((prevPlayers) => [...prevPlayers, player])
+
+    if (formData.teamCaptain === player._id) {
+      setCaptain(null)
+
+      setFormData((prevData) => ({
+        ...prevData,
+        teamCaptain: "",
+      }))
+    }
   }
 
   const handleChange = (evt) => {
-    if (evt.target.name === "teamCaptain")
-      setFormData({ ...formData, teamCaptain: evt.target._id })
-    else setFormData({ ...formData, [evt.target.name]: evt.target.value })
+    const { name, value } = evt.target
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }))
   }
 
   const addCaptain = (player) => {
-    findPlayer(player)
-    setCaptain(player.nameFirst + " " + player.nameLast)
-    setFormData({ ...formData, teamCaptain: player._id })
-  }
+    setCaptain(`${player.nameFirst} ${player.nameLast}`)
 
-  const findPlayer = (id) => {
-    console.log(id)
+    setFormData((prevData) => ({
+      ...prevData,
+      teamCaptain: player._id,
+    }))
   }
 
   const handleSubmit = async (evt) => {
     evt.preventDefault()
-    if (team.length > 0 && team.teamCaptain !== null) {
-      setTeam(team)
-      const updatedFormData = {
-        ...formData,
-        teamPlayers: team,
-      }
+
+    if (team.length === 0 || !formData.teamCaptain) {
+      alert("Please select at least one player and a team captain.")
+      return
+    }
+
+    const updatedFormData = {
+      ...formData,
+      teamPlayers: team,
+    }
+
+    try {
       await props.handleAddTeam(updatedFormData)
       navigate("/admin")
-    } else return <h1>select all players and captain</h1>
+    } catch (error) {
+      console.error("Failed to create team:", error)
+    }
   }
 
   return (
-    <main className={`${styles.bracket}`}>
-      <form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
+    <main className={styles.bracket}>
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <h2>Team Name</h2>
         <p>(must be unique)</p>
+
         <input
           className={styles.center}
           type="text"
@@ -78,21 +117,27 @@ const CreateTeam = (props) => {
           onChange={handleChange}
           required
         />
+
         <button type="submit">Create Team</button>
       </form>
 
-      <section className={`${styles.flex}`}>
-        <div className={`${styles.bracket} ${styles.greenFelt} ${styles.w300}`}>
+      <section className={styles.flex}>
+        <div
+          className={`${styles.bracket} ${styles.greenFelt} ${styles.w300}`}
+        >
           <ListOfPlayers
             title="Available Players"
             players={players}
             handleAdd={handleAddPlayer}
           />
         </div>
-        <div className={`${styles.bracket} ${styles.greenFelt} ${styles.w300}`}>
+
+        <div
+          className={`${styles.bracket} ${styles.greenFelt} ${styles.w300}`}
+        >
           <ListOfPlayers
             addCaptain={addCaptain}
-            captain={captain}
+            captain={formData.teamCaptain}
             title="Assigned to Team"
             players={team}
             handleRemove={handleRemovePlayer}

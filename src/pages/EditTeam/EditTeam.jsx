@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import * as teamService from "../../services/teamService"
-import CreateTeam from "../../pages/CreateTeam/CreateTeam"
+import * as playerService from '../../services/playerService'
 
 const EditTeam = (props) => {
   const [editForm, setEditForm] = useState(false)
@@ -11,6 +11,31 @@ const EditTeam = (props) => {
     loss: 0,
   })
   const [currentTeamId, setCurrentTeamId] = useState(null)
+  const [captainName, setCaptainName] = useState("")
+  
+  useEffect(() => {
+  const fetchCaptain = async () => {
+    if (!formData.teamCaptain) {
+      setCaptainName("")
+      return
+    }
+
+    try {
+      const player = await playerService.findOne(
+        formData.teamCaptain
+      )
+
+      setCaptainName(
+        `${player.nameFirst} ${player.nameLast}`
+      )
+    } catch (error) {
+      console.error("Failed to fetch captain:", error)
+      setCaptainName("")
+    }
+  }
+
+  fetchCaptain()
+}, [formData.teamCaptain])
 
   useEffect(() => {
     if (currentTeamId) {
@@ -36,7 +61,7 @@ const EditTeam = (props) => {
   }
 
   const sortedTeams = [...props.teams].sort(
-    (a, b) => calculateWinPercentage(b) - calculateWinPercentage(a)
+    (a, b) => calculateWinPercentage(b) - calculateWinPercentage(a),
   )
 
   const teamEditInfo = (team) => {
@@ -64,9 +89,6 @@ const EditTeam = (props) => {
   console.log(props)
   return (
     <>
-      <CreateTeam
-        props=  "props"
-      />
       <h2>
         {sortedTeams.map((el) => (
           <div key={el._id} className="bracket" style={{ width: 350 }}>
@@ -93,7 +115,7 @@ const EditTeam = (props) => {
                       <input
                         type="text"
                         name="teamCaptain"
-                        value={formData.teamCaptain}
+                        value={captainName}
                         onChange={handleChange}
                       />
                     </label>
