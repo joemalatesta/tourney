@@ -1,7 +1,5 @@
 import { useState } from "react"
 import * as playerService from "../../services/playerService"
-// playerService.create will add a new player
-
 
 const AddNewPlayer = ({ handleAddPlayer }) => {
   const emptyPlayer = {

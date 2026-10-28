@@ -4,7 +4,7 @@ import { playerData } from "../../services/playerData.js"
 import AdminAddProfileToPlayer from "../../components/AdminAddProfileToPlayer/AdminAddProfileToPlayer.jsx"
 import AdminCreate from "../../components/Create/AdminCreate"
 import Approvals from "../../components/Approvals/UserApprovals"
-import EditSchedule from "../../components/EditSchedule/EditSchedule"
+// import EditSchedule from "../../components/EditSchedule/EditSchedule"
 
 import * as playerService from "../../services/playerService"
 import * as teamService from "../../services/teamService"
@@ -13,7 +13,7 @@ const AdminPage = ({
   players,
   profiles,
   handleUpdateProfiles,
-  handleDeleteSchedule,
+  // handleDeleteSchedule,
   profile,
   teams,
 }) => {
@@ -110,18 +110,6 @@ const AdminPage = ({
   return (
     <>
       <div className="fWrap">
-        {/* <NavLink className="bracket" to="/view-schedule">
-          Schedule
-        </NavLink> */}
-        {/* <NavLink className="bracket" to="/season-match">
-          Match
-        </NavLink> */}
-        {/* <NavLink className="bracket" to="/view-teams">
-          View Teams
-        </NavLink> */}
-        {/* <NavLink className="bracket" to="/view-tournaments">
-          View Tournaments
-        </NavLink> */}
         <NavLink className="bracket" to="/player-management">
           Player Management
         </NavLink>

@@ -8,6 +8,7 @@ import * as tableService from "../../services/tableService"
 import * as matchService from "../../services/matchService"
 import * as playerStatService from "../../services/playerStatsService"
 import * as teamStatService from "../../services/teamStatsService"
+import { confetti }  from "../../services/confetti"
 
 const ViewOneSession = ({ profile, players, teams }) => {
   const [sessionInfo, setSessionInfo] = useState(null)
@@ -124,6 +125,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
   const allMatchesFilled = matches.every(Boolean)
 
   const handleSetPlayers = async () => {
+    
     if (
       !chosenHomePlayer ||
       !chosenAwayPlayer ||
@@ -202,6 +204,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
     } finally {
       setSavingMatch(false)
     }
+    confetti.start(2000)
   }
 
   if (!sessionInfo) {

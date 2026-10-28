@@ -163,9 +163,13 @@ function stopConfetti() {
 }
 
 function removeConfetti() {
-  stop()
+  stopConfetti()
   pause = false
   particles = []
+
+  if (context) {
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight)
+  }
 }
 
 function toggleConfetti() {
