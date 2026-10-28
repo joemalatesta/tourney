@@ -294,7 +294,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
         </div>
 
         {/* Match creation controls */}
-        <div>
+        <div className="bracket w100">
           {sessionInfo.approval == true ? (
             <div className="bracket blue-felt">
               <h2>MATCH COMPLETED</h2>
