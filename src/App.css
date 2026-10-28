@@ -306,10 +306,10 @@ button {
    ========================= */
 
 @media screen and (max-width: 600px) {
-  /* :root {
+  :root {
     display: block;
     font-size: 1em;
-  } */
+  }
 
   html {
     width: 100%;
@@ -432,7 +432,6 @@ button {
     width: 100%;
     min-height: 100vh;
     height: auto;
-
   }
 
   #root {
