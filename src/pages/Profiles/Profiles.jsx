@@ -35,12 +35,15 @@ const Profiles = () => {
     <main>
       <h1>List Of Users</h1>
       {profiles.map((profile) => (
-        <div className="bracket" key={profile._id}>
-          <h3>
-            Name: {profile.firstName} {profile.lastName} || Email:{" "}
-            {profile.email2} || {grabAccessLevel(profile.accessLevel)}{" "}
-          </h3>
-        </div>
+        <ul className="bracket blue-felt w350" key={profile._id}>
+          <div >
+            <div>
+              Name: {profile.firstName} {profile.lastName}
+            </div>
+            <div>Email: {profile.email2}</div>
+            <div>{grabAccessLevel(profile.accessLevel)} </div>
+          </div>
+        </ul>
       ))}
     </main>
   )
