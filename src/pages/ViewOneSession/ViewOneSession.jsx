@@ -273,7 +273,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
 
       <div className="row center space-around">
         {/* Home team */}
-        <div className="bracket">
+        <div className="bracket w500">
           <h3 className="center">{sessionInfo.homeTeam?.teamName}</h3>
 
           <div className="w325 green-felt margin">
@@ -343,7 +343,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
           )}
         </div>
         {/* Away team */}
-        <div className="bracket">
+        <div className="bracket w500">
           <h3 className="center">{sessionInfo.awayTeam?.teamName}</h3>
 
           <div className="w325 green-felt margin">
