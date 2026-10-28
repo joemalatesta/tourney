@@ -28,7 +28,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/scroll-wheel">Race Finder</NavLink>
           <NavLink to="/match-approval">Match Approval</NavLink>
-            <NavLink to="/adjust-profile">Profile</NavLink>
+          <NavLink to="/adjust-profile">Profile</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
           <NavLink to="" onClick={handleLogout}>
             LOG OUT
@@ -43,7 +43,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
           <NavLink to="/scroll-wheel">Race Finder</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/admin-stats-page">Player and Team Stats</NavLink>
-            <NavLink to="/adjust-profile">Profile</NavLink>
+          <NavLink to="/adjust-profile">Profile</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
           <NavLink to="" onClick={handleLogout}>
             LOG OUT
@@ -54,10 +54,11 @@ const NavBar = ({ user, handleLogout, profile }) => {
       {profile?.accessLevel > 10 && profile?.accessLevel < 40 && (
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName} </NavLink>
+          <NavLink to="/session">Schedule</NavLink>
           <NavLink to="/scroll-wheel">Race Finder</NavLink>
           <NavLink to="/view-teams">View Teams</NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
-            <NavLink to="/adjust-profile">Profile</NavLink>
+          <NavLink to="/adjust-profile">Profile</NavLink>
           <NavLink to="" onClick={handleLogout}>
             LOG OUT
           </NavLink>
@@ -68,7 +69,7 @@ const NavBar = ({ user, handleLogout, profile }) => {
         <div className={styles.navBar}>
           <NavLink to="/">Welcome {profile.firstName} </NavLink>
           <NavLink to="/auth/change-password">Change Password</NavLink>
-            <NavLink to="/adjust-profile">Profile</NavLink>
+          <NavLink to="/adjust-profile">Profile</NavLink>
           <NavLink to="" onClick={handleLogout}>
             LOG OUT
           </NavLink>

@@ -33,6 +33,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
     return latestTable
   }
 
+
   useEffect(() => {
     let cancelled = false
 
@@ -300,7 +301,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
             </div>
           ) : (
             <div>
-              {currentProfile === "HOME" || currentProfile === "AWAY" ? (
+              {currentProfile === "HOME" || currentProfile === "AWAY"  ? (
                 <>
                   {}
                   {!chosenHomePlayer || !chosenAwayPlayer ? (
@@ -312,6 +313,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
                       All 3 matches are already set
                     </div>
                   ) : (
+                    profile.accessLevel > 30 &&
                     <button
                       className="bracket"
                       style={{ color: "green" }}
@@ -320,6 +322,8 @@ const ViewOneSession = ({ profile, players, teams }) => {
                     >
                       {savingMatch ? "CREATING MATCH..." : "CREATE MATCH"}
                     </button>
+
+                     
                   )}
                 </>
               ) : (

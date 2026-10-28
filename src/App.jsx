@@ -529,7 +529,7 @@ function App() {
           disable={isDisabled}
           path="/viewOneSession"
           element={
-            <ProtectedRoute access="50" profile={profile} user={user}>
+            <ProtectedRoute access="30" profile={profile} user={user}>
               <ViewOneSession
                 profile={profile}
                 players={players}
