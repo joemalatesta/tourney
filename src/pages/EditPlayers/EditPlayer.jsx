@@ -12,6 +12,7 @@ const EditPlayer = (props) => {
   const emptyPlayer = {
     nameFirst: "",
     nameLast: "",
+    seasonRankStart: 0,
     rank: 1,
     matchesPlayed: 0,
     matchWin: 0,
@@ -124,6 +125,17 @@ const EditPlayer = (props) => {
                     />
                   </label>
                   <br />
+                  <label>
+                    Season Start Rank:
+                    <input 
+                      type="number"
+                      name="seasonRankStart"
+                      min={1}
+                      value={formData.seasonRankStart}
+                      onChange={handleChange}
+                    />
+                  </label>
+                  <br/>
                   <label>
                     Rank:
                     <input
