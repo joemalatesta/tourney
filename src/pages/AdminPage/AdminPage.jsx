@@ -45,7 +45,7 @@ const AdminPage = ({
         console.error("Invalid player object:", player)
       }
     }
-  }
+  }  
 
   const resetPlayerStats = async () => {
     for (const player of players) {
@@ -154,19 +154,12 @@ const AdminPage = ({
         handleUpdateProfiles={handleUpdateProfiles}
       />
       <br />
-      {profile.firstName === "Joe" && (
+      {profile.accessLevel === 90  && (
         <>
           <AdminAddProfileToPlayer players={players} profiles={profiles} />
           <div className="bracket center column">
             <h1 className="center">DANGER ZONE</h1>
             <h2>End of Season Maintenance</h2>
-            <div>
-              <EditSchedule
-                handleDeleteSchedule={handleDeleteSchedule}
-                profile={profile}
-              />
-            </div>
-            <br />
             <div>
               <p className="bracket">
                 To reset all players league stats back to 0. (games played,
