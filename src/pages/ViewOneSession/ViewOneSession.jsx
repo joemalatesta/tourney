@@ -328,7 +328,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
                 </>
               ) : (
                 <div className="bracket">
-                  Sign in as a member of either team to create a match.
+                  Sign in as a Captain of either team to create a match.
                 </div>
               )}
 
