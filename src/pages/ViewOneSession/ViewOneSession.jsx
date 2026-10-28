@@ -9,7 +9,6 @@ import * as matchService from "../../services/matchService"
 import * as playerStatService from "../../services/playerStatsService"
 import * as teamStatService from "../../services/teamStatsService"
 
-
 const ViewOneSession = ({ profile, players, teams }) => {
   const [sessionInfo, setSessionInfo] = useState(null)
   const [chosenHomePlayer, setChosenHomePlayer] = useState(null)
@@ -18,8 +17,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
   const [savingMatch, setSavingMatch] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const [submittingStats, setSubmittingStats] = useState(false)
-  
-   
+
   const { search } = useLocation()
   const tableId = new URLSearchParams(search).get("tableId")
 
@@ -296,41 +294,50 @@ const ViewOneSession = ({ profile, players, teams }) => {
 
         {/* Match creation controls */}
         <div>
-          {currentProfile === "HOME" || currentProfile === "AWAY" ? (
-            <>
-              {}
-              {!chosenHomePlayer || !chosenAwayPlayer ? (
-                <div className="bracket">Choose one player from each team</div>
-              ) : allMatchesFilled ? (
-                <div className="bracket" style={{ color: "red" }}>
-                  All 3 matches are already set
-                </div>
-              ) : (
-                <button
-                  className="bracket"
-                  style={{ color: "green" }}
-                  onClick={handleSetPlayers}
-                  disabled={savingMatch}
-                >
-                  {savingMatch ? "CREATING MATCH..." : "CREATE MATCH"}
-                </button>
-              )}
-            </>
+          {sessionInfo.approval == true ? (
+            <div className="bracket blue-felt">
+              <h2>MATCH COMPLETED</h2>
+            </div>
           ) : (
-            <div className="bracket">
-              Sign in as a member of either team to create a match.
+            <div>
+              {currentProfile === "HOME" || currentProfile === "AWAY" ? (
+                <>
+                  {}
+                  {!chosenHomePlayer || !chosenAwayPlayer ? (
+                    <div className="bracket">
+                      Choose one player from each team
+                    </div>
+                  ) : allMatchesFilled ? (
+                    <div className="bracket" style={{ color: "red" }}>
+                      All 3 matches are already set
+                    </div>
+                  ) : (
+                    <button
+                      className="bracket"
+                      style={{ color: "green" }}
+                      onClick={handleSetPlayers}
+                      disabled={savingMatch}
+                    >
+                      {savingMatch ? "CREATING MATCH..." : "CREATE MATCH"}
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="bracket">
+                  Sign in as a member of either team to create a match.
+                </div>
+              )}
+
+              {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+
+              <ShowRace
+                info={sessionInfo}
+                player1={chosenHomePlayer}
+                player2={chosenAwayPlayer}
+              />
             </div>
           )}
-
-          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-
-          <ShowRace
-            info={sessionInfo}
-            player1={chosenHomePlayer}
-            player2={chosenAwayPlayer}
-          />
         </div>
-
         {/* Away team */}
         <div className="bracket">
           <h3 className="center">{sessionInfo.awayTeam?.teamName}</h3>
@@ -371,6 +378,15 @@ const ViewOneSession = ({ profile, players, teams }) => {
           <button onClick={handleStatsUpdate} disabled={submittingStats}>
             {submittingStats ? "SUBMITTING MATCHES..." : "SUBMIT MATCHES"}
           </button>
+        )}
+      {Number(profile?.accessLevel) != 90 &&
+        sessionInfo.match1Completed === true &&
+        sessionInfo.match2Completed === true &&
+        sessionInfo.match3Completed === true &&
+        sessionInfo.approval !== true && (
+          <div className="bracket red-felt">
+            <h2>Turn table fees to ADMIN for scres to be updated</h2>
+          </div>
         )}
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
