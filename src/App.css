@@ -300,3 +300,152 @@ button {
   justify-items: center;
   background-position: center;
 }
+
+/* =========================
+   MOBILE PHONE STYLES
+   ========================= */
+
+@media screen and (max-width: 600px) {
+  :root {
+    display: block;
+    font-size: 1em;
+  }
+
+  html {
+    width: 100%;
+    min-height: 100%;
+  }
+
+  body {
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    margin: 0;
+    background-position: center;
+    background-repeat: repeat-y;
+    background-size: cover;
+    overflow-x: hidden;
+  }
+
+  #root {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  /* Prevent fixed-width elements from overflowing */
+  .w300,
+  .w325,
+  .w350,
+  .w500,
+  .w700 {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  /* Keep flex layouts usable on a phone */
+  .flex,
+  .row,
+  .space-between,
+  .space-around,
+  .spaceBetween {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .fWrap {
+    flex-wrap: wrap;
+  }
+
+  .noWrap {
+    flex-wrap: wrap;
+  }
+
+  /* Allow long content to fit the screen */
+  .column {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .green-felt,
+  .red-felt,
+  .green-felt2,
+  .blue-felt {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .bracket {
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 5px;
+    padding: 0.5em 0.7em;
+  }
+
+  .margin {
+    padding: 10px;
+  }
+
+  /* Smaller pool balls for mobile */
+  .poolballs {
+    width: 35px;
+    height: 35px;
+    padding: 3px;
+    font-size: 30px;
+    box-sizing: border-box;
+  }
+
+  .round-border {
+    width: 50px;
+    height: 50px;
+    box-sizing: border-box;
+  }
+
+  /* Keep controls usable on touchscreens */
+  button {
+    min-height: 38px;
+    max-width: 100%;
+    font-size: 0.95em;
+  }
+
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* =========================
+   TABLETS
+   ========================= */
+
+@media screen and (min-width: 601px) and (max-width: 950px) {
+  body {
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  #root {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .w500 {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .w700 {
+    width: min(800px, 100%);
+    box-sizing: border-box;
+  }
+}
