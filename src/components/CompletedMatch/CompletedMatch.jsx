@@ -33,7 +33,7 @@ const CompletedMatch = ({ currentMatch }) => {
   const winnerId = currentMatch.winningPlayer
   const loserId = currentMatch.losingPlayer
   
-  const moneyOwedTable = (getGamesWon(winnerId)/2 + getGamesWon(loserId)/2)/2
+  const moneyOwedTable = (getGamesWon(winnerId)/2 + getGamesWon(loserId)/2)
 
   const winner =
     String(currentMatch.player1?._id) === String(winnerId)
