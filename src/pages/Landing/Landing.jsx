@@ -1,7 +1,7 @@
-
 import { useState } from "react"
 import * as styles from "./Landing.module.css"
 import CoinFlip from "../../components/CoinFlip/CoinFlip"
+import AdminNews from "../../components/AdminNewsAndInformation/AdminNews"
 
 const Landing = ({ profile }) => {
   const [finished, setFinished] = useState(false)
@@ -22,9 +22,7 @@ const Landing = ({ profile }) => {
 
   return (
     <>
-      {/* <div className="bracket">
-        This is where admin information will go
-      </div> */}
+      <AdminNews editable={false} />
 
       {seeCoin && (
         <CoinFlip

@@ -5,6 +5,7 @@ import AdminAddProfileToPlayer from "../../components/AdminAddProfileToPlayer/Ad
 import AdminCreate from "../../components/Create/AdminCreate"
 import Approvals from "../../components/Approvals/UserApprovals"
 // import EditSchedule from "../../components/EditSchedule/EditSchedule"
+import AdminNews from "../../components/AdminNewsAndInformation/AdminNews.jsx"
 
 import * as playerService from "../../services/playerService"
 import * as teamService from "../../services/teamService"
@@ -107,11 +108,14 @@ const AdminPage = ({
     adjustRankForEOS()
   }
 
+
   return (
     <>
       <div className="bracket center column">
         <h1>Landing Information</h1>
-        <div className="bracket green-felt">this is what I want to put into the home page for notes and anouncments This will be a typeable field and the admin will be able to change this at will.</div>
+        <div className="bracket green-felt">
+          <AdminNews editable={profile?.accessLevel === 90} />
+        </div>
       </div>
       <div className="fWrap">
         <NavLink className="bracket" to="/player-management">
