@@ -56,7 +56,7 @@ const CompletedMatch = ({ currentMatch }) => {
       </div>
 
       <div className="bracket blue-felt">
-        ${moneyOwedTable * 0.25} per player is owed to the table.
+        ${(moneyOwedTable * 0.25).toFixed(2)} per player is owed to the table.
       </div>
     </>
   )
