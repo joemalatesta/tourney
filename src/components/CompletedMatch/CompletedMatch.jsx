@@ -2,6 +2,9 @@
 const CompletedMatch = ({ currentMatch }) => {
   if (!currentMatch) return null
 
+  console.log(currentMatch);
+  
+
   const getPlayerName = (player) => {
     if (!player) return "Unknown player"
 
@@ -59,7 +62,7 @@ const CompletedMatch = ({ currentMatch }) => {
         {getPlayerName(loser)} — Games Won: {getGamesWon(loserId)} — LOSER
       </div>
       <div className="bracket blue-felt">
-        {moneyOwedTable * .25} per player is owed to the table.
+        ${moneyOwedTable * .25} per player is owed to the table.
       </div>
     </>
   )
