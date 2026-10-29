@@ -1,3 +1,4 @@
+
 .bracket {
   display: flex;
   flex-direction: column;
@@ -11,28 +12,84 @@
   cursor: pointer;
   transition: border-color 0.25s;
   margin: 10px;
+  box-sizing: border-box;
+  max-width: 100%;
 }
+
 .center {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 .greenFelt {
   background-image: url("/felt.jpg");
-  background-size: auto;
-  background-repeat: repeat;
   background-size: 500px 500px;
+  background-repeat: repeat;
   border-radius: 8px;
   border: 1px solid white;
   font-size: 1em;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .flex {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 10px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .w75percent {
   width: 700px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Tablets and mobile phones */
+@media screen and (max-width: 768px) {
+  .bracket {
+    margin: 5px 0;
+    padding: 0.6em;
+    font-size: 0.9em;
+    min-width: 0;
+  }
+
+  .center {
+    padding: 5px;
+  }
+
+  .greenFelt {
+    background-size: 300px 300px;
+    padding: 5px;
+  }
+
+  .flex {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .w75percent {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Very small phones */
+@media screen and (max-width: 400px) {
+  .bracket {
+    font-size: 0.85em;
+    padding: 0.5em;
+  }
+
+  .greenFelt {
+    background-size: 250px 250px;
+  }
 }
