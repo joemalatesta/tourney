@@ -8,19 +8,29 @@ const CompletedMatch = ({ currentMatch }) => {
     return `${player.nameFirst || ""} ${player.nameLast || ""}`.trim()
   }
 
-  const getGamesWon = (playerId) => {
+  const getPlayerGames = (playerId) => {
     const player1Id = currentMatch.player1?._id
     const player2Id = currentMatch.player2?._id
 
     if (String(playerId) === String(player1Id)) {
-      return (currentMatch.player1WinsHome || []).filter(Boolean).length
+      const games = currentMatch.player1WinsHome || []
+
+      return {
+        won: games.filter(Boolean).length,
+        needed: games.length,
+      }
     }
 
     if (String(playerId) === String(player2Id)) {
-      return (currentMatch.player2WinsHome || []).filter(Boolean).length
+      const games = currentMatch.player2WinsHome || []
+
+      return {
+        won: games.filter(Boolean).length,
+        needed: games.length,
+      }
     }
 
-    return 0
+    return { won: 0, needed: 0 }
   }
 
   const winnerId = currentMatch.winningPlayer
@@ -40,19 +50,21 @@ const CompletedMatch = ({ currentMatch }) => {
         ? currentMatch.player2
         : null
 
-  const winnerGames = getGamesWon(winnerId)
-  const loserGames = getGamesWon(loserId)
+  const winnerGames = getPlayerGames(winnerId)
+  const loserGames = getPlayerGames(loserId)
 
-  const moneyOwedTable = winnerGames + loserGames 
+  const moneyOwedTable = winnerGames.won + loserGames.won
 
   return (
     <>
       <div>
-        {getPlayerName(winner)} — Games Won: {winnerGames} — WINNER
+        {getPlayerName(winner)} — Games Won: {winnerGames.won} of {" "}
+        {winnerGames.needed} — WINNER
       </div>
 
       <div>
-        {getPlayerName(loser)} — Games Won: {loserGames} — LOSER
+        {getPlayerName(loser)} — Games Won: {loserGames.won} of {" "}
+        {loserGames.needed} — LOSER
       </div>
 
       <div className="bracket blue-felt">

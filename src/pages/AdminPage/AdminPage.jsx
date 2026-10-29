@@ -45,7 +45,7 @@ const AdminPage = ({
         console.error("Invalid player object:", player)
       }
     }
-  }  
+  }
 
   const resetPlayerStats = async () => {
     for (const player of players) {
@@ -109,6 +109,10 @@ const AdminPage = ({
 
   return (
     <>
+      <div className="bracket center column">
+        <h1>Landing Information</h1>
+        <div className="bracket green-felt">this is what I want to put into the home page for notes and anouncments This will be a typeable field and the admin will be able to change this at will.</div>
+      </div>
       <div className="fWrap">
         <NavLink className="bracket" to="/player-management">
           Player Management
@@ -142,7 +146,7 @@ const AdminPage = ({
         handleUpdateProfiles={handleUpdateProfiles}
       />
       <br />
-      {profile.accessLevel === 90  && (
+      {profile.accessLevel === 90 && (
         <>
           <AdminAddProfileToPlayer players={players} profiles={profiles} />
           <div className="bracket center column">
