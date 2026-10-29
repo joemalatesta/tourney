@@ -1,3 +1,4 @@
+
 .redFelt {
   background-image: url("/red-felt.jpeg");
   background-size: contain;
@@ -12,4 +13,68 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.navBar a {
+  color: rgb(235, 230, 140);
+  text-decoration: none;
+  text-align: center;
+  padding: 0.4em;
+}
+
+.navBar a:hover,
+.navBar a.active {
+  color: white;
+}
+
+.menuButton {
+  display: none;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 6px;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.menuButton span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: rgb(235, 230, 140);
+  margin: 5px 0;
+  border-radius: 2px;
+}
+
+/* Tablets and phones */
+@media screen and (max-width: 768px) {
+  .redFelt {
+    padding: 0.5em;
+  }
+
+  .menuButton {
+    display: block;
+    margin-left: auto;
+  }
+
+  .navBar {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding-top: 0.75em;
+    gap: 0.25em;
+  }
+
+  .navBar.menuOpen {
+    display: flex;
+  }
+
+  .navBar a {
+    display: block;
+    padding: 0.75em;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
 }
