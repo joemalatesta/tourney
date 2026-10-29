@@ -55,11 +55,11 @@ const CompletedMatch = ({ currentMatch }) => {
   return (
     <>
       <div>
-        {getPlayerName(winner)} — Games Won: {getGamesWon(winnerId)} — WINNER
+        {getPlayerName(winner)} — Games Won: {getGamesWon(winnerId)/2} — WINNER
       </div>
 
       <div>
-        {getPlayerName(loser)} — Games Won: {getGamesWon(loserId)} — LOSER
+        {getPlayerName(loser)} — Games Won: {getGamesWon(loserId)/2} — LOSER
       </div>
       <div className="bracket blue-felt">
         ${moneyOwedTable * .25} per player is owed to the table.
