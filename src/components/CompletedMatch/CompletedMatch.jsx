@@ -1,6 +1,6 @@
 
 const CompletedMatch = ({ currentMatch }) => {
-  if (!currentMatch) return null  
+  if (!currentMatch) return null
 
   const getPlayerName = (player) => {
     if (!player) return "Unknown player"
@@ -13,27 +13,18 @@ const CompletedMatch = ({ currentMatch }) => {
     const player2Id = currentMatch.player2?._id
 
     if (String(playerId) === String(player1Id)) {
-      return (
-        (currentMatch.player1WinsHome || []).filter(Boolean).length +
-        (currentMatch.player1WinsAway || []).filter(Boolean).length
-      )
+      return (currentMatch.player1WinsHome || []).filter(Boolean).length
     }
 
     if (String(playerId) === String(player2Id)) {
-      return (
-        (currentMatch.player2WinsHome || []).filter(Boolean).length +
-        (currentMatch.player2WinsAway || []).filter(Boolean).length
-      )
+      return (currentMatch.player2WinsHome || []).filter(Boolean).length
     }
 
     return 0
   }
 
-  
   const winnerId = currentMatch.winningPlayer
   const loserId = currentMatch.losingPlayer
-  
-  const moneyOwedTable = (getGamesWon(winnerId)/2 + getGamesWon(loserId)/2)
 
   const winner =
     String(currentMatch.player1?._id) === String(winnerId)
@@ -49,17 +40,23 @@ const CompletedMatch = ({ currentMatch }) => {
         ? currentMatch.player2
         : null
 
+  const winnerGames = getGamesWon(winnerId)
+  const loserGames = getGamesWon(loserId)
+
+  const moneyOwedTable = winnerGames + loserGames 
+
   return (
     <>
       <div>
-        {getPlayerName(winner)} — Games Won: {getGamesWon(winnerId)/2} — WINNER
+        {getPlayerName(winner)} — Games Won: {winnerGames} — WINNER
       </div>
 
       <div>
-        {getPlayerName(loser)} — Games Won: {getGamesWon(loserId)/2} — LOSER
+        {getPlayerName(loser)} — Games Won: {loserGames} — LOSER
       </div>
+
       <div className="bracket blue-felt">
-        ${moneyOwedTable * .25} per player is owed to the table.
+        ${moneyOwedTable * 0.25} per player is owed to the table.
       </div>
     </>
   )
