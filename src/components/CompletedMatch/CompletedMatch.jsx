@@ -1,9 +1,6 @@
 
 const CompletedMatch = ({ currentMatch }) => {
-  if (!currentMatch) return null
-
-  console.log(currentMatch);
-  
+  if (!currentMatch) return null  
 
   const getPlayerName = (player) => {
     if (!player) return "Unknown player"
@@ -36,7 +33,7 @@ const CompletedMatch = ({ currentMatch }) => {
   const winnerId = currentMatch.winningPlayer
   const loserId = currentMatch.losingPlayer
   
-  const moneyOwedTable = getGamesWon(winnerId) + getGamesWon(loserId)
+  const moneyOwedTable = (getGamesWon(winnerId) + getGamesWon(loserId))/2
 
   const winner =
     String(currentMatch.player1?._id) === String(winnerId)
