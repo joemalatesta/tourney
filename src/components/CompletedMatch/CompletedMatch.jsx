@@ -1,57 +1,65 @@
-import { useEffect, useState } from "react"
-import * as playerService from "../../services/playerService.js"
 
 const CompletedMatch = ({ currentMatch }) => {
-  const [winnerData, setWinnerData] = useState(null)
-  const [loserData, setLoserData] = useState(null)
-
-  useEffect(() => {
-    const getPlayerData = async () => {
-      try {
-        if (!currentMatch?.winningPlayer || !currentMatch?.losingPlayer) {
-          setWinnerData(null)
-          setLoserData(null)
-          return
-        }
-
-        const winnerId =
-          typeof currentMatch.winningPlayer === "object"
-            ? currentMatch.winningPlayer._id
-            : currentMatch.winningPlayer
-
-        const loserId =
-          typeof currentMatch.losingPlayer === "object"
-            ? currentMatch.losingPlayer._id
-            : currentMatch.losingPlayer
-
-        const [winner, loser] = await Promise.all([
-          playerService.findOne(winnerId),
-          playerService.findOne(loserId),
-        ])
-
-        setWinnerData(winner)
-        setLoserData(loser)
-      } catch (error) {
-        console.error("Error loading completed match players:", error)
-      }
-    }
-
-    getPlayerData()
-  }, [currentMatch?.winningPlayer, currentMatch?.losingPlayer])
+  if (!currentMatch) return null
 
   const getPlayerName = (player) => {
     if (!player) return "Unknown player"
+
     return `${player.nameFirst || ""} ${player.nameLast || ""}`.trim()
   }
+
+  const getGamesWon = (playerId) => {
+    const player1Id = currentMatch.player1?._id
+    const player2Id = currentMatch.player2?._id
+
+    if (String(playerId) === String(player1Id)) {
+      return (
+        (currentMatch.player1WinsHome || []).filter(Boolean).length +
+        (currentMatch.player1WinsAway || []).filter(Boolean).length
+      )
+    }
+
+    if (String(playerId) === String(player2Id)) {
+      return (
+        (currentMatch.player2WinsHome || []).filter(Boolean).length +
+        (currentMatch.player2WinsAway || []).filter(Boolean).length
+      )
+    }
+
+    return 0
+  }
+
+  
+  const winnerId = currentMatch.winningPlayer
+  const loserId = currentMatch.losingPlayer
+  
+  const moneyOwedTable = getGamesWon(winnerId) + getGamesWon(loserId)
+
+  const winner =
+    String(currentMatch.player1?._id) === String(winnerId)
+      ? currentMatch.player1
+      : String(currentMatch.player2?._id) === String(winnerId)
+        ? currentMatch.player2
+        : null
+
+  const loser =
+    String(currentMatch.player1?._id) === String(loserId)
+      ? currentMatch.player1
+      : String(currentMatch.player2?._id) === String(loserId)
+        ? currentMatch.player2
+        : null
 
   return (
     <>
       <div>
-        {getPlayerName(winnerData)} -- WINNER
+        {getPlayerName(winner)} — Games Won: {getGamesWon(winnerId)} — WINNER
       </div>
 
       <div>
-        {getPlayerName(loserData)} -- LOSER
+        {getPlayerName(loser)} — Games Won: {getGamesWon(loserId)} — LOSER
+      </div>
+      <div className="bracket blue-felt">
+        {moneyOwedTable * .25} per player is owed to the table.
       </div>
     </>
   )
