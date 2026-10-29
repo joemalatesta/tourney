@@ -392,7 +392,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
         sessionInfo.match3Completed === true &&
         sessionInfo.approval !== true && (
           <div className="bracket red-felt">
-            <h2>Turn table fees to ADMIN for scres to be updated</h2>
+            <h2>Turn table fees to ADMIN for team scores to be updated</h2>
           </div>
         )}
 
