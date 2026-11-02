@@ -34,7 +34,14 @@ async function update(session) {
     },
     body: JSON.stringify(session),
   })
-  return res.json()
+
+  const data = await res.json()
+
+  if (!res.ok) {
+    throw new Error(data.error || `Update failed: ${res.status}`)
+  }
+
+  return data
 }
 
 async function index() {
