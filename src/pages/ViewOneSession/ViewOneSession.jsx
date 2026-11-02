@@ -272,7 +272,7 @@ const ViewOneSession = ({ profile, players, teams }) => {
 
   return (
     <>
-      <h2 className="center">Table number {sessionInfo.tableNumber}</h2>
+      <h2 className="center">TABLE {sessionInfo.tableNumber}</h2>
 
       <div className="row center space-around">
         {/* Home team */}
