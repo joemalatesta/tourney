@@ -113,7 +113,7 @@ const AdminPage = ({
     <>
       <div className="bracket center column">
         <h1>Landing Information</h1>
-        <div className="bracket green-felt">
+        <div className="bracket green-felt w700">
           <AdminNews editable={profile?.accessLevel === 90} />
         </div>
       </div>

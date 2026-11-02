@@ -71,6 +71,8 @@ const AdminNews = ({ editable = false }) => {
 
       {editable ? (
         <>
+        <div className="center">
+
           <textarea
             value={message}
             onChange={(event) => setMessage(event.target.value)}
@@ -86,6 +88,7 @@ const AdminNews = ({ editable = false }) => {
               resize: "vertical",
             }}
           />
+        </div>
 
           <button onClick={handleSave} disabled={saving}>
             {saving ? "Saving..." : "Save Announcement"}
@@ -100,6 +103,7 @@ const AdminNews = ({ editable = false }) => {
             overflowWrap: "anywhere",
             textAlign: "left",
           }}
+          className="center bracket green-felt"
         >
           {message || "There are no announcements at this time."}
         </div>
