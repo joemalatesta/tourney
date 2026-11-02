@@ -98,7 +98,7 @@ const handleCompleteSession = async (sched) => {
             return (
               <div
                 key={table._id}
-                className="bracket center column"
+                className="bracket center column session-table"
                 onClick={() => handleShowMatch(table)}
               >
                 <div className="center bracket">
@@ -149,7 +149,9 @@ const handleCompleteSession = async (sched) => {
 
   return (
     <>
+      <div className="bracket center">Green: Current Match Displayed. <br/>  Blue: Completed Match. <br/> Black: Unplayed Match</div>
       <div className="bracket flex fWrap padding">
+        
         {sessions?.map((sched) => (
           <div key={sched._id}>
             <div
